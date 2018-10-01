@@ -4,7 +4,7 @@
 		<h2 class="text-center">Autenticación</h2>
 		<?= $this->Form->create(); ?>
 			<?= $this->Form->input('Usuario'); ?>
-			<?= $this->Form->input('Password', array('type' => 'password')); ?>
+			<?= $this->Form->input('Contraseña', array('type' => 'password')); ?>
 			<?= $this->Form->submit('Entrar', array('class' => 'button')); ?>
 		<?= $this->Form->end(); ?>
 	</div>
