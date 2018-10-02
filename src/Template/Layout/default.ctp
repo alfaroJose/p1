@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -28,6 +28,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <!-- Espacio donde se cargan los archivos pertinentes a bootstrap -->
     <?= $this->Html->css(['bootstrap.min','jquery.dataTables.min'])?>
+	
+	<!-- Aqui agregegué "a mano"   los iconos de typicons por que con el helper no me funcionaba-->
+    <link rel="stylesheet" href="plugins/font/typicons.min.css"/></head><body><div class="page-header">
+	
     <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min']) ?>
 
     <?= $this->fetch('meta') ?>
