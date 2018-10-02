@@ -27,8 +27,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->meta('icon')    ?>
 
     <!-- Espacio donde se cargan los archivos pertinentes a bootstrap -->
-    <?= $this->Html->css('bootstrap.min')?>
-    <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min']) ?>
+    <?= $this->Html->css(['bootstrap.min','jquery.dataTables.min'])?>
+    <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
