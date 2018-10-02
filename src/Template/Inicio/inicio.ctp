@@ -18,7 +18,7 @@
 
 <h6>
     <div class = "text-center">
-        <button type = "submit" onclick="google.como"<?php
+        <button type = "submit" onclick="google.com"<?php
             ?> >
             Ingresar
             
