@@ -14,17 +14,17 @@
 </nav>
 <div class="usuarios index large-9 medium-8 columns content">
     <h3><?= __('Usuarios') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <table id="usuarios-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('nombre') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('primer_apellido') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('segundo_apellido') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('correo') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('telefono') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cedula') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('roles_id') ?></th>
+                <th scope="col"><?= 'Usuario' ?></th>
+                <th scope="col"><?= 'Nombre'?></th>
+                <th scope="col"><?= 'Primer apellido' ?></th>
+                <th scope="col"><?= 'Segundo apellido' ?></th>
+                <th scope="col"><?= 'Correo' ?></th>
+                <th scope="col"><?= 'Teléfono' ?></th>
+                <th scope="col"><?= 'Cédula' ?></th>
+                <th scope="col"><?= 'Rol' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -48,14 +48,29 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 </div>
+
+
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#usuarios-grid').DataTable(
+          {
+            /** Configuración del DataTable para cambiar el idioma, se puede personalisar aun más **/
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ filas por página",
+                "zeroRecords": "Sin resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin datos disponibles",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+            }
+          }
+        );
+    } );
+</script>
