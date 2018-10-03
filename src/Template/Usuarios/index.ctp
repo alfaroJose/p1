@@ -33,10 +33,8 @@
                 <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-document"></span>'), ['action' => 'view', $enrollment->enrollments_id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $usuario->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $usuario->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $usuario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $usuario->id)]) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $enrollment->enrollments_id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $usuario->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
