@@ -32,9 +32,11 @@
                 <td><?= h($usuario->segundo_apellido) ?></td>
                 <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-document"></span>'), ['action' => 'view', $enrollment->enrollments_id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $enrollment->enrollments_id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $usuario->id)]) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-document"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>
+
                 </td>
             </tr>
             <?php endforeach; ?>
