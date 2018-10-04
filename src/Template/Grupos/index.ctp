@@ -17,41 +17,32 @@
     <table id="grupos-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= 'numero' ?></th>
-                <th scope="col"><?= $this->Paginator->sort('semestre') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('año') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cursos_sigla') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('usuarios_id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col"><?= 'Sigla' ?></th>
+                <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Grupo' ?></th>
+                <th scope="col"><?= 'Semestre' ?></th>
+                <th scope="col"><?= 'Año' ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($grupos as $grupo): ?>
             <tr>
-                <td><?= $this->Number->format($grupo->numero) ?></td>
-                <td><?= $this->Number->format($grupo->semestre) ?></td>
-                <td><?= h($grupo->año) ?></td>
-                <td><?= h($grupo->cursos_sigla) ?></td>
-                <td><?= $grupo->has('usuario') ? $this->Html->link($grupo->usuario->id, ['controller' => 'Usuarios', 'action' => 'view', $grupo->usuario->id]) : '' ?></td>
+                <td><?= h($usuario->nombre) ?></td>
+                <td><?= h($usuario->primer_apellido) ?></td>
+                <td><?= h($usuario->segundo_apellido) ?></td>
+                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-document"></span>'), ['action' => 'view', $grupo->numero]) ?>
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->numero]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $grupo->numero], ['confirm' => __('Are you sure you want to delete # {0}?', $grupo->numero)]) ?>
-                </td>
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>
+
+</td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 </div>
 
 <script type="text/javascript">
