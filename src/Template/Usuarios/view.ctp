@@ -11,15 +11,13 @@
         <li><?= $this->Form->postLink(__('Delete Usuario'), ['action' => 'delete', $usuario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $usuario->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Usuarios'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Usuario'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Roles'), ['controller' => 'Roles', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Role'), ['controller' => 'Roles', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="usuarios view large-9 medium-8 columns content">
-    <h3><?= h($usuario->id) ?></h3>
-    <table class="vertical-table">
+    <h3><?= 'Consultar Usuario' ?></h3>
+    <table class="vertical-table table-striped">
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
+            <th scope="row"><?= __('Usuario') ?></th>
             <td><?= h($usuario->id) ?></td>
         </tr>
         <tr>
@@ -39,15 +37,15 @@
             <td><?= h($usuario->correo) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Telefono') ?></th>
+            <th scope="row"><?= __('Teléfono') ?></th>
             <td><?= h($usuario->telefono) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cedula') ?></th>
+            <th scope="row"><?= __('Cédula') ?></th>
             <td><?= h($usuario->cedula) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Role') ?></th>
+            <th scope="row"><?= __('Rol') ?></th>
             <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
         </tr>
     </table>

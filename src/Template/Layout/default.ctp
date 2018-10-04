@@ -61,15 +61,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
           <div class="sidebar-sticky pt-5">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <?= $this->Html->link('Matricula',['controller'=>'Enrollments','action'=>'index'],['class'=>'nav-link']) ?>
+                <?= $this->Html->link('Roles',['controller'=>'Roles','action'=>'index'],['class'=>'nav-link']) ?>
               </li>
-              
-              <li class="nav-item">
-                <?= $this->Html->link('Cursos',['controller'=>'Subjects','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
+                            
               <li class="nav-item">
                 <?= $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']) ?>
               </li> 
+              <li class="nav-item">
+                <?= $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>
               <li class="nav-item">
                 <?= $this->Html->link('Estudiantes',['controller'=>'Students','action'=>'index'],['class'=>'nav-link']) ?>
               </li>
