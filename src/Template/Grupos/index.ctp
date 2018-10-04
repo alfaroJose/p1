@@ -36,7 +36,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-document"></span>'), ['action' => 'view', $grupo->numero]) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->numero]) ?>
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->numero], ['confirm' => __('Are you sure you want to delete # {0}?', $grupo->numero)]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $grupo->numero], ['confirm' => __('Are you sure you want to delete # {0}?', $grupo->numero)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
