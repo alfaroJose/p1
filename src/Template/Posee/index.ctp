@@ -4,7 +4,47 @@
  * @var \App\Model\Entity\Posee[]|\Cake\Collection\CollectionInterface $posee
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+
+<h1>Administrar Roles</h1>
+
+<table>
+    <tr>
+        <th>Modulos</th>
+        <th>Insertar</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+        <th>Consultar</th>
+    </tr>
+
+    <tr>
+        <th>Ronda </th>
+        <th>requisitos</th>
+        <th>Usuarios</th>
+        <th>Cursos</th>
+    </tr>
+</table>
+
+<!-- <table>
+    <tr>
+        <th>Title</th>
+        <th>Created</th>
+    </tr>
+
+    <?php foreach ($posee as $posee): ?>
+    <tr>
+        <?php //if($posee->permisos_funcionalidad == "Insertar"):?>
+        <td>
+            <?= $this->Html->link($posee->roles_id, ['action' => 'view', $posee->slug]) ?>
+        </td>
+        <td>
+            <?php echo $posee->permisos_funcionalidad; ?>
+        </td>
+        <?php //endif; ?>
+    </tr>
+    <?php endforeach; ?>
+</table> -->
+
+<!-- <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Posee'), ['action' => 'add']) ?></li>
@@ -48,4 +88,4 @@
         </ul>
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>
-</div>
+</div> -->
