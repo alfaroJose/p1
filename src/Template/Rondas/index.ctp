@@ -4,15 +4,10 @@
  * @var \App\Model\Entity\Ronda[]|\Cake\Collection\CollectionInterface $rondas
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Ronda'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
+
 <div class="rondas index large-9 medium-8 columns content">
     <h3><?= __('Rondas') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <table id="rondas-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('numero') ?></th>
@@ -36,14 +31,27 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
-</div>
+
+
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#rondas-grid').DataTable(
+            {
+            /** Configuración del DataTable para cambiar el idioma, se puede personalisar aun más **/
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ filas por página",
+                "zeroRecords": "Sin resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin datos disponibles",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                }
+            });
+    });
+</script>
