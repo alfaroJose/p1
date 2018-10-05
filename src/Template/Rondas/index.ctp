@@ -10,10 +10,10 @@
     <table id="rondas-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('numero') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('fecha_inicial') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('fecha_final') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col"><?= 'Numero' ?></th>
+                <th scope="col"><?= 'Fecha Inicio' ?></th>
+                <th scope="col"><?= 'Fecha Fin' ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
