@@ -5,12 +5,6 @@ $contadorColumnas = 1;
  * @var \App\Model\Entity\Requisito[]|\Cake\Collection\CollectionInterface $requisitos
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Requisito'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="requisitos index large-9 medium-8 columns content">
     <h3><?= __('Requisitos') ?></h3>
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">
@@ -40,12 +34,14 @@ $contadorColumnas = 1;
             <?php endforeach; ?>
         </tbody>
     </table>
+    <br>
+    <?= $this->Html->link('Agregar requisito',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
 </div>
 
 <script type="text/javascript">
     $(document).ready( function () {
         $('#requisitos-grid').DataTable(
-          {
+            {
             /** Configuración del DataTable para cambiar el idioma, se puede personalisar aun más **/
             "language": {
                 "lengthMenu": "Mostrar _MENU_ filas por página",
@@ -60,8 +56,7 @@ $contadorColumnas = 1;
                         "sNext": "Siguiente",
                         "sPrevious": "Anterior"
                     }
-            }
-          }
-        );
-    } );
+                }
+            });
+    });
 </script>
