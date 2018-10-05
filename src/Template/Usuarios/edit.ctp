@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\Usuario $usuario
  */
 ?>
-<div class="usuarios form large-9 medium-8 columns content">
+<div class="usuarios">
     <?= $this->Form->create($usuario) ?>
     <fieldset>
         <legend><?= __('Modificar usuario') ?></legend>
@@ -19,6 +19,6 @@
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right btn-space']) ?>
-    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-5 btn-space']) ?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3 btn-space']) ?>
     <?= $this->Form->end() ?>
 </div>
