@@ -1,4 +1,5 @@
 <?php
+$contadorColumnas = 1;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Requisito[]|\Cake\Collection\CollectionInterface $requisitos
@@ -15,6 +16,7 @@
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
+                <th scope="col"><?= 'Número' ?></th>
                 <th scope="col"><?= 'Requisito' ?></th>
                 <th scope="col"><?= 'Tipo' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -23,14 +25,13 @@
         <tbody>
             <?php foreach ($requisitos as $requisito): ?>
             <tr>
+                <td><?= h($contadorColumnas++) ?></td>
                 <td><?= h($requisito->nombre) ?></td>
                 <td><?= h($requisito->tipo) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;'])?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->numero], ['confirm' => __(
-                        'Desea eliminar el siguiente requisito?
-                        Aqui el requisito', $requisito->nombre),'style'=>'font-size:22px;','escape'=>false]) ?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->numero], ['confirm' => __('Por favor confirme si desea eliminar este requisito'),'style'=>'font-size:22px;','escape'=>false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
