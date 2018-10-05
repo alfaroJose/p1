@@ -108,6 +108,31 @@ class InicioController extends AppController
 
     public function login(){
 
+        $usuario = $this->request->getData('Usuario');
+        $pass = $this->request->getData('Contraseña');
+
+        if($usuario != null && $pass != null){
+           
+            // conexión al servidor LDAP
+            $ldapconn = ldap_connect("10.1.4.78")
+                or die("Could not connect to LDAP server.");
+
+            if ($ldapconn) {
+                // realizando la autenticación
+                $ldaprdn = $usuario.'@ecci.ucr.ac.cr';
+                $ldappass = $pass;
+                $pass = '';
+                $ldapbind = @ldap_bind($ldapconn,$ldaprdn, $ldappass);
+
+                // verificación del enlace
+                if ($ldapbind) {
+                    return $this->redirect(['controller' => 'Main','action' => 'index']);
+                } else {
+                    $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+                }
+                ldap_close($ldapconn);
+            }
+        }
     }
 
 
