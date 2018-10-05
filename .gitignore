@@ -35,3 +35,5 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+config/app.php
+config/app.php
