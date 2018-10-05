@@ -28,8 +28,8 @@
         <tbody>
             <?php foreach ($grupos as $grupo): ?>
             <tr>
-                <td><?= h($curso->sigla) ?></td>
-                <td><?= h($curso->nombre) ?></td>
+                <td><?= h($grupo->sigla) ?></td>
+                <td><?= h($grupo->nombre) ?></td>
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
@@ -46,7 +46,7 @@
     </table>
     <br>
     <br>
-<?= $this->Html->link('Agregar curso',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link('Agregar curso',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
 </div>
 
 <script type="text/javascript">
