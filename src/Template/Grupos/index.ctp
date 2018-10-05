@@ -28,8 +28,11 @@
         <tbody>
             <?php foreach ($grupos as $grupo): ?>
             <tr>
-                <td><?= h($grupo->sigla) ?></td>
-                <td><?= h($grupo->nombre) ?></td>
+                <td><?= h($curso->sigla) ?></td>
+                <td><?= h($curso->nombre) ?></td>
+                <td><?= h($grupo->numero) ?></td>
+                <td><?= h($grupo->semestre) ?></td>
+                <td><?= h($grupo->año) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
