@@ -4,14 +4,6 @@
  * @var \App\Model\Entity\Grupo[]|\Cake\Collection\CollectionInterface $grupos
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Grupo'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Usuarios'), ['controller' => 'Usuarios', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Usuario'), ['controller' => 'Usuarios', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="grupos index large-9 medium-8 columns content">
     <h3><?= __('Grupos') ?></h3>
     <table id="grupos-grid" cellpadding="0" cellspacing="0">
@@ -46,7 +38,7 @@
     </table>
     <br>
     <br>
-    <?= $this->Html->link('Agregar curso',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
 </div>
 
 <script type="text/javascript">
