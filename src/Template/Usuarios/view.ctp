@@ -42,4 +42,6 @@
             <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
         </tr>
     </table>
+    <br>
+    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
 </div>
