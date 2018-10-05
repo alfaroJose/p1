@@ -28,7 +28,7 @@
         <tbody>
             <?php foreach ($grupos as $grupo): ?>
             <tr>
-                <td><?= h($grupo->sigla) ?></td>
+                <td><?= h($grupo->cursos_sigla) ?></td>
                 <td><?= h($grupo->nombre) ?></td>
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
