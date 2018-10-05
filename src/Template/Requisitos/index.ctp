@@ -15,37 +15,27 @@
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('numero') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('nombre') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tipo') ?></th>
+                <th scope="col"><?= 'Requisito' ?></th>
+                <th scope="col"><?= 'Tipo' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($requisitos as $requisito): ?>
             <tr>
-                <td><?= $this->Number->format($requisito->numero) ?></td>
                 <td><?= h($requisito->nombre) ?></td>
                 <td><?= h($requisito->tipo) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $requisito->numero]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $requisito->numero]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $requisito->numero], ['confirm' => __('Are you sure you want to delete # {0}?', $requisito->numero)]) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;'])?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->numero], ['confirm' => __(
+                        'Desea eliminar el siguiente requisito?
+                        Aqui el requisito', $requisito->nombre),'style'=>'font-size:22px;','escape'=>false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 </div>
 
 <script type="text/javascript">
