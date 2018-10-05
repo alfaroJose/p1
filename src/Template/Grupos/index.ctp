@@ -27,6 +27,7 @@
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
+                <td><?= $grupo->has('cursos') ? $this->Html->link($grupo->cursos->sigla, ['controller' => 'cursos', 'action' => 'view', $grupo->cursos->sigla]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
