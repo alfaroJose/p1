@@ -44,6 +44,9 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <br>
+    <br>
+<?= $this->Html->link('Agregar curso',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
 </div>
 
 <script type="text/javascript">
