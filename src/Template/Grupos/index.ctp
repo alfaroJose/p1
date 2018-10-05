@@ -6,6 +6,8 @@
 ?>
 <div class="grupos index large-9 medium-8 columns content">
     <h3><?= __('Grupos') ?></h3>
+    <br>
+    <br>
     <table id="grupos-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
