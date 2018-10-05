@@ -29,9 +29,9 @@
                 <td><?= h($grupo->año) ?></td>
                 <td><?= $grupo->has('cursos') ? $this->Html->link($grupo->cursos->nombre, ['controller' => 'cursos', 'action' => 'view', $grupo->cursos->nombre]) : '' ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $grupo->id),'style'=>'font-size:22px;','escape'=>false]) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->numero, $grupo->semestre, $grupo->año],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->numero, $grupo->semestre, $grupo->año], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $grupo->numero, $grupo->semestre, $grupo->año),'style'=>'font-size:22px;','escape'=>false]) ?>
 
                 </td>
             </tr>
