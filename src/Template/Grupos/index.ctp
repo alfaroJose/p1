@@ -28,15 +28,13 @@
         <tbody>
             <?php foreach ($grupos as $grupo): ?>
             <tr>
-                <td><?= h($usuario->nombre) ?></td>
-                <td><?= h($usuario->primer_apellido) ?></td>
-                <td><?= h($usuario->segundo_apellido) ?></td>
-                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->id]) : '' ?></td>
+                <td><?= h($grupo->sigla) ?></td>
+                <td><?= h($grupo->nombre) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
 
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $grupo->id),'style'=>'font-size:22px;','escape'=>false]) ?>
 
                 </td>
             </tr>
