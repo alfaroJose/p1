@@ -50,10 +50,12 @@ class RequisitosTable extends Table
         $validator
             ->scalar('nombre')
             ->maxLength('nombre', 200)
-            ->allowEmpty('nombre');
+            ->requirePresence('nombre', 'create')
+            ->notEmpty('nombre');
 
         $validator
             ->scalar('tipo')
+            ->maxLength('tipo', 18)
             ->requirePresence('tipo', 'create')
             ->notEmpty('tipo');
 

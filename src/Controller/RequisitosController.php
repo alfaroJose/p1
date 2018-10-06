@@ -51,6 +51,11 @@ class RequisitosController extends AppController
         $requisito = $this->Requisitos->newEntity();
         if ($this->request->is('post')) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            if ($requisito->tipo == 0) {
+                $requisito->tipo = 'Obligatorio';
+            } else {
+                $requisito->tipo = 'Obligatorio inopia';
+            }
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('The requisito has been saved.'));
 
@@ -75,6 +80,11 @@ class RequisitosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            if ($requisito->tipo == 0) {
+                $requisito->tipo = 'Obligatorio';
+            } else {
+                $requisito->tipo = 'Obligatorio inopia';
+            }
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('The requisito has been saved.'));
 
