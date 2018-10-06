@@ -9,16 +9,22 @@
     <fieldset>
         <legend><?= __('Modificar usuario') ?></legend>
         <?php
-            echo $this->Form->control('nombre');
-            echo $this->Form->control('primer_apellido');
-            echo $this->Form->control('segundo_apellido');
-            echo $this->Form->control('cedula');
-            echo $this->Form->control('telefono');
-            echo $this->Form->control('correo');
-            echo $this->Form->control('roles_id', ['options' => $roles, 'empty' => true]);
+            echo $this->Form->control('nombre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('primer_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('segundo_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('cedula', ['label'=>['text'=>'Cédula'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+
+            echo $this->Form->control('roles_id', ['options' => $roles, 'empty' => true, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right btn-space']) ?>
-    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3 btn-space']) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
