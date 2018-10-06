@@ -23,7 +23,6 @@ $contadorColumnas = 1;
                 <td><?= h($requisito->nombre) ?></td>
                 <td><?= h($requisito->tipo) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;'])?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;'])?>
                     <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->numero], ['confirm' => __('Por favor confirme si desea eliminar el requisito nº {0}', $contadorColumnas),'style'=>'font-size:22px;','escape'=>false])?>
                     <?php
