@@ -14,6 +14,7 @@
             echo $this->Form->control('Grupo');
             echo $this->Form->control('Semestre');
             echo $this->Form->control('Año');
+            echo $this->Form->control('usuario_id');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Cancelar')) ?>

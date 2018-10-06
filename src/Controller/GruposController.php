@@ -25,7 +25,10 @@ class GruposController extends AppController
         ];
         $grupos = $this->paginate($this->Grupos);
 
+        $V=$this->loadmodel('Grupos');
+        $V->getIndexData();
         $this->set(compact('grupos'));
+
     }
 
     /**
