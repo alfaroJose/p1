@@ -102,9 +102,13 @@ class UsuariosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $usuario = $this->Usuarios->get($id);
         if ($this->Usuarios->delete($usuario)) {
-            $this->Flash->success(__('El usuario ha sido eliminado.'));
+            echo '<script language="javascript">';
+           echo 'alert("Usuario eliminado correctamente")'; 
+           echo '</script>';
         } else {
-            $this->Flash->error(__('El usuario no puede eliminarse'));
+            echo '<script language="javascript">';
+           echo 'alert("Error no se ha podido eliminar el usuario")';
+           echo '</script>';
         }
 
         return $this->redirect(['action' => 'index']);
