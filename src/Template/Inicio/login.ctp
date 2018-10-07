@@ -5,7 +5,7 @@
 		<?= $this->Form->create(null,['url' => ['action'=>'login']]); ?>
 			<?= $this->Form->input('Usuario'); ?>
 			<?= $this->Form->input('Contraseña', array('type' => 'password')); ?>
-			<?= $this->Form->submit('Entrar', array('class' => 'button')); ?>
+			<?= $this->Form->submit('Entrar', array('class' => 'button','onclick' => 'inicio')); ?>
 		<?= $this->Form->end(); ?>
 	</div>
 </div>

@@ -107,9 +107,11 @@ class InicioController extends AppController
 
 
     public function login(){
+        
+        //$this->Flash->error(__('Rellene todos los campos MAMADOR'));
 
         $usuario = $this->request->getData('Usuario');
-        $pass = $this->request->getData('Contraseña');
+        $pass = $this->request->getData('Contraseña');  
 
         if($usuario != null && $pass != null){
            
@@ -128,16 +130,22 @@ class InicioController extends AppController
                 if ($ldapbind) {
                     return $this->redirect(['controller' => 'Main','action' => 'index']);
                 } else {
-                    $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+                    //debug('hliwis');
+                   $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
                 }
                 ldap_close($ldapconn);
+                
             }
         }
+        else{
+            $this->Flash->error(__('Rellene todos los campos MAMADOR'));
+
+        }
+        
     }
 
 
     public function inicio(){
-
         
     }
 }
