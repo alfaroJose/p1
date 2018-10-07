@@ -76,6 +76,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               <li class="nav-item">
                 <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
               </li>
+
+              <li class="nav-item">
+                <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>
+
             </ul>
 
           </div>
