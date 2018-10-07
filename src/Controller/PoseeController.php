@@ -20,9 +20,7 @@ class PoseeController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Roles']
-        ];
+        
         $posee = $this->paginate($this->Posee);
 
         $this->set(compact('posee'));
@@ -42,27 +40,6 @@ class PoseeController extends AppController
         ]);
 
         $this->set('posee', $posee);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $posee = $this->Posee->newEntity();
-        if ($this->request->is('post')) {
-            $posee = $this->Posee->patchEntity($posee, $this->request->getData());
-            if ($this->Posee->save($posee)) {
-                $this->Flash->success(__('The posee has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The posee could not be saved. Please, try again.'));
-        }
-        $roles = $this->Posee->Roles->find('list', ['limit' => 200]);
-        $this->set(compact('posee', 'roles'));
     }
 
     /**
