@@ -1,5 +1,6 @@
  
-<?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?> <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
+<?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?><?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
+
 <h4>
 <div class = "text-center">
  Bienvenido al Sistema de Asistencias de la                 <br>
