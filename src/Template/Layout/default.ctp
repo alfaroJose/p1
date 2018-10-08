@@ -62,8 +62,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <ul class="nav flex-column">
               <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-                            
+              </li>                            
               <li class="nav-item">
                 <?= $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']) ?>
               </li> 
@@ -75,12 +74,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               </li>
               <li class="nav-item">
                 <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-
-              <li class="nav-item">
-                <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-
+              </li>         
             </ul>
 
           </div>
