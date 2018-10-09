@@ -23,9 +23,7 @@
                 <td><?= h($ronda->fecha_inicial) ?></td>
                 <td><?= h($ronda->fecha_final) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $ronda->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $ronda->numero], ['confirm' => __('Por favor confirme si desea eliminar la ronda # {0}?', $ronda->numero), 'style'=>'font-size:22px;','escape'=>false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -8,12 +8,12 @@
 <div class="rondas form large-9 medium-8 columns content">
     <?= $this->Form->create($ronda) ?>
     <fieldset>
-        <legend><?= __('Edit Ronda') ?></legend>
+        <legend><?= __('Editar Ronda') ?></legend>
         <?php
             echo $this->Form->control('fecha_inicial');
             echo $this->Form->control('fecha_final');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right'])?>
     <?= $this->Form->end() ?>
 </div>
