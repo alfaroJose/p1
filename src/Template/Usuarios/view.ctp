@@ -45,4 +45,6 @@
     </table>
     <br>
     <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link('Eliminar usuario',['action'=>'delete'],['class'=>'btn btn-info float-right mr-3'])?>
+    <?= $this->Html->link('Modificar usuario',['action'=>'edit'],['class'=>'btn btn-info float-right mr-3'])?>
 </div>
