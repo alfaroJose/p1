@@ -42,7 +42,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
 
       <!-- Barra de la derecha. Aqui está el sing out-->
       <ul class="navbar-nav px-3">
@@ -61,24 +61,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
           <div class="sidebar-sticky pt-5">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <?= $this->Html->link('Matricula',['controller'=>'Enrollments','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              
-              <li class="nav-item">
-                <?= $this->Html->link('Cursos',['controller'=>'Subjects','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-
-              <li class="nav-item">
-                <?= $this->Html->link('Estudiantes',['controller'=>'Students','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              <li class="nav-item">
-                <?= $this->Html->link('Departamentos',['controller'=>'Departments','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-
-              <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>                            
+              <li class="nav-item">
+                <?= $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']) ?>
+              </li> 
+              <li class="nav-item">
+                <?= $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ?>
               </li>
-
+              <li class="nav-item">
+                <?= $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>
+              <li class="nav-item">
+                <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>         
             </ul>
 
           </div>
