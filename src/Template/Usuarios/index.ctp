@@ -13,7 +13,7 @@
                 <th scope="col"><?= 'Primer apellido' ?></th>
                 <th scope="col"><?= 'Segundo apellido' ?></th>
                 <th scope="col"><?= 'Rol' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
