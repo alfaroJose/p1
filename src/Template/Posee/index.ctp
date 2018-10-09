@@ -41,40 +41,40 @@
 
 		<tr>
 			<td>Insertar</td>
-			<td><input type="checkbox" name="name" value="1"> </td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
+			<td><?= $this->Form->checkbox("checkbox1"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox2"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox3"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox4"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox5"); ?></td>
 		</tr>
 		<tr>
 			<td>Modificar</td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
+			<td><?= $this->Form->checkbox("checkbox6"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox7"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox8"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox9"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox10"); ?></td>
 		</tr>
 		<tr>
 			<td>Eliminar</td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
+			<td><?= $this->Form->checkbox("checkbox11"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox12"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox13"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox14"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox15"); ?></td>
 		</tr>
 		<tr>
 			<td>Consultar</td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
-			<td><input type="checkbox"></td>
+			<td><?= $this->Form->checkbox("checkbox16"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox17"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox18"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox19"); ?></td>
+			<td><?= $this->Form->checkbox("checkbox20"); ?></td>
 		</tr>
 		</tbody>
 	</table>
 
-	<?= $this->Form->submit("Guardar");?> 
-	<?= $this->Form->submit("Cancelar");?>
+	<?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Form->submit('Guardar',['action'=>'index', 'class'=>'btn btn-info float-right mr-3'])?>
 
 </div>
