@@ -55,11 +55,11 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
             if ($this->Usuarios->save($usuario)) {
-                $this->Flash->success(__('The usuario has been saved.'));
+                $this->Flash->success(__('El usuario ha sido agregado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The usuario could not be saved. Please, try again.'));
+            $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
         }
         $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
         $this->set(compact('usuario', 'roles'));
@@ -80,11 +80,11 @@ class UsuariosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
             if ($this->Usuarios->save($usuario)) {
-                $this->Flash->success(__('The usuario has been saved.'));
+                $this->Flash->success(__('El usuario ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The usuario could not be saved. Please, try again.'));
+            $this->Flash->error(__('El usuario no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
         $this->set(compact('usuario', 'roles'));
@@ -106,7 +106,6 @@ class UsuariosController extends AppController
         } else {
             $this->Flash->success(__('El usuario no se ha podido eliminar'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 }
