@@ -80,7 +80,7 @@ class UsuariosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
             if ($this->Usuarios->save($usuario)) {
-                $this->Flash->success(__('El usuario ha sid modificado.'));
+                $this->Flash->success(__('El usuario ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -102,13 +102,9 @@ class UsuariosController extends AppController
         $this->request->allowMethod(['post', 'get']);
         $usuario = $this->Usuarios->get($id);
         if ($this->Usuarios->delete($usuario)) {
-            echo '<script language="javascript">';
-           echo 'alert("Usuario eliminado correctamente")'; 
-           echo '</script>';
+            $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {
-            echo '<script language="javascript">';
-           echo 'alert("Error no se ha podido eliminar el usuario")';
-           echo '</script>';
+            $this->Flash->success(__('El usuario no ha sido eliminado. Por favor intente de nuevo'));
         }
 
         return $this->redirect(['action' => 'index']);
