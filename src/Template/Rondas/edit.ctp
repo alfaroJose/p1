@@ -15,5 +15,6 @@
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3 btn-space'])?>
     <?= $this->Form->end() ?>
 </div>
