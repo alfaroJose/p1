@@ -137,10 +137,6 @@ class InicioController extends AppController
                 
             }
         }
-        else{
-            $this->Flash->error(__('Rellene todos los campos MAMADOR'));
-
-        }
         
     }
 
