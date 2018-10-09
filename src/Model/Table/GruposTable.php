@@ -81,4 +81,24 @@ class GruposTable extends Table
 
         return $rules;
     }
+
+
+
+    public function getIndexValues(){
+
+        $index=$this->find()
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
+
+    }
 }

@@ -20,14 +20,15 @@ class GruposController extends AppController
      */
     public function index()
     {
+        $todo= $this->Grupos->getIndexValues();
         $this->paginate = [
             'contain' => ['Usuarios']
         ];
         $grupos = $this->paginate($this->Grupos);
 
-        $V=$this->loadmodel('Grupos');
-        $V->getIndexData();
-        $this->set(compact('grupos'));
+        //$V=$this->loadmodel('Grupos');
+        //$V->getIndexData();
+        $this->set(compact('grupos','todo'));
 
     }
 
@@ -40,9 +41,12 @@ class GruposController extends AppController
      */
     public function view($id = null)
     {
-        $grupo = $this->Grupos->get($id, [
+        debug($id);
+        die();
+        /*Hay que hacer un metodo diferente por la llave compuesta ver http://php.net/manual/es/function.explode.php*/
+        /*$grupo = $this->Grupos->get($id, [
             'contain' => ['Usuarios']
-        ]);
+        ]);*/
 
         $this->set('grupo', $grupo);
     }
