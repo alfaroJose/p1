@@ -102,11 +102,10 @@ class UsuariosController extends AppController
         $this->request->allowMethod(['post', 'get']);
         $usuario = $this->Usuarios->get($id);
         if ($this->Usuarios->delete($usuario)) {
-            $this->Flash->success(__('El usuario ha sido eliminado.'));
+            $this->Flash->success(__('El usuario se ha eliminado correctamente.'));
         } else {
-            $this->Flash->success(__('El usuario no ha sido eliminado. Por favor intente de nuevo'));
+            $this->Flash->success(__('El usuario no se ha podido eliminar'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 }

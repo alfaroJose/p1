@@ -1,5 +1,16 @@
- 
-<?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?><?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
+<div class = "float-right">   
+        <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?>
+       
+</div>
+
+ <div class = "float-left">
+                 <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
+ </div>
+
+<br><br>
+<br><br>
+<br><br>
+<br><br>
 
 <h4>
 <div class = "text-center">
@@ -10,7 +21,6 @@
         <?php echo "<center>";?>
                 <td class="Opciones">
                     <?= $this->html->link(__('Continuar'), ['controller' => 'Inicio', 'action' => 'login']) ?> <br>
-                    <?= $this->html->link(__('Saltar-a-Users'), ['controller' => 'Users', 'action' => 'index']) ?>
                 </td>
         <?php echo "</center>";?>        
 
