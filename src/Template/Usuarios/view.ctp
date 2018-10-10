@@ -13,7 +13,7 @@ table td{
     padding :10px 10px 10px 10px;
 }
 tr:nth-child(2n+2) {
-    background-color:#0417;
+    background-color:#0317;
  }
  </style>
 <div class="usuarios view large-9 medium-8 columns content">
@@ -56,8 +56,7 @@ tr:nth-child(2n+2) {
         <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
-            <td><?= h($usuario->role->tipo) ?></td>
-     
+            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Roles', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
         </tr>
     </table>
     <br>
