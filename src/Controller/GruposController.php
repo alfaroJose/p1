@@ -42,7 +42,8 @@ class GruposController extends AppController
     public function view($id = null)
     {
         $var= explode(',',$id);
-        
+        debug($var);
+        die();
         /*Hay que hacer un metodo diferente por la llave compuesta ver http://php.net/manual/es/function.explode.php*/
         /*$grupo = $this->Grupos->get($id, [
             'contain' => ['Usuarios']
@@ -68,8 +69,9 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
         }
+        $cursos = $this->Grupos->find('list', ['limit' => 200]);
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios'));
+        $this->set(compact('grupo', 'usuarios', 'cursos'));
     }
 
     /**

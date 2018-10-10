@@ -9,12 +9,12 @@
     <fieldset>
         <legend><?= __('Agregar Grupo') ?></legend>
          <?php
-            echo $this->Form->control('Sigla');
-            echo $this->Form->control('Nombre');
-            echo $this->Form->control('Grupo');
-            echo $this->Form->control('Semestre');
-            echo $this->Form->control('Año');
-            echo $this->Form->control('usuario_id');
+            echo $this->Form->control('numero',['label' => ['text' => 'Numero'],'type' => 'text' ]);
+            echo $this->Form->control('semestre',['label' => ['text' => 'Sigla'],'type' => 'text' ]);
+            echo $this->Form->control('año',['label' => ['text' => 'Año'],'type' => 'text' ]);
+            echo $this->Form->control('cursos_sigla',['label' => ['text' => 'Sigla'],'type' => 'text' ]);
+            echo ('<label> Profesor </label>');
+            echo $this->Form->select('usuarios_id', $usuarios);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Cancelar')) ?>

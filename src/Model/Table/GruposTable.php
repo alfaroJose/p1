@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -102,11 +103,13 @@ class GruposTable extends Table
 
     }
 
-    public function deleteValues(){
-
+    public function deleteValues($id = null, $numero = null, $semestre = null, $año = null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
     }
+    //https://book.cakephp.org/3.0/en/orm/database-basics.html
 
     public function viewValues(){
-        
+
     }
 }

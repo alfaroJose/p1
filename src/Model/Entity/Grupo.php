@@ -27,7 +27,12 @@ class Grupo extends Entity
      * @var array
      */
     protected $_accessible = [
+        'numero' => true,
+        'semestre' => true,
+        'año' => true,
+        'curso_sigla' => true,
         'usuarios_id' => true,
         'usuario' => true
+
     ];
 }
