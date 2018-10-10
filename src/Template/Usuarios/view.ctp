@@ -60,7 +60,7 @@ tr:nth-child(2n+2) {
         </tr>
     </table>
     <br>
-    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
-    <?= $this->Html->link('Eliminar usuario',['action'=>'delete',$usuario->id],['class'=>'btn btn-info float-right mr-3'])?>
-    <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info float-right mr-3'])?>
+    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info float-center mr-3'])?>
+    <?= $this->Html->link('Eliminar usuario',['action'=>'delete',$usuario->id],['class'=>'btn btn-info float-center mr-3'])?>
+    <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info float-center mr-3'])?>
 </div>
