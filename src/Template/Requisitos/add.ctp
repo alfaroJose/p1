@@ -8,10 +8,10 @@ $tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
 <div class="requisitos form large-9 medium-8 columns content">
     <?= $this->Form->create($requisito) ?>
     <fieldset>
-        <legend><?= __('Add Requisito') ?></legend>
+        <legend><?= __('Agregar Requisito') ?></legend>
         <?php
-            echo $this->Form->control('nombre');
-            echo $this->Form->control('tipo', ['options' => $tipoRequisitos]);
+            echo $this->Form->control('nombre',['label' => 'Descripcion']);
+            echo $this->Form->control('tipo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'options' => $tipoRequisitos]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right'])?>
