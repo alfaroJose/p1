@@ -22,7 +22,7 @@
                 <td><?= h($usuario->nombre) ?></td>
                 <td><?= h($usuario->primer_apellido) ?></td>
                 <td><?= h($usuario->segundo_apellido) ?></td>
-                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Posee', 'action' => 'view', $usuario->role->id]) : '' ?></td>
+                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
