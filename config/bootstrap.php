@@ -107,6 +107,14 @@ mb_internal_encoding(Configure::read('App.encoding'));
  */
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 
+Cake\I18n\Date::setToStringFormat('yyyy-MM-dd');
+Cake\I18n\FrozenDate::setToStringFormat('yyyy-MM-dd');
+
+\Cake\Database\Type::build('date')
+    ->useImmutable()
+    ->useLocaleParser()
+    ->setLocaleFormat('yyyy-MM-dd');
+
 /*
  * Register application error and exception handlers.
  */

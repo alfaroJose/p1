@@ -16,11 +16,12 @@
               <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
               <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
               <script>
+
               $( function() {
-                $( "#fecha-inicial" ).datepicker();
+                $( "#fecha-inicial" ).datepicker({dateFormat: 'yy-mm-dd'});
               } );
               $( function() {
-                $( "#fecha-final" ).datepicker();
+                $( "#fecha-final" ).datepicker({dateFormat: 'yy-mm-dd'});
               } );
               </script>
             </head>
@@ -37,8 +38,8 @@
     <fieldset>
         <legend><?= __('Editar Ronda') ?></legend>
         <?php
-            echo $this->Form->control('fecha_inicial',['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text']);
-            echo $this->Form->control('fecha_final',['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text']);
+            echo $this->Form->control('fecha_inicial',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text']);
+            echo $this->Form->control('fecha_final',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text']);
         ?>
     </fieldset>
 
