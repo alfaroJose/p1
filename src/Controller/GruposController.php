@@ -41,7 +41,7 @@ class GruposController extends AppController
      */
     public function view($id = null)
     {
-        debug($id);
+        /*debug($id);
         die();
         /*Hay que hacer un metodo diferente por la llave compuesta ver http://php.net/manual/es/function.explode.php*/
         /*$grupo = $this->Grupos->get($id, [
@@ -104,7 +104,7 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($id = null, $numero = null, $semestre = null, $año = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $grupo = $this->Grupos->get($id);

@@ -101,4 +101,8 @@ class GruposTable extends Table
         die();*/
 
     }
+
+    public function deleteValues(){
+        
+    }
 }
