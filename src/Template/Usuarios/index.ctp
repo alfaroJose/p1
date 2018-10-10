@@ -35,7 +35,7 @@
     </table>    
     <br>
     <br>
-    <?= $this->Html->link('Agregar usuario',['action'=>'add'],['class'=>'btn btn-info float-right mr-3'])?> 
+    <?= $this->Html->link('Agregar usuario',['action'=>'add2'],['class'=>'btn btn-info float-right mr-3'])?> 
 </div>
 
 
@@ -43,7 +43,7 @@
     $(document).ready( function () {
         $('#usuarios-grid').DataTable(
           {
-            /** Configuración del DataTable para cambiar el idioma, se puede personalisar aun más **/
+            /** Configuración del DataTable para cambiar el idioma, se puede personalizar aun más **/
             "language": {
                 "lengthMenu": "Mostrar _MENU_ filas por página",
                 "zeroRecords": "Sin resultados",
