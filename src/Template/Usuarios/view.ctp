@@ -57,7 +57,7 @@ tr:nth-child(2n+2) {
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
             <td><?= h($usuario->role->tipo) ?></td>
-            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Roles', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
+     
         </tr>
     </table>
     <br>
