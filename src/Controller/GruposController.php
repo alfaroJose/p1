@@ -41,8 +41,8 @@ class GruposController extends AppController
      */
     public function view($id = null)
     {
-        /*debug($id);
-        die();
+        $var= explode(',',$id);
+        
         /*Hay que hacer un metodo diferente por la llave compuesta ver http://php.net/manual/es/function.explode.php*/
         /*$grupo = $this->Grupos->get($id, [
             'contain' => ['Usuarios']

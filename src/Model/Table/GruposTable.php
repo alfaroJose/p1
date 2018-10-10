@@ -103,6 +103,10 @@ class GruposTable extends Table
     }
 
     public function deleteValues(){
+
+    }
+
+    public function viewValues(){
         
     }
 }
