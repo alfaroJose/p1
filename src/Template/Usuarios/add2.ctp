@@ -1,10 +1,9 @@
 <?php
-$tipoRoles = array("Asistente Administrativo", "Profesor");
+$tipoRoles = array("Estudiante");
 
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Usuario $usuario
-
  */
 ?>
 <div class="usuarios form large-9 medium-8 columns content">
@@ -37,7 +36,7 @@ $tipoRoles = array("Asistente Administrativo", "Profesor");
             
             echo $this->Form->control('correo', ['required'=>true, 'type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
-            echo $this->Form->control('roles_id', ['required'=>true, 'options' =>['2','3'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('roles_id', ['type' => 'text', 'required'=>true, 'value' => 4, 'readonly', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]); 
         ?>
     </fieldset>
     <br>

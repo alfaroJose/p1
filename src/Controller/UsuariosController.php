@@ -65,6 +65,21 @@ class UsuariosController extends AppController
         $this->set(compact('usuario', 'roles'));
     }
 
+    public function add2()
+    {
+        $usuario = $this->Usuarios->newEntity();
+        if ($this->request->is('post')) {
+            $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
+            if ($this->Usuarios->save($usuario)) {
+                $this->Flash->success(__('El usuario ha sido agregado.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
+        }
+        $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
+        $this->set(compact('usuario', 'roles'));
+    }
     /**
      * Edit method
      *
