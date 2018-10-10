@@ -12,11 +12,14 @@ table {
 table td{
     padding :10px 10px 10px 10px;
 }
+tr:nth-child(2n+2) {
+    background-color:#0417;
+ }
  </style>
 <div class="usuarios view large-9 medium-8 columns content">
     <h3><?= 'Datos personales' ?></h3>
     <br>
-    <table class="vertical-table">      
+    <table class="vertical-table table-striped">      
         <tr>
             <th scope="row"><?= __('Nombre') ?></th>
             <td><?= h($usuario->nombre) ?></td>
