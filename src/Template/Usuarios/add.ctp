@@ -1,5 +1,4 @@
 <?php
-$tipoRoles = array("Asistente Administrativo", "Profesor");
 
 /**
  * @var \App\View\AppView $this
@@ -33,7 +32,7 @@ $tipoRoles = array("Asistente Administrativo", "Profesor");
 
         <?php
 
-            echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'placeholder'=>'Carné', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]); 
+            echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'placeholder'=>'nombre.apellido', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]); 
             
             echo $this->Form->control('correo', ['required'=>true, 'type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
