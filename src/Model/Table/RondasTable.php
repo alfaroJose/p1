@@ -32,8 +32,8 @@ class RondasTable extends Table
         parent::initialize($config);
 
         $this->setTable('rondas');
-        $this->setDisplayField('numero');
-        $this->setPrimaryKey('numero');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
     }
 
     /**
@@ -45,7 +45,10 @@ class RondasTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->allowEmpty('numero', 'create');
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->allowEmpty('numero');
 
         $validator
             ->date('fecha_inicial')

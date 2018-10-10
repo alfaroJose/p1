@@ -5,7 +5,7 @@ use Cake\ORM\Entity;
 
 /**
  * Ronda Entity
- *
+ * @property int $id
  * @property int $numero
  * @property \Cake\I18n\FrozenDate $fecha_inicial
  * @property \Cake\I18n\FrozenDate $fecha_final

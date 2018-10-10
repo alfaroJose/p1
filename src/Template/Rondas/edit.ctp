@@ -36,7 +36,8 @@
              $.datepicker.setDefaults($.datepicker.regional['es']);
 
               $( function() {
-                $( "#fecha-inicial" ).datepicker({dateFormat: 'yy-mm-dd'});
+                $( "#fecha-inicial" ).datepicker({dateFormat: 'yy-mm-dd', onSelect: function(selected) {$("#fecha-final").datepicker("option","minDate", selected)
+}});
               } );
               $( function() {
                 $( "#fecha-final" ).datepicker({dateFormat: 'yy-mm-dd'});
@@ -50,10 +51,10 @@
     <fieldset>
         <legend><?= __('Editar Ronda') ?></legend>
         <?php
-        $numeroRonda = array("1", "2", "3");
-        echo $this->Form->control('numero', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'options' => $numeroRonda,'type'=> 'select', 'value' => '']);
-            echo $this->Form->control('fecha_inicial',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly']);
-            echo $this->Form->control('fecha_final',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly']);
+        $numeroRonda = array('1' => '1', '2' => '2', '3' => '3');
+        echo $this->Form->control('numero', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'options' => $numeroRonda,'type'=> 'select']);
+            echo $this->Form->control('fecha_inicial',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly', 'value'=> '']);
+            echo $this->Form->control('fecha_final',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly', 'value'=> '']);
         ?>
     </fieldset>
 

@@ -23,7 +23,7 @@
                 <td><?= h($ronda->fecha_inicial) ?></td>
                 <td><?= h($ronda->fecha_final) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->numero],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
