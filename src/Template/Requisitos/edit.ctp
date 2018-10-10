@@ -10,7 +10,7 @@ $tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
     <fieldset>
         <legend><?= __('Editar Requisito') ?></legend>
         <?php
-            echo $this->Form->control('nombre',['label' => 'Descripcion']);
+            echo $this->Form->control('nombre',['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'label' => 'Descripcion', 'type'=> 'textarea']);
             echo $this->Form->control('tipo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'options' => $tipoRequisitos]);
         ?>
     </fieldset>
