@@ -16,8 +16,8 @@ tr:nth-child(2n+2) {
     background-color:#0317;
  }
  </style>
-<div class="usuarios view large-9 medium-8 columns content">
-    <h3><?= 'Datos personales' ?></h3>
+<div class="border-width: 1px; border-style: solid; border-color: black;">
+    <h5><?= 'Datos personales' ?></h5>
     <br>
     <table class="vertical-table table-striped">      
         <tr>
@@ -28,23 +28,24 @@ tr:nth-child(2n+2) {
             <th scope="row"><?= __('Primer Apellido') ?></th>
             <td><?= h($usuario->primer_apellido) ?></td>
         </tr>
-        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Segundo Apellido') ?></th>
             <td><?= h($usuario->segundo_apellido) ?></td>
         </tr>
-        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Cédula') ?></th>
             <td><?= h($usuario->cedula) ?></td>
         </tr>
-        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Teléfono') ?></th>
             <td><?= h($usuario->telefono) ?></td>
         </tr>
-        <div class="spacer10"></div>
-        <tr>
+        </tr>
+    </table>
+    <br>
+    <table class="vertical-table table-striped">   
+    <h5><?= "Datos de seguridad" ?></h5>
+    <tr>
             <th scope="row"><?= __('Usuario') ?></th>
             <td><?= h($usuario->id) ?></td>
         </tr>
@@ -57,10 +58,9 @@ tr:nth-child(2n+2) {
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
             <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Roles', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
-        </tr>
-    </table>
+            </table>
     <br>
-    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info float-center mr-3'])?>
-    <?= $this->Html->link('Eliminar usuario',['action'=>'delete',$usuario->id],['class'=>'btn btn-info float-center mr-3'])?>
-    <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info float-center mr-3'])?>
+    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-center mr-3'])?>
+    <?= $this->Html->link('Eliminar usuario',['action'=>'delete',$usuario->id],['class'=>'btn btn-info btn-medium float-center mr-3'])?>
+    <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-center mr-3'])?>
 </div>
