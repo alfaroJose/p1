@@ -4,6 +4,15 @@
  * @var \App\Model\Entity\Usuario $usuario
  */
 ?>
+<style> 
+table {
+  border-spacing: 10px 20px 10px 20px;
+
+}
+table td{
+    padding :10px 10px 10px 10px;
+}
+ </style>
 <div class="usuarios view large-9 medium-8 columns content">
     <h3><?= 'Datos personales' ?></h3>
     <br>
@@ -16,27 +25,32 @@
             <th scope="row"><?= __('Primer Apellido') ?></th>
             <td><?= h($usuario->primer_apellido) ?></td>
         </tr>
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Segundo Apellido') ?></th>
             <td><?= h($usuario->segundo_apellido) ?></td>
         </tr>
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Cédula') ?></th>
             <td><?= h($usuario->cedula) ?></td>
         </tr>
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Teléfono') ?></th>
             <td><?= h($usuario->telefono) ?></td>
         </tr>
-        
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Usuario') ?></th>
             <td><?= h($usuario->id) ?></td>
         </tr>
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Correo') ?></th>
             <td><?= h($usuario->correo) ?></td>
         </tr>
+        <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
             <td><?= h($usuario->role->tipo) ?></td>
