@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php /*debug($grupos);debug('+++++++++++++++');*/ debug($todo); ?>
+            
             <?php foreach ($todo as $grupo): ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
