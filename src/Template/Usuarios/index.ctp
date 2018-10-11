@@ -35,7 +35,7 @@
     </table>    
     <br>
     <br>
-    <?= $this->Html->link('Agregar usuario',['action'=>'add2'],['class'=>'btn btn-info float-right mr-3'])?> 
+    <?= $this->Html->link('Agregar usuario',['action'=>'addEstudiante'],['class'=>'btn btn-info float-right mr-3'])?> 
 </div>
 
 
