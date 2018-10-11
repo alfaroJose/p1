@@ -28,10 +28,10 @@
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
-                
+
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->numero.','.$grupo->semestre.','.$grupo->año],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->numero/*, $grupo->semestre, $grupo->año*/],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $grupo->numero.','.$grupo->semestre.','.$grupo->año],['escape'=>false,'style'=>'font-size:22px;']) ?>  
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit',$grupo->curso_sigla.','.$grupo->numero.','.$grupo->semestre.','.$grupo->año/*$grupo->curso_sigla, $grupo->numero, $grupo->semestre, $grupo->año*/],['escape'=>false,'style'=>'font-size:22px;']) ?>          
                     <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->curso_sigla, $grupo->numero, $grupo->semestre, $grupo->año], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]) ?>
 
                 </td>

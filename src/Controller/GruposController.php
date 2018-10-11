@@ -81,11 +81,22 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(/*$cursosigla = null, $numero = null, $semestre = null, $año = null*/$id = null)
     {
-        $grupo = $this->Grupos->get($id, [
+        /*$grupo = $this->Grupos->get($id, [
             'contain' => []
-        ]);
+        ]);*/
+        //$var= explode(',',$id);
+        $grupo = $this->Grupos->find('all')->first(); 
+        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$var[0], $grupo->numero=$var[1], $grupo->semestre=$var[2], $grupo->año=$var[3], [
+            'contain' => []
+        ]);*/
+        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$cursosigla, $grupo->numero=$numero, $grupo->semestre=$semestre, $grupo->año=$año, [
+            //'contain' => []
+        ]);*/
+        
+        //$grupo = $this->Grupos->newEntity();//
+        //$grupo= $this->Grupos->getIndexValues();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
             if ($this->Grupos->save($grupo)) {
