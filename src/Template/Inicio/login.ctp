@@ -1,11 +1,16 @@
 <br>
-<div class="index large-4 medium-4 medium-offset-4 medium-offset-4 columns">
+<?php echo "<center>";?>
+<div class="login form large-9 medium-8 columns content">
 	<div class="panel">
 		<h2 class="text-center">Autenticación</h2>
 		<?= $this->Form->create(null,['url' => ['action'=>'login']]); ?>
-			<?= $this->Form->input('Usuario'); ?>
-			<?= $this->Form->input('Contraseña', array('type' => 'password')); ?>
-			<?= $this->Form->submit('Entrar', array('class' => 'button','onclick' => 'inicio')); ?>
+			<?= $this->Form->input('Usuario', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]); ?>
+			<?= $this->Form->input('Contraseña',['type'=> 'password','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']] ); ?>
+			<div class="btn-group mr-3" role="group">
+				<?= $this->Form->submit('Iniciar Sesión',['class'=>'btn btn-info'], array('class' => 'button','onclick' => 'inicio')); ?>
+	 	 	</div>
+	 	 	<?= $this->html->link(__('Recuperar Contraseña'), ['controller' => 'Inicio', 'action' => 'contrasena']) ?> <br>
 		<?= $this->Form->end(); ?>
 	</div>
 </div>
+<?php echo "</center>";?>
