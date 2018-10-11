@@ -65,7 +65,7 @@ tr:nth-child(2n+2) {
         <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
-            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Roles', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
+            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
             </table>
 </div>
 <br>
