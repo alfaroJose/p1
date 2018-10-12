@@ -9,7 +9,9 @@
 <br><br>
 <br><br>
 <h4>
-<div class = "text-center">
+
+
+<div class = "text-center" style="width: 60%; border-style: solid; border-width: 1px; border-color: black; margin: auto; padding: 10px;">
 <b>Recuperar contraseña</b> <br>
 <br>
 Por favor, comuniquese con el centro de informatica de la <br>

@@ -20,7 +20,6 @@ class PoseeController extends AppController
      */
     public function index()
     {
-        
         $posee = $this->paginate($this->Posee);
 
         $this->set(compact('posee'));
