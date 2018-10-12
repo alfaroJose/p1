@@ -1,4 +1,5 @@
 <?php
+namespace Cake\Core\Configure;
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -12,6 +13,40 @@ use App\Controller\AppController;
  */
 class InicioController extends AppController
 {
+    private function esEstudiante($usuario){
+        if( 6 == strlen($usuario)){
+          return true; 
+        }
+        else{
+            return false;
+        }
+    }
+
+    private function entrar($usuario, $pass){
+         // conexión al servidor LDAP
+         $ldapconn = ldap_connect("10.1.4.78")
+         or die("No se ha podido conectar a la red ECCI");
+
+        if ($ldapconn) {
+            // realizando la autenticación
+            $ldaprdn = $usuario.'@ecci.ucr.ac.cr';
+            $ldappass = $pass;
+            $pass = '';
+            $ldapbind = @ldap_bind($ldapconn,$ldaprdn, $ldappass);
+
+            // verificación del enlace
+            if ($ldapbind) {
+                ldap_close($ldapconn);
+                return true;
+                
+            } else {
+                ldap_close($ldapconn);
+                return false;   
+            }
+        }
+    }
+
+    public function getId(){return $_SESSION['id'];}
 
     public function login(){
         
@@ -21,28 +56,21 @@ class InicioController extends AppController
         $pass = $this->request->getData('Contraseña');  
 
         if($usuario != null && $pass != null){
-           
-            // conexión al servidor LDAP
-            $ldapconn = ldap_connect("10.1.4.78")
-                or die("Could not connect to LDAP server.");
+           if($this->entrar($usuario,$pass)){
 
-            if ($ldapconn) {
-                // realizando la autenticación
-                $ldaprdn = $usuario.'@ecci.ucr.ac.cr';
-                $ldappass = $pass;
-                $pass = '';
-                $ldapbind = @ldap_bind($ldapconn,$ldaprdn, $ldappass);
+                $_SESSION['id'] = $usuario;
+                if($this->esEstudiante($usuario)){
 
-                // verificación del enlace
-                if ($ldapbind) {
-                    return $this->redirect(['controller' => 'Main','action' => 'index']);
-                } else {
-                    //debug('hliwis');
-                   $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
                 }
-                ldap_close($ldapconn);
-                
-            }
+                else{
+
+                }
+                return $this->redirect(['controller' => 'Main','action' => 'index']);
+           }
+           else{
+                $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+           }
+           
         }
         
     }
@@ -50,8 +78,6 @@ class InicioController extends AppController
 
     public function inicio(){
         $this->layout = 'inicio';
-
-        
 
     }
 }
