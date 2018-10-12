@@ -69,9 +69,8 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
         }
-        $cursos = $this->Grupos->find('list', ['limit' => 200]);
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios', 'cursos'));
+        $this->set(compact('grupo', 'usuarios'));
     }
 
     /**
@@ -117,11 +116,11 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null, $numero = null, $semestre = null, $año = null)
+    public function delete($curso_sigla = null, $numero = null, $semestre = null, $año = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $grupo = $this->Grupos->get($id);
-        if ($this->Grupos->delete($grupo)) {
+        $this->request->allowMethod(['post', 'get']);
+        $grupo = $this->Grupos->get($curso_sigla);
+        if ($this->Grupos->deleteValues($grupo)) {
             $this->Flash->success(__('The grupo has been deleted.'));
         } else {
             $this->Flash->error(__('The grupo could not be deleted. Please, try again.'));
