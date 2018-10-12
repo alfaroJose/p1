@@ -57,11 +57,11 @@ class RequisitosController extends AppController
                 $requisito->tipo = 'Obligatorio inopia';
             }
             if ($this->Requisitos->save($requisito)) {
-                $this->Flash->success(__('The requisito has been saved.'));
+                $this->Flash->success(__('El requisito ha sido agregado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The requisito could not be saved. Please, try again.'));
+            $this->Flash->error(__('El requisito no se ha podido agregar. Por favor intente de nuevo.'));
         }
         $this->set(compact('requisito'));
     }
@@ -86,11 +86,11 @@ class RequisitosController extends AppController
                 $requisito->tipo = 'Obligatorio inopia';
             }
             if ($this->Requisitos->save($requisito)) {
-                $this->Flash->success(__('The requisito has been saved.'));
+                $this->Flash->success(__('El requisito ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The requisito could not be saved. Please, try again.'));
+            $this->Flash->error(__('El requisito no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $this->set(compact('requisito'));
     }
@@ -107,9 +107,9 @@ class RequisitosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $requisito = $this->Requisitos->get($id);
         if ($this->Requisitos->delete($requisito)) {
-            $this->Flash->success(__('The requisito has been deleted.'));
+            $this->Flash->success(__('El requisito ha sido eliminado.'));
         } else {
-            $this->Flash->error(__('The requisito could not be deleted. Please, try again.'));
+            $this->Flash->error(__('El requisito no se ha podido eliminar. Por favor intente de nuevo.'));
         }
 
         return $this->redirect(['action' => 'index']);
