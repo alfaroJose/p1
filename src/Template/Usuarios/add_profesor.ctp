@@ -30,9 +30,10 @@
         <h5> Datos de seguridad </h5>
         <div style="padding-left: 75px; width: 40%; border-width: 1px; border-style: solid; border-color: black;">
 
-        <?php
+        <?php        
+            $username = $this->request->getSession()->read('id');
 
-            echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'placeholder'=>'nombre.apellido', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
+            echo $this->Form->control('id', ['value' => $username, 'readonly', 'required'=>true, 'type' => 'text', 'placeholder'=>'nombre.apellido', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
             
             echo $this->Form->control('correo', ['required'=>true, 'type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);;
 
