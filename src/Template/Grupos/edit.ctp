@@ -8,8 +8,8 @@
 <div class="grupos form large-9 medium-8 columns content">
     <?= $this->Form->create($grupo) ?>
     <fieldset>
-        <legend><?= __('Modificar Grupo') ?></legend>
-        <?php
+        <legend><?= __('Agregar Grupo') ?></legend>
+         <?php
             //echo $this->Form->control('usuarios_id', ['options' => $usuarios, 'empty' => true]);
 
             echo $this->Form->control('numero',['label' => ['text' => 'Numero'],'type' => 'text' ]);

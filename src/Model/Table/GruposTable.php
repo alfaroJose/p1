@@ -109,8 +109,14 @@ class GruposTable extends Table
     }
     //https://book.cakephp.org/3.0/en/orm/database-basics.html
 
-    public function viewValues($id = null, $numero = null, $semestre = null, $año = null){
+    public function editValues($id = null, $numero = null, $semestre = null, $año = null){
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
+        /*$results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");*/
+        /*debug($index);
+        die();*/
+        
+        $results = $connection->execute("UPDATE grupos set numero = '$numero', semestre = '$semestre', año = $año WHERE cursos_sigla = '$id' and numero = '$numero' and semestre = '$semestre' and año = '$año'");
+        /*debug($results);
+        die();*/
     }
 }

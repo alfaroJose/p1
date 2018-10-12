@@ -81,14 +81,15 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit(/*$cursosigla = null, $numero = null, $semestre = null, $año = null*/$id = null)
+
+    public function edit($cursosigla = null, $numero = null, $semestre = null, $año = null/*$id = null*/)
     {
         /*$grupo = $this->Grupos->get($id, [
             'contain' => []
         ]);*/
         //$var= explode(',',$id);
         $grupo = $this->Grupos->find('all')->first(); 
-        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$var[0], $grupo->numero=$var[1], $grupo->semestre=$var[2], $grupo->año=$var[3], [
+        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$var[1], $grupo->numero=$var[1], $grupo->semestre=$var[2], $grupo->año=$var[3], [
             'contain' => []
         ]);*/
         /*$grupo = $this->Grupos->get($grupo->curso_sigla=$cursosigla, $grupo->numero=$numero, $grupo->semestre=$semestre, $grupo->año=$año, [
@@ -97,14 +98,18 @@ class GruposController extends AppController
         
         //$grupo = $this->Grupos->newEntity();//
         //$grupo= $this->Grupos->getIndexValues();
+
+        //$grupo=$this->loadmodel('Grupos');
+        //return $grupo->edit($cursosigla, $numero, $semestre, $año);
+        $this->Grupos->editValues($cursosigla, $numero, $semestre, $año);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
             if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('The grupo has been saved.'));
+                $this->Flash->success(__('El Grupo ha sido Modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
+            $this->Flash->error(__('El Grupo no se pudo Modificar. Por favor, intentalo de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
         $this->set(compact('grupo', 'usuarios'));
