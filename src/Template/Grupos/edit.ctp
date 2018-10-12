@@ -8,15 +8,15 @@
 <div class="grupos form large-9 medium-8 columns content">
     <?= $this->Form->create($grupo) ?>
     <fieldset>
-        <legend><?= __('Modificar Grupo') ?></legend>
-        <?php
+        <legend><?= __('Agregar Grupo') ?></legend>
+         <?php
             //echo $this->Form->control('usuarios_id', ['options' => $usuarios, 'empty' => true]);
 
-            echo $this->Form->control('numero',['label' => ['text' => 'Numero'],'type' => 'text' ]);
+            echo $this->Form->control('numero',['label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
             echo $this->Form->control('semestre',['label' => ['text' => 'Semestre'],'type' => 'text' ]);
             echo $this->Form->control('año',['label' => ['text' => 'Año'],'type' => 'text' ]);
-            echo ('<label> Profesor </label>');
-            echo $this->Form->select('usuarios_id', $usuarios);
+            /*echo ('<label> Profesor </label>');
+            echo $this->Form->select('usuarios_id', $usuarios);*/
 
         ?>
     </fieldset>
