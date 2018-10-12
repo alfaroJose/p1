@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Usuario $usuario
  */
+
+use Cake\ORM\TableRegistry;
 ?>
 
 <div class="usuarios">
@@ -30,9 +32,27 @@
         <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
 
         <?php
+        /*
+
+            $username = $this->request->getSession()->read('id');
+            //echo $tipoRol = $this->Usuarios->getRol($username);
+            $users = TableRegistry::get('Usuarios');
+            $index = $users->find()
+            ->select(['roles_id'])
+            ->where(['id =' => $username])
+            ->first();
+
+            if($index == 1){
+                echo "hola";
+
+            } else {
+                echo "gg";
+            }
+            */
             echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
 
             echo $this->Form->control('roles_id', ['options' =>['Administrador','Asistente administrativo','Profesor', 'Estudiante'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
