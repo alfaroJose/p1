@@ -12,6 +12,7 @@ class MainController extends AppController
 
 	public function index()
 	{
-		
+		debug($this->getRequest()->getSession()->read('id'));
+		die();
 	}
 }

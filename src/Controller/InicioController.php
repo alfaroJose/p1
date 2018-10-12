@@ -45,9 +45,7 @@ class InicioController extends AppController
             }
         }
     }
-
-    public function getId(){return $_SESSION['id'];}
-
+    
     public function login(){
         
         $this->layout = 'inicio';
@@ -58,7 +56,7 @@ class InicioController extends AppController
         if($usuario != null && $pass != null){
            if($this->entrar($usuario,$pass)){
 
-                $_SESSION['id'] = $usuario;
+                $name = $this->getRequest()->getSession()->write('id',$usuario);
                 if($this->esEstudiante($usuario)){
 
                 }
