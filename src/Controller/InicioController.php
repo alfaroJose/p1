@@ -80,4 +80,12 @@ class InicioController extends AppController
         $this->layout = 'inicio';
 
     }
+
+
+    public function contrasena(){
+        $this->layout = 'inicio';
+
+        
+
+    }
 }

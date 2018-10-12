@@ -22,7 +22,7 @@
                 <td><?= h($usuario->nombre) ?></td>
                 <td><?= h($usuario->primer_apellido) ?></td>
                 <td><?= h($usuario->segundo_apellido) ?></td>
-                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->id, ['controller' => 'Posee', 'action' => 'view', $usuario->role->id]) : '' ?></td>
+                <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
@@ -35,7 +35,7 @@
     </table>    
     <br>
     <br>
-    <?= $this->Html->link('Agregar usuario',['action'=>'add'],['class'=>'btn btn-info float-right mr-3'])?> 
+    <?= $this->Html->link('Agregar usuario',['action'=>'addEstudiante'],['class'=>'btn btn-info float-right mr-3'])?> 
 </div>
 
 
@@ -43,7 +43,7 @@
     $(document).ready( function () {
         $('#usuarios-grid').DataTable(
           {
-            /** Configuración del DataTable para cambiar el idioma, se puede personalisar aun más **/
+            /** Configuración del DataTable para cambiar el idioma, se puede personalizar aun más **/
             "language": {
                 "lengthMenu": "Mostrar _MENU_ filas por página",
                 "zeroRecords": "Sin resultados",

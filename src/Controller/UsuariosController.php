@@ -54,6 +54,11 @@ class UsuariosController extends AppController
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
+            if ($usuario->roles_id == 0) {
+                $usuario->roles_id = '2';
+            } else {
+                $usuario->roles_id = '3';
+            }
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -65,6 +70,41 @@ class UsuariosController extends AppController
         $this->set(compact('usuario', 'roles'));
     }
 
+    /*Función para agregar un usuario cuando la vista pertenece al estudiante*/
+    public function addEstudiante()
+    {
+        $usuario = $this->Usuarios->newEntity();
+        if ($this->request->is('post')) {
+            $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
+            $usuario->roles_id = '4';
+            if ($this->Usuarios->save($usuario)) {
+                $this->Flash->success(__('El usuario ha sido agregado.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
+        }
+        $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
+        $this->set(compact('usuario', 'roles'));
+    }
+
+    /*Función para agregar un usuario cuando la vista pertenece al profesor*/
+    public function addProfesor()
+    {
+        $usuario = $this->Usuarios->newEntity();
+        if ($this->request->is('post')) {
+            $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
+            $usuario->roles_id = '3';
+            if ($this->Usuarios->save($usuario)) {
+                $this->Flash->success(__('El usuario ha sido agregado.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
+        }
+        $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
+        $this->set(compact('usuario', 'roles'));
+    }
     /**
      * Edit method
      *
