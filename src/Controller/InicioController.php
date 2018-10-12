@@ -2,6 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
+
+//$users = TableRegistry::get('Usuarios');
 
 /**
  * Inicio Controller
@@ -35,8 +38,27 @@ class InicioController extends AppController
 
                 // verificación del enlace
                 if ($ldapbind) {
-                    return $this->redirect(['controller' => 'Main','action' => 'index']);
-                } else {
+                    //return $this->redirect(['controller' => 'Main','action' => 'index']);
+                    $users = TableRegistry::get('Usuarios');
+                    $index = $users->find()
+                    ->select(['id'])
+                    ->where(['id =' => $usuario])
+                    ->toList();
+                    if ($index != null){ //Usuario ya ha ingresado antes
+                        return $this->redirect(['controller' => 'Main','action' => 'index']);    
+                    } else { //Usuario no existe en la tabla, por lo que debe ser registrado
+
+                        $pos = strpos($usuario, '.');
+                        if ($pos === false){ //El usuario es un estudiante, puesto que el username no tiene el caracter punto
+                            return $this->redirect(['controller' => 'Usuarios','action' => 'addEstudiante']);    
+
+                        } else {
+                            return $this->redirect(['controller' => 'Usuarios','action' => 'addProfesor']);    
+                        }
+
+                    }
+                } else { 
+                    
                     //debug('hliwis');
                    $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
                 }
@@ -50,16 +72,22 @@ class InicioController extends AppController
 
     public function inicio(){
         $this->layout = 'inicio';
-
-        
-
     }
 
 
     public function contrasena(){
         $this->layout = 'inicio';
-
-        
-
     }
+
+
+    public function getIndexValues(){
+        global $nombreusuario;
+         $index = $users->find()
+        ->select(['id'])
+        ->where(['id ==' => 'B54548'])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
+     }
 }

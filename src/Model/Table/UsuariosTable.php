@@ -107,4 +107,5 @@ class UsuariosTable extends Table
 
         return $rules;
     }
-}
+}   
+

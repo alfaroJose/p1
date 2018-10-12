@@ -37,11 +37,11 @@
             
             echo $this->Form->control('correo', ['required'=>true, 'type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('roles_id', ['required'=>true, 'options' =>['Asistente administrativo','Profesor'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('roles_id', ['required'=>true, 'options' =>['Asistente administrativo','Profesor', 'Estudiante'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
     </fieldset>
     <br>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
-66    <?= $this->Form->end() ?>
+    <?= $this->Form->end() ?>
 </div>
