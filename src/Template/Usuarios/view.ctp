@@ -23,7 +23,7 @@ tr:nth-child(2n+2) {
     <div style=" border-width: 1px; border-style: solid; border-color: black;">
         <h5><?= 'Datos personales' ?></h5>
         <br>
-    <table class="vertical-table table-striped">      
+    <table class="vertical-table">      
         <tr>
             <th scope="row"><?= __('Nombre') ?></th>
             <td><?= h($usuario->nombre) ?></td>
