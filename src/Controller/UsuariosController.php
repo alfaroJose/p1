@@ -56,9 +56,12 @@ class UsuariosController extends AppController
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
             if ($usuario->roles_id == 0) {
                 $usuario->roles_id = '2';
-            } else {
+            } else if ($usuario->roles_id == 1){
                 $usuario->roles_id = '3';
+            } else {
+                $usuario->roles_id = '4';
             }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -142,9 +145,9 @@ class UsuariosController extends AppController
         $this->request->allowMethod(['post', 'get']);
         $usuario = $this->Usuarios->get($id);
         if ($this->Usuarios->delete($usuario)) {
-            $this->Flash->success(__('El usuario se ha eliminado correctamente.'));
+            $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {
-            $this->Flash->success(__('El usuario no se ha podido eliminar'));
+            $this->Flash->success(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
         }
         return $this->redirect(['action' => 'index']);
     }

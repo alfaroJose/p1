@@ -15,15 +15,12 @@ table td{
 table tr {
     width: 50px;
 }
-tr:nth-child(2n+2) {
-    background-color:#0317;
-}
  </style>
 <div class="usuarios form medium-5 medium-5 columns content">
     <div style=" border-width: 1px; border-style: solid; border-color: black;">
         <h5><?= 'Datos personales' ?></h5>
         <br>
-    <table class="vertical-table table-striped">      
+    <table class="vertical-table">      
         <tr>
             <th scope="row"><?= __('Nombre') ?></th>
             <td><?= h($usuario->nombre) ?></td>
@@ -65,7 +62,7 @@ tr:nth-child(2n+2) {
         <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
-            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Roles', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
+            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
             </table>
 </div>
 <br>
