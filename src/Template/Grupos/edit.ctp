@@ -15,8 +15,8 @@
             echo $this->Form->control('numero',['label' => ['text' => 'Numero'],'type' => 'text' ]);
             echo $this->Form->control('semestre',['label' => ['text' => 'Semestre'],'type' => 'text' ]);
             echo $this->Form->control('año',['label' => ['text' => 'Año'],'type' => 'text' ]);
-            echo ('<label> Profesor </label>');
-            echo $this->Form->select('usuarios_id', $usuarios);
+            /*echo ('<label> Profesor </label>');
+            echo $this->Form->select('usuarios_id', $usuarios);*/
 
         ?>
     </fieldset>
