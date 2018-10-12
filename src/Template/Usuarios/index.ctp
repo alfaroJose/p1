@@ -25,6 +25,7 @@
                 <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
 
                     <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Por favor confirme si desea eliminar al usuario {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>               
@@ -35,7 +36,7 @@
     </table>    
     <br>
     <br>
-    <?= $this->Html->link('Agregar usuario',['action'=>'addEstudiante'],['class'=>'btn btn-info float-right mr-3'])?> 
+    <?= $this->Html->link('Agregar usuario',['action'=>'add'],['class'=>'btn btn-info float-right mr-3'])?> 
 </div>
 
 
