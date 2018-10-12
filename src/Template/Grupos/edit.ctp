@@ -8,8 +8,8 @@
 <div class="grupos form large-9 medium-8 columns content">
     <?= $this->Form->create($grupo) ?>
     <fieldset>
-        <legend><?= __('Modificar Grupo') ?></legend>
-        <?php
+        <legend><?= __('Agregar Grupo') ?></legend>
+         <?php
             //echo $this->Form->control('usuarios_id', ['options' => $usuarios, 'empty' => true]);
 
             echo $this->Form->control('numero',['label' => ['text' => 'Numero'],'type' => 'text' ]);
@@ -20,6 +20,7 @@
 
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
