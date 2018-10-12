@@ -52,11 +52,11 @@ class RondasController extends AppController
         if ($this->request->is('post')) {
             $ronda = $this->Rondas->patchEntity($ronda, $this->request->getData());
             if ($this->Rondas->save($ronda)) {
-                $this->Flash->success(__('The ronda has been saved.'));
+                $this->Flash->success(__('La ronda ha sido agregada.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The ronda could not be saved. Please, try again.'));
+            $this->Flash->error(__('La ronda no se pudo agregar. Por favor intente de nuevo.'));
         }
         $this->set(compact('ronda'));
     }
@@ -76,11 +76,11 @@ class RondasController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ronda = $this->Rondas->patchEntity($ronda, $this->request->getData());
             if ($this->Rondas->save($ronda)) {
-                $this->Flash->success(__('The ronda has been saved.'));
+                $this->Flash->success(__('La ronda ha sido agregada.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The ronda could not be saved. Please, try again.'));
+            $this->Flash->error(__('La ronda no se pudo agregar. Por favor intente de nuevo.'));
         }
         $this->set(compact('ronda'));
     }
@@ -97,9 +97,9 @@ class RondasController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $ronda = $this->Rondas->get($id);
         if ($this->Rondas->delete($ronda)) {
-            $this->Flash->success(__('The ronda has been deleted.'));
+            $this->Flash->success(__('La ronda ha sido eliminada.'));
         } else {
-            $this->Flash->error(__('The ronda could not be deleted. Please, try again.'));
+            $this->Flash->error(__('La ronda no se pudo eliminar. Por favor intente de nuevo.'));
         }
 
         return $this->redirect(['action' => 'index']);
