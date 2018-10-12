@@ -17,7 +17,8 @@
             echo $this->Form->select('usuarios_id', $usuarios);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Cancelar')) ?>
-    <?= $this->Form->button(__('Agregar')) ?>
+    <br>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
