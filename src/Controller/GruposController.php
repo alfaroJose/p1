@@ -20,12 +20,16 @@ class GruposController extends AppController
      */
     public function index()
     {
+        $todo= $this->Grupos->getIndexValues();
         $this->paginate = [
             'contain' => ['Usuarios']
         ];
         $grupos = $this->paginate($this->Grupos);
 
-        $this->set(compact('grupos'));
+        //$V=$this->loadmodel('Grupos');
+        //$V->getIndexData();
+        $this->set(compact('grupos','todo'));
+
     }
 
     /**
@@ -37,9 +41,13 @@ class GruposController extends AppController
      */
     public function view($id = null)
     {
-        $grupo = $this->Grupos->get($id, [
+        $var= explode(',',$id);
+        debug($var);
+        die();
+        /*Hay que hacer un metodo diferente por la llave compuesta ver http://php.net/manual/es/function.explode.php*/
+        /*$grupo = $this->Grupos->get($id, [
             'contain' => ['Usuarios']
-        ]);
+        ]);*/
 
         $this->set('grupo', $grupo);
     }
@@ -61,8 +69,9 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
         }
+        $cursos = $this->Grupos->find('list', ['limit' => 200]);
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios'));
+        $this->set(compact('grupo', 'usuarios', 'cursos'));
     }
 
     /**
@@ -72,11 +81,22 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(/*$cursosigla = null, $numero = null, $semestre = null, $año = null*/$id = null)
     {
-        $grupo = $this->Grupos->get($id, [
+        /*$grupo = $this->Grupos->get($id, [
             'contain' => []
-        ]);
+        ]);*/
+        //$var= explode(',',$id);
+        $grupo = $this->Grupos->find('all')->first(); 
+        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$var[0], $grupo->numero=$var[1], $grupo->semestre=$var[2], $grupo->año=$var[3], [
+            'contain' => []
+        ]);*/
+        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$cursosigla, $grupo->numero=$numero, $grupo->semestre=$semestre, $grupo->año=$año, [
+            //'contain' => []
+        ]);*/
+        
+        //$grupo = $this->Grupos->newEntity();//
+        //$grupo= $this->Grupos->getIndexValues();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
             if ($this->Grupos->save($grupo)) {
@@ -97,7 +117,7 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($id = null, $numero = null, $semestre = null, $año = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $grupo = $this->Grupos->get($id);

@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -80,5 +81,36 @@ class GruposTable extends Table
         $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
         return $rules;
+    }
+
+
+
+    public function getIndexValues(){
+
+        $index=$this->find()
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
+
+    }
+
+    public function deleteValues($id = null, $numero = null, $semestre = null, $año = null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
+    }
+    //https://book.cakephp.org/3.0/en/orm/database-basics.html
+
+    public function viewValues($id = null, $numero = null, $semestre = null, $año = null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
     }
 }
