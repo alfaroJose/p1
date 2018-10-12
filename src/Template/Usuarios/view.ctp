@@ -17,7 +17,7 @@ table tr {
 }
  </style>
 <div class="usuarios form medium-5 medium-5 columns content">
-    <div style=" border-width: 1px; border-style: solid; border-color: black;">
+    <div style=" padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
         <h5><?= 'Datos personales' ?></h5>
         <br>
     <table class="vertical-table">      
@@ -46,8 +46,8 @@ table tr {
 </div>
     <br>
     <div class="usuarios form large-5 medium-5 columns content">
-    <div style=" border-width: 1px; border-style: solid; border-color: black;">
-    <table class="vertical-table table-striped">   
+    <div style=" padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
+    <table class="vertical-table">   
     <h5><?= "Datos de seguridad" ?></h5>
     <br>
     <tr>
