@@ -15,9 +15,6 @@ table td{
 table tr {
     width: 50px;
 }
-tr:nth-child(2n+2) {
-    background-color:#0317;
-}
  </style>
 <div class="usuarios form medium-5 medium-5 columns content">
     <div style=" border-width: 1px; border-style: solid; border-color: black;">
