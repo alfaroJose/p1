@@ -61,7 +61,7 @@ class RequisitosController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('El requisito no pudo ser agregado. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El requisito no se ha podido agregar. Por favor intente de nuevo.'));
         }
         $this->set(compact('requisito'));
     }
@@ -86,11 +86,11 @@ class RequisitosController extends AppController
                 $requisito->tipo = 'Obligatorio inopia';
             }
             if ($this->Requisitos->save($requisito)) {
-                $this->Flash->success(__('El requisito ha sido agregado.'));
+                $this->Flash->success(__('El requisito ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('El requisito no pudo ser agregado. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El requisito no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $this->set(compact('requisito'));
     }
@@ -109,7 +109,7 @@ class RequisitosController extends AppController
         if ($this->Requisitos->delete($requisito)) {
             $this->Flash->success(__('El requisito ha sido eliminado.'));
         } else {
-            $this->Flash->error(__('El requisito no pudo ser eliminado. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El requisito no se ha podido eliminar. Por favor intente de nuevo.'));
         }
 
         return $this->redirect(['action' => 'index']);
