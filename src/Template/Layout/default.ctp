@@ -41,8 +41,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
 
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+       <!-- Las letras del logo deberían ser blancas
+       <div class = "float-left">
+         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"287", 'height' => '85']);?>
+      </div>
+      -->
+
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
+      
+      <!-- Se ve muy a la izquierda. este o el blanco?
+       <div class = "float-right">   
+         <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"287", 'height' => '125']);?>     
+      </div>
+      -->
 
       <!-- Barra de la derecha. Aqui está el sing out-->
       <ul class="navbar-nav px-3">

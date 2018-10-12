@@ -4,18 +4,6 @@
  * @var \App\Model\Entity\Usuario[]|\Cake\Collection\CollectionInterface $usuarios
  */
 ?>
-<div class = "float-right">   
-         <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"287", 'height' => '125']);?>     
-</div>
-
- <div class = "float-left">
-         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"287", 'height' => '85']);?>
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 <div class="usuarios index large-9 medium-8 columns content">
     <h3><?= __('Usuarios') ?></h3>

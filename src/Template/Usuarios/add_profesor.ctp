@@ -5,18 +5,7 @@
  * @var \App\Model\Entity\Usuario $usuario
  */
 ?>
-<div class = "float-right">   
-         <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"287", 'height' => '125']);?>     
-</div>
 
- <div class = "float-left">
-         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"287", 'height' => '85']);?>
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div class="usuarios form large-9 medium-8 columns content">
     <?= $this->Form->create($usuario) ?>
     <fieldset>
