@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Usuario $usuario
  */
 ?>
+
 <style> 
 table {
   border-spacing: 10px 20px 10px 20px;

@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Usuario[]|\Cake\Collection\CollectionInterface $usuarios
  */
 ?>
+
 <div class="usuarios index large-9 medium-8 columns content">
     <h3><?= __('Usuarios') ?></h3>
     <table id="usuarios-grid" cellpadding="0" cellspacing="0">
