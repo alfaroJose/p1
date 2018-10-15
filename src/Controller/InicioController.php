@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 
-//$users = TableRegistry::get('Usuarios');
-
 /**
  * Inicio Controller
  *
@@ -17,6 +15,7 @@ use Cake\ORM\TableRegistry;
 class InicioController extends AppController
 {
 
+    //Función que se encarga de hacer la autenticación con la base de datos de la ECCI
     private function entrar($usuario, $pass){
          // conexión al servidor LDAP
          $ldapconn = ldap_connect("10.1.4.78")
@@ -41,6 +40,10 @@ class InicioController extends AppController
         }
     }
     
+    //Pantalla del Login
+    //Esta función se encarga de recopilar los datos del login para ser verificados
+    //Luego identifica el tipo de usuario que ingresó y 
+    //Finalmente lo ingresa a la aplicación ya sea la primera vez en entrar o si ya tenía una cuenta asociada
     public function login(){
         
         $this->layout = 'inicio';
@@ -50,7 +53,7 @@ class InicioController extends AppController
 
         if($usuario != null && $pass != null){
 
-           if ($this->entrar($usuario,$pass)){
+           if ($this->entrar($usuario,$pass)){//Credenciales válidos
 
                 //Guardamos el id del usuario en la sesion
                 $name = $this->getRequest()->getSession()->write('id',$usuario);
@@ -87,25 +90,14 @@ class InicioController extends AppController
         
     }
 
-
+    //Carga la pantalla de inicio
     public function inicio(){
         $this->layout = 'inicio';
     }
 
-
+    //Carga la pantalla de recuperación de contraseña
     public function contrasena(){
         $this->layout = 'inicio';
     }
 
-
-    public function getIndexValues(){
-        global $nombreusuario;
-         $index = $users->find()
-        ->select(['id'])
-        ->where(['id ==' => 'B54548'])
-        ->toList();
-        return $index;
-        /*debug($index);
-        die();*/
-     }
 }
