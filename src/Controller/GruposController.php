@@ -87,22 +87,23 @@ class GruposController extends AppController
             'contain' => []
         ]);*/
         //$var= explode(',',$id);
-        $grupo = $this->Grupos->find('all')->first(); 
-        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$var[1], $grupo->numero=$var[1], $grupo->semestre=$var[2], $grupo->año=$var[3], [
-            'contain' => []
-        ]);*/
-        /*$grupo = $this->Grupos->get($grupo->curso_sigla=$cursosigla, $grupo->numero=$numero, $grupo->semestre=$semestre, $grupo->año=$año, [
-            //'contain' => []
-        ]);*/
-        
-        //$grupo = $this->Grupos->newEntity();//
-        //$grupo= $this->Grupos->getIndexValues();
+        //$grupo = $this->Grupos->find('all')->first(); 
 
-        //$grupo=$this->loadmodel('Grupos');
-        //return $grupo->edit($cursosigla, $numero, $semestre, $año);
-        $this->Grupos->editValues($cursosigla, $numero, $semestre, $año);
+        $grupo = $this->Grupos->newEntity();
+        $todo=$this->Grupos->obtenerDatosCurso($cursosigla, $numero, $semestre, $año);
+        
+        $grupo->curso_sigla=$todo[0]->Cursos['sigla'];
+        $grupo->numero=$todo[0]->numero;
+        $grupo->semestre=$todo[0]->semestre;
+        $grupo->año=$todo[0]->año;
+        //debug($todo);
+        //debug($grupo);
         if ($this->request->is(['patch', 'post', 'put'])) {
+           // $prueba=$this->request->getData();
+            
+
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            debug($grupo);
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El Grupo ha sido Modificado.'));
 
@@ -111,7 +112,8 @@ class GruposController extends AppController
             $this->Flash->error(__('El Grupo no se pudo Modificar. Por favor, intentalo de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios'));
+        
+        $this->set(compact('grupo', 'usuarios','todo'));
     }
 
     /**
