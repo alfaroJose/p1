@@ -127,7 +127,7 @@ class GruposController extends AppController
     {
         $this->request->allowMethod(['post', 'get']);
         $grupo = $this->Grupos->get($curso_sigla);
-        if ($this->Grupos->deleteValues($grupo)) {
+        if ($this->Grupos->deleteValues($grupo, $numero, $semestre, $año)) {
             $this->Flash->success(__('The grupo has been deleted.'));
         } else {
             $this->Flash->error(__('The grupo could not be deleted. Please, try again.'));
