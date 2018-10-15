@@ -72,6 +72,21 @@ class GruposController extends AppController
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
         $this->set(compact('grupo', 'usuarios'));
     }
+/*
+    public function actualizarAll($fields"vector", $conditions)
+    {
+        $query = $this->query();
+        $query->update()
+            ->set($fields)
+            ->where($conditions);
+        $statement = $query->execute();
+        $statement->closeCursor();
+
+        return $statement->rowCount();
+    }
+*/
+
+
 
     /**
      * Edit method
