@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+
+
 /**
  * Usuarios Controller
  *
@@ -55,8 +57,10 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
             if ($usuario->roles_id == 0) {
-                $usuario->roles_id = '2';
+                $usuario->roles_id = '1';
             } else if ($usuario->roles_id == 1){
+                $usuario->roles_id = '2';
+            } else if ($usuario->roles_id == 2){
                 $usuario->roles_id = '3';
             } else {
                 $usuario->roles_id = '4';
@@ -122,6 +126,16 @@ class UsuariosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
+            if ($usuario->roles_id == 0) {
+                $usuario->roles_id = '1';
+            } else if ($usuario->roles_id == 1){
+                $usuario->roles_id = '2';
+            } else if ($usuario->roles_id == 2){
+                $usuario->roles_id = '3';
+            } else {
+                $usuario->roles_id = '4';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido modificado.'));
 
@@ -150,5 +164,12 @@ class UsuariosController extends AppController
             $this->Flash->success(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+
+    public function getUsuario()
+    {
+        $username = $this->getRequest()->getSession()->read('id');
+        return $username;
     }
 }

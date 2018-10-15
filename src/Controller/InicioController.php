@@ -51,6 +51,7 @@ class InicioController extends AppController
         $usuario = $this->request->getData('Usuario');
         $pass = $this->request->getData('Contraseña');  
 
+        $this->getRequest()->getSession()->write('id','');
         if($usuario != null && $pass != null){
 
            if ($this->entrar($usuario,$pass)){//Credenciales válidos

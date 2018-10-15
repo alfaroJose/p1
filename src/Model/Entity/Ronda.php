@@ -4,17 +4,13 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Grupo Entity
- *
+ * Ronda Entity
+ * @property int $id
  * @property int $numero
- * @property int $semestre
- * @property string $año
- * @property string $cursos_sigla
- * @property string $usuarios_id
- *
- * @property \App\Model\Entity\Usuario $usuario
+ * @property \Cake\I18n\FrozenDate $fecha_inicial
+ * @property \Cake\I18n\FrozenDate $fecha_final
  */
-class Grupo extends Entity
+class Ronda extends Entity
 {
 
     /**
@@ -28,11 +24,7 @@ class Grupo extends Entity
      */
     protected $_accessible = [
         'numero' => true,
-        'semestre' => true,
-        'año' => true,
-        'curso_sigla' => true,
-        'usuarios_id' => true,
-        'usuario' => true
-
+        'fecha_inicial' => true,
+        'fecha_final' => true
     ];
 }
