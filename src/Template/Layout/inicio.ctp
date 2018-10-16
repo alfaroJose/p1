@@ -44,52 +44,18 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
 
-<div >
-        <?php $rondaActual = $this->Ronda->getFila()?>
-        <p style = "color:white"><?=$rondaActual[0]?><?=$rondaActual[1]?><?=$rondaActual[2]?></p>
-        </div>
-      <!-- Barra de la derecha. Aqui está el sing out-->
-      <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
-        </li>
-      </ul>
-      
+     
     </nav>
     
     <!-- Div para el contenido de debajo de la página-->
     <div class="container-fluid">
       <div class="row">
 
-        <!-- Barra lateral-->
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky pt-5">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>                            
-              <li class="nav-item">
-                <?= $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']) ?>
-              </li> 
-              <li class="nav-item">
-                <?= $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              <li class="nav-item">
-                <?= $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              <li class="nav-item">
-                <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>         
-            </ul>
 
-          </div>
-        </nav>
-
-
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5">
-          <!-- Linea que permite mostrar los msjs generados -->
-          <?= $this->Flash->render() ?>
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <main role="main" class="col-md-9 col-lg-12 px-4 pt-5">
+        <!-- Linea que permite mostrar los msjs generados -->
+        <?= $this->Flash->render() ?>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                 
 
                 <!-- Div que encapsula las vistas de los módulos-->
