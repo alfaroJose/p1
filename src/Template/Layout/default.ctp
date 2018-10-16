@@ -56,12 +56,14 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       </div>
       -->
 
+
       <!-- Barra de la derecha. Aqui está el sing out-->
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
         </li>
       </ul>
+      
     </nav>
     
     <!-- Div para el contenido de debajo de la página-->
@@ -71,6 +73,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky pt-5">
+            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
+        <?php $rondaActual = $this->Ronda->getFila()?>
+        <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        </div>
             <ul class="nav flex-column">
               <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
