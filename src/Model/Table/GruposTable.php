@@ -84,7 +84,12 @@ class GruposTable extends Table
     }
 
 
-    /*Función para obtener los datos de un curso desde tabla grupos y cursos*/
+    /**
+     * Realiza una operación de join en la base de datos con las tablas cursos y grupos
+     * y devuelve el resultado en forma de arreglo
+     *
+     * @return un arreglo con los datos del join
+     */
     public function getIndexValues(){
 
         $index=$this->find()
@@ -137,10 +142,20 @@ class GruposTable extends Table
 
 
 
+    /**
+     * Borra directamente desde la base de datos una tupla de grupos
+     *
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
+     * @return true si la operación es exitosa
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function deleteValues( $numero = null, $semestre = null, $año = null, $curso_sigla = null ){
         $connection = ConnectionManager::get('default');
         $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
-        return $results;;
+        return $results;
     }
     //https://book.cakephp.org/3.0/en/orm/database-basics.html
 

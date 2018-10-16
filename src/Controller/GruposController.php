@@ -123,7 +123,10 @@ class GruposController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Grupo id.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
