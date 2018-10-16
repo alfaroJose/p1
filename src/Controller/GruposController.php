@@ -99,21 +99,31 @@ class GruposController extends AppController
         $grupo->numero=$todo[0]->numero;
         $grupo->semestre=$todo[0]->semestre;
         $grupo->año=$todo[0]->año;
-        debug($todo);
+//        debug($todo);
         //debug($grupo);
-        $num=3;
-        $sem=4; 
-        $a=2019;
+        /*$num=3;
+        $sem=4;
+        $a=2010;*/
+        $num = $this->request->getData('numero');
+        $sem = $this->request->getData('semestre');
+        $a = $this->request->getData('año');
+//        debug($a);
         if ($this->request->is(['patch', 'post', 'put'])) {
            // $prueba=$this->request->getData();
             
 
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
-            debug($grupo);
+//           debug($grupo);
             /*$this->Grupos->actualizarTodo($cursosigla = $todo[0]->Cursos['sigla'], $numero = $todo[0]->numero, $semestre = $todo[0]->semestre, $año = $todo[0]->$año*/
 //            if ($this->Grupos->actualizarTodo(['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año'])/*$this->Grupos->save($grupo)*/) {
 //                $this->Flash->success(__('El Grupo ha sido Modificado.'));*/
+            /*$num = $this->request->getData('numero');
+            $sem = $this->request->getData('semestre');
+            $a = $this->request->getData('año');
+            debug($a);
+            die();*/
             if ($this->Grupos->updateValues( $cursosigla, $numero, $semestre, $año, $num, $sem, $a)) {
+            
                 $this->Flash->success(__('El Grupo ha sido Modificado.'));
 
                 return $this->redirect(['action' => 'index']);
