@@ -44,12 +44,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
 
+<div >
+        <?php $rondaActual = $this->Ronda->getFila()?>
+        <p style = "color:white"><?=$rondaActual[0]?><?=$rondaActual[1]?><?=$rondaActual[2]?></p>
+        </div>
       <!-- Barra de la derecha. Aqui está el sing out-->
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="#">Sign out</a>
         </li>
       </ul>
+      
     </nav>
     
     <!-- Div para el contenido de debajo de la página-->
