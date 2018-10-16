@@ -61,9 +61,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky pt-5">
-            <div style = "padding-left: 5px;border-style: solid; border-color: black; border-width: 0.75px">
+            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
         <?php $rondaActual = $this->Ronda->getFila()?>
-        <p style = "color:black"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
         </div>
             <ul class="nav flex-column">
               <li class="nav-item">
