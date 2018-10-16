@@ -76,11 +76,11 @@ class RondasController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ronda = $this->Rondas->patchEntity($ronda, $this->request->getData());
             if ($this->Rondas->save($ronda)) {
-                $this->Flash->success(__('La ronda ha sido agregada.'));
+                $this->Flash->success(__('La ronda ha sido modificada.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('La ronda no se pudo agregar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('La ronda no se pudo modificar. Por favor intente de nuevo.'));
         }
         $this->set(compact('ronda'));
     }
