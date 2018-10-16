@@ -137,6 +137,15 @@ class GruposTable extends Table
 
 
 
+    public function updateValues(  $curso_sigla = null, $numero = null, $semestre = null, $año = null, $num = null, $sem = null, $a = null){
+        $connection = ConnectionManager::get('default');
+ //       $results = $connection->execute("UPDATE FROM grupos WHERE cursos_sigla = '$curso_sigla' AND numero = $numero AND semestre = $semestre AND año = '$año'");
+        $results = $connection->execute("UPDATE grupos set numero = $num, semestre = $sem, año = $a WHERE cursos_sigla = '$curso_sigla' and numero = $numero and semestre = $semestre and año = $año");
+        debug($results);
+        die(); 
+        return $results;;
+    }
+
     public function deleteValues( $numero = null, $semestre = null, $año = null, $curso_sigla = null ){
         $connection = ConnectionManager::get('default');
         $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
