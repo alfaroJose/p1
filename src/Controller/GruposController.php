@@ -158,11 +158,10 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($curso_sigla = null, $numero = null, $semestre = null, $año = null)
+    public function delete( $numero = null, $semestre = null, $año = null, $curso_sigla = null)
     {
-        $this->request->allowMethod(['post', 'get']);
-        $grupo = $this->Grupos->get($curso_sigla);
-        if ($this->Grupos->deleteValues($grupo, $numero, $semestre, $año)) {
+        $this->request->allowMethod(['post']);
+        if ($this->Grupos->deleteValues( $numero, $semestre, $año, $curso_sigla)) {
             $this->Flash->success(__('The grupo has been deleted.'));
         } else {
             $this->Flash->error(__('The grupo could not be deleted. Please, try again.'));

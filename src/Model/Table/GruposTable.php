@@ -103,10 +103,10 @@ class GruposTable extends Table
 
     }
 
-    public function deleteValues($curso_sigla = null, $numero = null, $semestre = null, $año = null){
+    public function deleteValues( $numero = null, $semestre = null, $año = null, $curso_sigla = null){
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$curso_sigla' AND numero = $numero AND semestre = $semestre AND año = '$año'");
-        $this->deleteAll();
+        $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
+        return $results;
     }
     //https://book.cakephp.org/3.0/en/orm/database-basics.html
 
