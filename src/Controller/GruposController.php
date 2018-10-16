@@ -73,37 +73,6 @@ class GruposController extends AppController
         $this->set(compact('grupo', 'usuarios'));
     }
 
-    public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
-    {
-        /*$query = $this->query();
-        $query->update()
-            ->set($fields)
-            ->where($conditions);
-        $statement = $query->execute();
-        $statement->closeCursor();
-
-        return $statement->rowCount();*/
-
-        $dato = explode(",", $vectorCambios);
-        $condicion = explode(",", $vectorCondiciones);
-        //$query = $this->query();
-        //$query->update()
-            $query->set('Grupos.numero',$dato[0]/*,'Grupos.semestre'=>$semestre,'Grupos.año'=>$año*/)
-            //debug($query);
-            /*$query->set('Grupos.semestre',$dato[1])
-            $query->set('Grupos.año',$dato[2])*/
-        ->where([
-          'cursos_sigla' => $condicion[0],//$curso_sigla,
-          'numero' => $condicion[1],//$numero,
-          'semestre' => $condicion[2],//$semestre,
-          'año' => $condicion[3]]);//$año])
-
-        /*$statement = $query->execute();
-        $statement->closeCursor();
-
-        return $statement->rowCount();*/
-    }
-
 
 
 

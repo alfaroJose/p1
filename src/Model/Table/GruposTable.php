@@ -84,7 +84,7 @@ class GruposTable extends Table
     }
 
 
-
+    /*Función para obtener los datos de un curso desde tabla grupos y cursos*/
     public function getIndexValues(){
 
         $index=$this->find()
@@ -104,7 +104,7 @@ class GruposTable extends Table
     }
 
     
-
+    /*Función para modificar cursos*/
     public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
     {
         /*$query = $this->query();
@@ -159,7 +159,7 @@ class GruposTable extends Table
         //return $index;
     }*/
 
-
+    /*Función para obtener los datos de un curso para poder modificarlos*/
     public function obtenerDatosCurso($curso_sigla = null, $numero = null, $semestre = null, $año = null){
 
         $datos=$this->find()
