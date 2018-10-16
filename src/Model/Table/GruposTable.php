@@ -102,12 +102,8 @@ class GruposTable extends Table
         die();*/
 
     }
-
-<<<<<<< HEAD
-=======
     
-    /*Función para modificar cursos*/
->>>>>>> d08227a0e08ab592a9ccaec1b6a297dd2dc50dc0
+    /*Función para modificar cursos*
     public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
     {
         /*$query = $this->query();
