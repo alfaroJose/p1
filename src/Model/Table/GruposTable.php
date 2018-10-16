@@ -103,11 +103,6 @@ class GruposTable extends Table
 
     }
 
-<<<<<<< HEAD
-    public function deleteValues( $numero = null, $semestre = null, $año = null, $curso_sigla = null){
-=======
-    
-
     public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
     {
         /*$query = $this->query();
@@ -142,7 +137,6 @@ class GruposTable extends Table
 
 
     public function deleteValues($curso_sigla = null, $numero = null, $semestre = null, $año = null){
->>>>>>> c627cde5c0bf90055e3bafaf67f5032ccabd1bec
         $connection = ConnectionManager::get('default');
         $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
         return $results;
