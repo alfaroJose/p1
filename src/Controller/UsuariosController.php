@@ -22,6 +22,7 @@ class UsuariosController extends AppController
      */
     public function index()
     {
+
         $this->paginate = [
             'contain' => ['Roles']
         ];
@@ -172,4 +173,14 @@ class UsuariosController extends AppController
         $username = $this->getRequest()->getSession()->read('id');
         return $username;
     }
+
+    public function getRol($id = null)
+    {
+        $rol = $this->find()
+        ->select(['roles_id'])
+        ->where(['id =' => $id])
+         ->toList();
+        return $rol;
+    }
 }
+
