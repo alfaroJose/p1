@@ -21,8 +21,15 @@ class PoseeController extends AppController
     public function index()
     {
         $posee = $this->paginate($this->Posee);
+        $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection
 
         $this->set(compact('posee'));
+        $this->set('opciones', $opciones);
+
+        $datos = $this->request->data;
+        if(count){
+
+        }
     }
 
     /**
