@@ -84,7 +84,7 @@ class GruposTable extends Table
     }
 
 
-
+    /*Función para obtener los datos de un curso desde tabla grupos y cursos*/
     public function getIndexValues(){
 
         $index=$this->find()
@@ -103,10 +103,48 @@ class GruposTable extends Table
 
     }
 
+<<<<<<< HEAD
+=======
+    
+    /*Función para modificar cursos*/
+>>>>>>> d08227a0e08ab592a9ccaec1b6a297dd2dc50dc0
+    public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
+    {
+        /*$query = $this->query();
+        $query->update()
+            ->set($fields)
+            ->where($conditions);
+        $statement = $query->execute();
+        $statement->closeCursor();
+
+        return $statement->rowCount();*/
+
+        $dato = explode(",", $vectorCambios);
+        $condicion = explode(",", $vectorCondiciones);
+        //$query = $this->query();
+        //$query->update()
+            $query->set('Grupos.numero',$dato[0]/*,'Grupos.semestre'=>$semestre,'Grupos.año'=>$año*/)
+            //debug($query);
+            /*$query->set('Grupos.semestre',$dato[1])
+            $query->set('Grupos.año',$dato[2])*/
+        ->where([
+          'cursos_sigla' => $condicion[0],//$curso_sigla,
+          'numero' => $condicion[1],//$numero,
+          'semestre' => $condicion[2],//$semestre,
+          'año' => $condicion[3]]);//$año])
+
+        /*$statement = $query->execute();
+        $statement->closeCursor();
+
+        return $statement->rowCount();*/
+    }
+
+
+
     public function deleteValues($curso_sigla = null, $numero = null, $semestre = null, $año = null){
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$curso_sigla' AND numero = $numero AND semestre = $semestre AND año = '$año'");
-        $this->deleteAll();
+        $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
+        return $results;;
     }
     //https://book.cakephp.org/3.0/en/orm/database-basics.html
 
@@ -124,7 +162,7 @@ class GruposTable extends Table
         //return $index;
     }*/
 
-
+    /*Función para obtener los datos de un curso para poder modificarlos*/
     public function obtenerDatosCurso($curso_sigla = null, $numero = null, $semestre = null, $año = null){
 
         $datos=$this->find()
