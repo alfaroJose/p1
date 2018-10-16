@@ -1,7 +1,9 @@
 <?php
+namespace Cake\Core\Configure;
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Inicio Controller
@@ -13,135 +15,90 @@ use App\Controller\AppController;
 class InicioController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
-    {
-        $inicio = $this->paginate($this->Inicio);
+    //Función que se encarga de hacer la autenticación con la base de datos de la ECCI
+    private function entrar($usuario, $pass){
+         // conexión al servidor LDAP
+         $ldapconn = ldap_connect("10.1.4.78")
+         or die("No se ha podido conectar a la red ECCI");
 
-        $this->set(compact('inicio'));
-    }
+        if ($ldapconn) {
+            // realizando la autenticación
+            $ldaprdn = $usuario.'@ecci.ucr.ac.cr';
+            $ldappass = $pass;
+            $pass = '';
+            $ldapbind = @ldap_bind($ldapconn,$ldaprdn, $ldappass);
 
-    /**
-     * View method
-     *
-     * @param string|null $id Inicio id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $inicio = $this->Inicio->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('inicio', $inicio);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $inicio = $this->Inicio->newEntity();
-        if ($this->request->is('post')) {
-            $inicio = $this->Inicio->patchEntity($inicio, $this->request->getData());
-            if ($this->Inicio->save($inicio)) {
-                $this->Flash->success(__('The inicio has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            // verificación del enlace
+            if ($ldapbind) {
+                ldap_close($ldapconn);
+                return true;
+                
+            } else {
+                ldap_close($ldapconn);
+                return false;   
             }
-            $this->Flash->error(__('The inicio could not be saved. Please, try again.'));
         }
-        $this->set(compact('inicio'));
     }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Inicio id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $inicio = $this->Inicio->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $inicio = $this->Inicio->patchEntity($inicio, $this->request->getData());
-            if ($this->Inicio->save($inicio)) {
-                $this->Flash->success(__('The inicio has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The inicio could not be saved. Please, try again.'));
-        }
-        $this->set(compact('inicio'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Inicio id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $inicio = $this->Inicio->get($id);
-        if ($this->Inicio->delete($inicio)) {
-            $this->Flash->success(__('The inicio has been deleted.'));
-        } else {
-            $this->Flash->error(__('The inicio could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-
+    
+    //Pantalla del Login
+    //Esta función se encarga de recopilar los datos del login para ser verificados
+    //Luego identifica el tipo de usuario que ingresó y 
+    //Finalmente lo ingresa a la aplicación ya sea la primera vez en entrar o si ya tenía una cuenta asociada
     public function login(){
         
-        //$this->Flash->error(__('Rellene todos los campos MAMADOR'));
+        $this->layout = 'inicio';
 
         $usuario = $this->request->getData('Usuario');
         $pass = $this->request->getData('Contraseña');  
 
+        $this->getRequest()->getSession()->write('id','');
         if($usuario != null && $pass != null){
-           
-            // conexión al servidor LDAP
-            $ldapconn = ldap_connect("10.1.4.78")
-                or die("Could not connect to LDAP server.");
 
-            if ($ldapconn) {
-                // realizando la autenticación
-                $ldaprdn = $usuario.'@ecci.ucr.ac.cr';
-                $ldappass = $pass;
-                $pass = '';
-                $ldapbind = @ldap_bind($ldapconn,$ldaprdn, $ldappass);
+           if ($this->entrar($usuario,$pass)){//Credenciales válidos
 
-                // verificación del enlace
-                if ($ldapbind) {
-                    return $this->redirect(['controller' => 'Main','action' => 'index']);
-                } else {
-                    //debug('hliwis');
-                   $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+                //Guardamos el id del usuario en la sesion
+                $name = $this->getRequest()->getSession()->write('id',$usuario);
+                //Para sacarlos es $this->getRequest()->getSession()->read('id');
+
+                //aquí se verifica si el usuario existe en la tabla o no para mandarlo a la vista principal o de añadir sus datos personales
+                $users = TableRegistry::get('Usuarios');
+                $index = $users->find()
+                ->select(['id'])
+                ->where(['id =' => $usuario])
+                ->toList();
+
+                if ($index != null){ //Usuario ya ha ingresado antes
+                    return $this->redirect(['controller' => 'Main','action' => 'index']);    
+                } 
+                else { //Usuario no existe en la tabla, por lo que debe ser registrado
+
+                    $pos = strpos($usuario, '.');
+                    if ($pos === false){ //El usuario es un estudiante, puesto que el username no tiene el caracter punto
+                        return $this->redirect(['controller' => 'Usuarios','action' => 'addEstudiante']);    
+
+                    } else {
+                        return $this->redirect(['controller' => 'Usuarios','action' => 'addProfesor']);    
+                    }
+
                 }
-                ldap_close($ldapconn);
-                
             }
+            else{
+                    $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+
+            }
+                   
         }
         
     }
 
-
+    //Carga la pantalla de inicio
     public function inicio(){
-        
+        $this->layout = 'inicio';
     }
+
+    //Carga la pantalla de recuperación de contraseña
+    public function contrasena(){
+        $this->layout = 'inicio';
+    }
+
 }
