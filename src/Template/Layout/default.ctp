@@ -44,10 +44,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
 
-<div >
-        <?php $rondaActual = $this->Ronda->getFila()?>
-        <p style = "color:white"><?=$rondaActual[0]?><?=$rondaActual[1]?><?=$rondaActual[2]?></p>
-        </div>
+
       <!-- Barra de la derecha. Aqui está el sing out-->
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -64,6 +61,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky pt-5">
+            <div style = "padding-left: 5px;border-style: solid; border-color: black; border-width: 0.75px">
+        <?php $rondaActual = $this->Ronda->getFila()?>
+        <p style = "color:black"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        </div>
             <ul class="nav flex-column">
               <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
