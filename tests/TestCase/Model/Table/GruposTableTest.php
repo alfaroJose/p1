@@ -81,4 +81,44 @@ class GruposTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test getIndexValues method
+     *
+     * @return void
+     */
+    public function testGetIndexValues()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test updateValues method
+     *
+     * @return void
+     */
+    public function testUpdateValues()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test deleteValues method
+     *
+     * @return void
+     */
+    public function testDeleteValues()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test obtenerDatosCurso method
+     *
+     * @return void
+     */
+    public function testObtenerDatosCurso()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

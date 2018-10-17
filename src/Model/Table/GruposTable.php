@@ -5,7 +5,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -52,21 +51,46 @@ class GruposTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->allowEmpty('numero', 'create');
+            ->requirePresence('numero', 'create')
+            ->notEmpty('numero');
 
         $validator
-            ->allowEmpty('semestre', 'create');
+            ->requirePresence('semestre', 'create')
+            ->notEmpty('semestre');
 
         $validator
             ->scalar('año')
-            ->allowEmpty('año', 'create');
+            ->requirePresence('año', 'create')
+            ->notEmpty('año');
 
         $validator
             ->scalar('cursos_sigla')
             ->maxLength('cursos_sigla', 7)
-            ->allowEmpty('cursos_sigla', 'create');
+            ->requirePresence('cursos_sigla', 'create')
+            ->notEmpty('cursos_sigla');
+
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
 
         return $validator;
+    }
+
+    public function getIndexValues(){
+
+        $index=$this->find()
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
     }
 
     /**
@@ -81,95 +105,5 @@ class GruposTable extends Table
         $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
         return $rules;
-    }
-
-
-    /**
-     * Realiza una operación de join en la base de datos con las tablas cursos y grupos
-     * y devuelve el resultado en forma de arreglo
-     *
-     * @return un arreglo con los datos del join
-     */
-    public function getIndexValues(){
-
-        $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
-            ]
-        ])
-        ->toList();
-        return $index;
-
-    }
-
-    /**
-     * Modifica directamente desde la base de datos una tupla de grupos
-     *
-     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
-     * @param string|null $numero Grupo numero, parte de la llave compuesta.
-     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
-     * @param string|null $año Grupo año, parte de la llave compuesta.
-     * @return true si la operación es exitosa
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-
-    public function updateValues(  $curso_sigla = null, $numero = null, $semestre = null, $año = null, $num = null, $sem = null, $a = null){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute("UPDATE grupos set numero = $num, semestre = $sem, año = $a WHERE cursos_sigla = '$curso_sigla' and numero = $numero and semestre = $semestre and año = $año");
-        return $results;;
-    }
-
-
-    /**
-     * Borra directamente desde la base de datos una tupla de grupos
-     *
-     * @param string|null $numero Grupo numero, parte de la llave compuesta.
-     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
-     * @param string|null $año Grupo año, parte de la llave compuesta.
-     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
-     * @return true si la operación es exitosa
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-
-    public function deleteValues( $numero = null, $semestre = null, $año = null, $curso_sigla = null ){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
-        return $results;
-    }
-    
-
-    /*Función para obtener los datos de un curso para poder modificarlos*/
-        /**
-     * Función para obtener directamente desde la base de datos una tupla de grupos
-     *
-     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
-     * @param string|null $numero Grupo numero, parte de la llave compuesta.
-     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
-     * @param string|null $año Grupo año, parte de la llave compuesta.
-     * @return true si la operación es exitosa
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function obtenerDatosCurso($curso_sigla = null, $numero = null, $semestre = null, $año = null){
-
-        $datos=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
-            ]
-        ])
-        ->where([
-          'cursos_sigla' => $curso_sigla,
-          'numero' => $numero,
-          'semestre' => $semestre,
-       'año' => $año])
-        ->toList();
-        return $datos;
     }
 }
