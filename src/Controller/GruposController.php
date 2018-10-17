@@ -75,22 +75,19 @@ class GruposController extends AppController
 
 
 
-
     /**
      * Edit method
      *
-     * @param string|null $id Grupo id.
+     * @param string|null $cursosigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
 
-    public function edit($cursosigla = null, $numero = null, $semestre = null, $año = null/*$id = null*/)
+    public function edit($cursosigla = null, $numero = null, $semestre = null, $año = null)
     {
-        /*$grupo = $this->Grupos->get($id, [
-            'contain' => []
-        ]);*/
-        //$var= explode(',',$id);
-        //$grupo = $this->Grupos->find('all')->first(); 
 
         $grupo = $this->Grupos->newEntity();
         $todo=$this->Grupos->obtenerDatosCurso($cursosigla, $numero, $semestre, $año);
@@ -99,16 +96,15 @@ class GruposController extends AppController
         $grupo->numero=$todo[0]->numero;
         $grupo->semestre=$todo[0]->semestre;
         $grupo->año=$todo[0]->año;
-        //debug($todo);
-        //debug($grupo);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-           // $prueba=$this->request->getData();
-            
 
+        $num = $this->request->getData('numero');
+        $sem = $this->request->getData('semestre');
+        $a = $this->request->getData('año');
+
+        if ($this->request->is(['patch', 'post', 'put'])) {          
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
-            debug($grupo);
-            /*$this->Grupos->actualizarTodo($cursosigla = $todo[0]->Cursos['sigla'], $numero = $todo[0]->numero, $semestre = $todo[0]->semestre, $año = $todo[0]->$año*/
-            if ($this->Grupos->actualizarTodo(['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año'])/*$this->Grupos->save($grupo)*/) {
+            if ($this->Grupos->updateValues( $cursosigla, $numero, $semestre, $año, $num, $sem, $a)) {
+            
                 $this->Flash->success(__('El Grupo ha sido Modificado.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -123,7 +119,10 @@ class GruposController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Grupo id.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
