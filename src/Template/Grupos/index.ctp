@@ -33,7 +33,7 @@
                     
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit',/*$grupo->curso_sigla.','.$grupo->numero.','.$grupo->semestre.','.$grupo->año*//*$grupo->curso_sigla*/$grupo->Cursos['sigla'], $grupo->numero, $grupo->semestre, $grupo->año],['escape'=>false,'style'=>'font-size:22px;']) ?> 
         
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->curso_sigla, $grupo->numero, $grupo->semestre, $grupo->año], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]) ?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete',  $grupo->numero, $grupo->semestre, $grupo->año, $grupo->Cursos['sigla']], ['confirm' => __('Por favor confirme si desea eliminar la matrícula nº {0}'),'style'=>'font-size:22px;','escape'=>false]) ?>
 
                 </td>
             </tr>

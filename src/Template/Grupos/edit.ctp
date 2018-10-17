@@ -12,6 +12,7 @@
          <?php
             //echo $this->Form->control('usuarios_id', ['options' => $usuarios, 'empty' => true]);
 
+            echo $this->Form->control('curso_sigla',['label' => ['text' => 'Sigla'],'type' => 'text','readonly' ]);
             echo $this->Form->control('numero',['label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
             echo $this->Form->control('semestre',['label' => ['text' => 'Semestre'],'type' => 'text' ]);
             echo $this->Form->control('año',['label' => ['text' => 'Año'],'type' => 'text' ]);

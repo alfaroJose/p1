@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Rondas Model
@@ -61,5 +62,12 @@ class RondasTable extends Table
             ->notEmpty('fecha_final');
 
         return $validator;
+    }
+
+    // Devuelva la fila de la tabla de rondas
+    public function getFila(){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select * from rondas")->fetchAll();
+        return $fila[0];
     }
 }
