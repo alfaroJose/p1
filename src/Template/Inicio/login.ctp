@@ -9,7 +9,7 @@
 			<div class="btn-group mr-3" role="group">
 				<?= $this->Form->submit('Iniciar Sesión',['class'=>'btn btn-info'], array('class' => 'button','onclick' => 'inicio')); ?>
 	 	 	</div>
-	 	 	<?= $this->html->link(__('Recuperar Contraseña'), ['controller' => 'Inicio', 'action' => 'contrasena']) ?> <br>
+	 	 	<?= $this->html->link(__('Recuperar Contraseña'), ['controller' => 'Inicio', 'action' => 'contrasena'], ['class'=> 'btn btn-info']) ?> <br>
 		<?= $this->Form->end(); ?>
 	</div>
 </div>
