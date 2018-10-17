@@ -33,7 +33,6 @@ class Grupo extends Entity
         'año' => true,
         'cursos_sigla' => true,
         'usuarios_id' => true,
-        'usuario' => true,
-        'id' => true
+        'usuario' => true
     ];
 }

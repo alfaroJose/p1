@@ -34,8 +34,8 @@ class GruposTable extends Table
         parent::initialize($config);
 
         $this->setTable('grupos');
-        $this->setDisplayField('numero');
-        $this->setPrimaryKey(['numero', 'semestre', 'año', 'cursos_sigla']);
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Usuarios', [
             'foreignKey' => 'usuarios_id'
@@ -92,8 +92,6 @@ class GruposTable extends Table
         /*debug($index);
         die();*/
     }
-    
-
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
