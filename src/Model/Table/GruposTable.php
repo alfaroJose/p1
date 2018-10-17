@@ -103,52 +103,23 @@ class GruposTable extends Table
         ])
         ->toList();
         return $index;
-        /*debug($index);
-        die();*/
 
     }
-    
-    /*Función para modificar cursos*/
-    public function actualizarTodo($vectorCambios, $vectorCondiciones/*$cursosigla = null, $numero = null, $semestre = null, $año = null*//*['Grupos.numero','Grupos.semestre','Grupos.año'], ['Cursos.sigla','Grupos.numero','Grupos.semestre','Grupos.año']*//*$fields"vector", $conditions*/)
-    {
-        /*$query = $this->query();
-        $query->update()
-            ->set($fields)
-            ->where($conditions);
-        $statement = $query->execute();
-        $statement->closeCursor();
 
-        return $statement->rowCount();*/
-
-        $dato = explode(",", $vectorCambios);
-        $condicion = explode(",", $vectorCondiciones);
-        //$query = $this->query();
-        //$query->update()
-            $query->set('Grupos.numero',$dato[0]/*,'Grupos.semestre'=>$semestre,'Grupos.año'=>$año*/)
-            //debug($query);
-            /*$query->set('Grupos.semestre',$dato[1])
-            $query->set('Grupos.año',$dato[2])*/
-        ->where([
-          'cursos_sigla' => $condicion[0],//$curso_sigla,
-          'numero' => $condicion[1],//$numero,
-          'semestre' => $condicion[2],//$semestre,
-          'año' => $condicion[3]]);//$año])
-
-        /*$statement = $query->execute();
-        $statement->closeCursor();
-
-        return $statement->rowCount();*/
-    }
-
-
-
+    /**
+     * Modifica directamente desde la base de datos una tupla de grupos
+     *
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @return true si la operación es exitosa
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
 
     public function updateValues(  $curso_sigla = null, $numero = null, $semestre = null, $año = null, $num = null, $sem = null, $a = null){
         $connection = ConnectionManager::get('default');
- //       $results = $connection->execute("UPDATE FROM grupos WHERE cursos_sigla = '$curso_sigla' AND numero = $numero AND semestre = $semestre AND año = '$año'");
         $results = $connection->execute("UPDATE grupos set numero = $num, semestre = $sem, año = $a WHERE cursos_sigla = '$curso_sigla' and numero = $numero and semestre = $semestre and año = $año");
- //       debug($results);
- //       die(); 
         return $results;;
     }
 
@@ -169,23 +140,19 @@ class GruposTable extends Table
         $results = $connection->execute("DELETE FROM grupos WHERE numero = $numero AND semestre = $semestre AND año = '$año' AND cursos_sigla = '$curso_sigla'");
         return $results;
     }
-    //https://book.cakephp.org/3.0/en/orm/database-basics.html
-
-    /*public function editValues($id = null, $numero = null, $semestre = null, $año = null){
-        //$index=$this->find();
-        $connection = ConnectionManager::get('default');
-        /*$results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");*/
-        /*debug($index);
-        die();
-        
-        $results = $connection->execute("UPDATE grupos set numero = '$numero', semestre = '$semestre', año = $año WHERE cursos_sigla = '$id' and numero = '$numero' and semestre = '$semestre' and año = '$año'");
-        debug($results);
-
-        die(); 
-        //return $index;
-    }*/
+    
 
     /*Función para obtener los datos de un curso para poder modificarlos*/
+        /**
+     * Función para obtener directamente desde la base de datos una tupla de grupos
+     *
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @return true si la operación es exitosa
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function obtenerDatosCurso($curso_sigla = null, $numero = null, $semestre = null, $año = null){
 
         $datos=$this->find()
@@ -204,8 +171,5 @@ class GruposTable extends Table
        'año' => $año])
         ->toList();
         return $datos;
-        /*debug($index);
-        die();*/
-
     }
 }
