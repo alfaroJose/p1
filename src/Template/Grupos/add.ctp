@@ -12,7 +12,7 @@
         <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
          <?php
             echo $this->Form->control('numero',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero'],'type' => 'text' ]);
-            echo $this->Form->control('semestre',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Semestre'],'type' => 'text' ]);
+            echo $this->Form->control('semestre',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text' ]);
             echo $this->Form->control('año',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Año'],'type' => 'text' ]);
             echo $this->Form->control('cursos_sigla',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text' ]);
             echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');

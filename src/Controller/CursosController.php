@@ -20,9 +20,13 @@ class CursosController extends AppController
      */
     public function index()
     {
-        $cursos = $this->paginate($this->Cursos);
+        $todo= $this->Grupos->getIndexValues();
+        $this->paginate = [
+            'contain' => ['Usuarios']
+        ];
+        $grupos = $this->paginate($this->Grupos);
 
-        $this->set(compact('cursos'));
+        $this->set(compact('grupos','todo'));
     }
 
     /**
