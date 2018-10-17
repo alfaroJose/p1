@@ -40,19 +40,22 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 
-    <nav class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow">
-       <div class = "float-left">   
-         <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
-      </div>
-      
-       
-      
+    <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow" style="background-color: rgb(65, 173, 231);">     
 
+     <!--
+      <div class = "float-left">   
+        <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
+      </div>
+      -->
+      <div class = "float-left">   
+        <?= $this->Html->image('ucrLogo2.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
+      </div>
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
-             <div class = "float-right">
-         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
-      </div>
+
+        <div class = "float-right">
+          <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
+        </div>
 
 
       <!-- Barra de la derecha. Aqui está el sing out-->
