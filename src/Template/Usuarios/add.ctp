@@ -23,7 +23,7 @@
 
             echo $this->Form->control('segundo_apellido', ['required'=>true, 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('cedula', ['required'=>true, 'pattern'=>"[0-9]{9}", 'label'=>['text'=>'Cédula'], 'placeholder'=>'123456789', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('cedula', ['required'=>true, 'pattern'=>"[0-9]{9,15}", 'label'=>['text'=>'Cédula'], 'placeholder'=>'123456789', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('telefono', ['required'=>true, 'type'=>'tel', 'pattern'=>"[0-9]{8}", 'label'=>['text'=>'Teléfono'], 'placeholder'=>'88881111', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>

@@ -87,7 +87,7 @@ class UsuariosTable extends Table
 
         $validator
             ->scalar('cedula')
-            ->maxLength('cedula', 9)
+            ->maxLength('cedula', 15)
             ->requirePresence('cedula', 'create')
             ->notEmpty('cedula');
 
