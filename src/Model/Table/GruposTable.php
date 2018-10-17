@@ -5,7 +5,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -35,8 +34,8 @@ class GruposTable extends Table
         parent::initialize($config);
 
         $this->setTable('grupos');
-        $this->setDisplayField('numero');
-        $this->setPrimaryKey(['numero', 'semestre', 'año', 'cursos_sigla']);
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Usuarios', [
             'foreignKey' => 'usuarios_id'
@@ -52,23 +51,47 @@ class GruposTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->allowEmpty('numero', 'create');
+            ->requirePresence('numero', 'create')
+            ->notEmpty('numero');
 
         $validator
-            ->allowEmpty('semestre', 'create');
+            ->requirePresence('semestre', 'create')
+            ->notEmpty('semestre');
 
         $validator
             ->scalar('año')
-            ->allowEmpty('año', 'create');
+            ->requirePresence('año', 'create')
+            ->notEmpty('año');
 
         $validator
             ->scalar('cursos_sigla')
             ->maxLength('cursos_sigla', 7)
-            ->allowEmpty('cursos_sigla', 'create');
+            ->requirePresence('cursos_sigla', 'create')
+            ->notEmpty('cursos_sigla');
+
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
 
         return $validator;
     }
 
+    public function getIndexValues(){
+
+        $index=$this->find()
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
+    }
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -81,70 +104,5 @@ class GruposTable extends Table
         $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
         return $rules;
-    }
-
-
-
-    public function getIndexValues(){
-
-        $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
-            ]
-        ])
-        ->toList();
-        return $index;
-        /*debug($index);
-        die();*/
-
-    }
-
-    public function deleteValues($curso_sigla = null, $numero = null, $semestre = null, $año = null){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$curso_sigla' AND numero = $numero AND semestre = $semestre AND año = '$año'");
-        $this->deleteAll();
-    }
-    //https://book.cakephp.org/3.0/en/orm/database-basics.html
-
-    /*public function editValues($id = null, $numero = null, $semestre = null, $año = null){
-        //$index=$this->find();
-        $connection = ConnectionManager::get('default');
-        /*$results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");*/
-        /*debug($index);
-        die();
-        
-        $results = $connection->execute("UPDATE grupos set numero = '$numero', semestre = '$semestre', año = $año WHERE cursos_sigla = '$id' and numero = '$numero' and semestre = '$semestre' and año = '$año'");
-        debug($results);
-
-        die(); 
-        //return $index;
-    }*/
-
-
-    public function obtenerDatosCurso($curso_sigla = null, $numero = null, $semestre = null, $año = null){
-
-        $datos=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
-            ]
-        ])
-        ->where([
-          'cursos_sigla' => $curso_sigla,
-          'numero' => $numero,
-          'semestre' => $semestre,
-       'año' => $año])
-        ->toList();
-        return $datos;
-        /*debug($index);
-        die();*/
-
     }
 }
