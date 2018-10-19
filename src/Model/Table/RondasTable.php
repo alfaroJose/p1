@@ -54,12 +54,12 @@ class RondasTable extends Table
         $validator
             ->date('fecha_inicial')
             ->requirePresence('fecha_inicial', 'create')
-            ->notEmpty('fecha_inicial');
+            ->notEmpty('fecha_inicial','Por favor complete este campo.');
 
         $validator
             ->date('fecha_final')
             ->requirePresence('fecha_final', 'create')
-            ->notEmpty('fecha_final');
+            ->notEmpty('fecha_final','Por favor complete este campo.');
 
         return $validator;
     }
