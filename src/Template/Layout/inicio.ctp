@@ -56,6 +56,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </nav>
     
     <!-- Div para el contenido de debajo de la página-->
+
+    <br>
+    <br>
+    <!-- barra azul -->
+    <br>
+    <br>
+    <div class = "float-center">   
+      <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
+    </div>
+    
     <div class="container-fluid">
       <div class="row">
         <main role="main" class="col-md-9 col-lg-12 px-4 pt-5">
