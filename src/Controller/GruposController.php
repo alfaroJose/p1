@@ -62,11 +62,11 @@ class GruposController extends AppController
         if ($this->request->is('post')) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
             if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('The grupo has been saved.'));
+                $this->Flash->success(__('El grupo ha sido agregado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
+            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
         $this->set(compact('grupo', 'usuarios'));
@@ -87,11 +87,11 @@ class GruposController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
             if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('The grupo has been saved.'));
+                $this->Flash->success(__('El grupo ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The grupo could not be saved. Please, try again.'));
+            $this->Flash->error(__('El grupo no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
         $this->set(compact('grupo', 'usuarios'));
@@ -109,9 +109,9 @@ class GruposController extends AppController
         $this->request->allowMethod(['post']);
         $grupo = $this->Grupos->get($id);
         if ($this->Grupos->delete($grupo)) {
-            $this->Flash->success(__('The grupo has been deleted.'));
+            $this->Flash->success(__('El grupo ha sido eliminado.'));
         } else {
-            $this->Flash->error(__('The grupo could not be deleted. Please, try again.'));
+            $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
         }
 
         return $this->redirect(['action' => 'index']);
