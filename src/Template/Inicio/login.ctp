@@ -16,9 +16,6 @@
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 
-<br>
-<br>
-<br>
 <?php echo "<center>";?>
 <div class="login form large-9 medium-8 columns content">
 	<div class="panel">

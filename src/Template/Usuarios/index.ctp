@@ -29,7 +29,7 @@
 
                     <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>              
 
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Por favor confirme si desea eliminar al usuario {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>               
+                   <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Se va a eliminar al usuario {0}', $usuario->id),'style'=>'font-size:22px;','escape'=>false]) ?>               
                 </td>
             </tr>
             <?php endforeach; ?>
