@@ -17,9 +17,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 
 <br><br>
-<br><br>
-<br><br>
-<br><br>
 <h4>
 <div class = "text-center">
  Bienvenido al Sistema de Asistencias de la                 <br>

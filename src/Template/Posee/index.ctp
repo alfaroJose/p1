@@ -5,26 +5,15 @@
  */
 ?>
 
-<div class = "float-right">   
-    <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?>     
-</div>
-<div class = "float-left">
-	<?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
-</div>
-<br><br>
-<br><br>
-<br><br>
-
 <script type="text/javascript">
     $(document).ready( function () {
     	$('#checkBoxHabilitar').on('click', function() {
 			disabledCheckboxes();
-			if(!$(this).is(':checked')){
-				//$('#Guardar').removeAttr('disabled');
-				$('#Guardar').prop('disabled', true);
+			if($(this).is(':checked')){
+				$('#Guardar').removeAttr('disabled');
 			}
 			else{
-				//$('#Guardar').prop('disabled', true);
+				$('#Guardar').prop('disabled', true);
 			}
     	});
 
@@ -43,74 +32,76 @@
 
     function poblarMatriz(p){//Se pasa la lista de permisos
     	for(var i = 0; i < p.length; i++){
-    		if(p[i].permisos_funcionalidad == 'Insertar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox1').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox2').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox3').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox4').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox5').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Modificar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox6').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox7').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox8').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox9').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox10').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Eliminar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox11').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox12').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox13').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox14').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox15').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Consultar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox16').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox17').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox18').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox19').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox20').prop("checked", true);
-    			}
-    		}
+            if(p[i].estado == 1){
+                if(p[i].permisos_funcionalidad == 'Insertar'){
+                    if(p[i].permisos_modulo == 'Usuarios'){
+                        $('#checkbox1').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
+                        $('#checkbox2').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Rondas'){
+                        $('#checkbox3').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Requisitos'){
+                        $('#checkbox4').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Solicitudes'){
+                        $('#checkbox5').prop("checked", true);
+                    }
+                }
+                else if(p[i].permisos_funcionalidad == 'Modificar'){
+                    if(p[i].permisos_modulo == 'Usuarios'){
+                        $('#checkbox6').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
+                        $('#checkbox7').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Rondas'){
+                        $('#checkbox8').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Requisitos'){
+                        $('#checkbox9').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Solicitudes'){
+                        $('#checkbox10').prop("checked", true);
+                    }
+                }
+                else if(p[i].permisos_funcionalidad == 'Eliminar'){
+                    if(p[i].permisos_modulo == 'Usuarios'){
+                        $('#checkbox11').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
+                        $('#checkbox12').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Rondas'){
+                        $('#checkbox13').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Requisitos'){
+                        $('#checkbox14').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Solicitudes'){
+                        $('#checkbox15').prop("checked", true);
+                    }
+                }
+                else if(p[i].permisos_funcionalidad == 'Consultar'){
+                    if(p[i].permisos_modulo == 'Usuarios'){
+                        $('#checkbox16').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
+                        $('#checkbox17').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Rondas'){
+                        $('#checkbox18').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Requisitos'){
+                        $('#checkbox19').prop("checked", true);
+                    }
+                    else if(p[i].permisos_modulo == 'Solicitudes'){
+                        $('#checkbox20').prop("checked", true);
+                    }
+                }
+            }
     	}
     }
 
@@ -187,6 +178,27 @@
 	</div>
 
 	<br>
+
+    <?= $this->Form->hidden("checkbox1", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox2", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox3", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox4", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox5", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox6", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox7", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox8", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox9", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox10", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox11", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox12", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox13", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox14", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox15", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox16", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox17", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox18", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox19", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkbox20", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 	
 	<table style="width:100%" class="input-matrix">
 		<thead>
@@ -235,6 +247,9 @@
 		</tr>
 		</tbody>
 	</table>
+
+    <br>
+    <br>
 
 	<?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
     <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>
