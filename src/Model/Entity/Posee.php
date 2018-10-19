@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property string $permisos_modulo
  * @property string $permisos_funcionalidad
  * @property int $roles_id
+ * @property int $estado
  *
  * @property \App\Model\Entity\Role $role
  */
@@ -25,6 +26,7 @@ class Posee extends Entity
      * @var array
      */
     protected $_accessible = [
+        'estado' => true,
         'role' => true
     ];
 }

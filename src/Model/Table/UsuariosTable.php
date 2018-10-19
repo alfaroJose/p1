@@ -53,43 +53,45 @@ class UsuariosTable extends Table
         $validator
             ->scalar('id')
             ->maxLength('id', 50)
-            ->allowEmpty('id', 'create');
+            ->requirePresence('id', 'create')
+            ->notEmpty('id', 'Por favor complete este campo');
 
         $validator
             ->scalar('nombre')
             ->maxLength('nombre', 50)
             ->requirePresence('nombre', 'create')
-            ->notEmpty('nombre');
+            ->notEmpty('nombre', 'Por favor complete este campo');
 
         $validator
             ->scalar('primer_apellido')
             ->maxLength('primer_apellido', 50)
             ->requirePresence('primer_apellido', 'create')
-            ->notEmpty('primer_apellido');
+            ->notEmpty('primer_apellido', 'Por favor complete este campo');
 
         $validator
             ->scalar('segundo_apellido')
             ->maxLength('segundo_apellido', 50)
             ->requirePresence('segundo_apellido', 'create')
-            ->notEmpty('segundo_apellido');
+            ->notEmpty('segundo_apellido', 'Por favor complete este campo');
 
         $validator
             ->scalar('correo')
             ->maxLength('correo', 100)
             ->requirePresence('correo', 'create')
-            ->notEmpty('correo');
+            ->notEmpty('correo', 'Por favor complete este campo');
 
         $validator
             ->scalar('telefono')
-            ->maxLength('telefono', 8)
+            ->minLength('telefono', 8, 'Incluya solamente 8 dígitos')
+            ->maxLength('telefono', 8, 'Incluya solamente 8 dígitos')
             ->requirePresence('telefono', 'create')
-            ->notEmpty('telefono');
+            ->notEmpty('telefono', 'Por favor complete este campo');
 
         $validator
             ->scalar('cedula')
-            ->maxLength('cedula', 9)
+            ->lengthBetween('cedula', [9, 15])
             ->requirePresence('cedula', 'create')
-            ->notEmpty('cedula');
+            ->notEmpty('cedula', 'Por favor complete este campo');
 
         return $validator;
     }

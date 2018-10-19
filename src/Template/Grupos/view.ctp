@@ -38,5 +38,9 @@
             <th scope="row"><?= __('Semestre') ?></th>
             <td><?= $this->Number->format($grupo->semestre) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($grupo->id) ?></td>
+        </tr>
     </table>
 </div>
