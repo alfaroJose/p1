@@ -61,6 +61,10 @@ class PoseeTable extends Table
             ->maxLength('permisos_funcionalidad', 50)
             ->allowEmpty('permisos_funcionalidad', 'create');
 
+        $validator
+            ->requirePresence('estado', 'create')
+            ->notEmpty('estado');
+
         return $validator;
     }
 
