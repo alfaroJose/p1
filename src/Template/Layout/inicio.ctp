@@ -46,7 +46,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
 
         <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias ECCI</a>
 
         <div class = "float-right px-1">
           <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
@@ -65,7 +65,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class = "float-center">   
       <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
     </div>
-    
+
     <div class="container-fluid">
       <div class="row">
         <main role="main" class="col-md-9 col-lg-12 px-4 pt-5">
