@@ -40,9 +40,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
+    <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow" style="background-color: rgb(65, 173, 231);"> 
+        <div class = "float-left px-1">   
+            <?= $this->Html->image('ucrLogoBlanco.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
+        </div>
+
+        <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
+
+        <div class = "float-right px-1">
+          <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
+        </div>
 
      
     </nav>
@@ -50,14 +58,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <!-- Div para el contenido de debajo de la página-->
     <div class="container-fluid">
       <div class="row">
-
-
         <main role="main" class="col-md-9 col-lg-12 px-4 pt-5">
         <!-- Linea que permite mostrar los msjs generados -->
         <?= $this->Flash->render() ?>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                
-
                 <!-- Div que encapsula las vistas de los módulos-->
                 <div class="container clearfix">
                     <?= $this->fetch('content') ?>
