@@ -52,22 +52,22 @@ class GruposTable extends Table
     {
         $validator
             ->requirePresence('numero', 'create')
-            ->notEmpty('numero');
+            ->notEmpty('numero', 'Por favor complete este campo.');
 
         $validator
             ->requirePresence('semestre', 'create')
-            ->notEmpty('semestre');
+            ->notEmpty('semestre', 'Por favor complete este campo.');
 
         $validator
             ->scalar('año')
             ->requirePresence('año', 'create')
-            ->notEmpty('año');
+            ->notEmpty('año', 'Por favor complete este campo.');
 
         $validator
             ->scalar('cursos_sigla')
             ->maxLength('cursos_sigla', 7)
             ->requirePresence('cursos_sigla', 'create')
-            ->notEmpty('cursos_sigla');
+            ->notEmpty('cursos_sigla', 'Por favor complete este campo.');
 
         $validator
             ->integer('id')
