@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Rondas Model
@@ -53,13 +54,20 @@ class RondasTable extends Table
         $validator
             ->date('fecha_inicial')
             ->requirePresence('fecha_inicial', 'create')
-            ->notEmpty('fecha_inicial');
+            ->notEmpty('fecha_inicial','Por favor complete este campo.');
 
         $validator
             ->date('fecha_final')
             ->requirePresence('fecha_final', 'create')
-            ->notEmpty('fecha_final');
+            ->notEmpty('fecha_final','Por favor complete este campo.');
 
         return $validator;
+    }
+
+    // Devuelva la fila de la tabla de rondas
+    public function getFila(){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select * from rondas")->fetchAll();
+        return $fila[0];
     }
 }

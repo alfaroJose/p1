@@ -40,37 +40,51 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-       <!-- Las letras del logo deberían ser blancas
-       <div class = "float-left">
-         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"287", 'height' => '85']);?>
-      </div>
-      -->
+    <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow" style="background-color: rgb(65, 173, 231);">     
 
+      <div class = "float-left px-1">   
+        <?= $this->Html->image('ucrLogoBlanco.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
+      </div>
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias</a>
-      
-      <!-- Se ve muy a la izquierda. este o el blanco?
-       <div class = "float-right">   
-         <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP', 'width'=>"287", 'height' => '125']);?>     
+
+      <div class = "float-right px-1">
+        <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
       </div>
-      -->
+
 
       <!-- Barra de la derecha. Aqui está el sing out-->
-      <ul class="navbar-nav px-3">
+      <div class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
         </li>
-      </ul>
+      </div>
+      
     </nav>
     
     <!-- Div para el contenido de debajo de la página-->
+    <br>
+    <br>
+    
+    <!-- barra azul -->
+    <br>
+    <br>
+    <div class = "float-center">   
+      <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
+    </div>
+    
+
     <div class="container-fluid">
+
       <div class="row">
 
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky pt-5">
+            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
+        <?php $rondaActual = $this->Ronda->getFila()?>
+        <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        </div>
             <ul class="nav flex-column">
               <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
@@ -91,8 +105,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
           </div>
         </nav>
-
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5">
           <!-- Linea que permite mostrar los msjs generados -->
           <?= $this->Flash->render() ?>
