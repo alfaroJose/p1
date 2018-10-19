@@ -103,6 +103,19 @@ class PoseeController extends AppController
 
     public function index()
     {
+        $id = $this->getRequest()->getSession()->read('id');
+        if($id != null){
+            $consultaUsuarios = TableRegistry::get('Usuarios');
+            $usuario = $consultaUsuarios->get($id);
+            if($usuario->roles_id != 1){
+                debug("hola");
+                die();
+            }
+        }
+        else{
+            $this->redirect([]);
+        }
+
         $query = $this->Posee->find('all');//Toma todas las tuplas
         $posee = $query->toArray();//
         $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection
