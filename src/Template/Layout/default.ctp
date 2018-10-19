@@ -66,13 +66,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <br>
     <br>
     
-    <!-- barra azul 
+    <!-- barra azul -->
     <br>
     <br>
     <div class = "float-center">   
       <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
     </div>
-    -->
+    
 
     <div class="container-fluid">
 
