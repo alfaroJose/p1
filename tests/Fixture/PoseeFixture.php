@@ -24,17 +24,16 @@ class PoseeFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'permisos_modulo' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'permisos_funcionalidad' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'permisos_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'roles_id' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'estado' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         '_indexes' => [
-            'roles_id' => ['type' => 'index', 'columns' => ['roles_id'], 'length' => []],
+            'FK_Posee_permisos_id' => ['type' => 'index', 'columns' => ['permisos_id'], 'length' => []],
         ],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['permisos_modulo', 'permisos_funcionalidad', 'roles_id'], 'length' => []],
-            'posee_ibfk_1' => ['type' => 'foreign', 'columns' => ['permisos_modulo', 'permisos_funcionalidad'], 'references' => ['permisos', '1' => ['modulo', 'funcionalidad']], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-            'posee_ibfk_2' => ['type' => 'foreign', 'columns' => ['roles_id'], 'references' => ['roles', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['roles_id', 'permisos_id'], 'length' => []],
+            'FK_Posee_permisos_id' => ['type' => 'foreign', 'columns' => ['permisos_id'], 'references' => ['permisos', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'FK_Posee_roles_id' => ['type' => 'foreign', 'columns' => ['roles_id'], 'references' => ['roles', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -52,8 +51,7 @@ class PoseeFixture extends TestFixture
     {
         $this->records = [
             [
-                'permisos_modulo' => '51dc9691-28fd-4c32-ad14-f66d465133a6',
-                'permisos_funcionalidad' => '292f90a7-a28d-49c4-b52c-260294b938b7',
+                'permisos_id' => 1,
                 'roles_id' => 1,
                 'estado' => 1
             ],
