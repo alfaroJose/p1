@@ -63,8 +63,8 @@ class InicioController extends AppController
                 //aquí se verifica si el usuario existe en la tabla o no para mandarlo a la vista principal o de añadir sus datos personales
                 $users = TableRegistry::get('Usuarios');
                 $index = $users->find()
-                ->select(['id'])
-                ->where(['id =' => $usuario])
+                ->select(['nombre_usuario'])
+                ->where(['nombre_usuario =' => $usuario])
                 ->toList();
 
                 if ($index != null){ //Usuario ya ha ingresado antes

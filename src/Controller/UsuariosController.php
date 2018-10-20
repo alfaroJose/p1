@@ -3,8 +3,6 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-
-
 /**
  * Usuarios Controller
  *
@@ -22,7 +20,6 @@ class UsuariosController extends AppController
      */
     public function index()
     {
-
         $this->paginate = [
             'contain' => ['Roles']
         ];
@@ -67,6 +64,16 @@ class UsuariosController extends AppController
                 $usuario->roles_id = '4';
             }
 
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -85,6 +92,17 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
             $usuario->roles_id = '4';
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -103,6 +121,17 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
             $usuario->roles_id = '3';
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -113,6 +142,7 @@ class UsuariosController extends AppController
         $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
         $this->set(compact('usuario', 'roles'));
     }
+
     /**
      * Edit method
      *
@@ -135,6 +165,16 @@ class UsuariosController extends AppController
                 $usuario->roles_id = '3';
             } else {
                 $usuario->roles_id = '4';
+            }
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
             }
 
             if ($this->Usuarios->save($usuario)) {
@@ -162,12 +202,13 @@ class UsuariosController extends AppController
         if ($this->Usuarios->delete($usuario)) {
             $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {
-            $this->Flash->success(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
-
+    //BORRAR??
     public function getUsuario()
     {
         $username = $this->getRequest()->getSession()->read('id');
@@ -183,4 +224,3 @@ class UsuariosController extends AppController
         return $rol;
     }
 }
-
