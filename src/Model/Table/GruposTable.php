@@ -121,7 +121,7 @@ class GruposTable extends Table
             'Cursos'=>[
                      'table'=>'Cursos',
                      'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
+                     'conditions'=>['Cursos.id=cursos_id']
             ]
         ])
         ->toList();
@@ -137,10 +137,10 @@ class GruposTable extends Table
      */
     public function seleccionarProfesores()
     {
-        $profesores=$this->find()
+        /*$profesores=$this->find()
         ->select(['Usuarios.nombre'])
         ->where()
         ->toList();
-        return $profesores;
+        return $profesores;*/
     }
 }
