@@ -49,22 +49,22 @@ class RondasTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('numero');
+            ->requirePresence('numero', 'create')
+            ->notEmpty('numero');
 
         $validator
             ->date('fecha_inicial')
             ->requirePresence('fecha_inicial', 'create')
-            ->notEmpty('fecha_inicial','Por favor complete este campo.');
+            ->notEmpty('fecha_inicial', 'Por favor complete este campo.');
 
         $validator
             ->date('fecha_final')
             ->requirePresence('fecha_final', 'create')
-            ->notEmpty('fecha_final','Por favor complete este campo.');
+            ->notEmpty('fecha_final', 'Por favor complete este campo.');
 
         return $validator;
     }
 
-    // Devuelva la fila de la tabla de rondas
     public function getFila(){
         $connect = ConnectionManager::get('default');
         $fila = $connect->execute("select * from rondas")->fetchAll();
