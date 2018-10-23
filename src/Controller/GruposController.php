@@ -68,8 +68,9 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
         }
-        $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios'));
+        $cursos = $this->Grupos->seleccionarCursos();
+        $usuarios = $this->Grupos->seleccionarProfesores();
+        $this->set(compact('grupo', 'usuarios', 'cursos'));
     }
 
     /**

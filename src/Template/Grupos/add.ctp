@@ -14,10 +14,15 @@
             echo $this->Form->control('numero',['required'=>true, 'pattern' => '[0-9]{2}' ,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero'],'type' => 'text' ]);
             echo $this->Form->control('semestre',['required'=>true,'pattern' => '[1-3]{1}' ,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Semestre'],'type' => 'text' ]);
             echo $this->Form->control('año',['required'=>true,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Año'],'type' => 'text' ]);
-            echo $this->Form->control('cursos_sigla',['required'=>true,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text' ]);
+
+            echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');
+            echo ('<label> Cursos </label>');
+            echo $this->Form->select('sigla', $cursos);
+            echo ('</div><br>');
+            //echo $this->Form->control('cursos_sigla',['required'=>true,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text' ]);
+
             echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');
             echo ('<label> Profesor </label>');
-            
             echo $this->Form->select('usuarios_id', $usuarios);
             echo ('</div><br>');
         ?>

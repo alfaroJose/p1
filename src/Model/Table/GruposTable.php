@@ -91,8 +91,6 @@ class GruposTable extends Table
         ])
         ->toList();
         return $index;
-        /*debug($index);
-        die();*/
     }
     /**
      * Returns a rules checker object that will be used for validating
@@ -106,5 +104,43 @@ class GruposTable extends Table
         $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
         return $rules;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function seleccionarCursos()
+    {
+        $cursos=$this->find()
+        ->select(['Cursos.sigla'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $cursos;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function seleccionarProfesores()
+    {
+        $profesores=$this->find()
+        ->select(['Usuarios.nombre'])
+        ->where()
+        ->toList();
+        return $profesores;
     }
 }
