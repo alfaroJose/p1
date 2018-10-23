@@ -6,23 +6,18 @@
 ?>
 
 <style> 
-table {
-  border-spacing: 10px 20px 10px 20px;
+table th, td{
+    border: 1px solid #ddd;
+    text-align: left;
+    padding :10px;
+}
+tr:nth-child(even) {background-color:  #eaecee };
+</style>
 
-}
-table td{
-    padding :10px 10px 10px 10px;
-}
-table tr {
-    width: 50px;
-}
- </style>
 <div class="usuarios form medium-9 medium-8 columns content">
     <br>
     <h5><?= 'Datos personales' ?></h5>
-    <div style=" padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
-
-    <table class="vertical-table">      
+    <table class>
         <tr>
             <th scope="row"><?= __('Nombre') ?></th>
             <td><?= h($usuario->nombre) ?></td>
@@ -54,8 +49,7 @@ table tr {
     <div class="usuarios form large-9 medium-8 columns content">
     <br> 
     <h5><?= "Datos de seguridad" ?></h5>
-    <div style=" padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
-    <table class="vertical-table">    
+    <table class>    
     <tr>
             <th scope="row"><?= __('Usuario') ?></th>
             <td><?= h($usuario->nombre_usuario) ?></td>
