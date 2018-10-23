@@ -36,8 +36,12 @@ table tr {
             <td><?= h($usuario->segundo_apellido) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cédula') ?></th>
-            <td><?= h($usuario->cedula) ?></td>
+            <th scope="row"><?= __('Tipo de identificacion') ?></th>
+            <td><?= h($usuario->tipo_identificacion) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Identificación') ?></th>
+            <td><?= h($usuario->identificacion) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Teléfono') ?></th>
@@ -54,7 +58,7 @@ table tr {
     <table class="vertical-table">    
     <tr>
             <th scope="row"><?= __('Usuario') ?></th>
-            <td><?= h($usuario->id) ?></td>
+            <td><?= h($usuario->nombre_usuario) ?></td>
         </tr>
         <div class="spacer10"></div>
         <tr>
@@ -64,12 +68,13 @@ table tr {
         <div class="spacer10"></div>
         <tr>
             <th scope="row"><?= __('Rol') ?></th>
-            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'view', $usuario->role->tipo]) : '' ?></td>
+            <td><?= $usuario->has('role') ? $this->Html->link($usuario->role->tipo, ['controller' => 'Posee', 'action' => 'index', $usuario->role->tipo]) : '' ?></td>
             </table>
 </div>
 <br>
     <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-right'])?>
-    <?= $this->Html->link('Eliminar usuario',['action'=>'delete',$usuario->id],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+    <?= $this->Form->postlink('Eliminar usuario', array('action' => 'delete', $usuario->id), array('confirm'=>'Se va a eliminar al usuario '. $usuario->nombre_usuario, 'class' => 'btn btn-info btn-medium float-right mr-3')) ?>
+
     <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
     

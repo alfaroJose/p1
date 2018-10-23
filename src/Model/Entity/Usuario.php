@@ -6,13 +6,15 @@ use Cake\ORM\Entity;
 /**
  * Usuario Entity
  *
- * @property string $id
+ * @property int $id
  * @property string $nombre
  * @property string $primer_apellido
  * @property string $segundo_apellido
  * @property string $correo
  * @property string $telefono
- * @property string $cedula
+ * @property string $nombre_usuario
+ * @property string $identificacion
+ * @property string $tipo_identificacion
  * @property int $roles_id
  *
  * @property \App\Model\Entity\Role $role
@@ -30,13 +32,14 @@ class Usuario extends Entity
      * @var array
      */
     protected $_accessible = [
-        'id' => true,
         'nombre' => true,
         'primer_apellido' => true,
         'segundo_apellido' => true,
         'correo' => true,
         'telefono' => true,
-        'cedula' => true,
+        'nombre_usuario' => true,
+        'identificacion' => true,
+        'tipo_identificacion' => true,
         'roles_id' => true,
         'role' => true
     ];
