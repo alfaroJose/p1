@@ -19,7 +19,7 @@ class RondaHelper extends Helper
 
     public function getFila(){
     	$fila = (new RondasTable)->getFila();
-    	return ["Ronda # " . $fila[0], "Fecha Inicio: " . $fila[1], "Fecha Fin: " . $fila[2]];
+    	return ["Ronda # " . $fila[1], "Fecha Inicio: " . $fila[2], "Fecha Fin: " . $fila[3]];
     }
 
 }
