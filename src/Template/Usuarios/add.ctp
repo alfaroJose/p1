@@ -13,8 +13,7 @@
         <legend><?= __('Agregar Usuario') ?></legend>
         <br>
         <h5> Datos personales </h5>
-
-        <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php           
             
             echo $this->Form->control('nombre', ['required'=>true, 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
@@ -32,8 +31,7 @@
         </div>
         <br>
         <h5> Datos de seguridad </h5>
-        <div style="padding-left: 75px; width: 40%; border-width: 1px; border-style: solid; border-color: black;">
-
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
 
             echo $this->Form->control('nombre_usuario', ['required'=>true, 'type' => 'text', 'pattern'=>".{6,50}", 'placeholder'=>'nombre.apellido o carné', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
