@@ -81,7 +81,7 @@ class GruposTable extends Table
     public function getIndexValues(){
 
         $index=$this->find()
-        ->select(['Cursos.id','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
         ->join([
             'Cursos'=>[
                      'table'=>'Cursos',
