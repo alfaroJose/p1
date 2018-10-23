@@ -27,12 +27,6 @@ class GruposController extends AppController
         $grupos = $this->paginate($this->Grupos);
 
         $this->set(compact('grupos','todo'));
-        /*$this->paginate = [
-            'contain' => ['Usuarios']
-        ];
-        $grupos = $this->paginate($this->Grupos);
-
-        $this->set(compact('grupos'));*/
     }
 
     /**
@@ -68,8 +62,15 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
         }
-        $cursos = $this->Grupos->seleccionarCursos();
+        $cursos2 = $this->Grupos->seleccionarCursos();
+        $cursos=[];
+        foreach ($cursos2 as $c ) {
+            array_push($cursos, $c->Cursos['sigla']);
+        }
         $usuarios = $this->Grupos->seleccionarProfesores();
+        
+        //debug($usuarios);
+        //debug($cursos2);
         $this->set(compact('grupo', 'usuarios', 'cursos'));
     }
 

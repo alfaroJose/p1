@@ -137,10 +137,16 @@ class GruposTable extends Table
      */
     public function seleccionarProfesores()
     {
-        /*$profesores=$this->find()
-        ->select(['Usuarios.nombre'])
-        ->where()
+        $profesores=$this->find()
+        ->select(['Usuarios.nombre', 'Usuarios.primer_apellido'])
+        ->join([
+            'Usuarios'=>[
+                     'table'=>'Usuarios',
+                     'type'=>'LEFT',
+                     'conditions'=>['Usuarios.id=usuarios_id', 'Usuarios.roles_id=3']
+            ]
+        ])
         ->toList();
-        return $profesores;*/
+        return $profesores;
     }
 }

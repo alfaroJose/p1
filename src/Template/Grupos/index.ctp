@@ -41,7 +41,8 @@
     </table>
     <br>
     <br>
-    <?= $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Form->button(__('Agregar curso'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3'])?>
 </div>
 
 <script type="text/javascript">
