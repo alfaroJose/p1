@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
+
 
 /**
  * Usuarios Model
@@ -124,5 +126,12 @@ class UsuariosTable extends Table
         $rules->add($rules->existsIn(['roles_id'], 'Roles'));
 
         return $rules;
+    }
+
+    // Devuelva el id del usuario según el carné
+    public function getUser($carne){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
+        return $fila[0];
     }
 }

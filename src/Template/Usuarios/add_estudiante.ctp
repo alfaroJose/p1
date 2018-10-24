@@ -12,14 +12,13 @@
         <legend><?= __('Agregar Usuario') ?></legend>
         <br>
         <h5> Datos personales </h5>
-        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">        
-        <?php           
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">   <?php           
             
-            echo $this->Form->control('nombre', ['required'=>true, 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre', ['required'=>true, 'pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('primer_apellido', ['required'=>true, 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('primer_apellido', ['required'=>true, 'pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('segundo_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('segundo_apellido', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('tipo_identificacion', ['required'=>true, 'options' =>['Cédula Nacional', 'Cédula Extranjera','DIMEX', 'Pasaporte'], 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
@@ -34,7 +33,7 @@
         <?php
             $username = $this->request->getSession()->read('id');
 
-            echo $this->Form->control('nombre_usuario', ['value' => $username, 'readonly', 'required'=>true, 'type' => 'text', 'placeholder'=>'Carné', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
+            echo $this->Form->control('nombre_usuario', ['value' => $username, 'readonly', 'required'=>true, 'type' => 'text', 'pattern'=>".{6,50}", 'placeholder'=>'Carné', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
             
             echo $this->Form->control('correo', ['required'=>true, 'type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);;
 

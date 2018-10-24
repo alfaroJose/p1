@@ -157,11 +157,11 @@ class UsuariosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
-            if ($usuario->roles_id == 0) {
+            if ($usuario->roles_id == 1) {
                 $usuario->roles_id = '1';
-            } else if ($usuario->roles_id == 1){
-                $usuario->roles_id = '2';
             } else if ($usuario->roles_id == 2){
+                $usuario->roles_id = '2';
+            } else if ($usuario->roles_id == 3){
                 $usuario->roles_id = '3';
             } else {
                 $usuario->roles_id = '4';

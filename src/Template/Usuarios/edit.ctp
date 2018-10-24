@@ -15,17 +15,17 @@ use Cake\ORM\TableRegistry;
         <h5> Datos personales </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('nombre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('primer_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('primer_apellido', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('segundo_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('segundo_apellido', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('tipo_identificacion', ['options' =>['Cédula Nacional', 'Cédula Extranjera','DIMEX', 'Pasaporte'], 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('telefono', ['type'=>'tel', 'pattern'=>"[0-9]{8,20}", 'label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
         </div>
         <br>
@@ -47,7 +47,7 @@ use Cake\ORM\TableRegistry;
             ->first();
             
             if($index->roles_id == 1){ //Es administrador
-                echo $this->Form->control('roles_id', ['options' =>['Administrador','Asistente administrativo','Profesor', 'Estudiante'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+                echo $this->Form->control('roles_id', ['options' =>["1" => "Administrador", "2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante"], 'default'=> $usuario->roles_id, 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             } else {
                 echo $this->Form->control('roles_id', ['value'=> $usuario->roles_id, 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 

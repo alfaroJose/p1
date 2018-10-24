@@ -14,6 +14,7 @@
  */
 
 $cakeDescription = 'CakePHP: the rapid development php framework';
+use Cake\ORM\TableRegistry;
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,11 +54,18 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       </div>
 
 
-      <!-- Barra de la derecha. Aqui está el sing out-->
+      <!-- Barra de la derecha. Aqui está el sing out y editar perfil-->
+      <?php 
+        $username = $this->request->getSession()->read('id');
+        $idActual = $this->Usuario->getUser($username);
+      ?>
+
       <div class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
-        </li>
+        <?php echo ( '<a class="nav-link" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'">Editar perfil</a>'); ?>
+      </div>
+
+      <div class="navbar-nav px-3">      
+        <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>   
       </div>
       
     </nav>
@@ -73,7 +81,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
     </div>
     
-
     <div class="container-fluid">
 
       <div class="row">
