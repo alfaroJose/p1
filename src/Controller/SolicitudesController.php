@@ -142,7 +142,7 @@ class SolicitudesController extends AppController
             /** saca los datos del activo*/
             // $conn = ConnectionManager::get('default');
             //$stmt = $conn->execute("select a.plaque, a.description, b.name as brand, m.name as model, a.series, a.state
-           $SolicitudPDF = $this->Usuarios->patchEntity($usuario, $this->request->getData());  
+           $SolicitudPDF = $this->SolicitudPDF->patchEntity($SolicitudPDF, $this->request->getData());  
             //from assets a
             //inner join brands b on  b.id=a.brand
             //inner join models m on m.id=a.models_id
@@ -179,10 +179,9 @@ class SolicitudesController extends AppController
             }
             </style>
             <center><img src="C:\xampp\htdocs\Decanatura\src\Controller\images\logoucr.png"></center>
-            <title>Informe Técnico</title>
+            <title>Solicitud de Asistencia</title>
             <h2 align="center">UNIVERSIDAD DE COSTA RICA</h2>
-            <h2 align="center">UNIDAD DE ACTIVOS FIJOS</h2>
-            <h2 align="center">PRESTAMO DE ACTIVO FIJO</h2>
+            <h2 align="center">Escuela de Ciencias de la Computación e Informática</h2>
             <p>&nbsp;</p>
             <div id="element1" align="left"><strong>Unidad custodio:</strong>'.$this->escuela.'</div> <div id="element2" align="right"><strong>Fecha:</strong>'.$technicalReport->date.'</div>
             <p>&nbsp;</p>
