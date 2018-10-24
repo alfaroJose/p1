@@ -73,7 +73,7 @@ class InicioController extends AppController
                 $users = TableRegistry::get('Usuarios');
                 $index = $users->find()
                 ->select(['id'])
-                ->where(['id =' => $usuario])
+                ->where(['nombre_usuario =' => $usuario])
                 ->toList();
 
                 if ($index != null){ //Usuario ya ha ingresado antes
