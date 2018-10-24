@@ -6,7 +6,7 @@ use Cake\ORM\Entity;
 /**
  * Requisito Entity
  *
- * @property int $id
+ * @property int $numero
  * @property string $nombre
  * @property string $tipo
  */

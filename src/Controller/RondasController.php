@@ -56,7 +56,7 @@ class RondasController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('La ronda no se ha podido agregar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('La ronda no se pudo agregar. Por favor intente de nuevo.'));
         }
         $this->set(compact('ronda'));
     }
@@ -80,7 +80,7 @@ class RondasController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('La ronda no se ha podido modificar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('La ronda no se pudo modificar. Por favor intente de nuevo.'));
         }
         $this->set(compact('ronda'));
     }
@@ -99,7 +99,7 @@ class RondasController extends AppController
         if ($this->Rondas->delete($ronda)) {
             $this->Flash->success(__('La ronda ha sido eliminada.'));
         } else {
-            $this->Flash->error(__('La ronda no se ha podido eliminar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('La ronda no se pudo eliminar. Por favor intente de nuevo.'));
         }
 
         return $this->redirect(['action' => 'index']);
