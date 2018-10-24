@@ -2048,10 +2048,10 @@ class Validator implements ArrayAccess, IteratorAggregate, Countable
         $errors = [];
         // Loading default provider in case there is none
         $this->getProvider('default');
-        $message = 'The provided value is invalid';
+        $message = 'El campo digitado es inválido';
 
         if ($this->_useI18n) {
-            $message = __d('cake', 'The provided value is invalid');
+            $message = __d('cake', 'El campo digitado es inválido');
         }
 
         foreach ($rules as $name => $rule) {

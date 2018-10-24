@@ -13,8 +13,7 @@ use Cake\ORM\TableRegistry;
         <legend><?= __('Modificar usuario') ?></legend>
         <br>
         <h5> Datos personales </h5>
-
-        <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
             echo $this->Form->control('nombre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
@@ -22,18 +21,19 @@ use Cake\ORM\TableRegistry;
 
             echo $this->Form->control('segundo_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('cedula', ['label'=>['text'=>'Cédula'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('tipo_identificacion', ['options' =>['Cédula Nacional', 'Cédula Extranjera','DIMEX', 'Pasaporte'], 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
+            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
         </div>
         <br>
         <h5> Datos de seguridad </h5>
-        <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
-
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php       
             
-            echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre_usuario', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
@@ -43,7 +43,7 @@ use Cake\ORM\TableRegistry;
             $users = TableRegistry::get('Usuarios');
             $index = $users->find()
             ->select(['roles_id'])
-            ->where(['id =' => $username])
+            ->where(['nombre_usuario =' => $username])
             ->first();
             
             if($index->roles_id == 1){ //Es administrador

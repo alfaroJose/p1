@@ -17,11 +17,12 @@ class RondasFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
+        'id' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'numero' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'fecha_inicial' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'fecha_final' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['numero'], 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -39,9 +40,10 @@ class RondasFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'numero' => 1,
-                'fecha_inicial' => '2018-10-05',
-                'fecha_final' => '2018-10-05'
+                'fecha_inicial' => '2018-10-23',
+                'fecha_final' => '2018-10-23'
             ],
         ];
         parent::init();
