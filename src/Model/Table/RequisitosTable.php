@@ -32,8 +32,8 @@ class RequisitosTable extends Table
         parent::initialize($config);
 
         $this->setTable('requisitos');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
+        $this->setDisplayField('numero');
+        $this->setPrimaryKey('numero');
     }
 
     /**
@@ -45,15 +45,13 @@ class RequisitosTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('numero', 'create');
 
         $validator
             ->scalar('nombre')
             ->maxLength('nombre', 200)
             ->requirePresence('nombre', 'create')
-            ->notEmpty('nombre')
-            ->add('nombre', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('nombre');
 
         $validator
             ->scalar('tipo')
@@ -62,19 +60,5 @@ class RequisitosTable extends Table
             ->notEmpty('tipo');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['nombre']));
-
-        return $rules;
     }
 }

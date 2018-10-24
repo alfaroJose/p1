@@ -38,8 +38,7 @@ class UsuariosTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Roles', [
-            'foreignKey' => 'roles_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'roles_id'
         ]);
     }
 
@@ -52,8 +51,10 @@ class UsuariosTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->scalar('id')
+            ->maxLength('id', 50)
+            ->requirePresence('id', 'create')
+            ->notEmpty('id', 'Por favor complete este campo');
 
         $validator
             ->scalar('nombre')
@@ -70,41 +71,27 @@ class UsuariosTable extends Table
         $validator
             ->scalar('segundo_apellido')
             ->maxLength('segundo_apellido', 50)
-            ->allowEmpty('segundo_apellido');
+            ->requirePresence('segundo_apellido', 'create')
+            ->notEmpty('segundo_apellido', 'Por favor complete este campo');
 
         $validator
             ->scalar('correo')
             ->maxLength('correo', 100)
             ->requirePresence('correo', 'create')
-            ->notEmpty('correo', 'Por favor complete este campo')
-            ->add('correo', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('correo', 'Por favor complete este campo');
 
         $validator
             ->scalar('telefono')
-            ->minLength('telefono', 8, 'Incluya al menos 8 dígitos')
-            ->maxLength('telefono', 20, 'Incluya máximo 20 dígitos')
+            ->minLength('telefono', 8, 'Incluya solamente 8 dígitos')
+            ->maxLength('telefono', 8, 'Incluya solamente 8 dígitos')
             ->requirePresence('telefono', 'create')
             ->notEmpty('telefono', 'Por favor complete este campo');
 
         $validator
-            ->scalar('nombre_usuario')
-            ->maxLength('nombre_usuario', 50)
-            ->requirePresence('nombre_usuario', 'create')
-            ->notEmpty('nombre_usuario', 'Por favor complete este campo')
-            ->add('nombre_usuario', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->scalar('identificacion')            
-            ->maxLength('identificacion', 15, 'Incluya máximo 15 caracteres')
-            ->requirePresence('identificacion', 'create')
-            ->notEmpty('identificacion', 'Por favor complete este campo')
-            ->add('identificacion', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->scalar('tipo_identificacion')
-            ->maxLength('tipo_identificacion', 17)
-            ->requirePresence('tipo_identificacion', 'create')
-            ->notEmpty('tipo_identificacion', 'Por favor complete este campo');
+            ->scalar('cedula')
+            ->lengthBetween('cedula', [9, 15])
+            ->requirePresence('cedula', 'create')
+            ->notEmpty('cedula', 'Por favor complete este campo');
 
         return $validator;
     }
@@ -118,11 +105,9 @@ class UsuariosTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['correo']));
-        $rules->add($rules->isUnique(['nombre_usuario']));
-        $rules->add($rules->isUnique(['identificacion']));
         $rules->add($rules->existsIn(['roles_id'], 'Roles'));
 
         return $rules;
     }
-}
+}   
+

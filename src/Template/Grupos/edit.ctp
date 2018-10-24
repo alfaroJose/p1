@@ -7,7 +7,7 @@
 <div class="grupos form large-9 medium-8 columns content">
     <?= $this->Form->create($grupo) ?>
     <fieldset>
-        <legend><?= __('Editar Grupo') ?></legend>
+        <legend><?= __('Edit Grupo') ?></legend>
         <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
         <?php
             echo $this->Form->control('cursos_sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text','readonly' ]);

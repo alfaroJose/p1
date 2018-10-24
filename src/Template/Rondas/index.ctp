@@ -4,15 +4,16 @@
  * @var \App\Model\Entity\Ronda[]|\Cake\Collection\CollectionInterface $rondas
  */
 ?>
+
 <div class="rondas index large-9 medium-8 columns content">
     <h3><?= __('Rondas') ?></h3>
     <table id="rondas-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= 'Número' ?></th>
-                <th scope="col"><?= 'Fecha inicial' ?></th>
-                <th scope="col"><?= 'Fecha final' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col"><?= 'Numero' ?></th>
+                <th scope="col"><?= 'Fecha Inicio' ?></th>
+                <th scope="col"><?= 'Fecha Fin' ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-</div>
+
 
 <script type="text/javascript">
     $(document).ready( function () {
