@@ -111,4 +111,15 @@ class SolicitudesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    public function viewFile($filename) {
+
+        $this->viewBuilder()
+            ->className('Dompdf.Pdf')
+            ->layout('Dompdf.default')
+            ->options(['config' => [
+                'filename' => $filename,
+                'render' => 'browser',
+            ]]);
+    }
+}
 }
