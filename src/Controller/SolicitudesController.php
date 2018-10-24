@@ -142,7 +142,7 @@ class SolicitudesController extends AppController
             /** saca los datos del activo*/
             // $conn = ConnectionManager::get('default');
             //$stmt = $conn->execute("select a.plaque, a.description, b.name as brand, m.name as model, a.series, a.state
-         /*   $ = $this->Usuarios->patchEntity($usuario, $this->request->getData());  
+           $SolicitudPDF = $this->Usuarios->patchEntity($usuario, $this->request->getData());  
             //from assets a
             //inner join brands b on  b.id=a.brand
             //inner join models m on m.id=a.models_id
@@ -223,8 +223,6 @@ class SolicitudesController extends AppController
 			// Cuando se descarga el pdf inmediatamente se corta el flujo en el controlador, es como si hubiera un return
             $document->stream("Informe Tecnico-".$technicalReport->technical_report_id, array("Attachment"=>1));
             //1  = Download
-            //0 = Preview
-    
-    }*/
-}
+            //0 = Preview 
+    }
 }
