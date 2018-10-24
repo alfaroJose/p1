@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -52,12 +53,12 @@ class GruposTable extends Table
     {
         $validator
             ->requirePresence('numero', 'create')
-            ->lengthBetween('numero', [1,2])
+            ->lengthBetween('numero', [1,2], 'Incluya solamente 1 o 2 caracteres')
             ->notEmpty('numero', 'Por favor complete este campo.');
 
         $validator
             ->requirePresence('semestre', 'create')
-            ->lengthBetween('semestre', [1,1])
+            ->lengthBetween('semestre', [1,1], 'Incluya solamente 1 caracter')
             ->notEmpty('semestre', 'Por favor complete este campo.');
 
         $validator
@@ -113,6 +114,29 @@ class GruposTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
+    public function seleccionarCurso()
+    {
+        $cursos=$this->find()
+        ->select(['Cursos.sigla'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.id=cursos_id']
+            ]
+        ])
+        ->toList();
+        return $cursos;
+    }
+
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
     public function seleccionarCursos()
     {
         $cursos=$this->find()
@@ -127,6 +151,7 @@ class GruposTable extends Table
         ->toList();
         return $cursos;
     }
+
 
     /**
      * Returns a rules checker object that will be used for validating
@@ -149,4 +174,45 @@ class GruposTable extends Table
         ->toList();
         return $profesores;
     }
+
+
+
+        /*Función para obtener los datos de un curso para poder modificarlos*/
+        /**
+     * Función para obtener directamente desde la base de datos una tupla de grupos
+     *
+     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
+     * @param string|null $numero Grupo numero, parte de la llave compuesta.
+     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
+     * @param string|null $año Grupo año, parte de la llave compuesta.
+     * @return true si la operación es exitosa
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+
+    public function obtenerCursos($id = null){
+        $connect = ConnectionManager::get('default');
+        $sigla = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
+        return $sigla[0];
+    }
+
+    public function obtenerDatosCurso($id = null){
+
+        $datos=$this->find()
+        ->select(['Cursos.sigla'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.id=id']
+            ]
+        ])
+        ->where([
+          'cursos_id' => $id])
+        ->toList();
+        return $datos;
+    }
+
 }
+
+
+

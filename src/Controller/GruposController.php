@@ -88,6 +88,7 @@ class GruposController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido modificado.'));
 
@@ -96,7 +97,15 @@ class GruposController extends AppController
             $this->Flash->error(__('El grupo no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-        $this->set(compact('grupo', 'usuarios'));
+
+
+        
+        /*$cursos=[];
+        foreach ($cursos2 as $c ) {
+            array_push($cursos, $c->Cursos['sigla']);
+        }*/
+
+        $this->set(compact('grupo', 'usuarios', 'cursos'));
     }
 
     /**
@@ -118,4 +127,5 @@ class GruposController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 }
