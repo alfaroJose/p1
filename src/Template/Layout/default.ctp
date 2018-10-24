@@ -56,7 +56,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <!-- Barra de la derecha. Aqui está el sing out-->
       <div class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
+          <a class="nav-link" href="http://localhost/p1/inicio/logout">Cerrar Sesión </a>
         </li>
       </div>
       
