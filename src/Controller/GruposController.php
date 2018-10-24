@@ -86,6 +86,9 @@ class GruposController extends AppController
         $grupo = $this->Grupos->get($id, [
             'contain' => []
         ]);
+        $cursos = $this->Grupos->obtenerCursos($id);
+        debug($cursos);
+        die();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
 
