@@ -15,6 +15,16 @@ use App\Controller\AppController;
 class UsuariosController extends AppController
 {
 
+    private function test(){
+        $usuario = $this->getRequest()->getSession()-read('id');
+
+        if (null == $usuario){
+
+        }
+
+
+
+    }
     /**
      * Index method
      *
@@ -22,7 +32,6 @@ class UsuariosController extends AppController
      */
     public function index()
     {
-
         $this->paginate = [
             'contain' => ['Roles']
         ];
@@ -183,4 +192,3 @@ class UsuariosController extends AppController
         return $rol;
     }
 }
-
