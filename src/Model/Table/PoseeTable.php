@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Posee Model
  *
+ * @property \App\Model\Table\PermisosTable|\Cake\ORM\Association\BelongsTo $Permisos
  * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
  *
  * @method \App\Model\Entity\Posee get($primaryKey, $options = [])
@@ -34,9 +35,13 @@ class PoseeTable extends Table
         parent::initialize($config);
 
         $this->setTable('posee');
-        $this->setDisplayField('permisos_modulo');
-        $this->setPrimaryKey(['permisos_modulo', 'permisos_funcionalidad', 'roles_id']);
+        $this->setDisplayField('roles_id');
+        $this->setPrimaryKey(['roles_id', 'permisos_id']);
 
+        $this->belongsTo('Permisos', [
+            'foreignKey' => 'permisos_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'roles_id',
             'joinType' => 'INNER'
@@ -51,16 +56,6 @@ class PoseeTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->scalar('permisos_modulo')
-            ->maxLength('permisos_modulo', 50)
-            ->allowEmpty('permisos_modulo', 'create');
-
-        $validator
-            ->scalar('permisos_funcionalidad')
-            ->maxLength('permisos_funcionalidad', 50)
-            ->allowEmpty('permisos_funcionalidad', 'create');
-
         $validator
             ->requirePresence('estado', 'create')
             ->notEmpty('estado');
@@ -77,6 +72,7 @@ class PoseeTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['permisos_id'], 'Permisos'));
         $rules->add($rules->existsIn(['roles_id'], 'Roles'));
 
         return $rules;
