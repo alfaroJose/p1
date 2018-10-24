@@ -122,7 +122,7 @@ class SolicitudesController extends AppController
                 'render' => 'browser',
             ]]);
     }
-  /*  public function generate($id = null)
+   public function generate($id = null)
     {
 
         // se crea una entidad para luego poder hacer los validadores
@@ -226,4 +226,5 @@ class SolicitudesController extends AppController
             //0 = Preview
     
     }*/
+}
 }
