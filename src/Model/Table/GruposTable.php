@@ -82,7 +82,7 @@ class GruposTable extends Table
     public function getIndexValues(){
 
         $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
+        ->select(['Cursos.sigla','Cursos.nombre','Cursos.id','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
         ->join([
             'Cursos'=>[
                      'table'=>'Cursos',
@@ -192,7 +192,7 @@ class GruposTable extends Table
     public function obtenerCursos($id = null){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
-        return $sigla[0];
+        return $sigla;
     }
 
     public function obtenerDatosCurso($id = null){

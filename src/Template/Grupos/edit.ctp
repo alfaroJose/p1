@@ -15,9 +15,9 @@
         //foreach ($todo as $grupo)
         //debug(iterator_to_array($cursos));
         //die;
-            $cursos = $this->Grupos->obtenerCursos($id);
+            //$cursos = $this->Grupos->obtenerCursos($id);
             echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $cursos]);
-            //echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text','readonly' ], ['options' => $cursos1]);
+            //echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text','readonly' ], ['options' => $cursos]);
             echo $this->Form->control('usuarios_id', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text','readonly' ]);
             echo $this->Form->control('numero', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
             echo $this->Form->control('semestre', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Semestre'],'type' => 'text' ]);

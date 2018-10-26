@@ -19,6 +19,6 @@ class GruposHelper extends Helper
 
     public function obtenerCursos($id = null){
         $sigla = (new GruposTable)->obtenerCursos($id = null);
-        return $sigla[0];
+        return $sigla;
     }
 }
