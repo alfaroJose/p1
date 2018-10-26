@@ -69,23 +69,26 @@ class UsuariosController extends AppController
 
         //Inicia seguridad
         $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne == '' || $carne != $usuario->nombre_usuario){//Si son el mismo usuario puede editar
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{//Puedo ser un usuario con permisos
+        
+        //Puedo ser un usuario con permisos y quiero ver el ususario
+        if($carne == ''){
             $connect = ConnectionManager::get('default');
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
+            
             $consulta = "select pos.estado
                         from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 17 and roles_id = ".$rol[0][0].";";
-                         //17 = Consultar Usuario
+                            where per.id = 17 and roles_id = ".$rol[0][0].";";
+                            //17 = Consultar Usuario
             $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+
+                if($tupla[0][0] != '1' || $carne != $usuario->nombre_usuario){//1 = Tiene permisos para consultar usuarios
+                                        //Soy el mismo usuario que quiero ver
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
+                }
+        }
+        else{
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         //Cierra la seguridad
 
@@ -240,10 +243,8 @@ class UsuariosController extends AppController
        
         //Inicia seguridad
         $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne == '' || $carne != $usuario->nombre_usuario){//Si son el mismo usuario puede editar
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{//Puedo ser un usuario con permisos
+
+        if($carne != '' ){//Puedo ser un usuario con permisos
             $connect = ConnectionManager::get('default');
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
@@ -254,9 +255,13 @@ class UsuariosController extends AppController
                          //20 = Editar Usuario
             $tupla =  $connect->execute($consulta)->fetchAll();      
  
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+             if($tupla[0][0] != '1' ||$carne != $usuario->nombre_usuario){//1 = Tiene permisos para consultar usuarios
+                                    //Si soy el mismo usuario me puedo editar
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
              }
+        }
+        else{
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         //Cierra la seguridad
 
