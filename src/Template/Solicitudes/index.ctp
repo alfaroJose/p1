@@ -4,35 +4,25 @@
  * @var \App\Model\Entity\Solicitude[]|\Cake\Collection\CollectionInterface $solicitudes
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Solicitude'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Usuarios'), ['controller' => 'Usuarios', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Usuario'), ['controller' => 'Usuarios', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Grupos'), ['controller' => 'Grupos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Grupo'), ['controller' => 'Grupos', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="solicitudes index large-9 medium-8 columns content">
     <h3><?= __('Solicitudes') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('carrera') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('promedio') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cantidad_horas') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tipo_horas') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('estado') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('asistencia_externa') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cantidad_horas_externa') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tipo_horas_externa') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('fecha') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('justificación') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ronda') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('usuarios_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('grupos_id') ?></th>
+                <th scope="col"><?= 'id' ?></th>
+                <th scope="col"><?= 'carrera' ?></th>
+                <th scope="col"><?= 'promedio' ?></th>
+                <th scope="col"><?= 'cantidad_horas' ?></th>
+                <th scope="col"><?= 'tipo_horas' ?></th>
+                <th scope="col"><?= 'estado' ?></th>
+                <th scope="col"><?= 'asistencia_externa' ?></th>
+                <th scope="col"><?= 'cantidad_horas_externa' ?></th>
+                <th scope="col"><?= 'tipo_horas_externa' ?></th>
+                <th scope="col"><?= 'fecha' ?></th>
+                <th scope="col"><?= 'justificación' ?></th>
+                <th scope="col"><?= 'ronda' ?></th>
+                <th scope="col"><?= 'usuarios_id' ?></th>
+                <th scope="col"><?= 'grupos_id' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -63,16 +53,9 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+    <br>
+    <br>
+    
 </div>
 <script type="text/javascript">
     $(document).ready( function () {

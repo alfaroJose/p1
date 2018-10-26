@@ -21,12 +21,13 @@ class SolicitudesController extends AppController
      */
     public function index()
     {
+        $todo = $this->Solicitudes->getIndexValues();
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
         ];
         $solicitudes = $this->paginate($this->Solicitudes);
 
-        $this->set(compact('solicitudes'));
+        $this->set(compact('solicitudes','todo'));
     }
 
     /**
