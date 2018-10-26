@@ -5,26 +5,15 @@
  */
 ?>
 
-<div class = "float-right">   
-    <?= $this->Html->image('ucrLogo.png', ['alt' => 'CakePHP']);?>     
-</div>
-<div class = "float-left">
-	<?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP']);?>
-</div>
-<br><br>
-<br><br>
-<br><br>
-
 <script type="text/javascript">
     $(document).ready( function () {
     	$('#checkBoxHabilitar').on('click', function() {
 			disabledCheckboxes();
-			if(!$(this).is(':checked')){
-				//$('#Guardar').removeAttr('disabled');
-				$('#Guardar').prop('disabled', true);
+			if($(this).is(':checked')){
+				$('#Guardar').removeAttr('disabled');
 			}
 			else{
-				//$('#Guardar').prop('disabled', true);
+				$('#Guardar').prop('disabled', true);
 			}
     	});
 
@@ -43,74 +32,70 @@
 
     function poblarMatriz(p){//Se pasa la lista de permisos
     	for(var i = 0; i < p.length; i++){
-    		if(p[i].permisos_funcionalidad == 'Insertar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox1').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox2').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox3').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox4').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox5').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Modificar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox6').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox7').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox8').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox9').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox10').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Eliminar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox11').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox12').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox13').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox14').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox15').prop("checked", true);
-    			}
-    		}
-    		else if(p[i].permisos_funcionalidad == 'Consultar'){
-    			if(p[i].permisos_modulo == 'Usuarios'){
-    				$('#checkbox16').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-    				$('#checkbox17').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Rondas'){
-    				$('#checkbox18').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Requisitos'){
-    				$('#checkbox19').prop("checked", true);
-    			}
-    			else if(p[i].permisos_modulo == 'Solicitudes'){
-    				$('#checkbox20').prop("checked", true);
-    			}
-    		}
+            if(p[i].estado == 1){
+                switch(p[i].permisos_id){
+                    case 1:
+                        $('#checkboxConsCursos').prop("checked", true);
+                        break;
+                    case 2:
+                        $('#checkboxElimCursos').prop("checked", true);
+                        break;
+                    case 3:
+                        $('#checkboxInsUsuarios').prop("checked", true);
+                        break;
+                    case 4:
+                        $('#checkboxModCursos').prop("checked", true);
+                        break;
+                    case 5:
+                        $('#checkboxConsReq').prop("checked", true);
+                        break;
+                    case 6:
+                        $('#checkboxElimReq').prop("checked", true);
+                        break;
+                    case 7:
+                        $('#checkboxInsReq').prop("checked", true);
+                        break;
+                    case 8:
+                        $('#checkboxModReq').prop("checked", true);
+                        break;
+                    case 9:
+                        $('#checkboxConsRondas').prop("checked", true);
+                        break;
+                    case 10:
+                        $('#checkboxElimRondas').prop("checked", true);
+                        break;
+                    case 11:
+                        $('#checkboxInsRondas').prop("checked", true);
+                        break;
+                    case 12:
+                        $('#checkboxModRondas').prop("checked", true);
+                        break;
+                    case 13:
+                        $('#checkboxConsSoli').prop("checked", true);
+                        break;
+                    case 14:
+                        $('#checkboxElimSoli').prop("checked", true);
+                        break;
+                    case 15:
+                        $('#checkboxInsSoli').prop("checked", true);
+                        break;
+                    case 16:
+                        $('#checkboxModSoli').prop("checked", true);
+                        break;
+                    case 17:
+                        $('#checkboxConsUsuarios').prop("checked", true);
+                        break;
+                    case 18:
+                        $('#checkboxElimUsuarios').prop("checked", true);
+                        break;
+                    case 19:
+                        $('#checkboxInsUsuarios').prop("checked", true);
+                        break;
+                    case 20:
+                        $('#checkboxModUsuarios').prop("checked", true);
+                        break;
+                }
+            }
     	}
     }
 
@@ -187,6 +172,27 @@
 	</div>
 
 	<br>
+
+    <?= $this->Form->hidden("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxModUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxModSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxElimUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxConsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <?= $this->Form->hidden("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 	
 	<table style="width:100%" class="input-matrix">
 		<thead>
@@ -203,38 +209,41 @@
 
 		<tr>
 			<td>Insertar</td>
-			<td><?= $this->Form->checkbox("checkbox1", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox1"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox2", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox2"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox3", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox3"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox4", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox4"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox5", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox5"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsUsuarios"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsCursos"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsRondas"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsReq"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsSoli"]); ?></td>
 		</tr>
 		<tr>
 			<td>Modificar</td>
-			<td><?= $this->Form->checkbox("checkbox6", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox6"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox7", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox7"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox8", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox8"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox9", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox9"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox10", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox10"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxModUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModUsuarios"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModCursos"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModRondas"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModReq"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxModSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModSoli"]); ?></td>
 		</tr>
 		<tr>
 			<td>Eliminar</td>
-			<td><?= $this->Form->checkbox("checkbox11", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox11"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox12", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox12"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox13", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox13"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox14", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox14"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox15", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox15"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxElimUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimUsuarios"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimCursos"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimRondas"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimReq"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimSoli"]); ?></td>
 		</tr>
 		<tr>
 			<td>Consultar</td>
-			<td><?= $this->Form->checkbox("checkbox16", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox16"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox17", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox17"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox18", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox18"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox19", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox19"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox20", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox20"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxConsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsUsuarios"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCursos"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsRondas"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsReq"]); ?></td>
+			<td><?= $this->Form->checkbox("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsSoli"]); ?></td>
 		</tr>
 		</tbody>
 	</table>
+
+    <br>
+    <br>
 
 	<?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
     <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>

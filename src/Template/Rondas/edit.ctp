@@ -51,10 +51,10 @@ $.datepicker.regional['es'] = {
 };
 $.datepicker.setDefaults($.datepicker.regional['es']);
 $( function() {
-	$( "#fecha-inicial" ).datepicker({dateFormat: 'yy-mm-dd', onSelect: function(selected) {$("#fecha-final").datepicker("option","minDate", selected)}});
+  $( "#fecha-inicial" ).datepicker({dateFormat: 'yy-mm-dd', onSelect: function(selected) {$("#fecha-final").datepicker("option","minDate", selected)}});
 } );
 $( function() {
-	$( "#fecha-final" ).datepicker({dateFormat: 'yy-mm-dd'});
+  $( "#fecha-final" ).datepicker({dateFormat: 'yy-mm-dd'});
 } );
 </script>
 </head>

@@ -1,23 +1,19 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
-
 use App\Model\Table\RequisitosTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-
 /**
  * App\Model\Table\RequisitosTable Test Case
  */
 class RequisitosTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
      * @var \App\Model\Table\RequisitosTable
      */
     public $Requisitos;
-
     /**
      * Fixtures
      *
@@ -26,7 +22,6 @@ class RequisitosTableTest extends TestCase
     public $fixtures = [
         'app.requisitos'
     ];
-
     /**
      * setUp method
      *
@@ -38,7 +33,6 @@ class RequisitosTableTest extends TestCase
         $config = TableRegistry::getTableLocator()->exists('Requisitos') ? [] : ['className' => RequisitosTable::class];
         $this->Requisitos = TableRegistry::getTableLocator()->get('Requisitos', $config);
     }
-
     /**
      * tearDown method
      *
@@ -47,10 +41,8 @@ class RequisitosTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Requisitos);
-
         parent::tearDown();
     }
-
     /**
      * Test initialize method
      *
@@ -60,13 +52,21 @@ class RequisitosTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-
     /**
      * Test validationDefault method
      *
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

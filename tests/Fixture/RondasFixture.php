@@ -1,15 +1,12 @@
 <?php
 namespace App\Test\Fixture;
-
 use Cake\TestSuite\Fixture\TestFixture;
-
 /**
  * RondasFixture
  *
  */
 class RondasFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -30,7 +27,6 @@ class RondasFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
