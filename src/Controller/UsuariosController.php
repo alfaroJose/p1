@@ -141,9 +141,9 @@ class UsuariosController extends AppController
 
             if ($usuario->tipo_identificacion == 0) {
                 $usuario->tipo_identificacion = 'Cédula Nacional';
-            } else if ($usuario->roles_id == 1){
+            } else if ($usuario->tipo_identificacion == 1){
                 $usuario->tipo_identificacion = 'Cédula Extranjera';
-            } else if ($usuario->roles_id == 2){
+            } else if ($usuario->tipo_identificacion == 2){
                 $usuario->tipo_identificacion = 'DIMEX';
             } else {
                 $usuario->tipo_identificacion = 'Pasaporte';
@@ -175,9 +175,9 @@ class UsuariosController extends AppController
 
             if ($usuario->tipo_identificacion == 0) {
                 $usuario->tipo_identificacion = 'Cédula Nacional';
-            } else if ($usuario->roles_id == 1){
+            } else if ($usuario->tipo_identificacion == 1){
                 $usuario->tipo_identificacion = 'Cédula Extranjera';
-            } else if ($usuario->roles_id == 2){
+            } else if ($usuario->tipo_identificacion == 2){
                 $usuario->tipo_identificacion = 'DIMEX';
             } else {
                 $usuario->tipo_identificacion = 'Pasaporte';
@@ -209,9 +209,9 @@ class UsuariosController extends AppController
 
             if ($usuario->tipo_identificacion == 0) {
                 $usuario->tipo_identificacion = 'Cédula Nacional';
-            } else if ($usuario->roles_id == 1){
+            } else if ($usuario->tipo_identificacion == 1){
                 $usuario->tipo_identificacion = 'Cédula Extranjera';
-            } else if ($usuario->roles_id == 2){
+            } else if ($usuario->tipo_identificacion == 2){
                 $usuario->tipo_identificacion = 'DIMEX';
             } else {
                 $usuario->tipo_identificacion = 'Pasaporte';
@@ -280,11 +280,11 @@ class UsuariosController extends AppController
                 $usuario->roles_id = '4';
             }
 
-            if ($usuario->tipo_identificacion == 0) {
+            if ($usuario->tipo_identificacion == 1) {
                 $usuario->tipo_identificacion = 'Cédula Nacional';
-            } else if ($usuario->roles_id == 1){
+            } else if ($usuario->tipo_identificacion == 2){
                 $usuario->tipo_identificacion = 'Cédula Extranjera';
-            } else if ($usuario->roles_id == 2){
+            } else if ($usuario->tipo_identificacion == 3){
                 $usuario->tipo_identificacion = 'DIMEX';
             } else {
                 $usuario->tipo_identificacion = 'Pasaporte';
