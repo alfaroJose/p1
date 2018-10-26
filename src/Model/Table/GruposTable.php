@@ -147,16 +147,9 @@ class GruposTable extends Table
      */
     public function seleccionarCursos()
     {
-        $cursos=$this->find()
-        ->select(['Cursos.sigla'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.id=cursos_id']
-            ]
-        ])
-        ->toList();
+
+        $connect = ConnectionManager::get('default');
+        $cursos = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
         return $cursos;
     }
 
