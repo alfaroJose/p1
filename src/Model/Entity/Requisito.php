@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property string $nombre
  * @property string $tipo
  */
+
 class Requisito extends Entity
 {
 
