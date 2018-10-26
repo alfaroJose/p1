@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+//Estos dos sirven para las consultas
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
+
 /**
  * Inicio Controller
  *
