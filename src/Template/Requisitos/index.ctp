@@ -5,6 +5,7 @@ $contadorColumnas = 1;
  * @var \App\Model\Entity\Requisito[]|\Cake\Collection\CollectionInterface $requisitos
  */
 ?>
+
 <div class="requisitos index large-9 medium-8 columns content">
     <h3><?= __('Requisitos') ?></h3>
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">

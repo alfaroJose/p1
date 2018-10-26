@@ -3,7 +3,10 @@ namespace Cake\Core\Configure;
 namespace App\Controller;
 
 use App\Controller\AppController;
+
+//Estos dos sirven para las consultas
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Inicio Controller
@@ -64,7 +67,7 @@ class InicioController extends AppController
 
                 //Todos los nombre_usuario se guardan en minúscula
                 $usuario = strtolower($usuario);
-
+              
                 //Guardamos el id del usuario en la sesion
                 $name = $this->getRequest()->getSession()->write('id',$usuario);
                 //Para sacarlos es $this->getRequest()->getSession()->read('id');

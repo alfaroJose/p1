@@ -5,6 +5,7 @@ $tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
  * @var \App\Model\Entity\Requisito $requisito
  */
 ?>
+
 <div class="requisitos form large-9 medium-8 columns content">
     <?= $this->Form->create($requisito) ?>
     <fieldset>
