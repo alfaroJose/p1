@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Dompdf\Dompdf;
-
+use Cake\Datasource\ConnectionManager;
 /**
  * Solicitudes Controller
  *
