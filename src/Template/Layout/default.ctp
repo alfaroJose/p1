@@ -53,17 +53,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
       
         <!-- Barra de la derecha. Aqui está el sing out y editar perfil-->     
-        <div class = 'nav-link' style="color: #ffffff;>
+        <div class = 'nav-link'>
           <?php 
             $username = $this->request->getSession()->read('id');
             $idActual = $this->Usuario->getUser($username);
  
             if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
-              echo ( '<a href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil</a>'); 
+              echo ( '<a style="color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
             }
           ?>
 
-          <a href="http://localhost/p1/inicio/logout/">Cerrar Sesión</a>   
+          <a style="color: rgb(255, 255, 255);"  href="http://localhost/p1/inicio/logout/">Cerrar Sesión</a>   
 
         </div>      
       </div>
