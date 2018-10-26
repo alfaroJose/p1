@@ -104,18 +104,20 @@ class PoseeController extends AppController
     public function index()
     {
          $carne = $this->getRequest()->getSession()->read('id');
+         
          if($carne != null){
-
             $connect = ConnectionManager::get('default');
-            $consulta = "select * from usuarios where nombre_usuario = '".$carne."';";
+            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $tupla =  $connect->execute($consulta)->fetchAll();
            
-             if($tupla != 1){//1 = Administrador
+             if($tupla[0][0] != '1'){//1 = Administrador
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
              }
          }
          else{
+            
              $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
          }
 
         $query = $this->Posee->find('all');//Toma todas las tuplas
