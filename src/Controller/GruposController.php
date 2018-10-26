@@ -55,6 +55,7 @@ class GruposController extends AppController
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            debug($grupo);
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
 
@@ -67,11 +68,14 @@ class GruposController extends AppController
         foreach ($cursos2 as $c ) {
             array_push($cursos, $c->Cursos['sigla']);
         }
-        $usuarios = $this->Grupos->seleccionarProfesores();
+
+        $profesores2 = $this->Grupos->seleccionarProfesores();
+        $profesores=[];
+        foreach ($profesores2 as $p) {
+            array_push($profesores, $p->nombre);
+        }
         
-        //debug($usuarios);
-        //debug($cursos2);
-        $this->set(compact('grupo', 'usuarios', 'cursos'));
+        $this->set(compact('grupo', 'profesores', 'cursos'));
     }
 
     /**

@@ -13,7 +13,7 @@
          <?php
          echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');
             echo ('<label> Siglas de Cursos </label>');
-            echo $this->Form->select( 'sigla', $cursos);
+            echo $this->Form->select( 'sigla', $cursos );
             echo ('</div><br>');
 
             echo $this->Form->control('numero',['required'=>true, 'pattern' => '[0-9]{1,2}' ,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
@@ -22,7 +22,7 @@
 
             echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');
             echo ('<label> Profesores </label>');
-            echo $this->Form->select( 'usuarios_id', $usuarios);
+            echo $this->Form->select( 'nombre', $profesores );
             echo ('</div><br>');
         ?>
     </fieldset>

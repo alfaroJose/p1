@@ -4,7 +4,9 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -137,16 +139,11 @@ class GruposTable extends Table
      */
     public function seleccionarProfesores()
     {
-        $profesores=$this->find()
-        ->select(['Usuarios.nombre', 'Usuarios.primer_apellido'])
-        ->join([
-            'Usuarios'=>[
-                     'table'=>'Usuarios',
-                     'type'=>'LEFT',
-                     'conditions'=>['Usuarios.id=usuarios_id', 'Usuarios.roles_id=3']
-            ]
-        ])
-        ->toList();
+            $users = TableRegistry::get('Usuarios');
+            $profesores = $users->find()
+            ->select(['nombre'])
+            ->where(['roles_id =' => 3])
+            ->toList();
         return $profesores;
     }
 }
