@@ -1,5 +1,4 @@
 <?php
-$contadorColumnas = 1;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Requisito[]|\Cake\Collection\CollectionInterface $requisitos
@@ -11,7 +10,6 @@ $contadorColumnas = 1;
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= 'Número' ?></th>
                 <th scope="col"><?= 'Requisito' ?></th>
                 <th scope="col"><?= 'Tipo' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -20,15 +18,11 @@ $contadorColumnas = 1;
         <tbody>
             <?php foreach ($requisitos as $requisito): ?>
             <tr>
-                <td><?= h($contadorColumnas) ?></td>
                 <td><?= h($requisito->nombre) ?></td>
                 <td><?= h($requisito->tipo) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->numero],['escape'=>false,'style'=>'font-size:22px;'])?>
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->numero], ['confirm' => __('Por favor confirme si desea eliminar el requisito nº {0}', $contadorColumnas),'style'=>'font-size:22px;','escape'=>false])?>
-                    <?php
-                    $contadorColumnas++;
-                    ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->id],['escape'=>false,'style'=>'font-size:22px;'])?>
+                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->id], ['confirm' => __('Se va a eliminar el siguiente requisito: \n \n{0}', $requisito->nombre),'style'=>'font-size:22px;','escape'=>false])?>
                 </td>
             </tr>
             <?php endforeach; ?>
