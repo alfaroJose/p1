@@ -129,4 +129,8 @@ class SolicitudesTable extends Table
 
         return $rules;
     }
+
+    public function getIndexValues(){
+        
+    }
 }

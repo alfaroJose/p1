@@ -9,31 +9,24 @@
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= 'id' ?></th>
-                <th scope="col"><?= 'carrera' ?></th>
-                <th scope="col"><?= 'promedio' ?></th>
-                <th scope="col"><?= 'cantidad_horas' ?></th>
-                <th scope="col"><?= 'tipo_horas' ?></th>
-                <th scope="col"><?= 'estado' ?></th>
-                <th scope="col"><?= 'asistencia_externa' ?></th>
-                <th scope="col"><?= 'cantidad_horas_externa' ?></th>
-                <th scope="col"><?= 'tipo_horas_externa' ?></th>
-                <th scope="col"><?= 'fecha' ?></th>
-                <th scope="col"><?= 'justificación' ?></th>
-                <th scope="col"><?= 'ronda' ?></th>
-                <th scope="col"><?= 'usuarios_id' ?></th>
-                <th scope="col"><?= 'grupos_id' ?></th>
+                
+                <th scope="col"><?= 'Sigla' ?></th>
+                <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Grupo' ?></th>
+                <th scope="col"><?= 'Profesor' ?></th>
+                <th scope="col"><?= 'Estudiante' ?></th>
+                <th scope="col"><?= 'Estado' ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($solicitudes as $solicitude): ?>
             <tr>
-                <td><?= $this->Number->format($solicitude->id) ?></td>
+                <!--<td><?= $this->Number->format($solicitude->id) ?></td>
                 <td><?= h($solicitude->carrera) ?></td>
                 <td><?= $this->Number->format($solicitude->promedio) ?></td>
                 <td><?= $this->Number->format($solicitude->cantidad_horas) ?></td>
-                <td><?= h($solicitude->tipo_horas) ?></td>
+                <td><?= h($solicitude->tipo_horas) ?></td>-->
                 <td><?= h($solicitude->estado) ?></td>
                 <td><?= h($solicitude->asistencia_externa) ?></td>
                 <td><?= $this->Number->format($solicitude->cantidad_horas_externa) ?></td>
