@@ -16,8 +16,16 @@
         //debug(iterator_to_array($cursos));
         //die;
             //$cursos = $this->Grupos->obtenerCursos($id);
+
+            echo ('<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">');
+            //echo ('<label> Siglas de Cursos </label>');
+            echo $this->Form->control( 'sigla',['type'=>'text','readonly','value'=>$cursos[0][0]]);
+            //echo $this->Form->select( 'sigla', $correo,['empty' =>true]);
+            echo ('</div><br>');
+
             echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $cursos]);
-            echo $this->Form->control('Profesor', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $correo]);
+            echo $this->Form->control('Profesor', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $correos, 'default'=>$defaultSelect]);
+            //echo $this->Form->control('usuarios_id', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text' ]);
             //echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text','readonly' ], ['options' => $cursos]);
             //echo $this->Form->control('usuarios_id', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text','readonly' ]);
             echo $this->Form->control('numero', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
