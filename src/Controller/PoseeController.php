@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Posee Controller
@@ -20,65 +21,65 @@ class PoseeController extends AppController
     private function guardarDatos($datos = null, $rolId = null){
         foreach ($datos as $dato => $value) {
             $noCheckbox = false;
-            if($dato == "checkbox1"){
-                $poseeTupla = $this->Posee->get(['Usuarios','Insertar', $rolId]);
+            if($dato == "checkboxInsUsuarios"){
+                $poseeTupla = $this->Posee->get([$rolId, 19]);
             }
-            else if($dato == "checkbox2"){
-                $poseeTupla = $this->Posee->get(['Cursos-Grupos','Insertar', $rolId]);
+            else if($dato == "checkboxInsCursos"){
+                $poseeTupla = $this->Posee->get([$rolId, 3]);
             }
-            else if($dato == "checkbox3"){
-                $poseeTupla = $this->Posee->get(['Rondas','Insertar', $rolId]);
+            else if($dato == "checkboxInsRondas"){
+                $poseeTupla = $this->Posee->get([$rolId, 11]);
             }
-            else if($dato == "checkbox4"){
-                $poseeTupla = $this->Posee->get(['Requisitos','Insertar', $rolId]);
+            else if($dato == "checkboxInsReq"){
+                $poseeTupla = $this->Posee->get([$rolId, 7]);
             }
-            else if($dato == "checkbox5"){
-                $poseeTupla = $this->Posee->get(['Solicitudes','Insertar', $rolId]);
+            else if($dato == "checkboxInsSoli"){
+                $poseeTupla = $this->Posee->get([$rolId, 15]);
             }
-            else if($dato == "checkbox6"){
-                $poseeTupla = $this->Posee->get(['Usuarios','Modificar', $rolId]);
+            else if($dato == "checkboxModUsuarios"){
+                $poseeTupla = $this->Posee->get([$rolId, 20]);
             }
-            else if($dato == "checkbox7"){
-                $poseeTupla = $this->Posee->get(['Cursos-Grupos','Modificar', $rolId]);
+            else if($dato == "checkboxModCursos"){
+                $poseeTupla = $this->Posee->get([$rolId, 4]);
             }
-            else if($dato == "checkbox8"){
-                $poseeTupla = $this->Posee->get(['Rondas','Modificar', $rolId]);
+            else if($dato == "checkboxModRondas"){
+                $poseeTupla = $this->Posee->get([$rolId, 12]);
             }
-            else if($dato == "checkbox9"){
-                $poseeTupla = $this->Posee->get(['Requisitos','Modificar', $rolId]);
+            else if($dato == "checkboxModReq"){
+                $poseeTupla = $this->Posee->get([$rolId, 8]);
             }
-            else if($dato == "checkbox10"){
-                $poseeTupla = $this->Posee->get(['Solicitudes','Modificar', $rolId]);
+            else if($dato == "checkboxModSoli"){
+                $poseeTupla = $this->Posee->get([$rolId, 16]);
             }
-            else if($dato == "checkbox11"){
-                $poseeTupla = $this->Posee->get(['Usuarios','Eliminar', $rolId]);
+            else if($dato == "checkboxElimUsuarios"){
+                $poseeTupla = $this->Posee->get([$rolId, 18]);
             }
-            else if($dato == "checkbox12"){
-                $poseeTupla = $this->Posee->get(['Cursos-Grupos','Eliminar', $rolId]);
+            else if($dato == "checkboxElimCursos"){
+                $poseeTupla = $this->Posee->get([$rolId, 2]);
             }
-            else if($dato == "checkbox13"){
-                $poseeTupla = $this->Posee->get(['Rondas','Eliminar', $rolId]);
+            else if($dato == "checkboxElimRondas"){
+                $poseeTupla = $this->Posee->get([$rolId, 10]);
             }
-            else if($dato == "checkbox14"){
-                $poseeTupla = $this->Posee->get(['Requisitos','Eliminar', $rolId]);
+            else if($dato == "checkboxElimReq"){
+                $poseeTupla = $this->Posee->get([$rolId, 6]);
             }
-            else if($dato == "checkbox15"){
-                $poseeTupla = $this->Posee->get(['Solicitudes','Eliminar', $rolId]);
+            else if($dato == "checkboxElimSoli"){
+                $poseeTupla = $this->Posee->get([$rolId, 14]);
             }
-            else if($dato == "checkbox16"){
-                $poseeTupla = $this->Posee->get(['Usuarios','Consultar', $rolId]);
+            else if($dato == "checkboxConsUsuarios"){
+                $poseeTupla = $this->Posee->get([$rolId, 17]);
             }
-            else if($dato == "checkbox17"){
-                $poseeTupla = $this->Posee->get(['Cursos-Grupos','Consultar', $rolId]);
+            else if($dato == "checkboxConsCursos"){
+                $poseeTupla = $this->Posee->get([$rolId, 1]);
             }
-            else if($dato == "checkbox18"){
-                $poseeTupla = $this->Posee->get(['Rondas','Consultar', $rolId]);
+            else if($dato == "checkboxConsRondas"){
+                $poseeTupla = $this->Posee->get([$rolId, 9]);
             }
-            else if($dato == "checkbox19"){
-                $poseeTupla = $this->Posee->get(['Requisitos','Consultar', $rolId]);
+            else if($dato == "checkboxConsReq"){
+                $poseeTupla = $this->Posee->get([$rolId, 5]);
             }
-            else if($dato == "checkbox20"){
-                $poseeTupla = $this->Posee->get(['Solicitudes','Consultar', $rolId]);
+            else if($dato == "checkboxConsSoli"){
+                $poseeTupla = $this->Posee->get([$rolId, 13]);
             }
             else{
                 $noCheckbox = true;//Cualquier dato que no sea checkbox
@@ -92,8 +93,7 @@ class PoseeController extends AppController
                 }
                 $this->Posee->save($poseeTupla);
             }   
-        }
-            
+        }       
     }
     /**
      * Index method
@@ -103,6 +103,21 @@ class PoseeController extends AppController
 
     public function index()
     {
+         $carne = $this->getRequest()->getSession()->read('id');
+         if($carne != null){
+
+            $connect = ConnectionManager::get('default');
+            $consulta = "select * from usuarios where nombre_usuario = '".$carne."';";
+            $tupla =  $connect->execute($consulta)->fetchAll();
+           
+             if($tupla != 1){//1 = Administrador
+                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+
         $query = $this->Posee->find('all');//Toma todas las tuplas
         $posee = $query->toArray();//
         $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection
