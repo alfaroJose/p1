@@ -1,16 +1,12 @@
 <?php
 namespace App\Test\Fixture;
-
 use Cake\TestSuite\Fixture\TestFixture;
-
 /**
  * RequisitosFixture
  *
  */
-
 class RequisitosFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -31,7 +27,6 @@ class RequisitosFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *

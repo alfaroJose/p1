@@ -1,11 +1,9 @@
 <?php
 namespace App\Model\Table;
-
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
 /**
  * Requisitos Model
  *
@@ -18,10 +16,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Requisito[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Requisito findOrCreate($search, callable $callback = null, $options = [])
  */
-
 class RequisitosTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -31,12 +27,10 @@ class RequisitosTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
         $this->setTable('requisitos');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
     }
-
     /**
      * Default validation rules.
      *
@@ -48,23 +42,19 @@ class RequisitosTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
         $validator
             ->scalar('nombre')
             ->maxLength('nombre', 200)
             ->requirePresence('nombre', 'create')
             ->notEmpty('nombre')
             ->add('nombre', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
         $validator
             ->scalar('tipo')
             ->maxLength('tipo', 18)
             ->requirePresence('tipo', 'create')
             ->notEmpty('tipo');
-
         return $validator;
     }
-
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -75,7 +65,6 @@ class RequisitosTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['nombre']));
-
         return $rules;
     }
 }

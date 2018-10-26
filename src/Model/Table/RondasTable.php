@@ -1,11 +1,10 @@
 <?php
 namespace App\Model\Table;
-
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Datasource\ConnectionManager;
 /**
  * Rondas Model
  *
@@ -20,7 +19,6 @@ use Cake\Validation\Validator;
  */
 class RondasTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -30,12 +28,10 @@ class RondasTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
         $this->setTable('rondas');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
     }
-
     /**
      * Default validation rules.
      *
@@ -46,20 +42,22 @@ class RondasTable extends Table
     {
         $validator
             ->allowEmpty('id', 'create');
-
         $validator
-            ->allowEmpty('numero');
-
+            ->requirePresence('numero', 'create')
+            ->notEmpty('numero');
         $validator
             ->date('fecha_inicial')
             ->requirePresence('fecha_inicial', 'create')
-            ->notEmpty('fecha_inicial');
-
+            ->notEmpty('fecha_inicial', 'Por favor complete este campo.');
         $validator
             ->date('fecha_final')
             ->requirePresence('fecha_final', 'create')
-            ->notEmpty('fecha_final');
-
+            ->notEmpty('fecha_final', 'Por favor complete este campo.');
         return $validator;
+    }
+    public function getFila(){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select * from rondas")->fetchAll();
+        return $fila[0];
     }
 }

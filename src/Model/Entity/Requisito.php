@@ -1,8 +1,6 @@
 <?php
 namespace App\Model\Entity;
-
 use Cake\ORM\Entity;
-
 /**
  * Requisito Entity
  *
@@ -10,10 +8,8 @@ use Cake\ORM\Entity;
  * @property string $nombre
  * @property string $tipo
  */
-
 class Requisito extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

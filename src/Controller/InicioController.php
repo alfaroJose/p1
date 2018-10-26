@@ -3,9 +3,10 @@ namespace Cake\Core\Configure;
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
 
-//$users = TableRegistry::get('Usuarios');
+//Estos dos sirven para las consultas
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Inicio Controller
@@ -17,6 +18,7 @@ use Cake\ORM\TableRegistry;
 class InicioController extends AppController
 {
 
+    //Función que se encarga de hacer la autenticación con la base de datos de la ECCI
     private function entrar($usuario, $pass){
          // conexión al servidor LDAP
          $ldapconn = ldap_connect("10.1.4.78")
@@ -41,17 +43,31 @@ class InicioController extends AppController
         }
     }
     
+    //Pantalla del Login
+    //Esta función se encarga de recopilar los datos del login para ser verificados
+    //Luego identifica el tipo de usuario que ingresó y 
+    //Finalmente lo ingresa a la aplicación ya sea la primera vez en entrar o si ya tenía una cuenta asociada
     public function login(){
-        
         $this->layout = 'inicio';
+
+        //En caso de que la Sessión siga abierta
+        if ($this->getRequest()->getSession()->read('id') != ''){
+            return $this->redirect(['controller' => 'Main','action' => 'index']);
+            //DEVOLVER AL INICIO DE CADA USUARIO
+        }
+        
 
         $usuario = $this->request->getData('Usuario');
         $pass = $this->request->getData('Contraseña');  
-
+    
+       // $this->getRequest()->getSession()->write('id','');
         if($usuario != null && $pass != null){
 
-           if ($this->entrar($usuario,$pass)){
+           if ($this->entrar($usuario,$pass)){//Credenciales válidos
 
+                //Todos los nombre_usuario se guardan en minúscula
+                $usuario = strtolower($usuario);
+              
                 //Guardamos el id del usuario en la sesion
                 $name = $this->getRequest()->getSession()->write('id',$usuario);
                 //Para sacarlos es $this->getRequest()->getSession()->read('id');
@@ -60,7 +76,7 @@ class InicioController extends AppController
                 $users = TableRegistry::get('Usuarios');
                 $index = $users->find()
                 ->select(['id'])
-                ->where(['id =' => $usuario])
+                ->where(['nombre_usuario =' => $usuario])
                 ->toList();
 
                 if ($index != null){ //Usuario ya ha ingresado antes
@@ -87,25 +103,24 @@ class InicioController extends AppController
         
     }
 
-
+    //Carga la pantalla de inicio
     public function inicio(){
         $this->layout = 'inicio';
     }
 
-
+    //Carga la pantalla de recuperación de contraseña
     public function contrasena(){
         $this->layout = 'inicio';
     }
 
+    //Carga la vista de falta de permisos para una funcionalidad
+    public function fail(){
+        $this->layout = 'inicio';
+    }
 
-    public function getIndexValues(){
-        global $nombreusuario;
-         $index = $users->find()
-        ->select(['id'])
-        ->where(['id ==' => 'B54548'])
-        ->toList();
-        return $index;
-        /*debug($index);
-        die();*/
-     }
+    //Carga la vista de sesión cerrada
+    public function logout(){
+        $this->layout = 'inicio';
+    }
+
 }

@@ -5,7 +5,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
@@ -35,8 +34,8 @@ class GruposTable extends Table
         parent::initialize($config);
 
         $this->setTable('grupos');
-        $this->setDisplayField('numero');
-        $this->setPrimaryKey(['numero', 'semestre', 'año', 'cursos_sigla']);
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Usuarios', [
             'foreignKey' => 'usuarios_id'
@@ -52,23 +51,49 @@ class GruposTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->allowEmpty('numero', 'create');
+            ->requirePresence('numero', 'create')
+            ->lengthBetween('numero', [1,2])
+            ->notEmpty('numero', 'Por favor complete este campo.');
 
         $validator
-            ->allowEmpty('semestre', 'create');
+            ->requirePresence('semestre', 'create')
+            ->lengthBetween('semestre', [1,1])
+            ->notEmpty('semestre', 'Por favor complete este campo.');
 
         $validator
             ->scalar('año')
-            ->allowEmpty('año', 'create');
+            ->requirePresence('año', 'create')
+            ->notEmpty('año', 'Por favor complete este campo.');
 
         $validator
             ->scalar('cursos_sigla')
-            ->maxLength('cursos_sigla', 7)
-            ->allowEmpty('cursos_sigla', 'create');
+            ->maxLength('cursos_sigla', 7, 'Incluya solamente 7 caracteres')
+            ->requirePresence('cursos_sigla', 'create')
+            ->notEmpty('cursos_sigla', 'Por favor complete este campo.');
+
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
 
         return $validator;
     }
 
+    public function getIndexValues(){
+
+        $index=$this->find()
+        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id'])
+        ->join([
+            'Cursos'=>[
+                     'table'=>'Cursos',
+                     'type'=>'LEFT',
+                     'conditions'=>['Cursos.sigla=cursos_sigla']
+            ]
+        ])
+        ->toList();
+        return $index;
+        /*debug($index);
+        die();*/
+    }
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -81,36 +106,5 @@ class GruposTable extends Table
         $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
         return $rules;
-    }
-
-
-
-    public function getIndexValues(){
-
-        $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Grupos.numero','Grupos.semestre','Grupos.año'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.sigla=cursos_sigla']
-            ]
-        ])
-        ->toList();
-        return $index;
-        /*debug($index);
-        die();*/
-
-    }
-
-    public function deleteValues($id = null, $numero = null, $semestre = null, $año = null){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute("DELETE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
-    }
-    //https://book.cakephp.org/3.0/en/orm/database-basics.html
-
-    public function viewValues($id = null, $numero = null, $semestre = null, $año = null){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute("UPDATE FROM grupos WHERE curso_sigla = '$id' AND numero = $numero AND semestre = $semestre AND año = '$año'");
     }
 }
