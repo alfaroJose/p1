@@ -26,7 +26,7 @@
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id, $grupo->Cursos['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>              
 
                     <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar al grupo {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]) ?>
 

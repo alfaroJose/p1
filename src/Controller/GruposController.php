@@ -81,12 +81,13 @@ class GruposController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null, $id2 = null)
+    public function edit($id = null, $id2 = null, $id3 = null)
     {
         $grupo = $this->Grupos->get($id, [
             'contain' => []
         ]);
         $cursos = $this->Grupos->obtenerCursos($id2);
+        $correo = $this->Grupos->obtenerProfesor($id3);
         //debug($cursos);
         //die();
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -108,7 +109,7 @@ class GruposController extends AppController
             array_push($cursos, $c->Cursos['sigla']);
         }*/
 
-        $this->set(compact('grupo', 'usuarios', 'cursos'));
+        $this->set(compact('grupo', 'usuarios', 'cursos','correo'));
     }
 
     /**
