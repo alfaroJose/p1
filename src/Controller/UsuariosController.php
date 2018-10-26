@@ -3,8 +3,6 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-
-
 /**
  * Usuarios Controller
  *
@@ -15,16 +13,6 @@ use App\Controller\AppController;
 class UsuariosController extends AppController
 {
 
-    private function test(){
-        $usuario = $this->getRequest()->getSession()-read('id');
-
-        if (null == $usuario){
-
-        }
-
-
-
-    }
     /**
      * Index method
      *
@@ -76,6 +64,16 @@ class UsuariosController extends AppController
                 $usuario->roles_id = '4';
             }
 
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -94,6 +92,17 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
             $usuario->roles_id = '4';
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -112,6 +121,17 @@ class UsuariosController extends AppController
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
             $usuario->roles_id = '3';
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
+            }
+
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
@@ -122,6 +142,7 @@ class UsuariosController extends AppController
         $roles = $this->Usuarios->Roles->find('list', ['limit' => 200]);
         $this->set(compact('usuario', 'roles'));
     }
+
     /**
      * Edit method
      *
@@ -136,14 +157,24 @@ class UsuariosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());
-            if ($usuario->roles_id == 0) {
+            if ($usuario->roles_id == 1) {
                 $usuario->roles_id = '1';
-            } else if ($usuario->roles_id == 1){
-                $usuario->roles_id = '2';
             } else if ($usuario->roles_id == 2){
+                $usuario->roles_id = '2';
+            } else if ($usuario->roles_id == 3){
                 $usuario->roles_id = '3';
             } else {
                 $usuario->roles_id = '4';
+            }
+
+            if ($usuario->tipo_identificacion == 0) {
+                $usuario->tipo_identificacion = 'Cédula Nacional';
+            } else if ($usuario->roles_id == 1){
+                $usuario->tipo_identificacion = 'Cédula Extranjera';
+            } else if ($usuario->roles_id == 2){
+                $usuario->tipo_identificacion = 'DIMEX';
+            } else {
+                $usuario->tipo_identificacion = 'Pasaporte';
             }
 
             if ($this->Usuarios->save($usuario)) {
@@ -171,24 +202,9 @@ class UsuariosController extends AppController
         if ($this->Usuarios->delete($usuario)) {
             $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {
-            $this->Flash->success(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
         }
+
         return $this->redirect(['action' => 'index']);
-    }
-
-
-    public function getUsuario()
-    {
-        $username = $this->getRequest()->getSession()->read('id');
-        return $username;
-    }
-
-    public function getRol($id = null)
-    {
-        $rol = $this->find()
-        ->select(['roles_id'])
-        ->where(['id =' => $id])
-         ->toList();
-        return $rol;
     }
 }
