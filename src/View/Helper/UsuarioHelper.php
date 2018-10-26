@@ -23,4 +23,9 @@ class UsuarioHelper extends Helper
     	return [$fila[0]];
     }
 
+    public function getRol($carne){
+        $fila = (new UsuariosTable)->getRol($carne);
+        return [$fila[0]];
+    }
+
 }

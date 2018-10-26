@@ -3,8 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Usuario $usuario
  */
-
-use Cake\ORM\TableRegistry;
 ?>
 
 <div class="usuarios">
@@ -38,19 +36,15 @@ use Cake\ORM\TableRegistry;
             echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
 
-            /*Aquí se verifica el rol del usuario que está logueado, si es admin puede editar los roles en caso contrario el campo rol no es editable*/
+            /*Aquí se verifica el rol del usuario que está logueado, si es admin puede editar los roles en caso contrario el*/
             $username = $this->request->getSession()->read('id');
-            $users = TableRegistry::get('Usuarios');
-            $index = $users->find()
-            ->select(['roles_id'])
-            ->where(['nombre_usuario =' => $username])
-            ->first();
+            $rolActual = $this->Usuario->getRol($username);
             
-            if($index->roles_id == 1){ //Es administrador
-                echo $this->Form->control('roles_id', ['options' =>["1" => "Administrador", "2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante"], 'default'=> $usuario->roles_id, 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            if($rolActual[0] == '1'){ //Es administrador
+                echo $this->Form->control('roles_id', ['options' =>["1" => "Administrador", "2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante"], 'default'=> $rolActual[0], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             } else {
-                echo $this->Form->control('roles_id', ['value'=> $usuario->roles_id, 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
+                echo $this->Form->control('roles_id', ['value'=> $rolActual[0], 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
             }
             
         ?>

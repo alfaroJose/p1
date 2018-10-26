@@ -207,20 +207,4 @@ class UsuariosController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
-    //BORRAR??
-    public function getUsuario()
-    {
-        $username = $this->getRequest()->getSession()->read('id');
-        return $username;
-    }
-
-    public function getRol($id = null)
-    {
-        $rol = $this->find()
-        ->select(['roles_id'])
-        ->where(['id =' => $id])
-         ->toList();
-        return $rol;
-    }
 }

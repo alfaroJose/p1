@@ -14,7 +14,6 @@
  */
 
 $cakeDescription = 'CakePHP: the rapid development php framework';
-use Cake\ORM\TableRegistry;
 ?>
 <!DOCTYPE html>
 <html>
