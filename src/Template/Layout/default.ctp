@@ -60,7 +60,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       ?>
 
       <div class="navbar-nav px-3">
-        <?php echo ( '<a class="nav-link" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'">Editar perfil</a>'); ?>
+        <?php 
+          if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
+            echo ( '<a class="nav-link" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'">Editar perfil</a>'); 
+          }
+        ?>
       </div>
 
       <div class="navbar-nav px-3">      

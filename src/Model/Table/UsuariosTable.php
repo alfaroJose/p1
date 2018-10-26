@@ -113,7 +113,9 @@ class UsuariosTable extends Table
     public function getUser($carne){
         $connect = ConnectionManager::get('default');
         $fila = $connect->execute("select id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
-        return $fila[0];
+        if($fila != null){
+            return $fila[0];
+        }
     }
     // Devuelva el rol del usuario según el carné
     public function getRol($carne){
