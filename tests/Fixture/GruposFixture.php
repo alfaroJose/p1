@@ -17,20 +17,21 @@ class GruposFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
+        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'numero' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'semestre' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'año' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => null, 'collate' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
-        'cursos_sigla' => ['type' => 'string', 'fixed' => true, 'length' => 7, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
-        'usuarios_id' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'cursos_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'usuarios_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
-            'cursos_sigla' => ['type' => 'index', 'columns' => ['cursos_sigla'], 'length' => []],
-            'usuarios_id' => ['type' => 'index', 'columns' => ['usuarios_id'], 'length' => []],
+            'FK_Grupos_cursos_id' => ['type' => 'index', 'columns' => ['cursos_id'], 'length' => []],
+            'FK_Grupos_usuarios_id' => ['type' => 'index', 'columns' => ['usuarios_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'grupos_ibfk_1' => ['type' => 'foreign', 'columns' => ['cursos_sigla'], 'references' => ['cursos', 'sigla'], 'update' => 'cascade', 'delete' => 'noAction', 'length' => []],
-            'grupos_ibfk_2' => ['type' => 'foreign', 'columns' => ['usuarios_id'], 'references' => ['usuarios', 'id'], 'update' => 'cascade', 'delete' => 'setNull', 'length' => []],
+            'UQ_Grupos_numero_semestre_año_cursos_id' => ['type' => 'unique', 'columns' => ['numero', 'semestre', 'año', 'cursos_id'], 'length' => []],
+            'FK_Grupos_cursos_id' => ['type' => 'foreign', 'columns' => ['cursos_id'], 'references' => ['cursos', 'id'], 'update' => 'cascade', 'delete' => 'noAction', 'length' => []],
+            'FK_Grupos_usuarios_id' => ['type' => 'foreign', 'columns' => ['usuarios_id'], 'references' => ['usuarios', 'id'], 'update' => 'cascade', 'delete' => 'setNull', 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -48,12 +49,12 @@ class GruposFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'numero' => 1,
                 'semestre' => 1,
                 'año' => 'Lorem ipsum dolor sit amet',
-                'cursos_sigla' => 'Lorem',
-                'usuarios_id' => 'Lorem ipsum dolor sit amet',
-                'id' => 1
+                'cursos_id' => 1,
+                'usuarios_id' => 1
             ],
         ];
         parent::init();
