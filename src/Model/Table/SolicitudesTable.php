@@ -74,13 +74,8 @@ class SolicitudesTable extends Table
             ->allowEmpty('cantidad_horas');
 
         $validator
-            ->scalar('tipo_horas')
-            ->maxLength('tipo_horas', 16)
-            ->allowEmpty('tipo_horas');
-
-        $validator
             ->scalar('estado')
-            ->maxLength('estado', 11)
+            ->maxLength('estado', 30)
             ->requirePresence('estado', 'create')
             ->notEmpty('estado');
 
@@ -111,6 +106,18 @@ class SolicitudesTable extends Table
         $validator
             ->requirePresence('ronda', 'create')
             ->notEmpty('ronda');
+
+        $validator
+            ->scalar('horas_asistente')
+            ->maxLength('horas_asistente', 2)
+            ->requirePresence('horas_asistente', 'create')
+            ->notEmpty('horas_asistente');
+
+        $validator
+            ->scalar('horas_estudiante')
+            ->maxLength('horas_estudiante', 2)
+            ->requirePresence('horas_estudiante', 'create')
+            ->notEmpty('horas_estudiante');
 
         return $validator;
     }
