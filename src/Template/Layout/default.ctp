@@ -42,38 +42,44 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow" style="background-color: rgb(65, 173, 231);">     
 
-      <div class = "float-left px-1">   
+      <div class = "navbar-nav px-1">   
         <?= $this->Html->image('ucrLogoBlanco.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
       </div>
+
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias ECCI</a>
 
-      <div class = "float-right px-1">
+      <div class = "navbar-nav px-1">
         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
-      </div>
-
-
-      <!-- Barra de la derecha. Aqui está el sing out-->
-      <div class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="http://localhost/p1/inicio/login">Cerrar Sesión</a>
-        </li>
-      </div>
       
+        <!-- Barra de la derecha. Aqui está el sing out y editar perfil-->     
+        <div class = 'nav-link'>
+          <?php 
+            $username = $this->request->getSession()->read('id');
+            $idActual = $this->Usuario->getUser($username);
+ 
+            if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
+              echo ( '<a style="margin-right: 26%; color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
+            }
+          ?>
+
+          <a style="color: rgb(255, 255, 255);"  href="http://localhost/p1/inicio/logout/">Cerrar Sesión</a>   
+
+        </div>      
+      </div>
     </nav>
     
-    <!-- Div para el contenido de debajo de la página-->
-    <br>
-    <br>
-    
+    <!-- Div para el contenido de debajo de la página--> 
     <!-- barra azul -->
+    <br>
+    <br>
+    <br>
     <br>
     <br>
     <div class = "float-center">   
       <?= $this->Html->image('barra.gif', ['alt' => 'CakePHP', 'width'=>"40%", 'height' => '85']);?>     
     </div>
     
-
     <div class="container-fluid">
 
       <div class="row">
@@ -100,7 +106,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               </li>
               <li class="nav-item">
                 <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>         
+              </li>  
+              <li class="nav-item">
+                <?= $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ?>
+              </li>       
             </ul>
 
           </div>

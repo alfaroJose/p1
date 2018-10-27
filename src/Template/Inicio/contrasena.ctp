@@ -18,13 +18,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <h4>
 
 
-<div class = "text-center" style="width: 60%; border-style: solid; border-width: 1px; border-color: black; margin: auto; padding: 10px;">
+<div class = "text-center" style="width: 70%; border-style: solid; border-width: 1px; border-color: black; margin: auto; padding: 10px; border-radius: 25px">
 <b>Recuperar contraseña</b> <br>
 <br>
-Por favor, comuníquese con el encargado de recursos informáticos de la <br>
-Escuela de Ciencias de la Computación e Informatica <br>
-personalmente llevando una identificación para solicitar un <br>
-cambio de contraseña <br>
+Por favor, comuníquese con el encargado de recursos informáticos<br>
+de la Escuela de Ciencias de la Computación e Informatica <br>
+llevando una identificación para solicitar un cambio de contraseña <br>
 </h4>
 <br>
 <?php echo "<center>";?>
