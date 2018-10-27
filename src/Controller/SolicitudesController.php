@@ -1,9 +1,8 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\AppController;
 use Dompdf\Dompdf;
-
+use Cake\Datasource\ConnectionManager;
 /**
  * Solicitudes Controller
  *
@@ -13,7 +12,24 @@ use Dompdf\Dompdf;
  */
 class SolicitudesController extends AppController
 {
-
+    public function asignar(){//Viene el id de un grupo
+        $connect = ConnectionManager::get('default');
+        $id = 1;
+        $consulta = "select cursos.id, grupos.numero, grupos.semestre, grupos.año, cursos.nombre from grupos join cursos on cursos.id = grupos.cursos_id where grupos.id = ".$id.";" ;
+        $tupla = $connect->execute($consulta)->fetchAll();
+        $sigla = $tupla[0][0];
+        $numGrupo = $tupla[0][1];
+        $semestre = $tupla[0][2];
+        $anno = $tupla[0][3];
+        $nombreCurso = $tupla[0][4]; 
+        $this->set('opciones', ["hoLA", "HOA"]);
+        $this->set('sigla', $sigla);
+        $this->set('numGrupo', $numGrupo);
+        $this->set('semestre', $semestre);
+        $this->set('anno', $anno);
+        $this->set('nombreCurso', $nombreCurso);
+    }
+    
     /**
      * Index method
      *
@@ -26,10 +42,8 @@ class SolicitudesController extends AppController
             'contain' => ['Usuarios', 'Grupos']
         ];
         $solicitudes = $this->paginate($this->Solicitudes);
-
         $this->set(compact('solicitudes','todo'));
     }
-
     /**
      * View method
      *
@@ -42,10 +56,8 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-
         $this->set('solicitude', $solicitude);
     }
-
     /**
      * Add method
      *
@@ -58,7 +70,6 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('The solicitude has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The solicitude could not be saved. Please, try again.'));
@@ -67,7 +78,6 @@ class SolicitudesController extends AppController
         $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
         $this->set(compact('solicitude', 'usuarios', 'grupos'));
     }
-
     /**
      * Edit method
      *
@@ -84,7 +94,6 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('The solicitude has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The solicitude could not be saved. Please, try again.'));
@@ -93,7 +102,6 @@ class SolicitudesController extends AppController
         $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
         $this->set(compact('solicitude', 'usuarios', 'grupos'));
     }
-
     /**
      * Delete method
      *
@@ -110,11 +118,9 @@ class SolicitudesController extends AppController
         } else {
             $this->Flash->error(__('The solicitude could not be deleted. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
     public function viewFile($filename) {
-
         $this->viewBuilder()
             ->className('Dompdf.Pdf')
             ->layout('Dompdf.default')
@@ -125,20 +131,16 @@ class SolicitudesController extends AppController
     }
    public function generate($id = null)
     {
-
         // se crea una entidad para luego poder hacer los validadores
         $solicitudPDF = $this->Solicitudes->get($id);
-
         // linea para marcar el desecho como descargado, haciendo que ya no se pueda borrar
            // $technicalReport->descargado = true;
             // Actualizo el desecho, guardando el valor de descargado como true
              //y de paso se validan los campos para mayor seguridad del PDF
             $this->solicitudPDF->save($solicitudPDF);
         
-
             // Actualizo el reporte técnico, guardando el valor de descargado como true
             //$this->TechnicalReports->save($technicalReport);
-
 			/***** NOTA: NO HAGA ALGO COMO ESTO AQUI XD, LAS CONSULTAS DEBEN IR EN EL MODELO **/
             /** saca los datos del activo*/
             // $conn = ConnectionManager::get('default');
@@ -148,9 +150,7 @@ class SolicitudesController extends AppController
             //inner join brands b on  b.id=a.brand
             //inner join models m on m.id=a.models_id
             //where a.plaque in('" . $technicalReport->assets_id. "');");
-
             $results = $stmt ->fetchAll('assoc');
-
 			// Se carga lo necesario del dompdf, se crea el objeto y luego se va contruyendo el html
             require_once 'dompdf/autoload.inc.php';
             //initialize dompdf class
