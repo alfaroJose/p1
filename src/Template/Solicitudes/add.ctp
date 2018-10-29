@@ -23,21 +23,29 @@
 
             //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
             echo ("Solicita:");
-            echo $this->Form->control('wants_student_hours', ['label' => 'Horas Estudiante', 'type' => 'checkbox']);
-            echo $this->Form->control('wants_assistant_hours', ['label' => 'Horas Asistente', 'type' => 'checkbox']);
+            echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
+            echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
+            echo ("(Puede marcar ambas opciones)<br>");
+            echo ( "Documentos que debe adjuntar al entregar el formulario en la ECCI:<br> 
+                1. Entregar este formulario debidamente en la Secretaría de la ECCI 
+                sin la firma del docente.<br>
+                2. Si es su primera asistencia en la UCR debe traer además una carta de un Banco Público en la que certfique su número de cuenta de ahorro o cuenta cliente y copia de su documento de identificación.<br><br>");
 
-            echo $this->Form->control('cantidad_horas');
-            echo $this->Form->control('estado');
-            echo $this->Form->control('asistencia_externa');
-            echo $this->Form->control('cantidad_horas_externa');
+            echo ("Información sobre otras asistencias:<br>
+                1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
+            //NO FUNCIONA EL RADIO BUTTON?!
+            echo $this->Form->control('asistencia_externa', ['label' =>['text'=> 'Sí'], 'type' => 'radio']);
+            echo $this->Form->control('asistencia_externa', ['label' =>['text'=>'No'], 'type' => 'radio']);
+
+            
+            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]);
             echo $this->Form->control('tipo_horas_externa');
             echo $this->Form->control('fecha');
-            echo $this->Form->control('justificación');
-            echo $this->Form->control('ronda');
+            //echo $this->Form->control('cantidad_horas', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]);
+            //echo $this->Form->control('estado');
+            //echo $this->Form->control('ronda');
             echo $this->Form->control('usuarios_id', ['options' => $usuarios]);
             echo $this->Form->control('grupos_id', ['options' => $grupos]);
-            echo $this->Form->control('horas_asistente');
-            echo $this->Form->control('horas_estudiante');
         ?>
     </fieldset>
     <br>
