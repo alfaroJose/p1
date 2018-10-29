@@ -17,10 +17,12 @@ class CursosFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
+        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'sigla' => ['type' => 'string', 'length' => 7, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'nombre' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['sigla'], 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'UQ_Cursos_sigla_nombre' => ['type' => 'unique', 'columns' => ['sigla', 'nombre'], 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -38,7 +40,8 @@ class CursosFixture extends TestFixture
     {
         $this->records = [
             [
-                'sigla' => '097ed503-5957-4faa-ae6e-0ed622b5d945',
+                'id' => 1,
+                'sigla' => 'Lorem',
                 'nombre' => 'Lorem ipsum dolor sit amet'
             ],
         ];

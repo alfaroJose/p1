@@ -59,7 +59,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             $idActual = $this->Usuario->getUser($username);
  
             if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
-              echo ( '<a style="color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
+              echo ( '<a style="margin-right: 26%; color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
             }
           ?>
 

@@ -123,4 +123,11 @@ class UsuariosTable extends Table
         $fila = $connect->execute("select roles_id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $fila[0];
     }
+
+    // Devuelva el rol del usuario según el carné
+    public function getTipoCedula($carne){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select tipo_identificacion from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
+        return $fila[0];
+    }
 }

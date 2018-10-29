@@ -28,4 +28,10 @@ class UsuarioHelper extends Helper
         return [$fila[0]];
     }
 
+    // Devuelva el rol del usuario según el carné
+    public function getTipoCedula($carne){
+        $fila = (new UsuariosTable)->getTipoCedula($carne);
+        return [$fila[0]];
+    }
+
 }
