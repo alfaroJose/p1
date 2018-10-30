@@ -47,6 +47,21 @@ class SolicitudesController extends AppController
         $this->set(compact('solicitudes','todo'));
     }
 
+        /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function indexestudiante()
+    {
+        $todo = $this->Solicitudes->getIndexValues();
+        $this->paginate = [
+            'contain' => ['Usuarios', 'Grupos']
+        ];
+        $solicitudes = $this->paginate($this->Solicitudes);
+        $this->set(compact('solicitudes','todo'));
+    }
+
     /**
      * View method
      *
@@ -55,6 +70,22 @@ class SolicitudesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
+    {
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => ['Usuarios', 'Grupos']
+        ]);
+
+        $this->set('solicitude', $solicitude);
+    }
+
+        /**
+     * View method
+     *
+     * @param string|null $id Solicitude id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function viewestudiante($id = null)
     {
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
