@@ -140,7 +140,11 @@ class SolicitudesTable extends Table
     }
 
     public function getIndexValues(){
-        
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select distinct cursos.sigla, cursos.nombre, grupos.numero, Profesores.nombre as profesor, Profesores.primer_apellido, Estudiantes.nombre as estudiante, Estudiantes.primer_apellido, solicitudes.estado as 'Estado de solicitud'
+            from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
+            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
+        return $index;
     }
 
     public function getStudentInfo($carne)
