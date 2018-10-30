@@ -303,6 +303,7 @@ class UsuariosController extends AppController
     {
         $this->request->allowMethod(['post', 'get']);
         $usuario = $this->Usuarios->get($id);
+
         if ($this->Usuarios->delete($usuario)) {
             $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {

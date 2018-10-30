@@ -103,8 +103,8 @@ class PoseeController extends AppController
 
     public function index()
     {
+        //Inicia seguridad
          $carne = $this->getRequest()->getSession()->read('id');
-         
          if($carne != null){
             $connect = ConnectionManager::get('default');
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
@@ -119,6 +119,7 @@ class PoseeController extends AppController
              $this->redirect(['controller' => 'Inicio','action' => 'fail']);
 
          }
+         //Cierra seguridad
 
         $query = $this->Posee->find('all');//Toma todas las tuplas
         $posee = $query->toArray();//
