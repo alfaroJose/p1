@@ -20,9 +20,14 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($solicitudes as $solicitude): ?>
+            <?php foreach ($todo as $solicitude): ?>
             <tr>
-                <td><?= h($solicitude->estado) ?></td>
+                <td><?= h($solicitude[0]) ?></td>
+                <td><?= h($solicitude[1]) ?></td>
+                <td><?= h($solicitude[2]) ?></td>
+                <td><?= h($solicitude[3]) ?></td>
+                <td><?= h($solicitude[4]) ?></td>
+                <td><?= h($solicitude[5]) ?></td>
                 
                 <td class="actions">
                 <span class="typcn typcn-printer"></span>
