@@ -91,6 +91,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <?php $rondaActual = $this->Ronda->getFila()?>
         <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
         </div>
+
+        <br>
+            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
+        <?php $contadorActual = $this->Contador->getContador()?>
+        <p style = "color:red"><?=$contadorActual[0]?><br><?=$contadorActual[1]?></p>
+        </div>
+
             <ul class="nav flex-column">
               <li class="nav-item">
                 <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
@@ -109,6 +116,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               </li>  
               <li class="nav-item">
                 <?= $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ?>
+              </li> 
+              <li class="nav-item">
+                <?= $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ?>
               </li>       
             </ul>
 
