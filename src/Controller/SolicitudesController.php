@@ -197,7 +197,7 @@ class SolicitudesController extends AppController
             //initialize dompdf class
             $document = new Dompdf();
             $html = '';
-            $document->loadHtml('C:\xampp\htdocs\p1\src\Controller');
+            $document->loadHtml('C:\xampp\htdocs\p1\src\Formulariodesolicituddeasistnecias.html');
             //set page size and orientation
             $document->setPaper('A3', 'portrait');
             //Render the HTML as PDF
