@@ -10,15 +10,28 @@
         <legend><?= __('Nueva Solicitud') ?></legend>
         <br>
         <h5> Datos del estudiante </h5>
-        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('primer_apellido');
-            echo $this->Form->control('segundo_apellido');
-            echo $this->Form->control('nombre');
-            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificación']]);
-            echo $this->Form->control('carne', ['label'=>['text'=>'Carné']]);
-            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono']]);
-            echo $this->Form->control('correo');
+            /*Aquí se pide el nombre de usuario (cané para estudiantes) de la persona logueada*/
+            $username = $this->request->getSession()->read('id');
+
+            /*Aquí se solicita la información del estudiante según el carné de la persona logueada*/
+            $datosEstudiante = $this->Solicitude->getStudentInfo($username);
+            $idEstudiante = $datosEstudiante[0];
+            $nombreEstudiante = $datosEstudiante[1];
+            $primerApellidoEstudiante = $datosEstudiante[2];
+            $segundoApellidoEstudiante = $datosEstudiante[3];
+            $correoEstudiante = $datosEstudiante[4];
+            $telefonoEstudiante = $datosEstudiante[5];
+            $cedulaEstudiante = $datosEstudiante[7];
+
+            echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>']]);
+            echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante]);
+            echo $this->Form->control('nombre', ['readonly', 'value'=>$nombreEstudiante]);
+            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificación'], 'readonly', 'value'=>$cedulaEstudiante]);
+            echo $this->Form->control('carne', ['label'=>['text'=>'Carné'], 'readonly', 'value'=>$username]);
+            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'readonly', 'value'=>$telefonoEstudiante]);
+            echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante]);
             echo $this->Form->control('carrera');
 
             //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
@@ -38,14 +51,19 @@
             echo $this->Form->control('asistencia_externa', ['label' =>['text'=>'No'], 'type' => 'radio']);
 
             
-            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]);
+            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);
             echo $this->Form->control('tipo_horas_externa');
-            echo $this->Form->control('fecha');
+            //echo $this->Form->control('fecha');
             //echo $this->Form->control('cantidad_horas', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]);
             //echo $this->Form->control('estado');
             //echo $this->Form->control('ronda');
-            echo $this->Form->control('usuarios_id', ['options' => $usuarios]);
+        ?>
+        <h5> Curso solicitado </h5>
+        <?php
+
+            echo $this->Form->control('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
             echo $this->Form->control('grupos_id', ['options' => $grupos]);
+
         ?>
     </fieldset>
     <br>
