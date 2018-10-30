@@ -25,10 +25,6 @@
             <td><?= h($solicitude->carrera) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Tipo Horas') ?></th>
-            <td><?= h($solicitude->tipo_horas) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Estado') ?></th>
             <td><?= h($solicitude->estado) ?></td>
         </tr>
@@ -51,6 +47,14 @@
         <tr>
             <th scope="row"><?= __('Grupo') ?></th>
             <td><?= $solicitude->has('grupo') ? $this->Html->link($solicitude->grupo->id, ['controller' => 'Grupos', 'action' => 'view', $solicitude->grupo->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Horas Asistente') ?></th>
+            <td><?= h($solicitude->horas_asistente) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Horas Estudiante') ?></th>
+            <td><?= h($solicitude->horas_estudiante) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>

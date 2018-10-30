@@ -1,8 +1,10 @@
 <?php
 namespace App\Controller;
+
 use App\Controller\AppController;
 use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
+
 /**
  * Solicitudes Controller
  *
@@ -29,7 +31,7 @@ class SolicitudesController extends AppController
         $this->set('anno', $anno);
         $this->set('nombreCurso', $nombreCurso);
     }
-    
+
     /**
      * Index method
      *
@@ -44,6 +46,7 @@ class SolicitudesController extends AppController
         $solicitudes = $this->paginate($this->Solicitudes);
         $this->set(compact('solicitudes','todo'));
     }
+
     /**
      * View method
      *
@@ -56,8 +59,10 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+
         $this->set('solicitude', $solicitude);
     }
+
     /**
      * Add method
      *
@@ -69,15 +74,16 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('The solicitude has been saved.'));
+                $this->Flash->success(__('La solicitud ha sido agregada.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The solicitude could not be saved. Please, try again.'));
+            $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
         $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
         $this->set(compact('solicitude', 'usuarios', 'grupos'));
     }
+
     /**
      * Edit method
      *
@@ -93,15 +99,17 @@ class SolicitudesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('The solicitude has been saved.'));
+                $this->Flash->success(__('La solicitud ha sido modificado.'));
+
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The solicitude could not be saved. Please, try again.'));
+            $this->Flash->error(__('La solicitud no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
         $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
         $this->set(compact('solicitude', 'usuarios', 'grupos'));
     }
+
     /**
      * Delete method
      *
@@ -114,12 +122,14 @@ class SolicitudesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $solicitude = $this->Solicitudes->get($id);
         if ($this->Solicitudes->delete($solicitude)) {
-            $this->Flash->success(__('The solicitude has been deleted.'));
+            $this->Flash->success(__('La solicitud ha sido eliminada.'));
         } else {
-            $this->Flash->error(__('The solicitude could not be deleted. Please, try again.'));
+            $this->Flash->error(__('La solicitud no se ha podido eliminar. Por favor intente de nuevo.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
+
     public function viewFile($filename) {
         $this->viewBuilder()
             ->className('Dompdf.Pdf')
@@ -141,7 +151,7 @@ class SolicitudesController extends AppController
         
             // Actualizo el reporte técnico, guardando el valor de descargado como true
             //$this->TechnicalReports->save($technicalReport);
-			/***** NOTA: NO HAGA ALGO COMO ESTO AQUI XD, LAS CONSULTAS DEBEN IR EN EL MODELO **/
+            /***** NOTA: NO HAGA ALGO COMO ESTO AQUI XD, LAS CONSULTAS DEBEN IR EN EL MODELO **/
             /** saca los datos del activo*/
             // $conn = ConnectionManager::get('default');
             //$stmt = $conn->execute("select a.plaque, a.description, b.name as brand, m.name as model, a.series, a.state
@@ -151,7 +161,7 @@ class SolicitudesController extends AppController
             //inner join models m on m.id=a.models_id
             //where a.plaque in('" . $technicalReport->assets_id. "');");
             $results = $stmt ->fetchAll('assoc');
-			// Se carga lo necesario del dompdf, se crea el objeto y luego se va contruyendo el html
+            // Se carga lo necesario del dompdf, se crea el objeto y luego se va contruyendo el html
             require_once 'dompdf/autoload.inc.php';
             //initialize dompdf class
             $document = new Dompdf();
@@ -220,7 +230,7 @@ class SolicitudesController extends AppController
             //Render the HTML as PDF
             $document->render();
             //Get output of generated pdf in Browser
-			// Cuando se descarga el pdf inmediatamente se corta el flujo en el controlador, es como si hubiera un return
+            // Cuando se descarga el pdf inmediatamente se corta el flujo en el controlador, es como si hubiera un return
             $document->stream("Informe Tecnico-".$technicalReport->technical_report_id, array("Attachment"=>1));
             //1  = Download
             //0 = Preview 
