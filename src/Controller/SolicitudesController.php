@@ -193,8 +193,8 @@ class SolicitudesController extends AppController
             <title>Solicitud de Asistencia</title>
             <h2 align="center">UNIVERSIDAD DE COSTA RICA</h2>
             <h2 align="center">Escuela de Ciencias de la Computación e Informática</h2>
+            <h2 align="center">Solicitud de Asistencia</h2>
             <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>Unidad custodio:</strong>'.$this->escuela.'</div> <div id="element2" align="right"><strong>Fecha:</strong>'.$technicalReport->date.'</div>
             <p>&nbsp;</p>
             <div id="element1" align="left"><strong>Descripción del bien</strong></div>
             <p>&nbsp;</p>
