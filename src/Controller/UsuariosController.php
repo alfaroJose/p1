@@ -163,11 +163,7 @@ class UsuariosController extends AppController
     /*Función para agregar un usuario cuando la vista pertenece al estudiante*/
     public function addEstudiante()
     {
-        //No se debe dejar agregar a alguien que no hizo se autenticó anteriormente
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if ($carne != ''){
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
+
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
@@ -197,11 +193,6 @@ class UsuariosController extends AppController
     /*Función para agregar un usuario cuando la vista pertenece al profesor*/
     public function addProfesor()
     {
-        //No se debe dejar agregar a alguien que no hizo se autenticó anteriormente
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if ($carne != ''){
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
