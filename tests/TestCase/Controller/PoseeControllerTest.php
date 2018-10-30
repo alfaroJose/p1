@@ -17,6 +17,7 @@ class PoseeControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.posee',
+        'app.permisos',
         'app.roles'
     ];
 
