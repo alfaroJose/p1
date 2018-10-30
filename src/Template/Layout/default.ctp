@@ -93,13 +93,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
 
         <br>
-            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
-        <?php $contadorActual = $this->Contador->getContador()?>
-        <p style = "color:red"><?=$contadorActual[0]?><br><?=$contadorActual[1]?></p>
-        </div>
 
+        <?php $rol = $this->Seguridad->getRol();
+        if ($rol == 1) {
+          echo '<div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">';
+          $contadorActual = $this->Contador->getContador();
+          echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
+          echo '</div>';
+        }
+        ?>
             <ul class="nav flex-column">
-            <?php $rol = $this->Seguridad->getRol();
+            <?php
             if ($rol == 1){
              echo '<li class="nav-item" >';
              echo $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ;
@@ -145,9 +149,14 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
               echo '</li>';
              }
-             ?>       
-                <?= $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>       
+               
+             $permisoContador = $rol;
+             if ( 1 == $rol){
+              echo  '<li class="nav-item">';
+              echo $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ;
+              echo '</li>';  
+             }     
+             ?>      
 
             </ul>
 
