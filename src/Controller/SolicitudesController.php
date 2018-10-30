@@ -47,6 +47,21 @@ class SolicitudesController extends AppController
         $this->set(compact('solicitudes','todo'));
     }
 
+        /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function indexestudiante()
+    {
+        $todo = $this->Solicitudes->getIndexValues();
+        $this->paginate = [
+            'contain' => ['Usuarios', 'Grupos']
+        ];
+        $solicitudes = $this->paginate($this->Solicitudes);
+        $this->set(compact('solicitudes','todo'));
+    }
+
     /**
      * View method
      *
@@ -55,6 +70,22 @@ class SolicitudesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
+    {
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => ['Usuarios', 'Grupos']
+        ]);
+
+        $this->set('solicitude', $solicitude);
+    }
+
+        /**
+     * View method
+     *
+     * @param string|null $id Solicitude id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function viewestudiante($id = null)
     {
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
@@ -166,65 +197,7 @@ class SolicitudesController extends AppController
             //initialize dompdf class
             $document = new Dompdf();
             $html = '';
-            $document->loadHtml('
-            <html>
-            <style>
-            #element1 {float:left;margin-right:10px;margin-left:30px;} #element2 {float:right;margin-right:30px;}
-            table, td, th {
-            border: 1px solid black;
-            }
-            body {
-            border: 5px double;
-            width:100%;
-            height:100%;
-            display:block;
-            overflow:hidden;
-            padding:30px 30px 30px 30px
-            }
-            table {
-            border-collapse: collapse;
-            width: 100%;
-            }
-            th {
-            height: 50px;
-            }
-            </style>
-            <center><img src="C:\xampp\htdocs\Decanatura\src\Controller\images\logoucr.png"></center>
-            <title>Solicitud de Asistencia</title>
-            <h2 align="center">UNIVERSIDAD DE COSTA RICA</h2>
-            <h2 align="center">Escuela de Ciencias de la Computación e Informática</h2>
-            <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>Unidad custodio:</strong>'.$this->escuela.'</div> <div id="element2" align="right"><strong>Fecha:</strong>'.$technicalReport->date.'</div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>Descripción del bien</strong></div>
-            <p>&nbsp;</p>
-            <div style="width:960px;height:200px;border:1px solid #000;"></div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>N° Placa:&nbsp;</strong>'.$results[0]['plaque'].'</div> <div id="element2" align="right"><strong>Modelo:</strong>&nbsp;'.$results[0]['model'].'</div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>Marca:</strong>&nbsp;'.$results[0]['brand'].'</div> <div id="element2" align="right"><strong>Serie:</strong>&nbsp;'.$results[0]['series'].'</div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left" ><strong>Evaluación del activo:</strong>&nbsp;'.$this->translateRecommendation($technicalReport->recommendation).'</div>
-            <p>&nbsp;</p>
-            <div id="element2" align="right"><strong>¿Cuál?</strong>&nbsp;_____________________</div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left"><strong>Tecnico Especializado </strong></div> <div id="element2" align="right"><strong>Responsable de bienes de la Unidad Custodio <strong></div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left">Nombre:&nbsp;'.$technicalReport->evaluator_name.'</div> <div id="element2" align="right">Nombre:&nbsp;___________________________</div>
-            <p>&nbsp;</p>
-            <div id="element1" align="left">Firma:&nbsp;___________________________</div> <div id="element2" align="right">Firma:&nbsp;___________________________</div>
-            <p>&nbsp;</p>
-            <p align="center"><strong> Autoridad Universitaria</strong></p> 
-            <p align="center">Nombre:&nbsp;___________________________</p> 
-            <p align="center">Firma:&nbsp;___________________________</p>
-            <p>&nbsp;</p>
-            <p align="left">Original: Unidad de Bienes Institucionales&nbsp;&nbsp;(OAF)</p>
-            <p align="left">Copia: Bodega de Activos Recuperados&nbsp;&nbsp;(OSG)</p>
-            <p align="left">Copia: Unidad responsable</p>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
-            <p align="center">Tels: 2511 5759/1149 www.oaf.ucr.ac.cr correo electrónico: activosfijos.oaf@ucr.ac.cr</p>
-            ');
+            $document->loadHtml('C:\xampp\htdocs\p1\src\Formulariodesolicituddeasistnecias.html');
             //set page size and orientation
             $document->setPaper('A3', 'portrait');
             //Render the HTML as PDF
