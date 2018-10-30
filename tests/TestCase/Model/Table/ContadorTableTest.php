@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SolicitudesTable;
+use App\Model\Table\ContadorTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\SolicitudesTable Test Case
+ * App\Model\Table\ContadorTable Test Case
  */
-class SolicitudesTableTest extends TestCase
+class ContadorTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\SolicitudesTable
+     * @var \App\Model\Table\ContadorTable
      */
-    public $Solicitudes;
+    public $Contador;
 
     /**
      * Fixtures
@@ -24,9 +24,7 @@ class SolicitudesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.solicitudes',
-        'app.usuarios',
-        'app.grupos'
+        'app.contador'
     ];
 
     /**
@@ -37,8 +35,8 @@ class SolicitudesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Solicitudes') ? [] : ['className' => SolicitudesTable::class];
-        $this->Solicitudes = TableRegistry::getTableLocator()->get('Solicitudes', $config);
+        $config = TableRegistry::getTableLocator()->exists('Contador') ? [] : ['className' => ContadorTable::class];
+        $this->Contador = TableRegistry::getTableLocator()->get('Contador', $config);
     }
 
     /**
@@ -48,7 +46,7 @@ class SolicitudesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Solicitudes);
+        unset($this->Contador);
 
         parent::tearDown();
     }
@@ -69,26 +67,6 @@ class SolicitudesTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test getIndexValues method
-     *
-     * @return void
-     */
-    public function testGetIndexValues()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

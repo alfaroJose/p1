@@ -5,7 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Datasource\ConnectionManager;
 /**
  * Solicitudes Model
  *
@@ -68,19 +68,16 @@ class SolicitudesTable extends Table
 
         $validator
             ->decimal('promedio')
-            ->allowEmpty('promedio');
+            ->allowEmpty('promedio')
+            ->lessThanOrEqual('promedio', 10, 'El valor máximo del promedio ponderado es 10')
+            ->greaterThanOrEqual('promedio', 0, 'El valor mínimo del promedio ponderado es 0');
 
         $validator
             ->allowEmpty('cantidad_horas');
 
         $validator
-            ->scalar('tipo_horas')
-            ->maxLength('tipo_horas', 16)
-            ->allowEmpty('tipo_horas');
-
-        $validator
             ->scalar('estado')
-            ->maxLength('estado', 11)
+            ->maxLength('estado', 30)
             ->requirePresence('estado', 'create')
             ->notEmpty('estado');
 
@@ -112,6 +109,18 @@ class SolicitudesTable extends Table
             ->requirePresence('ronda', 'create')
             ->notEmpty('ronda');
 
+        $validator
+            ->scalar('horas_asistente')
+            ->maxLength('horas_asistente', 2)
+            ->requirePresence('horas_asistente', 'create')
+            ->notEmpty('horas_asistente');
+
+        $validator
+            ->scalar('horas_estudiante')
+            ->maxLength('horas_estudiante', 2)
+            ->requirePresence('horas_estudiante', 'create')
+            ->notEmpty('horas_estudiante');
+
         return $validator;
     }
 
@@ -132,5 +141,16 @@ class SolicitudesTable extends Table
 
     public function getIndexValues(){
         
+    }
+
+    public function getStudentInfo($carne)
+    {
+        $connet = ConnectionManager::get('default');
+              //  $result = $connet->execute("Select CONCAT(name,' ',lastname1) AS name from Classes c, users u WHERE c.course_id = "+$courseId+" AND c.class_number = "+$classNumber+" AND c.professor_id = u.identification_number");
+        //$result = $connet->execute("select * from Usuarios where nombre_usuario = '$carne'");
+        //$result = $result->fetchAll('assoc');
+        //return $result;
+        $result = $connet->execute("select * from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
+        return $result[0];
     }
 }

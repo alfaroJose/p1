@@ -10,7 +10,6 @@ use Cake\ORM\Entity;
  * @property string $carrera
  * @property float $promedio
  * @property int $cantidad_horas
- * @property string $tipo_horas
  * @property string $estado
  * @property string $asistencia_externa
  * @property int $cantidad_horas_externa
@@ -20,6 +19,8 @@ use Cake\ORM\Entity;
  * @property int $ronda
  * @property int $usuarios_id
  * @property int $grupos_id
+ * @property string $horas_asistente
+ * @property string $horas_estudiante
  *
  * @property \App\Model\Entity\Usuario $usuario
  * @property \App\Model\Entity\Grupo $grupo
@@ -40,7 +41,6 @@ class Solicitude extends Entity
         'carrera' => true,
         'promedio' => true,
         'cantidad_horas' => true,
-        'tipo_horas' => true,
         'estado' => true,
         'asistencia_externa' => true,
         'cantidad_horas_externa' => true,
@@ -50,6 +50,8 @@ class Solicitude extends Entity
         'ronda' => true,
         'usuarios_id' => true,
         'grupos_id' => true,
+        'horas_asistente' => true,
+        'horas_estudiante' => true,
         'usuario' => true,
         'grupo' => true
     ];

@@ -133,7 +133,7 @@ class GruposController extends AppController
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
      public function edit($id = null, $id2 = null, $id3 = null)
-    {
+     {
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
         if($carne != null){
@@ -156,36 +156,65 @@ class GruposController extends AppController
         }
         //Cierra la seguridad
 
-        $encontrado=false;
-        $it=0;
-        $defaultSelect=0;
-        $connect = ConnectionManager::get('default');
+        $opcionesSemestre=[1,2,3];
+        $semestreEncontrado=false;
+        $itSemestre=0;
+        $defaultSelectSemestre=0;
+        $profesorEncontrado=false;
+        $itProfesor=0;
+        $defaultSelectProfesor=0;
+/*
+$connect = ConnectionManager::get('default');
         $profesores = $connect->execute("select correo, id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
+*/
+        $profesores = $this->Grupos->seleccionarProfesoresCorreos();
         $profesoresCorreos= array(0 => "");
         $profesoresIds=array(0 => "");
         $grupo = $this->Grupos->get($id, [
             'contain' => []
         ]);
+        //debug($grupo->semestre);
+        //die();
         $cursos = $this->Grupos->obtenerCursos($id2);
-
         foreach ($profesores as $key => $value) {
           
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
-
-        }
-         while(!$encontrado){
-            if($profesoresIds[$it]==$id3){
-                $encontrado=true;
+        }/*
+        debug($profesoresIds);
+        die();*/
+         while(!$profesorEncontrado){
+            if($profesoresIds[$itProfesor]==$id3){
+                $profesorEncontrado=true;
             }
             else{
-                $it++;
+                $itProfesor++;
             }
          }
-         $defaultSelect=$it;
-
+         $defaultSelectProfesor=$itProfesor;
+        while(!$semestreEncontrado){
+            if($opcionesSemestre[$itSemestre]==$grupo->semestre){
+                $semestreEncontrado=true;
+            }
+            else{
+                $itSemestre++;
+            }
+         }
+         $defaultSelectSemestre=$itSemestre;
         if ($this->request->is(['patch', 'post', 'put'])) {
+            //debug($this->request->getData('Profesor'));
+            //die();
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            $semestreSeleccionado = $this->request->getData('Semestre');
+           
+            $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
+            //debug($grupo->semestre);
+            //die();
+            $profesorSeleccionado = $this->request->getData('Profesor');
+           
+            $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
+            //debug($grupo);  
+            //die();
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido modificado.'));
                 return $this->redirect(['action' => 'index']);
@@ -193,15 +222,16 @@ class GruposController extends AppController
             $this->Flash->error(__('El grupo no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $usuarios = $this->Grupos->Usuarios->find('list', ['limit' => 200]);
-
         
         /*$cursos=[];
         foreach ($cursos2 as $c ) {
             array_push($cursos, $c->Cursos['sigla']);
         }*/
         $this->set('correos',$profesoresCorreos);
-        $this->set('defaultSelect',$defaultSelect);
-        $this->set(compact('grupo', 'usuarios', 'cursos','correo'));
+        $this->set('opcionesSemestre', $opcionesSemestre);
+        $this->set('defaultSelectProfesor',$defaultSelectProfesor);
+        $this->set('defaultSelectSemestre',$defaultSelectSemestre);
+        $this->set(compact('grupo', /*'usuarios', */'cursos'/*,'correo'*/));
     }
 
     /**

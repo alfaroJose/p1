@@ -3,7 +3,7 @@ namespace App\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\View;
-use App\Model\Table\GruposTable;
+use App\Model\Table\UsuariosTable;
 /**
  * Usuarios helper
  */
@@ -17,8 +17,8 @@ class UsuariosHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-    public function obtenerProfesor($id = null){
-        $profesor = (new GruposTable)->obtenerCursos($id = null);
+    public function seleccionarProfesoresCorreos(){
+        $profesor = (new GruposTable)->seleccionarProfesoresCorreos();
         return $profesor;
     }
 

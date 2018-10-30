@@ -215,8 +215,11 @@ class GruposTable extends Table
     }
 
     public function seleccionarProfesoresCorreos(){
-        $connect = ConnectionManager::get('default');
-        $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();
+        /*$connect = ConnectionManager::get('default');
+        $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();*/
+
+                $connect = ConnectionManager::get('default');
+        $profesor = $connect->execute("select correo, id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
         return $profesor;
     }
 

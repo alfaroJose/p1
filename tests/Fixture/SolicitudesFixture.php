@@ -21,7 +21,6 @@ class SolicitudesFixture extends TestFixture
         'carrera' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'promedio' => ['type' => 'decimal', 'length' => 4, 'precision' => 2, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => ''],
         'cantidad_horas' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'tipo_horas' => ['type' => 'string', 'length' => 16, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'estado' => ['type' => 'string', 'length' => 11, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'asistencia_externa' => ['type' => 'string', 'fixed' => true, 'length' => 2, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
         'cantidad_horas_externa' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
@@ -31,6 +30,8 @@ class SolicitudesFixture extends TestFixture
         'ronda' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'usuarios_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'grupos_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'horas_asistente' => ['type' => 'string', 'fixed' => true, 'length' => 2, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
+        'horas_estudiante' => ['type' => 'string', 'fixed' => true, 'length' => 2, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'FK_Solicitudes_grupos_id' => ['type' => 'index', 'columns' => ['grupos_id'], 'length' => []],
         ],
@@ -60,16 +61,17 @@ class SolicitudesFixture extends TestFixture
                 'carrera' => 'Lorem ipsum dolor sit amet',
                 'promedio' => 1.5,
                 'cantidad_horas' => 1,
-                'tipo_horas' => 'Lorem ipsum do',
                 'estado' => 'Lorem ips',
                 'asistencia_externa' => '',
                 'cantidad_horas_externa' => 1,
                 'tipo_horas_externa' => 'Lorem ipsum do',
-                'fecha' => '2018-10-24',
+                'fecha' => '2018-10-27',
                 'justificación' => 'Lorem ipsum dolor sit amet',
                 'ronda' => 1,
                 'usuarios_id' => 1,
-                'grupos_id' => 1
+                'grupos_id' => 1,
+                'horas_asistente' => '',
+                'horas_estudiante' => ''
             ],
         ];
         parent::init();
