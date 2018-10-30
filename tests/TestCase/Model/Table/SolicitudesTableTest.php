@@ -82,4 +82,14 @@ class SolicitudesTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test getIndexValues method
+     *
+     * @return void
+     */
+    public function testGetIndexValues()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

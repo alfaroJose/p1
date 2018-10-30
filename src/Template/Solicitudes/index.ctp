@@ -36,6 +36,8 @@
                 <td><?= $this->Number->format($solicitude->ronda) ?></td>
                 <td><?= $solicitude->has('usuario') ? $this->Html->link($solicitude->usuario->id, ['controller' => 'Usuarios', 'action' => 'view', $solicitude->usuario->id]) : '' ?></td>
                 <td><?= $solicitude->has('grupo') ? $this->Html->link($solicitude->grupo->id, ['controller' => 'Grupos', 'action' => 'view', $solicitude->grupo->id]) : '' ?></td>
+                <td><?= h($solicitude->horas_asistente) ?></td>
+                <td><?= h($solicitude->horas_estudiante) ?></td>
                 <td class="actions">
                 <span class="typcn typcn-printer"></span>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude->id],['escape'=>false,'style'=>'font-size:22px;']) ?>

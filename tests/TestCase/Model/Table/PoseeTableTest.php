@@ -25,6 +25,7 @@ class PoseeTableTest extends TestCase
      */
     public $fixtures = [
         'app.posee',
+        'app.permisos',
         'app.roles'
     ];
 
