@@ -197,7 +197,7 @@ class SolicitudesController extends AppController
             //initialize dompdf class
             $document = new Dompdf();
             $html = '';
-            $document->loadHtml('<!DOCTYPE html>
+          /*  $document->loadHtml('<!DOCTYPE html>
 
             <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
@@ -230,7 +230,7 @@ class SolicitudesController extends AppController
             </div>
             </body>
             </html>
-            ');
+            '); */
             //set page size and orientation
             $document->setPaper('A3', 'portrait');
             //Render the HTML as PDF
