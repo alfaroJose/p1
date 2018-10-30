@@ -147,6 +147,27 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    public function getIDEstudiante($carne)
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+        $result = $result->fetchAll();
+        return $result;
+    }
+
+        public function getIndexValuesEstudiante($id){
+        /*$connect = ConnectionManager::get('default');
+        $index = $connect->execute("select distinct cursos.sigla, cursos.nombre, grupos.numero, Profesores.nombre as profesor, Profesores.primer_apellido, Estudiantes.nombre as estudiante, Estudiantes.primer_apellido, solicitudes.estado as 'Estado de solicitud'
+            from grupos, cursos, usuarios as Estudiantes, solicitudes
+            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
+        return $index;*/
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, Profesores.nombre, Profesores.primer_apellido, Estudiantes.nombre as estudiante, Estudiantes.primer_apellido, s.estado as 'Estados de solicitud'
+            from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
+            where s.usuarios_id = '" .$id. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;")->fetchAll();
+        return $index;
+    }
+
     public function getStudentInfo($carne)
     {
         $connet = ConnectionManager::get('default');

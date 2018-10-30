@@ -4,6 +4,7 @@ namespace App\View\Helper;
 use Cake\View\Helper;
 use Cake\View\View;
 use App\Model\Table\SolicitudesTable;
+use App\Model\Table\UsuariosTable;
 
 
 /**
@@ -22,6 +23,17 @@ class SolicitudeHelper extends Helper
     public function getStudentInfo($carne){
     	$fila = (new SolicitudesTable)->getStudentInfo($carne);
     	return $fila;
+    }
+
+    public function getIDEstudiante($carne){
+        $fila = (new SolicitudesTable)->getIDEstudiante($carne);
+        return $fila;
+    }
+
+
+    public function getIndexValuesEstudiante($id){
+        $fila = (new SolicitudesTable)->getIndexValuesEstudiante($id);
+        return [$fila];
     }
 
 }

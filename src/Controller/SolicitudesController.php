@@ -54,7 +54,13 @@ class SolicitudesController extends AppController
      */
     public function indexestudiante()
     {
-        $todo = $this->Solicitudes->getIndexValues();
+        $username = $this->request->getSession()->read('id');
+        $idActual = $this->Solicitudes->getIDEstudiante($username);   
+        //debug($idActual[0][0]);
+        //die();          
+        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
+        //debug($todo);
+        //die();
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
         ];

@@ -20,24 +20,34 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($solicitudes as $solicitude): ?>
+            <?php foreach ($todo as $solicitude): ?>
             <tr>
+                <?php
+                /*
+                $username = $this->request->getSession()->read('id');
+                $idActual = $this->Solicitude->getIDEstudiante($username);
+                $datosSolicitudes = $this->Solicitude->getIndexValuesEstudiante($idActual[0]);
+                */
+                //debug($idActual[0]);
+                //die();
+
+                //debug($datosSolicitudes);
+                //die();
+
+
+                ?>
                 <!--<td><?= $this->Number->format($solicitude->id) ?></td>
                 <td><?= h($solicitude->carrera) ?></td>
                 <td><?= $this->Number->format($solicitude->promedio) ?></td>
                 <td><?= $this->Number->format($solicitude->cantidad_horas) ?></td>
                 <td><?= h($solicitude->tipo_horas) ?></td>-->
-                <td><?= h($solicitude->estado) ?></td>
-                <td><?= h($solicitude->asistencia_externa) ?></td>
-                <td><?= $this->Number->format($solicitude->cantidad_horas_externa) ?></td>
-                <td><?= h($solicitude->tipo_horas_externa) ?></td>
-                <td><?= h($solicitude->fecha) ?></td>
-                <td><?= h($solicitude->justificación) ?></td>
-                <td><?= $this->Number->format($solicitude->ronda) ?></td>
-                <td><?= $solicitude->has('usuario') ? $this->Html->link($solicitude->usuario->id, ['controller' => 'Usuarios', 'action' => 'view', $solicitude->usuario->id]) : '' ?></td>
-                <td><?= $solicitude->has('grupo') ? $this->Html->link($solicitude->grupo->id, ['controller' => 'Grupos', 'action' => 'view', $solicitude->grupo->id]) : '' ?></td>
-                <td><?= h($solicitude->horas_asistente) ?></td>
-                <td><?= h($solicitude->horas_estudiante) ?></td>
+                <td><?= h($solicitude[0]) ?></td>
+                <td><?= h($solicitude[1]) ?></td>
+                <td><?= h($solicitude[2]) ?></td>
+                <td><?= h($solicitude[3]) ?></td>
+                <td><?= h($solicitude[4]) ?></td>
+                <td><?= h($solicitude[5]) ?></td>
+
                 <td class="actions">
                 <span class="typcn typcn-printer"></span>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
