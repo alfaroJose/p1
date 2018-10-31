@@ -65,7 +65,9 @@
 
             echo $this->Form->control('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
             echo $this->Form->control('grupos_id', ['options' => $grupos]);
-
+            echo $this->Form->control('grupo_numero');
+            echo $this->Form->control('curso_nombre');
+            echo $this->Form->control('grupo_profesor');
         ?>
     </fieldset>
     <br>
