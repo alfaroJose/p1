@@ -173,7 +173,7 @@ $connect = ConnectionManager::get('default');
         $grupo = $this->Grupos->get($id, [
             'contain' => []
         ]);
-        //debug($grupo->semestre);
+        //debug($profesores);
         //die();
         $cursos = $this->Grupos->obtenerCursos($id2);
         foreach ($profesores as $key => $value) {
