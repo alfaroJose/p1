@@ -186,5 +186,12 @@ class SolicitudesTable extends Table
         return $result[0];
     }
 
-     
+    public function getViewValues($grupo_id, $usuario_id, $solicitudes_id)
+    {
+        $connect = ConnectionManager::get('default');
+        $view = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante
+            from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
+            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
+        return $view;
+    } 
 }
