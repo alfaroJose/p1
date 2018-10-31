@@ -20,7 +20,7 @@ class PoseeController extends AppController
     */
     private function guardarDatos($datos = null, $rolId = null){
         foreach ($datos as $dato => $value) {
-            $noCheckbox = false;
+            $noCheckbox = false;//Variable para ver si el dato recibido del form no es un checkbox
             if($dato == "checkboxInsUsuarios"){
                 $poseeTupla = $this->Posee->get([$rolId, 19]);
             }
@@ -86,10 +86,10 @@ class PoseeController extends AppController
             }
             if($noCheckbox == false){
                 if($value == ''){
-                    $poseeTupla->estado = 0;
+                    $poseeTupla->estado = 0;//Se desactiva en la base de datos
                 }
                 else{
-                    $poseeTupla->estado = 1;
+                    $poseeTupla->estado = 1;//Se activa
                 }
                 $this->Posee->save($poseeTupla);
             }   
@@ -122,23 +122,23 @@ class PoseeController extends AppController
          //Cierra seguridad
 
         $query = $this->Posee->find('all');//Toma todas las tuplas
-        $posee = $query->toArray();//
-        $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection
+        $posee = $query->toArray();//Las convierte en arreglo
+        $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection en la vista
 
-        $this->set(compact('posee'));
+        $this->set(compact('posee'));//envia la tabla como variable para llenar los checkboxes
         $this->set('opciones', $opciones);
 
         if($this->request->is('post')){
-            $datos = $this->request->getData();
+            $datos = $this->request->getData();//Toma todos los datos del form
             $rolId = $this->request->getData("Seleccion");//Toma el rol al que se le estan agregando o quitando permisos
             if(count($datos) > 2){
-                $this->guardarDatos($datos, $rolId);
+                $this->guardarDatos($datos, $rolId);//Llama al metodo para guardar cambios
                 $this->Flash->success(__('Los permisos han sido modificados exitosamente.'));
             }
             else{//Si no se ha seleccionado nada
                 $this->Flash->error(__('No hay ningun permiso seleccionado, por favor seleccione al menos uno.'));
             }
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);//Recarga la pagina
         }
     }
 }
