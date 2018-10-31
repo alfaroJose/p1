@@ -14,24 +14,6 @@ use Cake\Datasource\ConnectionManager;
  */
 class SolicitudesController extends AppController
 {
-    public function asignar(){//Viene el id de un grupo
-        $connect = ConnectionManager::get('default');
-        $id = 1;
-        $consulta = "select cursos.id, grupos.numero, grupos.semestre, grupos.año, cursos.nombre from grupos join cursos on cursos.id = grupos.cursos_id where grupos.id = ".$id.";" ;
-        $tupla = $connect->execute($consulta)->fetchAll();
-        $sigla = $tupla[0][0];
-        $numGrupo = $tupla[0][1];
-        $semestre = $tupla[0][2];
-        $anno = $tupla[0][3];
-        $nombreCurso = $tupla[0][4]; 
-        $this->set('opciones', ["hoLA", "HOA"]);
-        $this->set('sigla', $sigla);
-        $this->set('numGrupo', $numGrupo);
-        $this->set('semestre', $semestre);
-        $this->set('anno', $anno);
-        $this->set('nombreCurso', $nombreCurso);
-    }
-
     /**
      * Index method
      *
