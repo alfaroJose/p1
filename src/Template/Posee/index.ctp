@@ -6,7 +6,7 @@
 ?>
 
 <script type="text/javascript">
-    $(document).ready( function () {
+    $(document).ready( function () {//Esta funcion es para cuando se clickea el checkbox de habilitar edicion, en donde habilita o deshabilita los checkboxes
     	$('#checkBoxHabilitar').on('click', function() {
 			disabledCheckboxes();
 			if($(this).is(':checked')){
@@ -16,12 +16,9 @@
 				$('#Guardar').prop('disabled', true);
 			}
     	});
-
-    	$('.checkboxParaPerm').on('click')
-
     } );
 
-    function disabledCheckboxes(){//habilitar/deshabilitar
+    function disabledCheckboxes(){//habilitar/deshabilitar los checkboxes de permisos
     	if($('#checkBoxHabilitar').is(':checked')){
         	$('.checkboxParaPerm').removeAttr('disabled');
         }
@@ -30,9 +27,9 @@
         }	
     }
 
-    function poblarMatriz(p){//Se pasa la lista de permisos
+    function poblarMatriz(p){//Se pasa la lista de permisos de la tabla posee
     	for(var i = 0; i < p.length; i++){
-            if(p[i].estado == 1){
+            if(p[i].estado == 1){//si su estado es encendido entonces los activa en el checkbox
                 switch(p[i].permisos_id){
                     case 1:
                         $('#checkboxConsCursos').prop("checked", true);
@@ -99,8 +96,9 @@
     	}
     }
 
-    $(document).ready( function () {
+    $(document).ready( function () {//Funcion para llenar las lista de permisos para cada rol
     	var tuplas = <?php echo json_encode($posee); ?>;//todas las tuplas que hay en la tabla
+        //Se reparten las tuplas entre los roles.
     	var permAdmin = new Array();
     	var permAsis = new Array();
     	var permProf = new Array();
@@ -124,18 +122,18 @@
     	$('#seleccion').change(function() {//Si se selecciona algun elemento del select
     		$('.checkboxParaPerm').prop('checked', false);
     		if(!$('#seleccion').val()){//Si esta con la seleccion vacia no puede editar
-    			$('#Guardar').prop('disabled', true);
+    			$('#Guardar').prop('disabled', true);//Se deshabilitan los botones
     			$('#checkBoxHabilitar').prop('disabled', true);
     			$('#checkBoxHabilitar').prop('checked', false);
     			disabledCheckboxes();
     		}
-	    	else{//Cualquier otra seleccion valida
+	    	else{//Cualquier otra seleccion que sea valida
 	    		$('#checkBoxHabilitar').removeAttr('disabled');//habilita el checkbox de edicion
 
 	    		var permisos = new Array();
 				var rolId = $(this).val();//el valor actual de la lista de seleccion
 				if(rolId == 1){//admin
-					permisos = permAdmin.slice();//copia al array permisos
+					permisos = permAdmin.slice();//copia al array permisos segun rol
 				}
 				else if(rolId == 2){//asis admin
 					permisos = permAsis.slice();
@@ -173,6 +171,7 @@
 
 	<br>
 
+    <!-- Se tienen que crear hiddens para que tome los valores incluso cuando estan sin seleccionar -->
     <?= $this->Form->hidden("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
