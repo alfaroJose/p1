@@ -91,11 +91,6 @@ class SolicitudesTable extends Table
             ->allowEmpty('cantidad_horas_externa');
 
         $validator
-            ->scalar('tipo_horas_externa')
-            ->maxLength('tipo_horas_externa', 16)
-            ->allowEmpty('tipo_horas_externa');
-
-        $validator
             ->date('fecha')
             ->requirePresence('fecha', 'create')
             ->notEmpty('fecha');
@@ -120,6 +115,18 @@ class SolicitudesTable extends Table
             ->maxLength('horas_estudiante', 2)
             ->requirePresence('horas_estudiante', 'create')
             ->notEmpty('horas_estudiante');
+
+        $validator
+            ->scalar('horas_asistente_externa')
+            ->maxLength('horas_asistente_externa', 2)
+            ->requirePresence('horas_asistente_externa', 'create')
+            ->notEmpty('horas_asistente_externa');
+
+        $validator
+            ->scalar('horas_estudiante_externa')
+            ->maxLength('horas_estudiante_externa', 2)
+            ->requirePresence('horas_estudiante_externa', 'create')
+            ->notEmpty('horas_estudiante_externa');
 
         return $validator;
     }

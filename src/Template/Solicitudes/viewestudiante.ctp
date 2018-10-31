@@ -33,10 +33,6 @@
             <td><?= h($solicitude->asistencia_externa) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Tipo Horas Externa') ?></th>
-            <td><?= h($solicitude->tipo_horas_externa) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Justificación') ?></th>
             <td><?= h($solicitude->justificación) ?></td>
         </tr>
@@ -55,6 +51,14 @@
         <tr>
             <th scope="row"><?= __('Horas Estudiante') ?></th>
             <td><?= h($solicitude->horas_estudiante) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Horas Asistente Externa') ?></th>
+            <td><?= h($solicitude->horas_asistente_externa) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Horas Estudiante Externa') ?></th>
+            <td><?= h($solicitude->horas_estudiante_externa) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>

@@ -35,9 +35,9 @@
             echo $this->Form->control('carrera');
 
             //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
-            echo ("Solicita:");
-            echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
+            echo ("Solicita:");            
             echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
+            echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
             echo ("(Puede marcar ambas opciones)<br>");
             echo ( "Documentos que debe adjuntar al entregar el formulario en la ECCI:<br> 
                 1. Entregar este formulario debidamente en la Secretaría de la ECCI 
@@ -51,8 +51,10 @@
             echo $this->Form->control('asistencia_externa', ['label' =>['text'=>'No'], 'type' => 'radio']);
 
             
-            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);
-            echo $this->Form->control('tipo_horas_externa');
+            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);            
+            echo $this->Form->control('horas_asistente_externa');
+            echo $this->Form->control('horas_estudiante_externa');
+           
             //echo $this->Form->control('fecha');
             //echo $this->Form->control('cantidad_horas', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]);
             //echo $this->Form->control('estado');

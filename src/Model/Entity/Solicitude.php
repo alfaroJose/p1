@@ -13,7 +13,6 @@ use Cake\ORM\Entity;
  * @property string $estado
  * @property string $asistencia_externa
  * @property int $cantidad_horas_externa
- * @property string $tipo_horas_externa
  * @property \Cake\I18n\FrozenDate $fecha
  * @property string $justificación
  * @property int $ronda
@@ -21,6 +20,8 @@ use Cake\ORM\Entity;
  * @property int $grupos_id
  * @property string $horas_asistente
  * @property string $horas_estudiante
+ * @property string $horas_asistente_externa
+ * @property string $horas_estudiante_externa
  *
  * @property \App\Model\Entity\Usuario $usuario
  * @property \App\Model\Entity\Grupo $grupo
@@ -44,7 +45,6 @@ class Solicitude extends Entity
         'estado' => true,
         'asistencia_externa' => true,
         'cantidad_horas_externa' => true,
-        'tipo_horas_externa' => true,
         'fecha' => true,
         'justificación' => true,
         'ronda' => true,
@@ -52,6 +52,8 @@ class Solicitude extends Entity
         'grupos_id' => true,
         'horas_asistente' => true,
         'horas_estudiante' => true,
+        'horas_asistente_externa' => true,
+        'horas_estudiante_externa' => true,
         'usuario' => true,
         'grupo' => true
     ];
