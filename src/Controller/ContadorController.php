@@ -76,11 +76,11 @@ class ContadorController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contador = $this->Contador->patchEntity($contador, $this->request->getData());
             if ($this->Contador->save($contador)) {
-                $this->Flash->success(__('The contador has been saved.'));
+                $this->Flash->success(__('El contador ha sido modificado.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The contador could not be saved. Please, try again.'));
+            $this->Flash->error(__('El contador no se ha podido modificar. Por favor intente de nuevo.'));
         }
         $this->set(compact('contador'));
     }
