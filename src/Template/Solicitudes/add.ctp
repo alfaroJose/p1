@@ -25,7 +25,7 @@
             $telefonoEstudiante = $datosEstudiante[5];
             $cedulaEstudiante = $datosEstudiante[7];
 
-            echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>']]);
+            echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante]);
             echo $this->Form->control('nombre', ['readonly', 'value'=>$nombreEstudiante]);
             echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificación'], 'readonly', 'value'=>$cedulaEstudiante]);
@@ -46,10 +46,7 @@
 
             echo ("Información sobre otras asistencias:<br>
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
-            //NO FUNCIONA EL RADIO BUTTON?!
-            echo $this->Form->control('asistencia_externa', ['label' =>['text'=> 'Sí'], 'type' => 'radio']);
-            echo $this->Form->control('asistencia_externa', ['label' =>['text'=>'No'], 'type' => 'radio']);
-
+            echo $this->Form->radio('asistencia_externa', ['Sí', 'No']);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);            
             echo $this->Form->control('horas_asistente_externa');
