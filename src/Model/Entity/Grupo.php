@@ -6,12 +6,12 @@ use Cake\ORM\Entity;
 /**
  * Grupo Entity
  *
+ * @property int $id
  * @property int $numero
  * @property int $semestre
  * @property string $año
- * @property string $cursos_sigla
- * @property string $usuarios_id
- * @property int $id
+ * @property int $cursos_id
+ * @property int $usuarios_id
  *
  * @property \App\Model\Entity\Usuario $usuario
  */
@@ -31,7 +31,7 @@ class Grupo extends Entity
         'numero' => true,
         'semestre' => true,
         'año' => true,
-        'cursos_sigla' => true,
+        'cursos_id' => true,
         'usuarios_id' => true,
         'usuario' => true
     ];

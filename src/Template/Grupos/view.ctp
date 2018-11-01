@@ -7,28 +7,34 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Grupo'), ['action' => 'edit', $grupo->numero]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Grupo'), ['action' => 'delete', $grupo->numero], ['confirm' => __('Are you sure you want to delete # {0}?', $grupo->numero)]) ?> </li>
+        <li><?= $this->Html->link(__('Edit Grupo'), ['action' => 'edit', $grupo->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Grupo'), ['action' => 'delete', $grupo->id], ['confirm' => __('Are you sure you want to delete # {0}?', $grupo->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Grupos'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Grupo'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Cursos'), ['controller' => 'Cursos', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Curso'), ['controller' => 'Cursos', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Usuarios'), ['controller' => 'Usuarios', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Usuario'), ['controller' => 'Usuarios', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="grupos view large-9 medium-8 columns content">
-    <h3><?= h($grupo->numero) ?></h3>
+    <h3><?= h($grupo->id) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Año') ?></th>
             <td><?= h($grupo->año) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cursos Sigla') ?></th>
-            <td><?= h($grupo->cursos_sigla) ?></td>
+            <th scope="row"><?= __('Curso') ?></th>
+            <td><?= $grupo->has('curso') ? $this->Html->link($grupo->curso->sigla, ['controller' => 'Cursos', 'action' => 'view', $grupo->curso->sigla]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Usuario') ?></th>
             <td><?= $grupo->has('usuario') ? $this->Html->link($grupo->usuario->id, ['controller' => 'Usuarios', 'action' => 'view', $grupo->usuario->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($grupo->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Numero') ?></th>
@@ -37,10 +43,6 @@
         <tr>
             <th scope="row"><?= __('Semestre') ?></th>
             <td><?= $this->Number->format($grupo->semestre) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($grupo->id) ?></td>
         </tr>
     </table>
 </div>
