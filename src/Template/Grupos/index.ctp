@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Semestre' ?></th>
                 <th scope="col"><?= 'Año' ?></th>
@@ -22,6 +23,7 @@
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
+                <td><?= h($grupo->Usuarios['nombre']) ?></td>
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
