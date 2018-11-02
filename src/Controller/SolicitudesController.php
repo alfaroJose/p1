@@ -120,28 +120,32 @@ class SolicitudesController extends AppController
 
         //$grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
 
+        /*Se obtiene el carné de la persona que inició sesión*/
         $username = $this->request->getSession()->read('id');
+
+        /*Se pide el id (llave primaria) de la tabla de Usuarios con el carné de la persona*/
         $idEstudiante = $this->Solicitudes->getIDEstudiante($username);
+
+        $nombre;
 
         $semestre = 1;
         $año = 2018;
 
         $course = array();
-            $teacher;       
-            $classes;
-            $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
-            //debug($datosGrupos);
-            //die();
+        $teacher;       
+        $classes;
 
-            $aux;
-            //$aux[0] = "Seleccione un Curso"; 
-            //Se trae todos los grupos de la base de datos y los almacena en un vector
-            $i = 0;
-            $course_counter = 0; 
-            foreach($datosGrupos as $g)
-            {
+        //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
+        $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
+        //debug($datosGrupos);
+        //die();
+        $aux;             
+        $i = 0;
+        $course_counter = 0; 
+        foreach($datosGrupos as $g)
+        {
                 $class[$i] = $g['numero']; //Se trae el número de clase
-                $course2[$i] = $g['sigla'];
+                $code[$i] = $g['sigla'];
                 $course[$i] = $g['cursos_id']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar
                                                 //sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
                                                 
@@ -161,7 +165,7 @@ class SolicitudesController extends AppController
                     $aux[$course_counter] = array();
                     $aux[$course_counter]['id'] = $g['cursos_id'];
                     $aux[$course_counter]['nombre'] = $g['nombre'];
-                    $aux[$course_counter]['sigla'] = $g['sigla'];
+                    $aux[$course_counter]['sigla'] = $g['sigla'];  
                     $course_counter = $course_counter + 1;
                 }
                                     
@@ -187,7 +191,12 @@ class SolicitudesController extends AppController
                 
             }
 
-        $this->set(compact('solicitude', 'usuarios', 'c2'));
+            $teacher = $this->Solicitudes->getTeachers();
+
+            //debug($class);
+            //die();
+
+        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code'));
     }
 
     /**
@@ -235,6 +244,27 @@ class SolicitudesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function obtenerProfesor()
+      {
+
+        $curso = $_GET['curso'];
+        $grupo = $_GET['grupo'];
+        $semestre = 1;
+        $year = 2018;
+
+        $profesor = $this->Requests->getTeacher($curso,$grupo, $semestre, $year);
+        
+        foreach($profesor as $p) {
+          print_r($p);
+        }
+        
+      
+        
+         $this->autoRender = false ;
+         
+
+      }
 
     public function viewFile($filename) {
         $this->viewBuilder()

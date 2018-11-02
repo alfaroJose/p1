@@ -211,5 +211,37 @@ class SolicitudesTable extends Table
         return $result;
 
     }
-}
 
+    /*Obtiene todos los profesores*/
+    public function getTeachers()
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) from Usuarios u where u.roles_id = '3'");
+        $result = $result->fetchAll('assoc');
+        return $result;
+    }
+
+    /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
+    public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
+                                    from Grupos g, Usuarios u, Cursos c 
+                                    where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo and g.usuarios_id = u.id and g.cursos_id = c.id;");
+        $result = $result->fetchAll('assoc');
+        return $result;
+
+    }
+
+    /*Obtiene todos los grupos según una sigla, semestre y año.*/
+    public function getAllGrupos($siglaCurso, $semestre, $year)
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
+                                    from Grupos g, Cursos c 
+                                    where g.cursos_id = c.id and c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year';");
+        $result = $result->fetchAll('assoc');
+        return $result;
+
+    }
+}
