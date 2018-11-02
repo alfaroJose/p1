@@ -5,6 +5,7 @@ return [
         'Bake' => $baseDir . '/vendor/cakephp/bake/',
         'BootstrapUI' => $baseDir . '/vendor/friendsofcake/bootstrap-ui/',
         'DebugKit' => $baseDir . '/vendor/cakephp/debug_kit/',
+        'Dompdf' => $baseDir . '/vendor/daoandco/cakephp-dompdf/',
         'Migrations' => $baseDir . '/vendor/cakephp/migrations/',
         'WyriHaximus/TwigView' => $baseDir . '/vendor/wyrihaximus/twig-view/'
     ]

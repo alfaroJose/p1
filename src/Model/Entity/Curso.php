@@ -6,6 +6,7 @@ use Cake\ORM\Entity;
 /**
  * Curso Entity
  *
+ * @property int $id
  * @property string $sigla
  * @property string $nombre
  */
@@ -22,6 +23,7 @@ class Curso extends Entity
      * @var array
      */
     protected $_accessible = [
+        'sigla' => true,
         'nombre' => true
     ];
 }

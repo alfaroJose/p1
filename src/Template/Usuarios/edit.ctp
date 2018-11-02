@@ -25,13 +25,25 @@
 
            //Se guarda el tipo de identificación que tiene asignado el usuario para mostrarlo como valor default
             $tipoCedulaActual = $this->Usuario->getTipoCedula($usuario->nombre_usuario);
-           
-            echo $this->Form->control('tipo_identificacion', ['options' =>["1" => 'Cédula Nacional', "2" => 'Cédula Extranjera', "3" => 'DIMEX', "4" => 'Pasaporte'], 'default'=>"3", 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
-            
-            //debug($tipoCedulaActual[0]);
-            //die();
+            $tipo_id;
 
-            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            /*Al ser un dropdown se necesita convertir las opciones a números*/
+            if($tipoCedulaActual[0] == 'Cédula Nacional'){ //Es administrador
+                $tipo_id = 1;
+            } else if ($tipoCedulaActual[0] == 'Cédula Extranjera'){
+                $tipo_id = 2;
+
+            } else if ($tipoCedulaActual[0] == 'DIMEX'){
+                $tipo_id = 3;
+
+            } else if ($tipoCedulaActual[0] == 'Pasaporte'){
+                $tipo_id = 4;
+
+            }
+           
+            echo $this->Form->control('tipo_identificacion', ['options' =>["1" => 'Cédula Nacional', "2" => 'Cédula Extranjera', "3" => 'DIMEX', "4" => 'Pasaporte'], 'value'=>$tipo_id, 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
+            echo $this->Form->control('identificacion', ['pattern'=>"[0-9A-Za-z]{1,15}", 'label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('telefono', ['type'=>'tel', 'pattern'=>"[0-9]{8,20}", 'label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
@@ -43,7 +55,7 @@
             
             echo $this->Form->control('nombre_usuario', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('correo', ['type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             /*Aquí se verifica el rol del usuario que está logueado, si es admin puede editar los roles en caso contrario el*/
             $rolActual = $this->Usuario->getRol($username);
