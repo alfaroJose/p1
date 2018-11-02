@@ -25,10 +25,15 @@ class SolicitudeHelper extends Helper
     	return $fila;
     }
 
-    public function getIDEstudiante($carne){
+    /*public function getGrupos($id_estudiante, $semestre, $year){
+        $fila = (new SolicitudesTable)->getGrupos($id_estudiante, $semestre, $year);
+        return $fila;
+    }*/
+
+    /*public function getIDEstudiante($carne){
         $fila = (new SolicitudesTable)->getIDEstudiante($carne);
         return $fila;
-    }
+    }*/
 
 
     public function getIndexValuesEstudiante($id){

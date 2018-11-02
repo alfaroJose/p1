@@ -154,12 +154,13 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    /*Obtiene el id del estudiante según el carné*/
     public function getIDEstudiante($carne)
     {
         $connet = ConnectionManager::get('default');
         $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
-        $result = $result->fetchAll();
-        return $result;
+        $result = $result->fetchAll('assoc');
+        return $result[0]['id'];
     }
 
         public function getIndexValuesEstudiante($id){
@@ -175,14 +176,40 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    /*Obtiene todos los datos del estudiante según el carné de la persona logueada*/
     public function getStudentInfo($carne)
     {
         $connet = ConnectionManager::get('default');
-              //  $result = $connet->execute("Select CONCAT(name,' ',lastname1) AS name from Classes c, users u WHERE c.course_id = "+$courseId+" AND c.class_number = "+$classNumber+" AND c.professor_id = u.identification_number");
-        //$result = $connet->execute("select * from Usuarios where nombre_usuario = '$carne'");
-        //$result = $result->fetchAll('assoc');
-        //return $result;
         $result = $connet->execute("select * from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $result[0];
     }
+
+    //Obtiene los números de grupo, nombre del curso, sigla y id de los grupos disponibles para solicitar una asistenia de dicho semestre y año en el que el estudiante no haya solicitado asistencia todavía.
+    public function getGrupos($id_estudiante, $semestre, $year)
+    {
+        $connet = ConnectionManager::get('default');      
+        $result = $connet->execute("select g.numero, c.nombre, c.sigla, g.id, g.cursos_id
+                                    from cursos c, grupos g
+                                    where g.año = '$year' and g.semestre = '$semestre' and c.id = g.cursos_id AND 
+                                    concat(g.cursos_id, g.numero)  NOT IN(
+                                                                    select concat(g.cursos_id, g.numero)
+                                                                    from grupos g, solicitudes r
+                                                                    where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')");
+
+        //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
+        $result = $result->fetchAll('assoc'); 
+        return $result;
+    }
+
+
+    /*Obtiene el nombre y primer apellido del profesor según el grupo específicado.*/
+    public function getProfesor($curso, $classNumber)
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("Select CONCAT(name,' ',lastname1) AS name from Classes c, users u WHERE c.course_id = '$courseId' AND c.class_number = '$classNumber' AND c.professor_id = u.identification_number");
+        $result = $result->fetchAll('assoc');
+        return $result;
+
+    }
 }
+

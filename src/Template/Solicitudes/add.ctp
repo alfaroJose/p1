@@ -49,8 +49,8 @@
             echo $this->Form->radio('asistencia_externa', ['Sí', 'No']);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);            
-            echo $this->Form->control('horas_asistente_externa');
-            echo $this->Form->control('horas_estudiante_externa');
+            echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
+            echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
            
             //echo $this->Form->control('fecha');
             //echo $this->Form->control('cantidad_horas', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]);
@@ -59,12 +59,18 @@
         ?>
         <h5> Curso solicitado </h5>
         <?php
+            //$semestre = 1;
+            //$año = 2018;
 
-            echo $this->Form->control('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
-            echo $this->Form->control('grupos_id', ['options' => $grupos]);
-            echo $this->Form->control('grupo_numero');
-            echo $this->Form->control('curso_nombre');
-            echo $this->Form->control('grupo_profesor');
+            
+        
+            echo $this->Form->control('grupos_id', ['options' => []]);
+            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2]);
+            echo $this->Form->control('grupo_numero', ['label' =>['text'=> 'Grupo']]);
+            echo $this->Form->control('curso_nombre', ['label' =>['text'=> 'Nombre del curso']]);
+            echo $this->Form->control('grupo_profesor', ['label' =>['text'=> 'Nombre del docente']]);
+
+            echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
         ?>
     </fieldset>
     <br>
