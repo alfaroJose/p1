@@ -50,6 +50,12 @@ class SolicitudesController extends AppController
         $this->set(compact('solicitudes','todo'));
     }
 
+    public function revisar($id = null)
+    {
+        
+    }
+
+
     /**
      * View method
      *

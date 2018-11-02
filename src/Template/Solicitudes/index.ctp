@@ -32,6 +32,7 @@
                 <td class="actions">
                 <span class="typcn typcn-printer"></span>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;'])?>
                 </td>
             </tr>
             <?php endforeach; ?>
