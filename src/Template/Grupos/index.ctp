@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
-                <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Curso' ?></th>
                 <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Semestre' ?></th>
@@ -20,6 +20,7 @@
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
+                <?php ///debug($grupo) ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
