@@ -20,6 +20,7 @@
             </tr>
         </thead>
         <tbody>
+            
             <?php foreach ($todo as $solicitude): ?>
             <tr>
                 <td><?= h($solicitude[0]) ?></td>
@@ -28,12 +29,9 @@
                 <td><?= h($solicitude[3]) ?></td>
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
-                
                 <td class="actions">
                 <span class="typcn typcn-printer"></span>
-                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $solicitude->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $solicitude->id], ['confirm' => __('Are you sure you want to delete # {0}?', $solicitude->id)]) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
