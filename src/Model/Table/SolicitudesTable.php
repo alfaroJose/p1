@@ -193,5 +193,12 @@ class SolicitudesTable extends Table
             from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
             where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
         return $view;
+    }
+
+        // Devuelva el rol del usuario según el carné
+    public function getRol($carne){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select roles_id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
+        return $fila[0];
     } 
 }
