@@ -100,6 +100,50 @@ class SolicitudesController extends AppController
         $this->set('solicitude', $solicitude);
     }
 
+    public function get_round()
+    {
+      return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
+    }
+
+    public function get_year()
+    {
+        //Se trae la ronda actusl
+        $round = $this->get_round();
+        $roundNumber = $round['numero'];
+
+        /*Se obtiene la fecha final para sacar el año*/
+        $r = $round['fecha_final'];
+        /*Se concatena el año, siempre son 4 caracteres*/
+        $año = $r[0].$r[1].$r[2].$r[3];
+  
+      return $año;
+    }
+
+    public function get_semester()
+    {
+        //Se trae la ronda actusl
+        $round = $this->get_round();
+        $roundNumber = $round['numero'];
+
+        /*Se obtiene la fecha final para sacar el mes*/
+        $r = $round['fecha_final'];
+      
+        /*Se obtiene el mes de la ronda*/
+        $m = $r[5].$r[6];
+
+        /*Cómo la ronda no indica cual semestre es el actual la única forma de sacarlo es comparando las fecha actual, si es Junio o antes es el semestre 1, en caso contrario es semestre 2
+        En julio se pueden empezar a pedir asistencias del segundo semestre?*/
+
+        if ($m <= 6){
+          $semestre = 1;
+
+        } else {
+          $semestre = 2;
+        }
+  
+      return $semestre;
+    }
+
     /**
      * Add method
      *
@@ -109,22 +153,7 @@ class SolicitudesController extends AppController
     {
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-
-            if($solicitude->grupos_id == 11){ //grupos_id está bien el valor
-              echo ("check1\n");
-            }
-
-            if($solicitude->usuarios_id == 23){ //usuarios_id está bien el valor
-              echo ("check2\n");
-
-            }
-
-            if($solicitude->estado == 'Anulada'){ //estado está bien el valor
-              echo ("check3\n");
-            }
-            
-
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());                      
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('La solicitud ha sido agregada.'));
                 return $this->redirect(['action' => 'index']);
@@ -139,19 +168,24 @@ class SolicitudesController extends AppController
         /*Se pide el id (llave primaria) de la tabla de Usuarios con el carné de la persona*/
         $idEstudiante = $this->Solicitudes->getIDEstudiante($username);
 
+        //Se trae la ronda actual
+        $round = $this->get_round();
+        //Se trae el año actual
+        $año = $this->get_year();
+        //Se trae el semestre al cual se requiere solicitar asistencia
+        $semestre = $this->get_semester();
+
+        $roundNumber = $round['numero'];
+
         $nombre;
-
-        $semestre = 1;
-        $año = 2018;
-
+       
         $course = array();
         $teacher;       
         $classes;
 
         //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
         $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
-        //debug($datosGrupos);
-        //die();
+       
         $aux;             
         $i = 0;
         $course_counter = 0; 
@@ -203,14 +237,7 @@ class SolicitudesController extends AppController
 
         $teacher = $this->Solicitudes->getTeachers();
 
-        /*test de consulta getidgrupo : FUNCIONA
-        $s = 'CI-1312';
-        $n = 1;
-        $id_grupo = $this->Solicitudes->getIDGrupo($s, $n, $semestre, $año);
-        debug($id_grupo);
-        die();
-        */
-        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code', 'auto'));
+        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code', 'auto', 'roundNumber'));
     }
 
     /**
@@ -264,8 +291,8 @@ class SolicitudesController extends AppController
 
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
-      $semestre = 1;
-      $year = 2018;
+      $semestre = $this->get_semester();
+      $year = $this->get_year();
 
       $profesor = $this->Solicitudes->getTeacher($curso, $grupo, $semestre, $year);
         
@@ -280,12 +307,10 @@ class SolicitudesController extends AppController
 
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
-      $semestre = 1;
-      $year = 2018;
+      $semestre = $this->get_semester();
+      $year = $this->get_year();
 
       $idGrupo = $this->Solicitudes->getIDGrupo($curso, $grupo, $semestre, $year);
-      //debug($idGrupo);
-      //die();
         
       foreach($idGrupo as $p) {
         print_r($p);

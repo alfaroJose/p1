@@ -52,16 +52,16 @@
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
            
-            echo $this->Form->control('fecha');
+            echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
             echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
-            echo $this->Form->hidden('estado', ['value'=>'Anulada']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
-            echo $this->Form->control('ronda');
+            echo $this->Form->hidden('estado', ['value'=>'Anulada', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->hidden('ronda', ['value'=>$roundNumber, 'readonly']);
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->input('grupos_id', ['type' =>'text', 'options'=> $auto]);
+            echo $this->Form->input('grupos_id', ['type' =>'text', 'readonly']);
             echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()']);
-            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], 'options' => $class, 'onChange' => 'save()']);
+            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()']);
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly']);
             echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente']]);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
@@ -123,20 +123,14 @@
         
         var course_array = [];
 
-       // alert(a2.item(0).text);       
-
         for(c = 0;  c < r; c = c + 1) // Recorre los cursos
         {
             // alert(courses.options.length);
             //Si el curso es el mismo al curso seleccionado, manda el grupo al vector
             if(actualCourse.localeCompare(a2.item(c).text) == 0)
             {
-                var tmp = document.createElement("option");
-                //if(c+1 < a1.options.length)
-                //{
-                        //alert(a1.item(c).value);
+                var tmp = document.createElement("option");               
                 tmp.text = a1.options[c].text; //Prestarle atencion a esta linea
-                //tmp.value = a1.item(c).value; //Prestarle atencion a esta linea
                 selClass.options.add(tmp,i);
                 i = i + 1;
                 //}
@@ -145,14 +139,11 @@
 
         }
         
-        //selClass.options = [1,2,3];
         txtNombre = document.getElementById("nc");
     
         if(selCourse.selectedIndex != 0)
-        {
-            
-            txtNombre.value = document.getElementById("a3").options[selCourse.selectedIndex-1].text;
-            
+        {           
+            txtNombre.value = document.getElementById("a3").options[selCourse.selectedIndex-1].text;          
         }
         else
             txtNombre.value = "";
@@ -165,16 +156,12 @@
         
         if(x[0].value == "0") //Realiza el cambio
         {
-            //selCourse = document.getElementById("course-id");
-            var cursos = [];
-            
+            var cursos = [];          
             //Recorre todos los cursos y los borra
             for(i = 0; i < l; ++i)
             {
                 cursos.push(selCourse.options[0].text);
-                selCourse.options.remove(0);
-                
-                
+                selCourse.options.remove(0);                              
             }
             
             //Agarra todos los cursos y los mete otra vez, pero esta vez con el formato correcto para que el codigo de curso
@@ -221,9 +208,7 @@
         
         //Mete en el campo bloqueado la informacion del profesor
         //alert(data);
-        //alert(p);
         document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
-        //alert((p[6] + " " + p[7]).split(")")[0]);
     },
     error: function(jqxhr, status, exception)
     {
@@ -248,9 +233,7 @@
         selCourse = document.getElementById("curso-sigla");
 
         selID = document.getElementById("grupo-id");
-
-        
-        
+      
         //Obtiene el valor del curso y grupo seleccionados actualmente
         Course = selCourse.options[selCourse.selectedIndex].text;
         Group = selClass.options[selClass.selectedIndex].text;
@@ -285,17 +268,8 @@
         tmp.value = (p[6] + " " + p[7]).split(")")[0]; //Para que phpcake detecte el valor seleccionado y no el indice
         tmp.text = (p[6] + " " + p[7]).split(")")[0]; //Para que el select despliegue el valor respectivo de la opcion y no un valor vacio
         selID.options.add(tmp,0);
-
         selID.selectedIndex = s;
-    
-    }
 
-
-
-    
-    function hidePersonalInfo()
-    {
-        alert("");
     }
 
 </script>

@@ -247,5 +247,14 @@ class SolicitudesTable extends Table
         return $result;
 
     }
+
+    //Obtiene la ronda actual, como solo existe una tupla, no es necesario especificar fechas o parámetros
+    public function getRonda()
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select * from Rondas");
+        $result = $result->fetchAll('assoc');
+        return $result[0];
+    }
     
 }
