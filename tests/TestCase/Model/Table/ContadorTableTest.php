@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\RequisitosTable;
+use App\Model\Table\ContadorTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RequisitosTable Test Case
+ * App\Model\Table\ContadorTable Test Case
  */
-class RequisitosTableTest extends TestCase
+class ContadorTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\RequisitosTable
+     * @var \App\Model\Table\ContadorTable
      */
-    public $Requisitos;
+    public $Contador;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class RequisitosTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.requisitos'
+        'app.contador'
     ];
 
     /**
@@ -35,8 +35,8 @@ class RequisitosTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Requisitos') ? [] : ['className' => RequisitosTable::class];
-        $this->Requisitos = TableRegistry::getTableLocator()->get('Requisitos', $config);
+        $config = TableRegistry::getTableLocator()->exists('Contador') ? [] : ['className' => ContadorTable::class];
+        $this->Contador = TableRegistry::getTableLocator()->get('Contador', $config);
     }
 
     /**
@@ -46,7 +46,7 @@ class RequisitosTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Requisitos);
+        unset($this->Contador);
 
         parent::tearDown();
     }
@@ -67,16 +67,6 @@ class RequisitosTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

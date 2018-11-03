@@ -83,7 +83,7 @@ class GruposTable extends Table
     public function getIndexValues(){
 
         $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Cursos.id','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id','Usuarios.id'])
+        ->select(['Cursos.sigla','Cursos.nombre','Cursos.id','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id','Usuarios.id','Usuarios.nombre'])
         ->join([
             'Cursos'=>[
                      'table'=>'Cursos',
@@ -215,10 +215,20 @@ class GruposTable extends Table
     }
 
     public function seleccionarProfesoresCorreos(){
-        $connect = ConnectionManager::get('default');
-        $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();
+        /*$connect = ConnectionManager::get('default');
+        $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();*/
+
+                $connect = ConnectionManager::get('default');
+        $profesor = $connect->execute("select CONCAT(Usuarios.nombre, ' ', Usuarios.primer_apellido), id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
         return $profesor;
     }
+        /*public function getIndexValues(){
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud'
+            from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
+            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
+        return $index;
+    }*/
 
 }
 

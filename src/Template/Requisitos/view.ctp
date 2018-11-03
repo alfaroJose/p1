@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Requisito $requisito
  */
 ?>
-
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -24,6 +23,10 @@
         <tr>
             <th scope="row"><?= __('Tipo') ?></th>
             <td><?= h($requisito->tipo) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Categoria') ?></th>
+            <td><?= h($requisito->categoria) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
