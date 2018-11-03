@@ -52,14 +52,14 @@
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
            
-            //echo $this->Form->control('fecha');
-            //echo $this->Form->control('cantidad_horas', ['label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]);
-            //echo $this->Form->control('estado');
-            //echo $this->Form->control('ronda');
+            echo $this->Form->control('fecha');
+            echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
+            echo $this->Form->hidden('estado', ['value'=>'Anulada']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->control('ronda');
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->input('grupos_id', ['disabled', 'type' =>'text']);
+            echo $this->Form->input('grupos_id', ['type' =>'text', 'options'=> $auto]);
             echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()']);
             echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], 'options' => $class, 'onChange' => 'save()']);
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly']);
@@ -74,9 +74,6 @@
             echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre, 'style' => 'visibility:hidden']); //nombre de los cursos
             echo $this->Form->input('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course, 'style' => 'visibility:hidden']); //id de los cursos 
             //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos        
-
-            //echo $this->Form->control('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $teacher , 'style' => 'visibility:hidden']);
-            //echo $this->Form->control('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $id , 'style' => 'visibility:hidden', 'height' => '1px']);
         ?>
     </fieldset>
     <br>
@@ -242,13 +239,16 @@
     }
 
     /*
-        Esta funcion se encarga de salvar el id auto-incremental del grupo en el campo de texto no visible, de 
+        Esta funcion se encarga de salvar el id auto-incremental del grupo en el campo de texto no visible
     */
     function save2()
     {
         //Referencia los selects de grupo y curso respectivamente
         selClass = document.getElementById("grupo-numero");
         selCourse = document.getElementById("curso-sigla");
+
+        selID = document.getElementById("grupo-id");
+
         
         
         //Obtiene el valor del curso y grupo seleccionados actualmente
@@ -275,8 +275,23 @@
 
     }
         });
+
+        /*Esta parte es para poner el valor correcto en el campo del id, sin esto el value queda en null*/
+        var x = selID.options;
+
+        s = x.selectedIndex;
+
+        var tmp = document.createElement("option");
+        tmp.value = (p[6] + " " + p[7]).split(")")[0]; //Para que phpcake detecte el valor seleccionado y no el indice
+        tmp.text = (p[6] + " " + p[7]).split(")")[0]; //Para que el select despliegue el valor respectivo de la opcion y no un valor vacio
+        selID.options.add(tmp,0);
+
+        selID.selectedIndex = s;
     
     }
+
+
+
     
     function hidePersonalInfo()
     {

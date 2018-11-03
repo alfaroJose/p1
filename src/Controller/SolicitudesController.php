@@ -110,6 +110,21 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+
+            if($solicitude->grupos_id == 11){ //grupos_id está bien el valor
+              echo ("check1\n");
+            }
+
+            if($solicitude->usuarios_id == 23){ //usuarios_id está bien el valor
+              echo ("check2\n");
+
+            }
+
+            if($solicitude->estado == 'Anulada'){ //estado está bien el valor
+              echo ("check3\n");
+            }
+            
+
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('La solicitud ha sido agregada.'));
                 return $this->redirect(['action' => 'index']);
@@ -168,24 +183,23 @@ class SolicitudesController extends AppController
             $i = $i + 1;
         }
 
-            //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
-            //activar el evento onChange del select de grupos
+        //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
+        //activar el evento onChange del select de grupos
 
-            $i = 0;
-            //Esta parte se encarga de controlar los codigos y nombres de cursos
-            //$cursos = $this->Requests->getCourses(); //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
+        $i = 0;
+        //Esta parte se encarga de controlar los codigos y nombres de cursos
+        //$cursos = $this->Requests->getCourses(); //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
             
             
-            $c2[0] = "Seleccione un Curso"; 
-            //foreach($aux as $c) //Recorre cada tupla de curso
-            foreach($aux as $c) //Recorre cada tupla de curso
-            {
-                //Dado que la primer opcion ya tiene un valor por default, los campos deben modifcar el valor proximo a i   
-                $c2[$i+1] = $c['sigla']; //Almacena el codigo de curso
-                $nombre[$i+1] = $c['nombre']; //Almacena el nombre del curso
-                $i = $i + 1;
+        $c2[0] = "Seleccione un Curso"; 
+        foreach($aux as $c) //Recorre cada tupla de curso
+        {
+          //Dado que la primer opcion ya tiene un valor por default, los campos deben modifcar el valor proximo a i   
+          $c2[$i+1] = $c['sigla']; //Almacena el codigo de curso
+          $nombre[$i+1] = $c['nombre']; //Almacena el nombre del curso
+          $i = $i + 1;
                 
-            }
+        }
 
         $teacher = $this->Solicitudes->getTeachers();
 
