@@ -58,15 +58,10 @@
             //echo $this->Form->control('ronda');
         ?>
         <h5> Curso solicitado </h5>
-        <?php
-            //$semestre = 1;
-            //$año = 2018;
-
-            
-        
-            echo $this->Form->control('grupos_id', ['options' => []]);
+        <?php    
+            echo $this->Form->input('grupos_id', ['disabled', 'type' =>'text']);
             echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()']);
-            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], 'options' => $class, 'controller' => 'Solicitudes', 'onChange' => 'save()']);
+            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], 'options' => $class, 'onChange' => 'save()']);
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly']);
             echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente']]);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
@@ -74,15 +69,14 @@
             /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
                 entre php y javascript. Si conocen una mejor me avisan :)*/
 
-            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class]); //número de grupo            
-            echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $code]); //sigla de los cursos
-            echo $this->Form->hidden('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre]); //nombre de los cursos
-            echo $this->Form->hidden('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course]); //id de los cursos          
+            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class, 'style' => 'visibility:hidden']); //número de grupo            
+            echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $code, 'style' => 'visibility:hidden']); //sigla de los cursos
+            echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre, 'style' => 'visibility:hidden']); //nombre de los cursos
+            echo $this->Form->input('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course, 'style' => 'visibility:hidden']); //id de los cursos 
+            //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos        
 
             //echo $this->Form->control('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $teacher , 'style' => 'visibility:hidden']);
             //echo $this->Form->control('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $id , 'style' => 'visibility:hidden', 'height' => '1px']);
-            //debug($code);
-            //die()
         ?>
     </fieldset>
     <br>
@@ -105,13 +99,14 @@
         selCourse = document.getElementById("curso-sigla");
         
         //Obtiene valores de los inputs ocultos
-                        courses = selClass.options;
+        courses = selClass.options;
 
         a1 = document.getElementById("a1"); //Lista de números de grupos completa
         a2 = document.getElementById("a2"); //Lista de siglas de cursos completa
         
         //elimina todas las opciones de clase:
         var l = selClass.options.length;
+        var r = a2.options.length;
         
         //Remueve todas las opciones de grupo actuales
         for(j = 0; j < l; j = j + 1)
@@ -122,9 +117,6 @@
         //Recuerda el curso actual seleccionado
         actualCourse = selCourse.options[selCourse.selectedIndex].text;
 
-        
-        //courses = a2.options;
-
         i = 0;
         var tmp2 = document.createElement("option");
         tmp2.text = "Seleccione un Grupo"
@@ -133,12 +125,10 @@
         tmp2.text = "BORRAR";
         
         var course_array = [];
-        //var y = courses.length;
-        //var y = a2.options.length;
 
        // alert(a2.item(0).text);       
 
-        for(c = 0;  c < l; c = c + 1) // Recorre los cursos
+        for(c = 0;  c < r; c = c + 1) // Recorre los cursos
         {
             // alert(courses.options.length);
             //Si el curso es el mismo al curso seleccionado, manda el grupo al vector
@@ -148,7 +138,7 @@
                 //if(c+1 < a1.options.length)
                 //{
                         //alert(a1.item(c).value);
-             tmp.text = a1.options[c].text; //Prestarle atencion a esta linea
+                tmp.text = a1.options[c].text; //Prestarle atencion a esta linea
                 //tmp.value = a1.item(c).value; //Prestarle atencion a esta linea
                 selClass.options.add(tmp,i);
                 i = i + 1;
@@ -233,7 +223,10 @@
         p = data.split(" ");
         
         //Mete en el campo bloqueado la informacion del profesor
+        //alert(data);
+        //alert(p);
         document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
+        //alert((p[6] + " " + p[7]).split(")")[0]);
     },
     error: function(jqxhr, status, exception)
     {
@@ -243,8 +236,46 @@
         });
         
         //Ahora que se selecciono un curso, ya no es necesario que aparezca esta opcion
-        if(selClass.options[(selClass.length-1)].text == "Seleccione un Curso")
-            selClass.options.remove((selClass.length-1));
+        //if(selClass.options[(selClass.length-1)].text == "Seleccione un Curso")
+           // selClass.options.remove((selClass.length-1));
+           save2();
+    }
+
+    /*
+        Esta funcion se encarga de salvar el id auto-incremental del grupo en el campo de texto no visible, de 
+    */
+    function save2()
+    {
+        //Referencia los selects de grupo y curso respectivamente
+        selClass = document.getElementById("grupo-numero");
+        selCourse = document.getElementById("curso-sigla");
+        
+        
+        //Obtiene el valor del curso y grupo seleccionados actualmente
+        Course = selCourse.options[selCourse.selectedIndex].text;
+        Group = selClass.options[selClass.selectedIndex].text;
+        //Realiza una peticion al servidor mediante la tecnica AJAX, para obtener el nombre del profesor en base al curso y grupo actual
+        $.ajax({
+    url:"<?php echo \Cake\Routing\Router::url(array('controller'=>'Solicitudes','action'=>'obtenerGrupoID'));?>" ,   cache: false,
+    type: 'GET',
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'text',
+    async: false,
+    data: { curso: Course, grupo: Group, salida:"xdxd"},
+    success: function (data) {
+       // $('#context').html(data);
+        p = data.split(" ");
+        
+        //Mete en el campo bloqueado el id del grupo seleccionado
+        document.getElementById("grupos-id").value = (p[6] + " " + p[7]).split(")")[0];
+    },
+    error: function(jqxhr, status, exception)
+    {
+        alert(exception);
+
+    }
+        });
+    
     }
     
     function hidePersonalInfo()

@@ -118,8 +118,6 @@ class SolicitudesController extends AppController
         }
         $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
 
-        //$grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
-
         /*Se obtiene el carné de la persona que inició sesión*/
         $username = $this->request->getSession()->read('id');
 
@@ -143,34 +141,32 @@ class SolicitudesController extends AppController
         $i = 0;
         $course_counter = 0; 
         foreach($datosGrupos as $g)
-        {
-                $class[$i] = $g['numero']; //Se trae el número de clase
-                $code[$i] = $g['sigla'];
-                $course[$i] = $g['cursos_id']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar
-                                                //sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
+        {         
+          $class[$i] = $g['numero']; //Se trae el número de clase
+          $code[$i] = $g['sigla']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
+          $course[$i] = $g['cursos_id'];  //id de los cursos
+          $auto[$i] = $g['id']; //id de los grupos
                                                 
-                //Busca los cursos y los coloca solo 1 vez en el vector de cursos.
-                //Realiza la busqueda en base al codigo de curso, ya que al ser más corto entonces la busqueda será más eficiente
-                $encontrado = 0;
-                for($j = 0; $j < $course_counter && $encontrado == 0; $j = $j+1)
-                {
-                    if(strcmp($aux[$j]['id'],$g['cursos_id']) == 0)
-                        $encontrado = 1;
-                }
-
-
+          //Busca los cursos y los coloca solo 1 vez en el vector de cursos.
+          //Realiza la busqueda en base al codigo de curso, ya que al ser más corto entonces la busqueda será más eficiente
+          $encontrado = 0;
+          for($j = 0; $j < $course_counter && $encontrado == 0; $j = $j+1)
+          {
+            if(strcmp($aux[$j]['id'],$g['cursos_id']) == 0)
+            $encontrado = 1;
+          }
                 
-                if($encontrado == 0)
-                {
-                    $aux[$course_counter] = array();
-                    $aux[$course_counter]['id'] = $g['cursos_id'];
-                    $aux[$course_counter]['nombre'] = $g['nombre'];
-                    $aux[$course_counter]['sigla'] = $g['sigla'];  
-                    $course_counter = $course_counter + 1;
-                }
+          if($encontrado == 0)
+          {
+            $aux[$course_counter] = array();
+            $aux[$course_counter]['id'] = $g['cursos_id'];
+            $aux[$course_counter]['nombre'] = $g['nombre'];
+            $aux[$course_counter]['sigla'] = $g['sigla'];  
+            $course_counter = $course_counter + 1;
+          }
                                     
-                $i = $i + 1;
-            }
+            $i = $i + 1;
+        }
 
             //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
             //activar el evento onChange del select de grupos
@@ -191,12 +187,16 @@ class SolicitudesController extends AppController
                 
             }
 
-            $teacher = $this->Solicitudes->getTeachers();
+        $teacher = $this->Solicitudes->getTeachers();
 
-            //debug($class);
-            //die();
-
-        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code'));
+        /*test de consulta getidgrupo : FUNCIONA
+        $s = 'CI-1312';
+        $n = 1;
+        $id_grupo = $this->Solicitudes->getIDGrupo($s, $n, $semestre, $año);
+        debug($id_grupo);
+        die();
+        */
+        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code', 'auto'));
     }
 
     /**
@@ -246,25 +246,40 @@ class SolicitudesController extends AppController
     }
 
     public function obtenerProfesor()
-      {
+    {
 
-        $curso = $_GET['curso'];
-        $grupo = $_GET['grupo'];
-        $semestre = 1;
-        $year = 2018;
+      $curso = $_GET['curso'];
+      $grupo = $_GET['grupo'];
+      $semestre = 1;
+      $year = 2018;
 
-        $profesor = $this->Requests->getTeacher($curso,$grupo, $semestre, $year);
+      $profesor = $this->Solicitudes->getTeacher($curso, $grupo, $semestre, $year);
         
-        foreach($profesor as $p) {
-          print_r($p);
-        }
+      foreach($profesor as $p) {
+        print_r($p);
+      }       
+      $this->autoRender = false ;       
+    }
+
+    public function obtenerGrupoID()
+    {
+
+      $curso = $_GET['curso'];
+      $grupo = $_GET['grupo'];
+      $semestre = 1;
+      $year = 2018;
+
+      $idGrupo = $this->Solicitudes->getIDGrupo($curso, $grupo, $semestre, $year);
+      //debug($idGrupo);
+      //die();
         
+      foreach($idGrupo as $p) {
+        print_r($p);
+      }    
+      $this->autoRender = false ;
       
-        
-         $this->autoRender = false ;
-         
-
-      }
+             
+    }
 
     public function viewFile($filename) {
         $this->viewBuilder()

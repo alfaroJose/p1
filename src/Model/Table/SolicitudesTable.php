@@ -160,7 +160,9 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll('assoc');
-        return $result[0]['id'];
+        if($result != null){
+            return $result[0]['id'];
+        }
     }
 
         public function getIndexValuesEstudiante($id){
@@ -181,7 +183,9 @@ class SolicitudesTable extends Table
     {
         $connet = ConnectionManager::get('default');
         $result = $connet->execute("select * from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
-        return $result[0];
+        if($result != null){
+            return $result[0];
+        }
     }
 
     //Obtiene los números de grupo, nombre del curso, sigla y id de los grupos disponibles para solicitar una asistenia de dicho semestre y año en el que el estudiante no haya solicitado asistencia todavía.
@@ -227,21 +231,21 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
                                     from Grupos g, Usuarios u, Cursos c 
-                                    where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo and g.usuarios_id = u.id and g.cursos_id = c.id;");
+                                    where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo' and g.usuarios_id = u.id and g.cursos_id = c.id;");
         $result = $result->fetchAll('assoc');
         return $result;
 
     }
 
-    /*Obtiene todos los grupos según una sigla, semestre y año.*/
-    public function getAllGrupos($siglaCurso, $semestre, $year)
+    public function getIDGrupo($siglaCurso, $numeroGrupo, $semestre, $year)
     {
         $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
+        $result = $connet->execute("select g.id 
                                     from Grupos g, Cursos c 
-                                    where g.cursos_id = c.id and c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year';");
+                                    where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo' and g.cursos_id = c.id;");
         $result = $result->fetchAll('assoc');
         return $result;
 
     }
+    
 }
