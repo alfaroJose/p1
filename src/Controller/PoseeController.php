@@ -101,6 +101,47 @@ class PoseeController extends AppController
      * @return \Cake\Http\Response|void
      */
 
+    // public function index()
+    // {
+    //     //Inicia seguridad
+    //      $carne = $this->getRequest()->getSession()->read('id');
+    //      if($carne != null){
+    //         $connect = ConnectionManager::get('default');
+    //         $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+    //         $tupla =  $connect->execute($consulta)->fetchAll();
+           
+    //          if($tupla[0][0] != '1'){//1 = Administrador
+    //             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+    //          }
+    //      }
+    //      else{
+            
+    //          $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+    //      }
+    //      //Cierra seguridad
+
+    //     $query = $this->Posee->find('all');//Toma todas las tuplas
+    //     $posee = $query->toArray();//Las convierte en arreglo
+    //     $opciones = array("1" => "Administrador","2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante");//Usado para el selection en la vista
+
+    //     $this->set(compact('posee'));//envia la tabla como variable para llenar los checkboxes
+    //     $this->set('opciones', $opciones);
+
+    //     if($this->request->is('post')){
+    //         $datos = $this->request->getData();//Toma todos los datos del form
+    //         $rolId = $this->request->getData("Seleccion");//Toma el rol al que se le estan agregando o quitando permisos
+    //         if(count($datos) > 2){
+    //             $this->guardarDatos($datos, $rolId);//Llama al metodo para guardar cambios
+    //             $this->Flash->success(__('Los permisos han sido modificados exitosamente.'));
+    //         }
+    //         else{//Si no se ha seleccionado nada
+    //             $this->Flash->error(__('No hay ningun permiso seleccionado, por favor seleccione al menos uno.'));
+    //         }
+    //         return $this->redirect(['action' => 'index']);//Recarga la pagina
+    //     }
+    // }
+
     public function index()
     {
         //Inicia seguridad
@@ -128,17 +169,20 @@ class PoseeController extends AppController
         $this->set(compact('posee'));//envia la tabla como variable para llenar los checkboxes
         $this->set('opciones', $opciones);
 
-        if($this->request->is('post')){
-            $datos = $this->request->getData();//Toma todos los datos del form
-            $rolId = $this->request->getData("Seleccion");//Toma el rol al que se le estan agregando o quitando permisos
-            if(count($datos) > 2){
-                $this->guardarDatos($datos, $rolId);//Llama al metodo para guardar cambios
-                $this->Flash->success(__('Los permisos han sido modificados exitosamente.'));
-            }
-            else{//Si no se ha seleccionado nada
-                $this->Flash->error(__('No hay ningun permiso seleccionado, por favor seleccione al menos uno.'));
-            }
-            return $this->redirect(['action' => 'index']);//Recarga la pagina
-        }
+        // if($this->request->is('post')){
+        //     $datos = $this->request->getData();//Toma todos los datos del form
+        //     $rolId = $this->request->getData("Seleccion");//Toma el rol al que se le estan agregando o quitando permisos
+        //     if(count($datos) > 2){
+        //         $this->guardarDatos($datos, $rolId);//Llama al metodo para guardar cambios
+        //         $this->Flash->success(__('Los permisos han sido modificados exitosamente.'));
+        //     }
+        //     else{//Si no se ha seleccionado nada
+        //         $this->Flash->error(__('No hay ningun permiso seleccionado, por favor seleccione al menos uno.'));
+        //     }
+        //     return $this->redirect(['action' => 'matriz']);//Recarga la pagina
+        // }
+        // else{
+            
+        // }
     }
 }
