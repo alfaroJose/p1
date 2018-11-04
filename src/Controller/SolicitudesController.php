@@ -93,12 +93,39 @@ class SolicitudesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function vieww($id = null)
     {
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+        $this->set('solicitude', $solicitude);
+    }
 
+        public function view($id = null)
+    {
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => ['Usuarios', 'Grupos']
+        ]);
+        $username = $this->request->getSession()->read('id');
+        $rolActual = $this->Solicitudes->getRol($username);  
+        
+        $idActual = $this->Solicitudes->getIDEstudiante($username); 
+        //debug($id);
+        //die();
+
+        //debug($idActual[0][0]);
+        //die(); 
+/*        if(4==$rolActual[0]){     
+        $todo = $this->Solicitudes->getViewValuesEstudiante($id);
+        }else if(3==$rolActual[0]){
+                //$todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
+        }else if(1==$rolActual[0]){
+                $todo = $this->Solicitudes->getIndexValues();
+            }*/
+            $todo = $this->Solicitudes->getViewValuesEstudiante($id);
+        //debug($todo);
+        //die();
+        $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
 

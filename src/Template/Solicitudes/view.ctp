@@ -7,6 +7,25 @@
 <div class="solicitudes view large-9 medium-8 columns content">
     <h3><?= h('Información') ?></h3>
     <table class="table">
+            <th scope="row"><?= __('Sigla') ?></th>
+            <td><?= h($todo[0][0]) ?></td>
+        </tr>
+
+        <tr>
+            <th scope="row"><?= __('Curso') ?></th>
+            <td><?= h($todo[0][1]) ?></td>
+        </tr>
+
+        <tr>
+            <th scope="row"><?= __('Profesor') ?></th>
+            <td><?= h($todo[0][3]) ?></td>
+        </tr>
+
+        <tr>
+            <th scope="row"><?= __('Estudiante') ?></th>
+            <td><?= h($todo[0][4]) ?></td>
+        </tr>
+
         <tr>
             <th scope="row"><?= __('Carrera') ?></th>
             <td><?= h($solicitude->carrera) ?></td>
