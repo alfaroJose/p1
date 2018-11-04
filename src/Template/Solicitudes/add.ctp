@@ -207,8 +207,18 @@
         p = data.split(" ");
         
         //Mete en el campo bloqueado la informacion del profesor
-        //alert(data);
-        document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
+        //alert(p);
+        //alert((p[7]).split(")")[0]);
+
+        /*En caso de que el nombre sean dos nombres, ej: Juan Pablo, el apellido quedaría en p[8]*/
+        if (p[8] != null){           
+            document.getElementById("prof").value = (p[6] + " " + p[7] + " " + p[8]).split(")")[0]; 
+        } else {
+            document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
+        }
+
+        /*No agarra el apellido si el primer nombre tiene 2 nombres*/
+        //document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
     },
     error: function(jqxhr, status, exception)
     {

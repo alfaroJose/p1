@@ -205,17 +205,6 @@ class SolicitudesTable extends Table
         return $result;
     }
 
-
-    /*Obtiene el nombre y primer apellido del profesor según el grupo específicado.*/
-    public function getProfesor($curso, $classNumber)
-    {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("Select CONCAT(name,' ',lastname1) AS name from Classes c, users u WHERE c.course_id = '$courseId' AND c.class_number = '$classNumber' AND c.professor_id = u.identification_number");
-        $result = $result->fetchAll('assoc');
-        return $result;
-
-    }
-
     /*Obtiene todos los profesores*/
     public function getTeachers()
     {
