@@ -9,7 +9,6 @@
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>

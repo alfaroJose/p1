@@ -22,7 +22,7 @@ class SolicitudesController extends AppController
     public function iindex()
     {
         $todo = $this->Solicitudes->getIndexValues();
-        //debug($rolActual);
+        //debug($username);
         //die();
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
