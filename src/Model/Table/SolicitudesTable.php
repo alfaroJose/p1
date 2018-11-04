@@ -157,7 +157,7 @@ class SolicitudesTable extends Table
     public function getIDEstudiante($carne)
     {
         $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+        $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll();
         return $result;
     }
@@ -194,4 +194,11 @@ class SolicitudesTable extends Table
             where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
         return $view;
     } 
+
+    public function getSolicitudes($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select * from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c where profesor.id = g.usuarios_id and s.usuarios_id = estudiante.id and g.id = s.grupos_id and c.id = g.cursos_id and s.id = '".$id."'")->fetchAll();
+        return $result;
+    }
 }

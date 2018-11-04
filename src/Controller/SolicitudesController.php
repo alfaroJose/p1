@@ -52,9 +52,21 @@ class SolicitudesController extends AppController
 
     public function revisar($id = null)
     {
-        
-    }
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            if ($this->Solicitudes->save($solicitude)) {
+                $this->Flash->success(__('Si sirvió.'));
 
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('No sirvío'));
+        }
+        $datosSolicitud = $this->Solicitudes->getSolicitudes($id);
+        $this->set(compact('solicitude','datosSolicitud'));
+    }
 
     /**
      * View method
