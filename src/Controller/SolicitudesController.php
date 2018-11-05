@@ -153,7 +153,39 @@ class SolicitudesController extends AppController
     {
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());                      
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+
+            //Se cambian los 0 y 1 que manda el checkbox por Sí o No
+            if($solicitude->horas_asistente == 0){ 
+              $solicitude->horas_asistente = 'No';
+            } else {
+              $solicitude->horas_asistente = 'Sí';
+            }
+
+            if($solicitude->horas_estudiante == 0){ 
+              $solicitude->horas_estudiante = 'No';
+            } else {
+              $solicitude->horas_estudiante = 'Sí';
+            }
+
+            if($solicitude->asistencia_externa == 0){ 
+              $solicitude->asistencia_externa = 'No';
+            } else {
+              $solicitude->asistencia_externa = 'Sí';
+            }
+
+            if($solicitude->horas_asistente_externa == 0){ 
+              $solicitude->horas_asistente_externa = 'No';
+            } else {
+              $solicitude->horas_asistente_externa = 'Sí';
+            }
+
+            if($solicitude->horas_estudiante_externa == 0){ 
+              $solicitude->horas_estudiante_externa = 'No';
+            } else {
+              $solicitude->horas_estudiante_externa = 'Sí';
+            }
+
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('La solicitud ha sido agregada.'));
                 return $this->redirect(['action' => 'index']);

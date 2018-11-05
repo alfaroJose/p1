@@ -32,12 +32,12 @@
             echo $this->Form->control('carne', ['label'=>['text'=>'Carné'], 'readonly', 'value'=>$username]);
             echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'readonly', 'value'=>$telefonoEstudiante]);
             echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante]);
-            echo $this->Form->control('carrera');
+            echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}"]);
 
             //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
             echo ("Solicita:");            
-            echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
-            echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
+            echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
+            echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
             echo ("(Puede marcar ambas opciones)<br>");
             echo ( "Documentos que debe adjuntar al entregar el formulario en la ECCI:<br> 
                 1. Entregar este formulario debidamente en la Secretaría de la ECCI 
@@ -46,11 +46,11 @@
 
             echo ("Información sobre otras asistencias:<br>
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
-            echo $this->Form->radio('asistencia_externa', ['Sí', 'No']);
+            echo $this->Form->radio('asistencia_externa', ['No', 'Sí']);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);            
-            echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox']);
-            echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox']);
+            echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
+            echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
            
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
             echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
@@ -59,11 +59,11 @@
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->input('grupos_id', ['type' =>'text', 'readonly']);
             echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()']);
             echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()']);
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly']);
             echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente']]);
+            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden']);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
 
             /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
@@ -207,18 +207,26 @@
         p = data.split(" ");
         
         //Mete en el campo bloqueado la informacion del profesor
-        //alert(p);
+        //alert(p[6]);
         //alert((p[7]).split(")")[0]);
 
+        //Si p[6] es null quiere decir que el grupo no tiene profesor asignado
+        if (p[6] != null) {
         /*En caso de que el nombre sean dos nombres, ej: Juan Pablo, el apellido quedaría en p[8]*/
-        if (p[8] != null){           
-            document.getElementById("prof").value = (p[6] + " " + p[7] + " " + p[8]).split(")")[0]; 
+            if (p[8] != null){
+                if (p[9] != null){ //caso de apellido compuesto de 3 palabras: de la ossa    
+                    document.getElementById("prof").value = (p[6] + " " + p[7] + " " + p[8] + " " + p[9]).split(")")[0]; 
+                } else {       
+                    document.getElementById("prof").value = (p[6] + " " + p[7] + " " + p[8]).split(")")[0]; 
+                }
+            } else {
+                document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
+            }
         } else {
-            document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
+            document.getElementById("prof").value = "No hay profesor asignado"; 
+
         }
 
-        /*No agarra el apellido si el primer nombre tiene 2 nombres*/
-        //document.getElementById("prof").value = (p[6] + " " + p[7]).split(")")[0]; 
     },
     error: function(jqxhr, status, exception)
     {
