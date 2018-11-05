@@ -195,7 +195,7 @@ class SolicitudesTable extends Table
         return $view;
     } 
 
-    public function getSolicitudes($id)
+    public function getSolicitudCompleta($id)
     {
         $connect = ConnectionManager::get('default');
         $result = $connect->execute("select * from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c where profesor.id = g.usuarios_id and s.usuarios_id = estudiante.id and g.id = s.grupos_id and c.id = g.cursos_id and s.id = '".$id."'")->fetchAll();
