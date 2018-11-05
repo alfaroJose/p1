@@ -73,7 +73,7 @@ class SolicitudesController extends AppController
         $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
         }else if(3==$rolActual[0]){
                 //$todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
-        }else if(1==$rolActual[0]){
+        }else if(1==$rolActual[0]||2==$rolActual[0]){
                 $todo = $this->Solicitudes->getIndexValues();
             }
         //debug($todo);
