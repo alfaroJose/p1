@@ -16,23 +16,23 @@
             $username = $this->request->getSession()->read('id');
 
             /*Aquí se solicita la información del estudiante según el carné de la persona logueada*/
-            $datosEstudiante = $this->Solicitude->getStudentInfo($username);
+            /*$datosEstudiante = $this->Solicitude->getStudentInfo($username);
             $idEstudiante = $datosEstudiante[0];
             $nombreEstudiante = $datosEstudiante[1];
             $primerApellidoEstudiante = $datosEstudiante[2];
             $segundoApellidoEstudiante = $datosEstudiante[3];
             $correoEstudiante = $datosEstudiante[4];
             $telefonoEstudiante = $datosEstudiante[5];
-            $cedulaEstudiante = $datosEstudiante[7];
+            $cedulaEstudiante = $datosEstudiante[7];*/
 
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante]);
-            echo $this->Form->control('nombre', ['readonly', 'value'=>$nombreEstudiante]);
-            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificación'], 'readonly', 'value'=>$cedulaEstudiante]);
-            echo $this->Form->control('carne', ['label'=>['text'=>'Carné'], 'readonly', 'value'=>$username]);
-            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'readonly', 'value'=>$telefonoEstudiante]);
-            echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante]);
-            echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}"]);
+            echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre', ['readonly', 'value'=>$nombreEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('identificacion', ['label'=>['text'=>'Identificación'], 'readonly', 'value'=>$cedulaEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('carne', ['label'=>['text'=>'Carné'], 'readonly', 'value'=>$username, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'readonly', 'value'=>$telefonoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
             //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
             echo ("Solicita:");            
@@ -48,7 +48,7 @@
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
             echo $this->Form->radio('asistencia_externa', ['No', 'Sí']);
             
-            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1"]);            
+            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
            
@@ -59,15 +59,15 @@
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()']);
-            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()']);
-            echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly']);
-            echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente']]);
+            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden']);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
 
             /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
-                entre php y javascript. Si conocen una mejor me avisan :)*/
+                entre php y javascript.*/
 
             echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class, 'style' => 'visibility:hidden']); //número de grupo            
             echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $code, 'style' => 'visibility:hidden']); //sigla de los cursos

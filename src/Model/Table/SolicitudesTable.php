@@ -157,8 +157,8 @@ class SolicitudesTable extends Table
     /*Obtiene el id del estudiante según el carné*/
     public function getIDEstudiante($carne)
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll('assoc');
         if($result != null){
             return $result[0]['id'];
@@ -181,8 +181,8 @@ class SolicitudesTable extends Table
     /*Obtiene todos los datos del estudiante según el carné de la persona logueada*/
     public function getStudentInfo($carne)
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select * from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select * from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll('assoc');
         if($result != null){
             return $result[0];
         }
@@ -191,8 +191,8 @@ class SolicitudesTable extends Table
     //Obtiene los números de grupo, nombre del curso, sigla y id de los grupos disponibles para solicitar una asistenia de dicho semestre y año en el que el estudiante no haya solicitado asistencia todavía.
     public function getGrupos($id_estudiante, $semestre, $year)
     {
-        $connet = ConnectionManager::get('default');      
-        $result = $connet->execute("select g.numero, c.nombre, c.sigla, g.id, g.cursos_id
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute("select g.numero, c.nombre, c.sigla, g.id, g.cursos_id
                                     from cursos c, grupos g
                                     where g.año = '$year' and g.semestre = '$semestre' and c.id = g.cursos_id AND 
                                     concat(g.cursos_id, g.numero)  NOT IN(
@@ -205,20 +205,11 @@ class SolicitudesTable extends Table
         return $result;
     }
 
-    /*Obtiene todos los profesores*/
-    public function getTeachers()
-    {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) from Usuarios u where u.roles_id = '3'");
-        $result = $result->fetchAll('assoc');
-        return $result;
-    }
-
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
     public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select CONCAT(u.nombre,' ',u.primer_apellido) AS name 
                                     from Grupos g, Usuarios u, Cursos c 
                                     where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo' and g.usuarios_id = u.id and g.cursos_id = c.id;");
         $result = $result->fetchAll('assoc');
@@ -228,8 +219,8 @@ class SolicitudesTable extends Table
 
     public function getIDGrupo($siglaCurso, $numeroGrupo, $semestre, $year)
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select g.id 
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select g.id 
                                     from Grupos g, Cursos c 
                                     where c.sigla = '$siglaCurso' and g.semestre = '$semestre' and g.año = '$year' and g.numero = '$numeroGrupo' and g.cursos_id = c.id;");
         $result = $result->fetchAll('assoc');
@@ -240,8 +231,8 @@ class SolicitudesTable extends Table
     //Obtiene la ronda actual, como solo existe una tupla, no es necesario especificar fechas o parámetros
     public function getRonda()
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select * from Rondas");
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select * from Rondas");
         $result = $result->fetchAll('assoc');
         return $result[0];
     }

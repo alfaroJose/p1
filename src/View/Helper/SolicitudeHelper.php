@@ -20,10 +20,10 @@ class SolicitudeHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-    public function getStudentInfo($carne){
+    /*public function getStudentInfo($carne){
     	$fila = (new SolicitudesTable)->getStudentInfo($carne);
     	return $fila;
-    }
+    }*/
 
     /*public function getGrupos($id_estudiante, $semestre, $year){
         $fila = (new SolicitudesTable)->getGrupos($id_estudiante, $semestre, $year);

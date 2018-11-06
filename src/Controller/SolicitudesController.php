@@ -192,27 +192,38 @@ class SolicitudesController extends AppController
             }
             $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }
-        $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
+
+        //Funcionalidad Solicitada: Agregar datos del usuario
 
         /*Se obtiene el carné de la persona que inició sesión*/
         $username = $this->request->getSession()->read('id');
 
-        /*Se pide el id (llave primaria) de la tabla de Usuarios con el carné de la persona*/
-        $idEstudiante = $this->Solicitudes->getIDEstudiante($username);
+        //En base al carnet del estudiante actual, se trae la tupla de usuario respectiva a ese estudiante
+        $datosEstudiante = $this->Solicitudes->getStudentInfo($username);
+
+        //Las keys de los arrays deben corresponder al nombre del campo de la tabla que almacene los usuarios
+        $idEstudiante = $datosEstudiante['id'];
+        $nombreEstudiante = $datosEstudiante['nombre'];
+        $primerApellidoEstudiante = $datosEstudiante['primer_apellido'];
+        $segundoApellidoEstudiante = $datosEstudiante['segundo_apellido'];
+        $correoEstudiante = $datosEstudiante['correo'];
+        $telefonoEstudiante = $datosEstudiante['telefono'];
+        $cedulaEstudiante = $datosEstudiante['identificacion'];
+
 
         //Se trae la ronda actual
         $round = $this->get_round();
-        //Se trae el año actual
-        $año = $this->get_year();
-        //Se trae el semestre al cual se requiere solicitar asistencia
-        $semestre = $this->get_semester();
-
         $roundNumber = $round['numero'];
 
+        //Se trae el año actual
+        $año = $this->get_year();
+
+        //Se trae el semestre al cual se requiere solicitar asistencia
+        $semestre = $this->get_semester();
+      
         $nombre;
        
         $course = array();
-        $teacher;       
         $classes;
 
         //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
@@ -254,7 +265,7 @@ class SolicitudesController extends AppController
 
         $i = 0;
         //Esta parte se encarga de controlar los codigos y nombres de cursos
-        //$cursos = $this->Requests->getCourses(); //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
+        //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
             
             
         $c2[0] = "Seleccione un Curso"; 
@@ -267,9 +278,7 @@ class SolicitudesController extends AppController
                 
         }
 
-        $teacher = $this->Solicitudes->getTeachers();
-
-        $this->set(compact('solicitude', 'usuarios', 'c2', 'class', 'course', 'nombre', 'teacher', 'code', 'auto', 'roundNumber'));
+        $this->set(compact('solicitude', 'c2', 'class', 'course', 'nombre', 'code', 'auto', 'roundNumber', 'nombreEstudiante', 'primerApellidoEstudiante', 'segundoApellidoEstudiante', 'correoEstudiante', 'telefonoEstudiante', 'cedulaEstudiante', 'idEstudiante'));
     }
 
     /**
