@@ -12,8 +12,8 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-       // debug($datosSolicitud);
-        //die();
+        debug($datosRequisitos);
+        die();
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=> $datosSolicitud[0][2] ]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=> $datosSolicitud[0][3] ]);
             echo $this->Form->control('nombre', ['readonly', 'value'=> $datosSolicitud[0][1] ]);
@@ -41,9 +41,20 @@
         <h5> Curso solicitado </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('horas_estudiante_externa', ['label'=>['text'=>'Horas estudiante'], 'readonly', 'value'=> $datosSolicitud[0][35] ]);
-            echo $this->Form->control('horas_asistente_externa', ['label'=>['text'=>'Horas asistente'], 'readonly', 'value'=> $datosSolicitud[0][34] ]);
-            echo $this->Form->control('cantidad_horas_externa', ['label'=>['text'=>'Cantidad de horas'], 'readonly', 'value'=> $datosSolicitud[0][26] ]);
+            echo $this->Form->control('sigla', ['readonly', 'value'=> $datosSolicitud[0][43] ]);
+            echo $this->Form->control('grupo', ['readonly', 'value'=> $datosSolicitud[0][37] ]);
+            echo $this->Form->control('curso', ['readonly', 'value'=> $datosSolicitud[0][44] ]);
+            echo $this->Form->control('docente', ['readonly', 'value'=> $datosSolicitud[0][11] ]);
+        ?>
+
+        <br>
+        <h5> Requisitos </h5>
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
+        <?php
+            echo $this->Form->control('sigla', ['readonly', 'value'=> $datosSolicitud[0][43] ]);
+            echo $this->Form->control('grupo', ['readonly', 'value'=> $datosSolicitud[0][37] ]);
+            echo $this->Form->control('curso', ['readonly', 'value'=> $datosSolicitud[0][44] ]);
+            echo $this->Form->control('docente', ['readonly', 'value'=> $datosSolicitud[0][11] ]);
         ?>
 
 

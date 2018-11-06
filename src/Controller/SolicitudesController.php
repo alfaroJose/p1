@@ -65,7 +65,8 @@ class SolicitudesController extends AppController
             $this->Flash->error(__('No sirvío'));
         }
         $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
-        $this->set(compact('solicitude','datosSolicitud'));
+        $datosRequisitos = $this->Solicitudes->getRequisitosSolicitud($id);
+        $this->set(compact('solicitude','datosSolicitud','datosRequisitos'));
     }
 
     /**
