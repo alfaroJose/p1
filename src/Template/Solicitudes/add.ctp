@@ -59,11 +59,11 @@
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden']);
+            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+            echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+            echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
 
             /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
@@ -132,9 +132,7 @@
                 var tmp = document.createElement("option");               
                 tmp.text = a1.options[c].text; //Prestarle atencion a esta linea
                 selClass.options.add(tmp,i);
-                i = i + 1;
-                //}
-                
+                i = i + 1;               
             }
 
         }
@@ -181,7 +179,11 @@
 
         /*Cuando se selecciona otro curso el valor anterior del campo profesor debe borrarse para no generar confusión*/
         selProf = document.getElementById("prof");
-        selProf.value = null;       
+        selProf.value = null;  
+
+        /*Cuando se cambia el curso, el id anterior debe borrarse*/
+        selID = document.getElementById("grupos-id");
+        selID.value = null;    
 
     }
     /*
@@ -229,6 +231,11 @@
             document.getElementById("prof").value = "No hay profesor asignado"; 
 
         }
+        
+        /*En caso de que el usuario seleccione un grupo, pero después cambie la opción a Seleccionar Grupo entonces el nombre del profesor debe borrarse para no generar confusión*/
+        if (selClass.options[selClass.selectedIndex].text == 'Seleccione un Grupo'){
+            document.getElementById("prof").value = null;
+        }
 
     },
     error: function(jqxhr, status, exception)
@@ -253,7 +260,7 @@
         selClass = document.getElementById("grupo-numero");
         selCourse = document.getElementById("curso-sigla");
 
-        selID = document.getElementById("grupo-id");
+        selID = document.getElementById("grupos-id");
       
         //Obtiene el valor del curso y grupo seleccionados actualmente
         Course = selCourse.options[selCourse.selectedIndex].text;

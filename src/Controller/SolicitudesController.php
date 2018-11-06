@@ -230,6 +230,17 @@ class SolicitudesController extends AppController
               $solicitude->horas_estudiante_externa = 'No';
             } else {
               $solicitude->horas_estudiante_externa = 'Sí';
+            }            
+
+            /*En caso de que el estudiante no digite nada en la cantidad de horas externas entonces se guarda un 0 en lugar de null*/
+            if($solicitude->cantidad_horas_externa == null){ 
+              $solicitude->cantidad_horas_externa = 0;
+            }
+
+            /*En caso de que el usuario deje la opción de "Seleccionar Grupo marcada, es decir no escoja grupo o curso*/
+            if($solicitude->grupos_id == null){ 
+              $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor seleccione un curso y grupo válido.'));
+              return $this->redirect(['action' => 'add']);
             }
 
             if ($this->Solicitudes->save($solicitude)) {
