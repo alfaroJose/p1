@@ -183,9 +183,20 @@ class SolicitudesTable extends Table
             from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
             where s.usuarios_id = '" .$id. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;")->fetchAll();*/
             $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
-            from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
-            where s.usuarios_id = '" .$id. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;")->fetchAll();
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.usuarios_id = '$id';")->fetchAll();
         return $index;
+
+
+        /*Esta consulta también funciona*/
+        /*select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+        from solicitudes s, cursos c, usuarios as Estudiantes, usuarios as Profesores right outer join grupos g on Profesores.id = g.usuarios_id
+        where s.usuarios_id = '$id' and s.grupos_id = g.id and g.cursos_id = c.id  and s.usuarios_id = Estudiantes.id;
+        */
     }
 
     public function getViewValuesEstudiante($idSolicitud){
