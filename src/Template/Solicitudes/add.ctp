@@ -63,7 +63,7 @@
             echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
             echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
-            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'required'=> true]);
+            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
 
             /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
