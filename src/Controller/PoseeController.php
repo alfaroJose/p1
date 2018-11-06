@@ -21,14 +21,12 @@ class PoseeController extends AppController
     private function guardarDatos($datos = null, $rolId = null){
         foreach ($datos as $dato => $value) {
             $noCheckbox = false;//Variable para ver si el dato recibido del form no es un checkbox
+            //primero busca en la tabla posee con los datos de la llave primaria, rol_id y permismo_id en ese orden en los gets que aparecen abajo
             if($dato == "checkboxInsUsuarios"){
                 $poseeTupla = $this->Posee->get([$rolId, 19]);
             }
             else if($dato == "checkboxInsCursos"){
                 $poseeTupla = $this->Posee->get([$rolId, 3]);
-            }
-            else if($dato == "checkboxInsRondas"){
-                $poseeTupla = $this->Posee->get([$rolId, 11]);
             }
             else if($dato == "checkboxInsReq"){
                 $poseeTupla = $this->Posee->get([$rolId, 7]);
@@ -48,17 +46,14 @@ class PoseeController extends AppController
             else if($dato == "checkboxModReq"){
                 $poseeTupla = $this->Posee->get([$rolId, 8]);
             }
-            else if($dato == "checkboxModSoli"){
-                $poseeTupla = $this->Posee->get([$rolId, 16]);
+            else if($dato == "checkboxModCont"){
+                $poseeTupla = $this->Posee->get([$rolId, 22]);
             }
             else if($dato == "checkboxElimUsuarios"){
                 $poseeTupla = $this->Posee->get([$rolId, 18]);
             }
             else if($dato == "checkboxElimCursos"){
                 $poseeTupla = $this->Posee->get([$rolId, 2]);
-            }
-            else if($dato == "checkboxElimRondas"){
-                $poseeTupla = $this->Posee->get([$rolId, 10]);
             }
             else if($dato == "checkboxElimReq"){
                 $poseeTupla = $this->Posee->get([$rolId, 6]);
@@ -80,6 +75,12 @@ class PoseeController extends AppController
             }
             else if($dato == "checkboxConsSoli"){
                 $poseeTupla = $this->Posee->get([$rolId, 13]);
+            }
+            else if($dato == "checkboxConsCont"){
+                $poseeTupla = $this->Posee->get([$rolId, 23]);
+            }
+            else if($dato == "checkboxIngresoRev"){
+                $poseeTupla = $this->Posee->get([$rolId, 21]);
             }
             else{
                 $noCheckbox = true;//Cualquier dato que no sea checkbox
@@ -115,9 +116,7 @@ class PoseeController extends AppController
              }
          }
          else{
-            
              $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-
          }
          //Cierra seguridad
 
