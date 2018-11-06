@@ -74,10 +74,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosAsistente as $solicitude): ?>
+                <?php foreach ($datosRequisitosAsistente as $asistente): ?>
                 <tr>
-                    <td><?= h($datosRequisitosAsistente->nombre) ?></td>
-                    <td><?= h($datosRequisitosAsistente->tipo) ?></td>
+                    <td><?= h($asistente['nombre']) ?></td>
+                    <td><?= h($asistente['tipo']) ?></td>
                     <td class="actions">
                         
                     </td>
@@ -95,10 +95,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosEstudiante as $solicitude): ?>
+                <?php foreach ($datosRequisitosEstudiante as $estudiante): ?>
                 <tr>
-                    <td><?= h($datosRequisitosEstudiante[0][1]) ?></td>
-                    <td><?= h($datosRequisitosEstudiante[0][2]) ?></td>
+                    <td><?= h($estudiante['nombre']) ?></td>
+                    <td><?= h($estudiante['tipo']) ?></td>
                     <td class="actions">
                         
                     </td>
@@ -116,10 +116,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosGeneral as $solicitude): ?>
+                <?php foreach ($datosRequisitosGeneral as $generales): ?>
                 <tr>
-                    <td><?= h($datosRequisitosGeneral[0][1]) ?></td>
-                    <td><?= h($datosRequisitosGeneral[0][2]) ?></td>
+                    <td><?= h($generales['nombre']) ?></td>
+                    <td><?= h($generales['tipo']) ?></td>
                     <td class="actions">
                         
                     </td>
