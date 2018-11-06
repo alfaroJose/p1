@@ -31,7 +31,6 @@
             echo $this->Form->control('estado');
             echo $this->Form->control('asistencia_externa');
             echo $this->Form->control('cantidad_horas_externa');
-            echo $this->Form->control('tipo_horas_externa');
             echo $this->Form->control('fecha');
             echo $this->Form->control('justificación');
             echo $this->Form->control('ronda');
@@ -39,6 +38,8 @@
             echo $this->Form->control('grupos_id', ['options' => $grupos]);
             echo $this->Form->control('horas_asistente');
             echo $this->Form->control('horas_estudiante');
+            echo $this->Form->control('horas_asistente_externa');
+            echo $this->Form->control('horas_estudiante_externa');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
