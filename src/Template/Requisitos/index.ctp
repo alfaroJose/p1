@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Requisito[]|\Cake\Collection\CollectionInterface $requisitos
  */
 ?>
-
 <div class="requisitos index large-9 medium-8 columns content">
     <h3><?= __('Requisitos') ?></h3>
     <table id="requisitos-grid" cellpadding="0" cellspacing="0">
@@ -12,6 +11,7 @@
             <tr>
                 <th scope="col"><?= 'Requisito' ?></th>
                 <th scope="col"><?= 'Tipo' ?></th>
+                <th scope="col"><?= 'Categoria' ?></th>
                 <?php 
                     $edit = $this->Seguridad->getPermiso(8);
                     $borrar = $this->Seguridad->getPermiso(6);
@@ -26,6 +26,7 @@
             <tr>
                 <td><?= h($requisito->nombre) ?></td>
                 <td><?= h($requisito->tipo) ?></td>
+                <td><?= h($requisito->categoria) ?></td>               
                 <?php 
                  if(1 == $borrar || 1 == $edit){
                    echo '<td class="actions">';

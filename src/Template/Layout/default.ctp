@@ -14,6 +14,7 @@
  */
 
 $cakeDescription = 'CakePHP: the rapid development php framework';
+use Cake\Chronos\Date;
 ?>
 <!DOCTYPE html>
 <html>
@@ -89,7 +90,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
           <div class="sidebar-sticky pt-5">
             <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
         <?php $rondaActual = $this->Ronda->getFila()?>
-        <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        <?php $today = Date::today()?>
+        <?php $inic = new Date($rondaActual[1])?>
+        <?php $fin = new Date($rondaActual[2])?>
+        <?php $est = $today->between($inic, $fin) ? 'Habilitada' : 'Deshabilitada'?>
+        <p style = "color:red"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
         </div>
 
         <br>
