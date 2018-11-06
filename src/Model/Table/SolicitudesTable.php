@@ -207,9 +207,12 @@ class SolicitudesTable extends Table
 
     public function getViewValuesEstudiante($idSolicitud){
         $connect = ConnectionManager::get('default');
-            $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+            $index = $connect->execute(/*"select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
             from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
-            where s.id = '" .$idSolicitud. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;")->fetchAll();
+            where s.id = '" .$idSolicitud. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;*/
+            "select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+        from solicitudes s, cursos c, usuarios as Estudiantes, usuarios as Profesores right outer join grupos g on Profesores.id = g.usuarios_id
+        where s.id = '" .$idSolicitud. "' and s.grupos_id = g.id and g.cursos_id = c.id  and s.usuarios_id = Estudiantes.id;")->fetchAll();
         return $index;
     }
 
