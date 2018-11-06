@@ -84,9 +84,7 @@
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table>
 
-        <table id="requisitos-estudiante" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th scope="col"><?= 'Horas Estudiante' ?></th>
@@ -105,9 +103,7 @@
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table>
 
-        <table id="requisitos-generales" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th scope="col"><?= 'Generales' ?></th>
@@ -126,7 +122,10 @@
                 </tr>
                 <?php endforeach; ?>
             </tbody>
+
         </table>
+
+
 
 
     </fieldset>
