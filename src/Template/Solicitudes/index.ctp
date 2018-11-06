@@ -9,7 +9,6 @@
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
@@ -35,11 +34,14 @@
                 </td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </tbody> 
+    </table>    
     <br>
     <br>
-    
+    <?php //Agrega el boton de nueva solicitud solo al index de estudiante
+    if(4 == $rolActual[0])
+     echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
+     ?>
 </div>
 <script type="text/javascript">
     $(document).ready( function () {
