@@ -86,7 +86,7 @@ body {font-family: Arial;}
                         $('#checkboxElimCursos').prop("checked", true);
                         break;
                     case 3:
-                        $('#checkboxInsUsuarios').prop("checked", true);
+                        $('#checkboxInsCursos').prop("checked", true);
                         break;
                     case 4:
                         $('#checkboxModCursos').prop("checked", true);
