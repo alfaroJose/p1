@@ -13,7 +13,7 @@
                 <th scope="col"><?= 'Fecha inicial' ?></th>
                 <th scope="col"><?= 'Fecha final' ?></th>
                 <?php 
-                $edit = $this->Seguridad->getPermiso(11);
+                $edit = $this->Seguridad->getPermiso(12);
                 if ( 1 == $edit)
                     echo '<th scope="col" class="actions">Actions</th>';
                 ?>
