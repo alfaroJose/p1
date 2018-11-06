@@ -155,7 +155,7 @@ class SolicitudesTable extends Table
     }
 
     /*Obtiene el id del estudiante según el carné*/
-    public function getIDEstudiante($carne)
+    /*public function getIDEstudiante($carne)
     {
         $connect = ConnectionManager::get('default');
         $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
@@ -163,6 +163,13 @@ class SolicitudesTable extends Table
         if($result != null){
             return $result[0]['id'];
         }
+    }*/
+        public function getIDEstudiante($carne)
+    {
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+        $result = $result->fetchAll();
+        return $result;
     }
 
     public function getIndexValuesEstudiante($id){
