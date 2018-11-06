@@ -12,7 +12,7 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-        //debug($datosRequisitos);
+        //debug($datosRequisitosEstudiante);
         //die();
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=> $datosSolicitud[0][2] ]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=> $datosSolicitud[0][3] ]);
@@ -76,8 +76,8 @@
             <tbody>
                 <?php foreach ($datosRequisitosAsistente as $solicitude): ?>
                 <tr>
-                    <td><?= h($datosRequisitosAsistente[0][1]) ?></td>
-                    <td><?= h($datosRequisitosAsistente[0][2]) ?></td>
+                    <td><?= h($datosRequisitosAsistente->nombre) ?></td>
+                    <td><?= h($datosRequisitosAsistente->tipo) ?></td>
                     <td class="actions">
                         
                     </td>

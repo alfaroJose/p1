@@ -205,33 +205,33 @@ class SolicitudesTable extends Table
     public function getRequisitosEstudiante($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id1', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Estudiante'
-        and t.solicitudes_id = '".$id."'")->fetchAll();
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 
     public function getRequisitosAsistente($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id1', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Asistente'
-        and t.solicitudes_id = '".$id."'")->fetchAll();
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 
     public function getRequisitosAmbos($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id1', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Ambas'
-        and t.solicitudes_id = '".$id."'")->fetchAll();
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 }
