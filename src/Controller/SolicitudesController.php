@@ -65,12 +65,13 @@ class SolicitudesController extends AppController
 
         $this->set('solicitude', $solicitude);
     }
+
     public function imprimir($id = null){
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-
         $this->set('solicitude', $solicitude);
+        $this->layout=null;
     }
 
         /**
