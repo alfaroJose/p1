@@ -70,7 +70,7 @@
                 <tr>
                     <th scope="col"><?= 'Horas Asistente' ?></th>
                     <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                    <th scope="col" class="actions"><?= __('Cumple el requisito?') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -79,9 +79,13 @@
                     <td><?= h($asistente['nombre']) ?></td>
                     <td><?= h($asistente['tipo']) ?></td>
                     <td class="actions">
-                        <?=$this->Form->control('si', ['label' =>['text'=> ' Sí'], 'type' => 'checkbox', 'required' => false]);?>
-                        <?=$this->Form->control('no', ['label' =>['text'=> ' No'], 'type' => 'checkbox', 'required' => false]);?>
-                        <?=$this->Form->control('inopia', ['label' =>['text'=> ' Inopia'], 'type' => 'checkbox', 'required' => false]);?>
+                    <?php
+                        if ($asistente['tipo'] == 'Obligatorio') {
+                            echo $this->Form->radio($asistente['id'], ['Sí ', 'No ']);
+                        } else {
+                            echo $this->Form->radio($asistente['id'], ['Sí ', 'No ', 'Inopia ']);
+                        }
+                    ?>    
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -98,7 +102,13 @@
                     <td><?= h($estudiante['nombre']) ?></td>
                     <td><?= h($estudiante['tipo']) ?></td>
                     <td class="actions">
-                        
+                    <?php
+                        if ($estudiante['tipo'] == 'Obligatorio') {
+                            echo $this->Form->radio($estudiante['id'], ['Sí ', 'No ']);
+                        } else {
+                            echo $this->Form->radio($estudiante['id'], ['Sí ', 'No ', 'Inopia ']);
+                        }
+                    ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -110,12 +120,18 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosGeneral as $generales): ?>
+                <?php foreach ($datosRequisitosGeneral as $general): ?>
                 <tr>
-                    <td><?= h($generales['nombre']) ?></td>
-                    <td><?= h($generales['tipo']) ?></td>
+                    <td><?= h($general['nombre']) ?></td>
+                    <td><?= h($general['tipo']) ?></td>
                     <td class="actions">
-                        
+                    <?php
+                        if ($general['tipo'] == 'Obligatorio') {
+                            echo $this->Form->radio($general['id'], ['Sí ', 'No ']);
+                        } else {
+                            echo $this->Form->radio($general['id'], ['Sí ', 'No ', 'Inopia ']);
+                        }
+                    ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -123,13 +139,9 @@
 
         </table>
 
-
-
-
     </fieldset>
     <br>
-    <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
-

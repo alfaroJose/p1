@@ -57,6 +57,8 @@ class SolicitudesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            debug($solicitude);
+            die();
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('Si sirvió.'));
 
