@@ -65,8 +65,10 @@ class SolicitudesController extends AppController
             $this->Flash->error(__('No sirvío'));
         }
         $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
-        $datosRequisitos = $this->Solicitudes->getRequisitosSolicitud($id);
-        $this->set(compact('solicitude','datosSolicitud','datosRequisitos'));
+        $datosRequisitosAsistente = $this->Solicitudes->getRequisitosAsistente($id);
+        $datosRequisitosEstudiante = $this->Solicitudes->getRequisitosEstudiante($id);
+        $datosRequisitosGeneral = $this->Solicitudes->getRequisitosAmbos($id);
+        $this->set(compact('solicitude','datosSolicitud','datosRequisitosAsistente','datosRequisitosEstudiante','datosRequisitosGeneral'));
     }
 
     /**

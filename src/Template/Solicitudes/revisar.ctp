@@ -12,8 +12,8 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-        debug($datosRequisitos);
-        die();
+        //debug($datosRequisitos);
+        //die();
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=> $datosSolicitud[0][2] ]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=> $datosSolicitud[0][3] ]);
             echo $this->Form->control('nombre', ['readonly', 'value'=> $datosSolicitud[0][1] ]);
@@ -46,16 +46,87 @@
             echo $this->Form->control('curso', ['readonly', 'value'=> $datosSolicitud[0][44] ]);
             echo $this->Form->control('docente', ['readonly', 'value'=> $datosSolicitud[0][11] ]);
         ?>
+        </div>
 
         <br>
         <h5> Requisitos </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
-        <?php
-            echo $this->Form->control('sigla', ['readonly', 'value'=> $datosSolicitud[0][43] ]);
-            echo $this->Form->control('grupo', ['readonly', 'value'=> $datosSolicitud[0][37] ]);
-            echo $this->Form->control('curso', ['readonly', 'value'=> $datosSolicitud[0][44] ]);
-            echo $this->Form->control('docente', ['readonly', 'value'=> $datosSolicitud[0][11] ]);
-        ?>
+
+        <style> 
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            text-align: left;
+            padding: 8px;
+        }
+        </style>
+
+        <table id="requisitos-asistente" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th scope="col"><?= 'Horas Asistente' ?></th>
+                    <th scope="col"><?= 'Tipo' ?></th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($datosRequisitosAsistente as $solicitude): ?>
+                <tr>
+                    <td><?= h($datosRequisitosAsistente[0][1]) ?></td>
+                    <td><?= h($datosRequisitosAsistente[0][2]) ?></td>
+                    <td class="actions">
+                        
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <table id="requisitos-estudiante" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th scope="col"><?= 'Horas Estudiante' ?></th>
+                    <th scope="col"><?= 'Tipo' ?></th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($datosRequisitosEstudiante as $solicitude): ?>
+                <tr>
+                    <td><?= h($datosRequisitosEstudiante[0][1]) ?></td>
+                    <td><?= h($datosRequisitosEstudiante[0][2]) ?></td>
+                    <td class="actions">
+                        
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <table id="requisitos-generales" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th scope="col"><?= 'Generales' ?></th>
+                    <th scope="col"><?= 'Tipo' ?></th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($datosRequisitosGeneral as $solicitude): ?>
+                <tr>
+                    <td><?= h($datosRequisitosGeneral[0][1]) ?></td>
+                    <td><?= h($datosRequisitosGeneral[0][2]) ?></td>
+                    <td class="actions">
+                        
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
 
     </fieldset>
@@ -64,3 +135,4 @@
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
+
