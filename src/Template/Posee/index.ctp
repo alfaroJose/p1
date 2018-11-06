@@ -219,68 +219,67 @@ body {font-family: Arial;}
 
     <!-- Se tienen que crear hiddens para que tome los valores incluso cuando estan sin seleccionar -->
     
-    <?= $this->Form->hidden("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    <!-- <?= $this->Form->hidden("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?> -->
+
+    <!-- <?= $this->Form->hidden("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?> -->
+
+    <!-- <?= $this->Form->hidden("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?> -->
+   
+    <!-- <td><?= $this->Form->checkbox("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsRondas"]); ?></td> -->
+
+    <!-- <td><?= $this->Form->checkbox("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimRondas"]); ?></td> -->
+
+    <!-- <td><?= $this->Form->checkbox("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsRondas"]); ?></td> -->
+
+
+
     <?= $this->Form->hidden("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     
-    <?= $this->Form->hidden("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxModSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     
-    <?= $this->Form->hidden("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+    
+    
     <?= $this->Form->hidden("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     
-    <?= $this->Form->hidden("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
     <?= $this->Form->hidden("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 
-        <td><?= $this->Form->checkbox("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsCursos"]); ?></td>
-        <td><?= $this->Form->checkbox("checkboxInsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsRondas"]); ?></td>
+
         <td><?= $this->Form->checkbox("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsReq"]); ?></td>
         <td><?= $this->Form->checkbox("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsSoli"]); ?></td>
 
 	
-	<td><?= $this->Form->checkbox("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModCursos"]); ?></td>
-	<td><?= $this->Form->checkbox("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModRondas"]); ?></td>
+	
 	<td><?= $this->Form->checkbox("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModReq"]); ?></td>
 	<td><?= $this->Form->checkbox("checkboxModSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModSoli"]); ?></td>
 
-
-	
-	<td><?= $this->Form->checkbox("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimCursos"]); ?></td>
-	<td><?= $this->Form->checkbox("checkboxElimRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimRondas"]); ?></td>
 	<td><?= $this->Form->checkbox("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimReq"]); ?></td>
 	<td><?= $this->Form->checkbox("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimSoli"]); ?></td>
 
-
-	
-	<td><?= $this->Form->checkbox("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCursos"]); ?></td>
-	<td><?= $this->Form->checkbox("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsRondas"]); ?></td>
 	<td><?= $this->Form->checkbox("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsReq"]); ?></td>
 	<td><?= $this->Form->checkbox("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsSoli"]); ?></td>
 
     <br>
     <br>
     <br>
+    <br>
 
-    <?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
-    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>
     <?= $this->Form->end(); ?>
 
     <div class="tab">
-        <button class="tablinks" onclick="switchModule(event, 'Usuarios')" >Usuarios</button>
-        <button class="tablinks" onclick="switchModule(event, 'Cursos-Grupos')">Cursos-Grupos</button>
-        <button class="tablinks" onclick="switchModule(event, 'Rondas')">Rondas</button>
-        <button class="tablinks" onclick="switchModule(event, 'Requisitos')">Requisitos</button>
-        <button class="tablinks" onclick="switchModule(event, 'Solicitudes')">Solicitudes</button>
-        <button class="tablinks" onclick="switchModule(event, 'Revisiones')">Revisiones</button>
-        <button class="tablinks" onclick="switchModule(event, 'Contador')">Contador</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Usuarios')" >Usuarios</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Cursos-Grupos')">Cursos-Grupos</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Rondas')">Rondas</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Requisitos')">Requisitos</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Solicitudes')">Solicitudes</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Revisiones')">Revisiones</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Contador de horas')">Contador de horas</button>
     </div>
+
+    <?= $this->Form->create(null,['url' => ['action'=>'index']]); ?>
 
     <div id="Usuarios" class="tabcontent">
         <?= $this->Form->hidden("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
@@ -297,7 +296,51 @@ body {font-family: Arial;}
         <td><?= $this->Form->checkbox("checkboxConsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsUsuarios"]); ?></td>
     </div>
 
+    <div id="Cursos-Grupos" class="tabcontent">
+        <?= $this->Form->hidden("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 
+        <?= $this->Form->hidden("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <td><?= $this->Form->checkbox("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsCursos"]); ?></td>
+
+        <td><?= $this->Form->checkbox("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModCursos"]); ?></td>
+
+        <td><?= $this->Form->checkbox("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimCursos"]); ?></td>
+
+        <td><?= $this->Form->checkbox("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCursos"]); ?></td>
+
+    </div>
+
+    <div id="Rondas" class="tabcontent">
+        <?= $this->Form->hidden("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <td><?= $this->Form->checkbox("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModRondas"]); ?></td>
+    </div>
+
+    <div id="Requisitos" class="tabcontent">
+
+    </div>
+
+    <div id="Solicitudes" class="tabcontent">
+
+    </div>
+
+    <div id="Revisiones" class="tabcontent">
+
+    </div>
+
+    <div id="Contador" class="tabcontent">
+
+    </div>
+
+    <?= $this->Form->end(); ?>
+
+    <?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
+    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>
 </div>
 
 <script>
@@ -305,7 +348,6 @@ function switchModule(evt, nombreModulo) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-        alert(tabcontent[i].style);
         tabcontent[i].style.display = "none";
     }
     tablinks = document.getElementsByClassName("tablinks");
