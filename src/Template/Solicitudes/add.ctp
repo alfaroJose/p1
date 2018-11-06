@@ -54,7 +54,7 @@
            
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
             echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
-            echo $this->Form->hidden('estado', ['value'=>'Anulada', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
             echo $this->Form->hidden('ronda', ['value'=>$roundNumber, 'readonly']);
         ?>
         <h5> Curso solicitado </h5>
@@ -66,7 +66,14 @@
             echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);
             echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
 
-            /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
+        ?>
+    </fieldset>
+    <br>
+    <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
+
+    <?php
+    /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
                 entre php y javascript.*/
 
             echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class, 'style' => 'visibility:hidden']); //número de grupo            
@@ -74,11 +81,8 @@
             echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre, 'style' => 'visibility:hidden']); //nombre de los cursos
             echo $this->Form->input('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course, 'style' => 'visibility:hidden']); //id de los cursos 
             //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos        
-        ?>
-    </fieldset>
-    <br>
-    <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
-    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
+    ?>
+    
     <?= $this->Form->end() ?>
 </div>
 
