@@ -34,11 +34,14 @@
                 </td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </tbody> 
+    </table>    
     <br>
     <br>
-    
+    <?php //$permisoAdd = $this->Seguridad->getPermiso(19);
+    //if(1 == $permisoAdd)
+     echo $this->Html->link('Agregar Solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
+     ?>
 </div>
 <script type="text/javascript">
     $(document).ready( function () {
