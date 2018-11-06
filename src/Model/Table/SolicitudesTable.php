@@ -148,9 +148,15 @@ class SolicitudesTable extends Table
 
     public function getIndexValues(){
         $connect = ConnectionManager::get('default');
-        $index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud', solicitudes.id
+        /*$index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud', solicitudes.id
             from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
-            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
+            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();*/
+                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id;")->fetchAll();
         return $index;
     }
 
