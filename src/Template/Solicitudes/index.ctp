@@ -39,7 +39,9 @@
     <br>
     <br>
     <?php //$permisoAdd = $this->Seguridad->getPermiso(19);
-    //if(1 == $permisoAdd)
+    //debug($rolActual[0]);
+    //die();
+    if(4 == $rolActual[0])
      echo $this->Html->link('Agregar Solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
      ?>
 </div>

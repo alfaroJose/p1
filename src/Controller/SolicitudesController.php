@@ -83,6 +83,7 @@ class SolicitudesController extends AppController
         ];
         $solicitudes = $this->paginate($this->Solicitudes);
         $this->set(compact('solicitudes','todo'));
+        $this->set('rolActual',$rolActual);
     }
 
 
