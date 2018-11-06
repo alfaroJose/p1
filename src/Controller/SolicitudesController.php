@@ -52,13 +52,19 @@ class SolicitudesController extends AppController
 
     public function revisar($id = null)
     {
+        $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $datosRequisitosAsistente = $this->Solicitudes->getRequisitosAsistente($id);
+        $datosRequisitosEstudiante = $this->Solicitudes->getRequisitosEstudiante($id);
+        $datosRequisitosGeneral = $this->Solicitudes->getRequisitosGeneral($id);
+        //debug($datosSolicitud);
+        //die();
+
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            debug($solicitude);
-            die();
+
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('Si sirvió.'));
 
@@ -66,10 +72,6 @@ class SolicitudesController extends AppController
             }
             $this->Flash->error(__('No sirvío'));
         }
-        $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
-        $datosRequisitosAsistente = $this->Solicitudes->getRequisitosAsistente($id);
-        $datosRequisitosEstudiante = $this->Solicitudes->getRequisitosEstudiante($id);
-        $datosRequisitosGeneral = $this->Solicitudes->getRequisitosAmbos($id);
         $this->set(compact('solicitude','datosSolicitud','datosRequisitosAsistente','datosRequisitosEstudiante','datosRequisitosGeneral'));
     }
 

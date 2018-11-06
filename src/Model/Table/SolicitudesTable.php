@@ -198,14 +198,30 @@ class SolicitudesTable extends Table
     public function getSolicitudCompleta($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select * from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c where profesor.id = g.usuarios_id and s.usuarios_id = estudiante.id and g.id = s.grupos_id and c.id = g.cursos_id and s.id = '".$id."'")->fetchAll();
+        $result = $connect->execute("select estudiante.nombre as 'estudiante_nombre', estudiante.primer_apellido as 'estudiante_primer_apellido',
+        estudiante.segundo_apellido as 'estudiante_segundo_apellido', estudiante.identificacion as 'estudiante_identificacion',
+        estudiante.tipo_identificacion as 'estudiante_tipo_identificacion', estudiante.nombre_usuario as 'estudiante_carne',
+        estudiante.telefono as 'estudiante_telefono', estudiante.correo as 'estudiante_correo',
+        CONCAT(profesor.nombre, ' ', profesor.primer_apellido, ' ', profesor.segundo_apellido) AS 'profesor_nombre',
+        g.numero as 'grupo_numero', g.semestre as 'grupo_semestre', g.año as 'grupo_año', c.sigla as 'curos_sigla', c.nombre as 'curso_nombre',
+        s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
+        s.cantidad_horas as 'solicitud_cantidad_horas', s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
+        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificación as 'solicitud_justificación',
+        s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
+        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas' 
+        from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c 
+        where profesor.id = g.usuarios_id 
+        and s.usuarios_id = estudiante.id 
+        and g.id = s.grupos_id 
+        and c.id = g.cursos_id 
+        and s.id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 
     public function getRequisitosEstudiante($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Estudiante'
@@ -216,7 +232,7 @@ class SolicitudesTable extends Table
     public function getRequisitosAsistente($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Asistente'
@@ -224,10 +240,10 @@ class SolicitudesTable extends Table
         return $result;
     }
 
-    public function getRequisitosAmbos($id)
+    public function getRequisitosGeneral($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'id', r.nombre as 'nombre', r.tipo as 'tipo', r.categoria as 'categoria'
+        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Ambas'
