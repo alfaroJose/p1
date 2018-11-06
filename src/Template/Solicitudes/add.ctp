@@ -178,7 +178,10 @@
 
         //Dado que se borro y se recreo el select de cursos, es necesario recordar cual fue el valor que habia seleccionado el usuario
         selCourse.selectedIndex = s;
-        
+
+        /*Cuando se selecciona otro curso el valor anterior del campo profesor debe borrarse para no generar confusión*/
+        selProf = document.getElementById("prof");
+        selProf.value = null;       
 
     }
     /*
