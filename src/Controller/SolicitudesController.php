@@ -146,6 +146,50 @@ class SolicitudesController extends AppController
         $this->set('solicitude', $solicitude);
     }
 
+    public function get_round()
+    {
+      return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
+    }
+
+    public function get_year()
+    {
+        //Se trae la ronda actusl
+        $round = $this->get_round();
+        $roundNumber = $round['numero'];
+
+        /*Se obtiene la fecha final para sacar el año*/
+        $r = $round['fecha_final'];
+        /*Se concatena el año, siempre son 4 caracteres*/
+        $año = $r[0].$r[1].$r[2].$r[3];
+  
+      return $año;
+    }
+
+    public function get_semester()
+    {
+        //Se trae la ronda actusl
+        $round = $this->get_round();
+        $roundNumber = $round['numero'];
+
+        /*Se obtiene la fecha final para sacar el mes*/
+        $r = $round['fecha_final'];
+      
+        /*Se obtiene el mes de la ronda*/
+        $m = $r[5].$r[6];
+
+        /*Cómo la ronda no indica cual semestre es el actual la única forma de sacarlo es comparando las fecha actual, si es Junio o antes es el semestre 1, en caso contrario es semestre 2
+        En julio se pueden empezar a pedir asistencias del segundo semestre?*/
+
+        if ($m <= 6){
+          $semestre = 1;
+
+        } else {
+          $semestre = 2;
+        }
+  
+      return $semestre;
+    }
+
     /**
      * Add method
      *
@@ -156,15 +200,131 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+
+            //Se cambian los 0 y 1 que manda el checkbox por Sí o No
+            if($solicitude->horas_asistente == 0){ 
+              $solicitude->horas_asistente = 'No';
+            } else {
+              $solicitude->horas_asistente = 'Sí';
+            }
+
+            if($solicitude->horas_estudiante == 0){ 
+              $solicitude->horas_estudiante = 'No';
+            } else {
+              $solicitude->horas_estudiante = 'Sí';
+            }
+
+            if($solicitude->asistencia_externa == 0){ 
+              $solicitude->asistencia_externa = 'No';
+            } else {
+              $solicitude->asistencia_externa = 'Sí';
+            }
+
+            if($solicitude->horas_asistente_externa == 0){ 
+              $solicitude->horas_asistente_externa = 'No';
+            } else {
+              $solicitude->horas_asistente_externa = 'Sí';
+            }
+
+            if($solicitude->horas_estudiante_externa == 0){ 
+              $solicitude->horas_estudiante_externa = 'No';
+            } else {
+              $solicitude->horas_estudiante_externa = 'Sí';
+            }
+
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('La solicitud ha sido agregada.'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }
-        $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
-        $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
-        $this->set(compact('solicitude', 'usuarios', 'grupos'));
+
+        //Funcionalidad Solicitada: Agregar datos del usuario
+
+        /*Se obtiene el carné de la persona que inició sesión*/
+        $username = $this->request->getSession()->read('id');
+
+        //En base al carnet del estudiante actual, se trae la tupla de usuario respectiva a ese estudiante
+        $datosEstudiante = $this->Solicitudes->getStudentInfo($username);
+
+        //Las keys de los arrays deben corresponder al nombre del campo de la tabla que almacene los usuarios
+        $idEstudiante = $datosEstudiante['id'];
+        $nombreEstudiante = $datosEstudiante['nombre'];
+        $primerApellidoEstudiante = $datosEstudiante['primer_apellido'];
+        $segundoApellidoEstudiante = $datosEstudiante['segundo_apellido'];
+        $correoEstudiante = $datosEstudiante['correo'];
+        $telefonoEstudiante = $datosEstudiante['telefono'];
+        $cedulaEstudiante = $datosEstudiante['identificacion'];
+
+
+        //Se trae la ronda actual
+        $round = $this->get_round();
+        $roundNumber = $round['numero'];
+
+        //Se trae el año actual
+        $año = $this->get_year();
+
+        //Se trae el semestre al cual se requiere solicitar asistencia
+        $semestre = $this->get_semester();
+      
+        $nombre;
+       
+        $course = array();
+        $classes;
+
+        //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
+        $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
+       
+        $aux;             
+        $i = 0;
+        $course_counter = 0; 
+        foreach($datosGrupos as $g)
+        {         
+          $class[$i] = $g['numero']; //Se trae el número de clase
+          $code[$i] = $g['sigla']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
+          $course[$i] = $g['cursos_id'];  //id de los cursos
+          $auto[$i] = $g['id']; //id de los grupos
+                                                
+          //Busca los cursos y los coloca solo 1 vez en el vector de cursos.
+          //Realiza la busqueda en base al codigo de curso, ya que al ser más corto entonces la busqueda será más eficiente
+          $encontrado = 0;
+          for($j = 0; $j < $course_counter && $encontrado == 0; $j = $j+1)
+          {
+            if(strcmp($aux[$j]['id'],$g['cursos_id']) == 0)
+            $encontrado = 1;
+          }
+                
+          if($encontrado == 0)
+          {
+            $aux[$course_counter] = array();
+            $aux[$course_counter]['id'] = $g['cursos_id'];
+            $aux[$course_counter]['nombre'] = $g['nombre'];
+            $aux[$course_counter]['sigla'] = $g['sigla'];  
+            $course_counter = $course_counter + 1;
+          }
+                                    
+            $i = $i + 1;
+        }
+
+        //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
+        //activar el evento onChange del select de grupos
+
+        $i = 0;
+        //Esta parte se encarga de controlar los codigos y nombres de cursos
+        //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
+            
+            
+        $c2[0] = "Seleccione un Curso"; 
+        foreach($aux as $c) //Recorre cada tupla de curso
+        {
+          //Dado que la primer opcion ya tiene un valor por default, los campos deben modifcar el valor proximo a i   
+          $c2[$i+1] = $c['sigla']; //Almacena el codigo de curso
+          $nombre[$i+1] = $c['nombre']; //Almacena el nombre del curso
+          $i = $i + 1;
+                
+        }
+
+        $this->set(compact('solicitude', 'c2', 'class', 'course', 'nombre', 'code', 'auto', 'roundNumber', 'nombreEstudiante', 'primerApellidoEstudiante', 'segundoApellidoEstudiante', 'correoEstudiante', 'telefonoEstudiante', 'cedulaEstudiante', 'idEstudiante'));
     }
 
     /**
@@ -211,6 +371,40 @@ class SolicitudesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function obtenerProfesor()
+    {
+
+      $curso = $_GET['curso'];
+      $grupo = $_GET['grupo'];
+      $semestre = $this->get_semester();
+      $year = $this->get_year();
+
+      $profesor = $this->Solicitudes->getTeacher($curso, $grupo, $semestre, $year);
+        
+      foreach($profesor as $p) {
+        print_r($p);
+      }       
+      $this->autoRender = false ;       
+    }
+
+    public function obtenerGrupoID()
+    {
+
+      $curso = $_GET['curso'];
+      $grupo = $_GET['grupo'];
+      $semestre = $this->get_semester();
+      $year = $this->get_year();
+
+      $idGrupo = $this->Solicitudes->getIDGrupo($curso, $grupo, $semestre, $year);
+        
+      foreach($idGrupo as $p) {
+        print_r($p);
+      }    
+      $this->autoRender = false ;
+      
+             
     }
 
     public function viewFile($filename) {
