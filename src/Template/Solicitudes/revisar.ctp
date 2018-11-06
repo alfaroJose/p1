@@ -70,7 +70,7 @@
                 <tr>
                     <th scope="col"><?= 'Horas Asistente' ?></th>
                     <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                    <th scope="col"> </th>
                 </tr>
             </thead>
             <tbody>
@@ -78,6 +78,7 @@
                 <tr>
                     <td><?= h($asistente['nombre']) ?></td>
                     <td><?= h($asistente['tipo']) ?></td>
+                    
                     <td class="actions">
                         
                     </td>
@@ -88,8 +89,6 @@
             <thead>
                 <tr>
                     <th scope="col"><?= 'Horas Estudiante' ?></th>
-                    <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -107,8 +106,6 @@
             <thead>
                 <tr>
                     <th scope="col"><?= 'Generales' ?></th>
-                    <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
