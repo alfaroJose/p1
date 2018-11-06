@@ -10,30 +10,43 @@
         <thead>
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
-                <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Curso' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Semestre' ?></th>
                 <th scope="col"><?= 'Año' ?></th>
-                <th scope="col" class="actions"><?= __('Acciones') ?></th>
+                <?php
+                 $permisoEdit = $this->Seguridad->getPermiso(4);
+                 $permisoDelete = $this->Seguridad->getPermiso(2);
+                 $permisoAdd = $this->Seguridad->getPermiso(3);
+                 if (1 == $permisoEdit || 1 == $permisoDelete){
+                    echo '<th scope="col" class="actions">Acciones</th>';
+                }
+                ?>
+                
             </tr>
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
+                <?php ///debug($grupo) ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
                 <td><?= h($grupo->numero) ?></td>
                 <td><?= h($grupo->semestre) ?></td>
                 <td><?= h($grupo->año) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                <?php 
+                if (1 == $permisoEdit || 1 == $permisoDelete){
+                    echo '<td class="actions">';
 
-                    <?= $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar al grupo {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]) ?>
-
-
-
-           
-                </td>
+                    if (1 == $permisoEdit)
+                        echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['escape'=>false,'style'=>'font-size:22px;']);              
+                    if (1 == $permisoDelete){
+                        echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar al grupo {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]);
+                    }
+                   echo '</td>';
+                }
+                
+                ?>
 
             </tr>
             <?php endforeach; ?>
@@ -41,8 +54,13 @@
     </table>
     <br>
     <br>
-    <?= $this->Form->button(__('Agregar curso'),['class'=>'btn btn-info float-right']) ?>
-    <?= $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3'])?>
+    <?php
+    if (1 == $permisoAdd){
+        echo $this->Form->button(__('Agregar curso'),['class'=>'btn btn-info float-right']) ;
+        echo $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
+    }
+    ?>
+   
 </div>
 
 <script type="text/javascript">

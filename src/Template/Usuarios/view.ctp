@@ -66,7 +66,15 @@ tr:nth-child(even) {background-color:  #eaecee };
             </table>
 </div>
 <br>
-    <?= $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-right'])?>
-    <?= $this->Form->postlink('Eliminar usuario', array('action' => 'delete', $usuario->id), array('confirm'=>'Se va a eliminar al usuario '. $usuario->nombre_usuario, 'class' => 'btn btn-info btn-medium float-right mr-3')) ?>
+<?php 
+ $edit = $this->Seguridad->getPermiso(20);
+ $borrar = $this->Seguridad->getPermiso(18);
+ if  (1 == $edit)
+    echo  $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-right']);
+ if (1 == $borrar)
+    echo  $this->Form->postlink('Eliminar usuario', array('action' => 'delete', $usuario->id), array('confirm'=>'Se va a eliminar al usuario '. $usuario->nombre_usuario, 'class' => 'btn btn-info btn-medium float-right mr-3')) ;
+
+?>
+   
 
     <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
