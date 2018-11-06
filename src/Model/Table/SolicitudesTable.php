@@ -205,6 +205,20 @@ class SolicitudesTable extends Table
         */
     }
 
+    public function getIndexValuesProfesor($id){
+        
+        $connect = ConnectionManager::get('default');
+        
+        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                from solicitudes s 
+                join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                join grupos g on s.grupos_id = g.id
+                join cursos c on g.cursos_id = c.id
+                left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                where g.usuarios_id = $id;")->fetchAll();
+        return $index;
+    }
+
     public function getViewValuesEstudiante($idSolicitud){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute(/*"select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
