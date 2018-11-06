@@ -9,7 +9,7 @@
     <?= $this->Form->create($grupo) ?>
     <fieldset>
         <legend><?= __('Editar Grupo') ?></legend>
-        <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
         //echo $this->Form->select( 'sigla', ['options' => $cursos]);
         //foreach ($todo as $grupo)
