@@ -70,7 +70,7 @@
                 <tr>
                     <th scope="col"><?= 'Horas Asistente' ?></th>
                     <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col"> </th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -78,9 +78,10 @@
                 <tr>
                     <td><?= h($asistente['nombre']) ?></td>
                     <td><?= h($asistente['tipo']) ?></td>
-                    
                     <td class="actions">
-                        
+                        <?=$this->Form->control('si', ['label' =>['text'=> ' Sí'], 'type' => 'checkbox', 'required' => false]);?>
+                        <?=$this->Form->control('no', ['label' =>['text'=> ' No'], 'type' => 'checkbox', 'required' => false]);?>
+                        <?=$this->Form->control('inopia', ['label' =>['text'=> ' Inopia'], 'type' => 'checkbox', 'required' => false]);?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
