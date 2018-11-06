@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
+use Cake\Chronos\Date;
 
 /**
  * Solicitudes Controller
@@ -82,9 +83,12 @@ class SolicitudesController extends AppController
             'contain' => ['Usuarios', 'Grupos']
         ];
         $solicitudes = $this->paginate($this->Solicitudes);
-        $this->set(compact('solicitudes','todo'));
+        $estado = $this->get_estado_ronda();
+        $this->set(compact('solicitudes','todo','estado'));
         $this->set('rolActual',$rolActual);
     }
+
+    
 
 
     /**
@@ -149,6 +153,15 @@ class SolicitudesController extends AppController
     public function get_round()
     {
       return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
+    }
+
+     public function get_estado_ronda(){
+        $ronda = $this->get_round();
+        $today = Date::today();
+        $inic = new Date($ronda['fecha_inicial']);
+        $fin = new Date($ronda['fecha_final']);
+        $est = $today->between($inic, $fin) ;
+        return $est;
     }
 
     public function get_year()
