@@ -236,7 +236,11 @@ class SolicitudesTable extends Table
                                     concat(g.cursos_id, g.numero)  NOT IN(
                                                                     select concat(g.cursos_id, g.numero)
                                                                     from grupos g, solicitudes r
-                                                                    where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')");
+                                                                    where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')  and
+                                    g.id NOT IN(
+                                                                    select g.id
+                                                                    from grupos g, solicitudes r
+                                                                    where g.id = r.grupos_id and r.estado = 'Aceptada');");
 
         //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
         $result = $result->fetchAll('assoc'); 
