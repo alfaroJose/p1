@@ -75,6 +75,76 @@ class GruposController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+    public function addCurso()
+    {
+        //Verifica por permisos y login
+        $carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne != null){
+           $connect = ConnectionManager::get('default');
+           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+          
+           $consulta = "select pos.estado
+                       from posee as pos join permisos as per on pos.permisos_id =  per.id
+                        where per.id = 3 and roles_id = ".$rol[0][0].";";
+                        //3 = Agregar Curso-Grupo
+           $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra la seguridad
+        $opcionesSemestre=[1,2,3];
+        $semestreEncontrado=false;
+        $itSemestre=0;
+        $defaultSelectSemestre=0;
+        $profesorEncontrado=false;
+        $itProfesor=0;
+        $defaultSelectProfesor=0;
+
+        $profesores = $this->Grupos->seleccionarProfesoresCorreos();
+        $profesoresCorreos= array(0 => "");
+        $profesoresIds=array(0 => "");
+
+        foreach ($profesores as $key => $value) {
+          
+            array_push($profesoresCorreos, $value[0]);
+            array_push($profesoresIds, $value[1]);
+        }
+
+    
+        $grupo = $this->Grupos->newEntity();
+        if ($this->request->is('post')) {
+            $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            $semestreSeleccionado = $this->request->getData('Semestre');
+            $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
+            $profesorSeleccionado = $this->request->getData('Profesor');
+            $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
+            if ($this->Grupos->save($grupo)) {
+                $this->Flash->success(__('El grupo ha sido agregado.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+        }
+        
+        $this->set('opcionesSemestre', $opcionesSemestre);
+        $this->set('correos',$profesoresCorreos);
+        $this->set('defaultSelectProfesor',$defaultSelectProfesor);
+        $this->set('defaultSelectSemestre',$defaultSelectSemestre);
+        $this->set(compact('grupo', 'profesores'));
+    }
+
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
     public function add()
     {
         //Verifica por permisos y login
