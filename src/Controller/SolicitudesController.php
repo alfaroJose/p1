@@ -215,9 +215,11 @@ class SolicitudesController extends AppController
                         from posee as pos join permisos as per on pos.permisos_id =  per.id
                          where per.id = 15 and roles_id = ".$rolActual[0][0].";";
                          //15 = Insertar Solicitud
-            $tupla =  $connect->execute($consulta)->fetchAll();      
+            $tupla =  $connect->execute($consulta)->fetchAll(); 
+            //debug($tupla[0][0]);
+            //die();     
  
-            if(4 != $rolActual[0] || !$estado){
+            if(1 != $tupla[0][0] || !$estado){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
