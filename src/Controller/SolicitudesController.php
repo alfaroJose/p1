@@ -67,11 +67,11 @@ class SolicitudesController extends AppController
     }
 
     public function imprimir($id = null){
+        $this->layout='default';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
         $this->set('solicitude', $solicitude);
-        $this->layout=null;
     }
 
         /**
