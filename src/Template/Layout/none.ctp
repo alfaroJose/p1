@@ -39,7 +39,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-
+<?php echo $this->Html->image('bg1.png', array('alt' => 'CakePHP', 'border' => '0', 'data-src' => 'holder.js/100%x100')); ?>
     
     <!-- Div para el contenido de debajo de la página--> 
     <!-- barra azul -->

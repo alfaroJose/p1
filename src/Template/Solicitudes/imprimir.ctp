@@ -26,8 +26,6 @@
             <div id="page-container">
             <div id="pf1" class="pf w0 h0" data-page-no="1">
             <div class="pc pc1 w0 h0">
-            <?= $this->html->image('bg1.png',['alt' => 'CakePHP', ]);?>  
-            <img class="bi x0 y0 w0 h0" alt="" src="bg1"/>
             <div class="c x0 y1 w0 h1">
             <div class="t m0 x1 h2 y2 ff1 fs0 fc0 sc0 ls0 ws0"> </div></div>
             <div class="c x2 y3 w1 h3"><div class="t m0 x3 h2 y4 ff1 fs0 fc0 sc0 ls0 ws0"> </div>
