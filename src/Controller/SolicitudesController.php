@@ -78,7 +78,7 @@ class SolicitudesController extends AppController
             //Rol de quien hizo login
             $rolActual = $this->Solicitudes->getRol($username); //obtiene el rol de usuario actualmente logueado
             //idActual es el id de quien hizo login
-            $idActual = $this->Solicitudes->getIDEstudiante($username); //Lo devuelve en string, se pasa a int para comparar
+            $idActual = $this->Solicitudes->getIDUsuario($username); //Lo devuelve en string, se pasa a int para comparar
 
             $connect = ConnectionManager::get('default');
             $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
@@ -104,7 +104,7 @@ class SolicitudesController extends AppController
             //Si el profesor quiere ver las solicitudes que le llegan
             else if(3 == $rolActual[0]){
                 $connect = ConnectionManager::get('default');
-                $idActual = $this->Solicitudes->getIDEstudiante($username); 
+                $idActual = $this->Solicitudes->getIDUsuario($username); 
                 $idProfe = $idActual[0][0]; //Retorna el id del profesor que está logeado
 
                 
