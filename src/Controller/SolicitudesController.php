@@ -299,7 +299,9 @@ class SolicitudesController extends AppController
         //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
         $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
        
-        $aux;             
+        $aux;
+        $code;
+        $class;             
         $i = 0;
         $course_counter = 0; 
         foreach($datosGrupos as $g)
