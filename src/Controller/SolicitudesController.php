@@ -30,11 +30,22 @@ class SolicitudesController extends AppController
         if ($username == ''){//En caso de lo haber hecho login
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
+        else{
+            $rolActual = $this->Solicitudes->getRol($username); 
+            $connect = ConnectionManager::get('default');
+            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
+            $permiso = $connect->execute($consulta)->fetchAll();
+            if ($permiso[0][0] != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
         //Cierra seguridad por URL
 
-        $rolActual = $this->Solicitudes->getRol($username); 
+        
         $idActual = $this->Solicitudes->getIDEstudiante($username); 
-          
+       
+        
+
         if(4==$rolActual[0]){   //Estudiante  
                 $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
         }
@@ -74,11 +85,17 @@ class SolicitudesController extends AppController
 
             //Rol de quien hizo login
             $rolActual = $this->Solicitudes->getRol($username);
+            //idActual es el id de quien hizo login
+            $idActual = $this->Solicitudes->getIDEstudiante($username); //Lo devuelve en string, se pasa a int para comparar
 
+            $connect = ConnectionManager::get('default');
+            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
+            $permiso = $connect->execute($consulta)->fetchAll();
+            if ($permiso[0][0] != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
             if (4 == $rolActual[0]){ //Si el estudiante tratando de ver su solicitud
-                 //idActual es el id de quien hizo login
-                $idActual = $this->Solicitudes->getIDEstudiante($username); //Lo devuelve en string, se pasa a int para comparar
-
+                
                 $connect = ConnectionManager::get('default');
                 $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
                 $idSolicitud = $connect->execute($consulta)->fetchAll();
@@ -92,7 +109,9 @@ class SolicitudesController extends AppController
                 }
             }
             else if(3 == $rolActual[0]){//Si el profesor quiere ver las solicitudes que le llegan
-
+                $connect = ConnectionManager::get('default');
+                $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
+                $idSolicitud = $connect->execute($consulta)->fetchAll();
             }
             else if(2 == $rolActual[0]){//Si el asistente trata de ver la solicitud
                
