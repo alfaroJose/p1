@@ -5,7 +5,7 @@ use App\Controller\AppController;
 use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
 use Cake\Chronos\Date;
-
+use Cake\ORM\TableRegistry;
 /**
  * Solicitudes Controller
  *
@@ -20,65 +20,32 @@ class SolicitudesController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function iindex()
-    {
-        $todo = $this->Solicitudes->getIndexValues();
-        //debug($username);
-        //die();
-        $this->paginate = [
-            'contain' => ['Usuarios', 'Grupos']
-        ];
-        $solicitudes = $this->paginate($this->Solicitudes);
-        $this->set(compact('solicitudes','todo'));
-    }
-
-        /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function indexestudiante()
-    { 
-        $rolActual = $this->Usuario->getRol($username);
-        $username = $this->request->getSession()->read('id');
-        $idActual = $this->Solicitudes->getIDEstudiante($username);   
-        //debug($idActual[0][0]);
-        //die();          
-        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
-        //debug($todo);
-        //die();
-        $this->paginate = [
-            'contain' => ['Usuarios', 'Grupos']
-        ];
-        $solicitudes = $this->paginate($this->Solicitudes);
-        $this->set(compact('solicitudes','todo'));
-    }
-
-            /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
     public function index()
     { 
-        $username = $this->request->getSession()->read('id');
-        $rolActual = $this->Solicitudes->getRol($username);  
+       
+        $username = $this->getRequest()->getSession()->read('id');
+       
         
-        $idActual = $this->Solicitudes->getIDEstudiante($username); 
-        //debug($idActual[0][0]);
-        //die();
+        //Inicio seguridad por URL
+        if ($username == ''){//En caso de lo haber hecho login
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra seguridad por URL
 
-        //debug($idActual[0][0]);
-        //die(); 
-        if(4==$rolActual[0]){     
-        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
-        }else if(3==$rolActual[0]){
+        $rolActual = $this->Solicitudes->getRol($username); 
+        $idActual = $this->Solicitudes->getIDEstudiante($username); 
+          
+        if(4==$rolActual[0]){   //Estudiante  
+                $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
+        }
+        else if(3==$rolActual[0]){ //Profesor
                 $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
-        }else if(1==$rolActual[0]||2==$rolActual[0]){
+        }
+        else if(1==$rolActual[0]||2==$rolActual[0]){ //Admin o Asistente de Admin
                 $todo = $this->Solicitudes->getIndexValues();
-            }
-        //debug($todo);
-        //die();
+        }
+       
+
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
         ];
@@ -98,28 +65,52 @@ class SolicitudesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function vieww($id = null)
-    {
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => ['Usuarios', 'Grupos']
-        ]);
-        $this->set('solicitude', $solicitude);
-    }
+     public function view($id = null){
+       
+        $username = $this->Getrequest()->getSession()->read('id');
+        
+        //Inicia seguridad
+        if (null != $username){ //Si hubo login
 
-        public function view($id = null)
-    {
+            //Rol de quien hizo login
+            $rolActual = $this->Solicitudes->getRol($username);
+
+            if (4 == $rolActual[0]){ //Si el estudiante tratando de ver su solicitud
+                 //idActual es el id de quien hizo login
+                $idActual = $this->Solicitudes->getIDEstudiante($username); //Lo devuelve en string, se pasa a int para comparar
+
+                $connect = ConnectionManager::get('default');
+                $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
+                $idSolicitud = $connect->execute($consulta)->fetchAll();
+
+                //El id correspondiente a la solicitud que se quiere ver
+                $idEstudianteSolicitud = $idSolicitud[0][0];
+
+                //Se compara si el estudiante que hizo login está viendo uno solicitud suya o no
+                if ($idActual[0][0] != $idEstudianteSolicitud){
+                    return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+                }
+            }
+            else if(3 == $rolActual[0]){//Si el profesor quiere ver las solicitudes que le llegan
+
+            }
+            else if(2 == $rolActual[0]){//Si el asistente trata de ver la solicitud
+               
+            }
+           
+        }
+        else{
+            debug('here'); die();
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra seguridad
+
+
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-        $username = $this->request->getSession()->read('id');
-        $rolActual = $this->Solicitudes->getRol($username);  
         
         $idActual = $this->Solicitudes->getIDEstudiante($username); 
-        //debug($id);
-        //die();
-
-        //debug($idActual[0][0]);
-        //die(); 
 /*        if(4==$rolActual[0]){     
         $todo = $this->Solicitudes->getViewValuesEstudiante($id);
         }else if(3==$rolActual[0]){
@@ -128,27 +119,10 @@ class SolicitudesController extends AppController
                 $todo = $this->Solicitudes->getIndexValues();
             }*/
             $todo = $this->Solicitudes->getViewValuesEstudiante($id);
-        //debug($todo);
-        //die();
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
 
-        /**
-     * View method
-     *
-     * @param string|null $id Solicitude id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function viewestudiante($id = null)
-    {
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => ['Usuarios', 'Grupos']
-        ]);
-
-        $this->set('solicitude', $solicitude);
-    }
 
     public function get_round()
     {
@@ -210,6 +184,21 @@ class SolicitudesController extends AppController
      */
     public function add()
     {
+       
+        //Inicio de seguridad
+        $username = $this->getRequest()->getSession()->read('id');
+        if ($username != null){
+            $rolActual = $this->Solicitudes->getRol($username); 
+            $estado = $this->get_estado_ronda();
+            if(4 != $rolActual[0] || !$estado){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierre de Seguridad
+
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
@@ -431,7 +420,7 @@ class SolicitudesController extends AppController
              
     }
 
-    public function viewFile($filename) {
+    private function viewFile($filename) {
         $this->viewBuilder()
             ->className('Dompdf.Pdf')
             ->layout('Dompdf.default')
@@ -440,6 +429,7 @@ class SolicitudesController extends AppController
                 'render' => 'browser',
             ]]);
     }
+
    public function generate($id = null)
     {
         // se crea una entidad para luego poder hacer los validadores
