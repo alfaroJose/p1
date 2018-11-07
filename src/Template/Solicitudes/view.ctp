@@ -16,7 +16,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
     <div class="col-md-6">
     <br>
-    <h5><?= 'Datos Generales' ?></h5>
+    <h5><?= 'Datos Generales' //para la vista?></h5>
     <table class>
 
         <tr>
