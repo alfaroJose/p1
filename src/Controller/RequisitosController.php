@@ -132,7 +132,7 @@ class RequisitosController extends AppController
             } else if ($requisito->categoria == 1){
                 $requisito->categoria = 'Horas Estudiante';
             } else {
-                $requisito->categoria = 'Ambas';
+                $requisito->categoria = 'General';
             }
 
             if ($this->Requisitos->save($requisito)) {
@@ -193,7 +193,7 @@ class RequisitosController extends AppController
             } else if ($requisito->categoria == 1){
                 $requisito->categoria = 'Horas Estudiante';
             } else {
-                $requisito->categoria = 'Ambas';
+                $requisito->categoria = 'General';
             }
 
             if ($this->Requisitos->save($requisito)) {
