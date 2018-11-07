@@ -15,6 +15,10 @@ class MainController extends AppController
 {
 	public function index()
 	{
+		$carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne == null){
+			return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+		}
 		date_default_timezone_set("America/Costa_Rica");//Se pone el huso horario de Costa Rica
 		$nombreUsuario = $this->getRequest()->getSession()->read('id');//Toma de la sesion el identificador de ingreso al sistema (nombre_usuario en la tabla usuarios)
 		$usuarios = TableRegistry::getTableLocator()->get('usuarios');//Pide la tabla usuario
