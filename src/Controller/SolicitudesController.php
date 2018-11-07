@@ -15,45 +15,6 @@ use Cake\Chronos\Date;
  */
 class SolicitudesController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function iindex()
-    {
-        $todo = $this->Solicitudes->getIndexValues();
-        //debug($username);
-        //die();
-        $this->paginate = [
-            'contain' => ['Usuarios', 'Grupos']
-        ];
-        $solicitudes = $this->paginate($this->Solicitudes);
-        $this->set(compact('solicitudes','todo'));
-    }
-
-        /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function indexestudiante()
-    { 
-        $rolActual = $this->Usuario->getRol($username);
-        $username = $this->request->getSession()->read('id');
-        $idActual = $this->Solicitudes->getIDEstudiante($username);   
-        //debug($idActual[0][0]);
-        //die();          
-        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
-        //debug($todo);
-        //die();
-        $this->paginate = [
-            'contain' => ['Usuarios', 'Grupos']
-        ];
-        $solicitudes = $this->paginate($this->Solicitudes);
-        $this->set(compact('solicitudes','todo'));
-    }
-
             /**
      * Index method
      *
@@ -61,24 +22,18 @@ class SolicitudesController extends AppController
      */
     public function index()
     { 
-        $username = $this->request->getSession()->read('id');
-        $rolActual = $this->Solicitudes->getRol($username);  
+        $username = $this->request->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
+        $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
         
-        $idActual = $this->Solicitudes->getIDEstudiante($username); 
-        //debug($idActual[0][0]);
-        //die();
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
 
-        //debug($idActual[0][0]);
-        //die(); 
-        if(4==$rolActual[0]){     
-        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
-        }else if(3==$rolActual[0]){
-                $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
-        }else if(1==$rolActual[0]||2==$rolActual[0]){
-                $todo = $this->Solicitudes->getIndexValues();
+        if(4==$rolActual[0]){ //si el usuario es un estudiante     
+        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con solo los datos del estudiante actualmente logueado
+        }else if(3==$rolActual[0]){ //si el usuario es un profesor 
+                $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]); //carga el index con solo los datos del profesor actualmente logueado
+        }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
+                $todo = $this->Solicitudes->getIndexValues(); //carga el index con todas las solicitudes
             }
-        //debug($todo);
-        //die();
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
         ];
@@ -98,55 +53,17 @@ class SolicitudesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function vieww($id = null)
-    {
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => ['Usuarios', 'Grupos']
-        ]);
-        $this->set('solicitude', $solicitude);
-    }
-
         public function view($id = null)
     {
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-        $username = $this->request->getSession()->read('id');
-        $rolActual = $this->Solicitudes->getRol($username);  
+        $username = $this->request->getSession()->read('id');//obtiene el nombre de usuario actualmente logueado
+        $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
         
-        $idActual = $this->Solicitudes->getIDEstudiante($username); 
-        //debug($id);
-        //die();
-
-        //debug($idActual[0][0]);
-        //die(); 
-/*        if(4==$rolActual[0]){     
-        $todo = $this->Solicitudes->getViewValuesEstudiante($id);
-        }else if(3==$rolActual[0]){
-                //$todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
-        }else if(1==$rolActual[0]){
-                $todo = $this->Solicitudes->getIndexValues();
-            }*/
-            $todo = $this->Solicitudes->getViewValuesEstudiante($id);
-        //debug($todo);
-        //die();
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
+            $todo = $this->Solicitudes->getViewValuesUsuario($id);//obtiene los datos de la solicitud para la vista
         $this->set('todo',$todo);
-        $this->set('solicitude', $solicitude);
-    }
-
-        /**
-     * View method
-     *
-     * @param string|null $id Solicitude id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function viewestudiante($id = null)
-    {
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => ['Usuarios', 'Grupos']
-        ]);
-
         $this->set('solicitude', $solicitude);
     }
 
