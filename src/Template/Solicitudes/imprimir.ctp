@@ -19,7 +19,7 @@
 </head>
 
 <body>
-            <div id="sidebar">
+            <div id="sidebar"> 
             <div id="outline">
             </div>
             </div>
@@ -43,7 +43,7 @@
             <div class="t m0 x9 h2 y10 ff1 fs0 fc0 sc0 ls0 ws0"> </div><div class="t m0 x1 h9 y11 ff3 fs1 fc0 sc0 ls0 ws0">Datos del estudiante &#58 </div>
             <div class="t m0 x1 h8 y12 ff4 fs1 fc0 sc0 ls0 ws0"> </div><div class="t m0 x1 h8 y13 ff4 fs1 fc0 sc0 ls0 ws0"><?= h($solicitude->usuario->primer_apellido) ?>        <?= h($solicitude->usuario->segundo_apellido) ?>         <?= h($solicitude->usuario->nombre) ?> </div>
             <div class="t m0 x1 h8 y14 ff4 fs1 fc0 sc0 ls0 ws0">Primer Apellido<span class="_ _0"> </span>Segundo Apellido<span class="_ _1"> </span>Nombre </div><div class="t m0 x1 h8 y15 ff4 fs1 fc0 sc0 ls0 ws0"> </div>
-            <div class="t m0 x1 h9 y16 ff3 fs1 fc0 sc0 ls0 ws0">       __________    ____________      ______________________________ </div>
+            <div class="t m0 x1 h9 y16 ff3 fs1 fc0 sc0 ls0 ws0">    <?= h($solicitude->usuario->identificacion) ?>  <?= h($solicitude->usuario->nombre_usuario) ?>   <?= h($solicitude->usuario->telefono) ?>  <?= h($solicitude->usuario->correo_electronico) ?>   </div>
             <div class="t m0 x1 h8 y17 ff4 fs1 fc0 sc0 ls0 ws0">Cédula <span class="_ _2"> </span>       Carné<span class="_ _3"> </span>      Teléfono<span class="_ _4"> </span>          Correo electrónico </div>
             <div class="t m0 x1 h8 y18 ff4 fs1 fc0 sc0 ls0 ws0"> </div><div class="t m0 x1 h8 y19 ff4 fs1 fc0 sc0 ls0 ws0">_________________________ <span class="_ _5"> </span>Solicita horas 
             <span class="_ _6"> </span>HE<span class="_ _7"> </span>HA          (Puede marcar ambas opciones) </div>
