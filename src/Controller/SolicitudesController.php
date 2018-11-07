@@ -15,23 +15,22 @@ use Cake\ORM\TableRegistry;
  */
 class SolicitudesController extends AppController
 {
+
     /**
      * Index method
      *
      * @return \Cake\Http\Response|void
      */
     public function index()
-    { 
-       
-        $username = $this->getRequest()->getSession()->read('id');
-       
-        
+    {        
+        $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
+               
         //Inicio seguridad por URL
         if ($username == ''){//En caso de lo haber hecho login
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         else{
-            $rolActual = $this->Solicitudes->getRol($username); 
+            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
             $connect = ConnectionManager::get('default');
             $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
             $permiso = $connect->execute($consulta)->fetchAll();
@@ -40,21 +39,17 @@ class SolicitudesController extends AppController
             }
         }
         //Cierra seguridad por URL
+             
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
 
-        
-        $idActual = $this->Solicitudes->getIDEstudiante($username); 
-
-        if(4==$rolActual[0]){   //Estudiante  
-                $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]);
-        }
-        else if(3==$rolActual[0]){ //Profesor
-                $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]);
-        }
-        else if(1==$rolActual[0]||2==$rolActual[0]){ //Admin o Asistente de Admin
-                $todo = $this->Solicitudes->getIndexValues();
-        }
-       
-
+        if(4==$rolActual[0]){ //si el usuario es un estudiante     
+        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con solo los datos del estudiante actualmente logueado
+        }else if(3==$rolActual[0]){ //si el usuario es un profesor 
+                $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]); //carga el index con solo los datos del profesor actualmente logueado
+        }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
+                $todo = $this->Solicitudes->getIndexValues(); //carga el index con todas las solicitudes
+            }
+      
         $this->paginate = [
             'contain' => ['Usuarios', 'Grupos']
         ];
@@ -65,8 +60,6 @@ class SolicitudesController extends AppController
     }
 
     
-
-
     /**
      * View method
      *
@@ -74,15 +67,16 @@ class SolicitudesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+
      public function view($id = null){
        
-        $username = $this->Getrequest()->getSession()->read('id');
+        $username = $this->Getrequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
         
         //Inicia seguridad
         if (null != $username){ //Si hubo login
 
             //Rol de quien hizo login
-            $rolActual = $this->Solicitudes->getRol($username);
+            $rolActual = $this->Solicitudes->getRol($username); //obtiene el rol de usuario actualmente logueado
             //idActual es el id de quien hizo login
             $idActual = $this->Solicitudes->getIDEstudiante($username); //Lo devuelve en string, se pasa a int para comparar
 
@@ -131,17 +125,15 @@ class SolicitudesController extends AppController
         }
         //Cierra seguridad
 
-
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
         
-        $idActual = $this->Solicitudes->getIDEstudiante($username); 
-        $todo = $this->Solicitudes->getViewValuesEstudiante($id);
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
+        $todo = $this->Solicitudes->getViewValuesUsuario($id);//obtiene los datos de la solicitud para la vista
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
-
 
     public function get_round()
     {
