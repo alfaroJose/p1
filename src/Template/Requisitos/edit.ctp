@@ -1,6 +1,6 @@
 <?php
 $tipoRequisitos = array("Obligatorio", "Obligatorio Inopia");
-$categoriaRequisitos = array("Horas Asistente", "Horas Estudiante", "Ambas");
+$categoriaRequisitos = array("Horas Asistente", "Horas Estudiante", "General");
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Requisito $requisito
