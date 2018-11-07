@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             
-            <?php foreach ($todo as $solicitude): ?>
+            <?php foreach ($todo as $solicitude): //datos para el index?>
             <tr>
                 <td><?= h($solicitude[0]) ?></td>
                 <td><?= h($solicitude[1]) ?></td>
@@ -29,7 +29,7 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
-                <?php if(1 == $rolActual[0]){
+                <?php if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
                 echo $this->Html->link(__('<span class="typcn typcn-social-instagram-circular"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);}
                 //debug($todo);
                 //die();
@@ -44,7 +44,6 @@
     <br>
     <br>
     <?php //Agrega el boton de nueva solicitud solo al index de estudiante
-    //debug($estado); die();
     if(4 == $rolActual[0] && $estado)
      echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
      ?>
