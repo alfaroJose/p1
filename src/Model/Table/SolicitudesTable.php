@@ -203,7 +203,7 @@ class SolicitudesTable extends Table
         estudiante.tipo_identificacion as 'estudiante_tipo_identificacion', estudiante.nombre_usuario as 'estudiante_carne',
         estudiante.telefono as 'estudiante_telefono', estudiante.correo as 'estudiante_correo',
         CONCAT(profesor.nombre, ' ', profesor.primer_apellido, ' ', profesor.segundo_apellido) AS 'profesor_nombre',
-        g.numero as 'grupo_numero', g.semestre as 'grupo_semestre', g.año as 'grupo_año', c.sigla as 'curos_sigla', c.nombre as 'curso_nombre',
+        g.numero as 'grupo_numero', c.sigla as 'curso_sigla', c.nombre as 'curso_nombre',
         s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
         s.cantidad_horas as 'solicitud_cantidad_horas', s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
         s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificación as 'solicitud_justificación',
@@ -221,7 +221,7 @@ class SolicitudesTable extends Table
     public function getRequisitosEstudiante($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Estudiante'
@@ -232,7 +232,7 @@ class SolicitudesTable extends Table
     public function getRequisitosAsistente($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Horas Asistente'
@@ -243,7 +243,7 @@ class SolicitudesTable extends Table
     public function getRequisitosGeneral($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'ronda_id', r.nombre as 'ronda_nombre', r.tipo as 'ronda_tipo', r.categoria as 'ronda_categoria'
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
         and r.categoria = 'Ambas'

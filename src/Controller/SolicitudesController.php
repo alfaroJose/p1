@@ -56,14 +56,28 @@ class SolicitudesController extends AppController
         $datosRequisitosAsistente = $this->Solicitudes->getRequisitosAsistente($id);
         $datosRequisitosEstudiante = $this->Solicitudes->getRequisitosEstudiante($id);
         $datosRequisitosGeneral = $this->Solicitudes->getRequisitosGeneral($id);
-        //debug($datosSolicitud);
-        //die();
-
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => []
         ]);
+
+        //debug($solicitude);
+        //die();
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $requisitos = $this->request->getData();
+        
+            $contador1 = 0;
+            $contador2 = 0;
+
+            foreach ($requisitos as $asistente):
+                debug($requisitos);
+                die();
+                if (is_numeric($asistente[$contador1])) {
+                    $contador2 = $contador2 + 1;
+                }
+                $contador1 = $contador1 + 1;
+            endforeach;
 
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('Si sirvió.'));
