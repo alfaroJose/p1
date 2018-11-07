@@ -100,7 +100,8 @@ use Cake\Chronos\Date;
         <br>
 
         <?php $rol = $this->Seguridad->getRol();
-        if ($rol == 1) {
+         $permisoContador = $this->Seguridad->getPermiso(23);
+        if ($permisoContador == 1) {
           echo '<div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">';
           $contadorActual = $this->Contador->getContador();
           echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
@@ -154,9 +155,9 @@ use Cake\Chronos\Date;
               echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
               echo '</li>';
              }
-               
-             $permisoContador = $rol;
-             if ( 1 == $rol){
+              
+
+             if ( 1 == $permisoContador){
               echo  '<li class="nav-item">';
               echo $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ;
               echo '</li>';  
