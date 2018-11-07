@@ -17,8 +17,8 @@ class UsuariosHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-    public function seleccionarProfesoresCorreos(){
-        $profesor = (new GruposTable)->seleccionarProfesoresCorreos();
+    public function seleccionarProfesoresNombres(){
+        $profesor = (new GruposTable)->seleccionarProfesoresNombres();
         return $profesor;
     }
 

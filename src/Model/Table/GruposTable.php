@@ -204,7 +204,7 @@ class GruposTable extends Table
         return $datos;
     }
 
-    public function seleccionarProfesoresCorreos(){
+    public function seleccionarProfesoresNombres(){
         /*$connect = ConnectionManager::get('default');
         $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();*/
 
