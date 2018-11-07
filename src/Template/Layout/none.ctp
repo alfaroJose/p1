@@ -40,34 +40,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 
-    <nav class="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow" style="background-color: rgb(65, 173, 231);">     
-
-      <div class = "navbar-nav px-1">   
-        <?= $this->Html->image('ucrLogoBlanco.png', ['alt' => 'CakePHP', 'width'=>"245", 'height' => '85']);?>     
-      </div>
-
-      <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias ECCI</a>
-
-      <div class = "navbar-nav px-1">
-        <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
-      
-        <!-- Barra de la derecha. Aqui está el sing out y editar perfil-->     
-        <div class = 'nav-link'>
-          <?php 
-            $username = $this->request->getSession()->read('id');
-            $idActual = $this->Usuario->getUser($username);
- 
-            if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
-              echo ( '<a style="margin-right: 26%; color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
-            }
-          ?>
-
-          <a style="color: rgb(255, 255, 255);"  href="http://localhost/p1/inicio/logout/">Cerrar Sesión</a>   
-
-        </div>      
-      </div>
-    </nav>
+    
     
     <!-- Div para el contenido de debajo de la página--> 
     <!-- barra azul -->
