@@ -55,7 +55,7 @@
             <div class="t m0 x1 h8 y22 ff4 fs1 fc0 sc0 ls0 ws0">1.¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la Universidad? </div>
             <div class="t m0 xb h2 y23 ff1 fs0 fc0 sc0 ls0 ws0">  No                Sí            Cantidad          HA                   HE  </div>
             <div class="t m0 x1 h2 y24 ff1 fs0 fc0 sc0 ls0 ws0"> </div><div class="t m0 x1 h2 y25 ff5 fs0 fc0 sc0 ls0 ws0">Curso solicitado </div></div>
-            <div class="c x2 y26 w4 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Sigla </div></div><div class="c xc y26 w5 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Grupo </div></div>
+            <div class="c x2 y26 w4 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Sigla </div></div><div class="c xc y26 w5 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Grupo <?= h($solicitude->grupo->id) ?></div></div>
             <div class="c xd y26 w6 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Nombre del Curso </div></div>
             <div class="c xe y26 w7 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0">Nombre del Docente </div></div>
             <div class="c x2 y27 w4 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0"> </div></div><div class="c xc y27 w5 h4"><div class="t m0 x3 h2 ya ff1 fs0 fc0 sc0 ls0 ws0"> </div></div>
