@@ -120,7 +120,7 @@
 
             <thead>
                 <tr>
-                    <th scope="col"><?= 'Generales' ?></th>
+                    <th scope="col"><?= 'General' ?></th>
                 </tr>
             </thead>
             <tbody>

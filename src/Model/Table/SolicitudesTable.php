@@ -246,7 +246,7 @@ class SolicitudesTable extends Table
         $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
-        and r.categoria = 'Ambas'
+        and r.categoria = 'General'
         and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
