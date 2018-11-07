@@ -32,7 +32,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <!-- Aqui agregegué "a mano"   los iconos de typicons por que con el helper no me funcionaba-->
     <link rel="stylesheet" href="plugins/font/typicons.min.css"/></head><body><div class="page-header">
     	
-    <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min']) ?>
+    <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min', 'fancy.min']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -40,7 +40,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 
-    
     
     <!-- Div para el contenido de debajo de la página--> 
     <!-- barra azul -->
