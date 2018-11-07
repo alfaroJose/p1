@@ -98,11 +98,46 @@ class GruposController extends AppController
             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         //Cierra la seguridad
+        $opcionesSemestre=[1,2,3];
+        $semestreEncontrado=false;
+        $itSemestre=0;
+        $defaultSelectSemestre=0;
+        $profesorEncontrado=false;
+        $itProfesor=0;
+        $defaultSelectProfesor=0;
+        $siglaEncontrado=false;
+        $itSigla=0;
+        $defaultSelectSigla=0;
 
+        $cursos = $this->Grupos->obtenerTodosCursos();
+        $siglaIndex= array(0 => "");
+        $siglaIds=array(0 => "");
+
+        foreach ($cursos as $key => $value) {
+            array_push($siglaIndex, $value[0]);
+            array_push($siglaIds, $value[1]);
+        }
+
+        $profesores = $this->Grupos->seleccionarProfesoresCorreos();
+        $profesoresCorreos= array(0 => "");
+        $profesoresIds=array(0 => "");
+
+        foreach ($profesores as $key => $value) {
+          
+            array_push($profesoresCorreos, $value[0]);
+            array_push($profesoresIds, $value[1]);
+        }
+
+    
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
-            debug($grupo);
+            $semestreSeleccionado = $this->request->getData('Semestre');
+            $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
+            $profesorSeleccionado = $this->request->getData('Profesor');
+            $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
+            $siglaSeleccionada = $this->request->getData('Sigla');
+            $grupo->cursos_id = $siglaIds[3];
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
 
@@ -110,18 +145,13 @@ class GruposController extends AppController
             }
             $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
         }
-        $cursos2 = $this->Grupos->seleccionarCursos();
-        $cursos=[];
-        foreach ($cursos2 as $c ) {
-            array_push($cursos, $c->Cursos['sigla']);
-        }
-
-        $profesores2 = $this->Grupos->seleccionarProfesores();
-        $profesores=[];
-        foreach ($profesores2 as $p) {
-            array_push($profesores, $p->nombre);
-        }
         
+        $this->set('siglaIndex', $siglaIndex);
+        $this->set('opcionesSemestre', $opcionesSemestre);
+        $this->set('correos',$profesoresCorreos);
+        $this->set('defaultSelectProfesor',$defaultSelectProfesor);
+        $this->set('defaultSelectSemestre',$defaultSelectSemestre);
+        $this->set('defaultSelectCurso',$defaultSelectSigla);
         $this->set(compact('grupo', 'profesores', 'cursos'));
     }
 
@@ -183,6 +213,7 @@ $connect = ConnectionManager::get('default');
         }/*
         debug($profesoresIds);
         die();*/
+        //coso lento
          while(!$profesorEncontrado){
             if($profesoresIds[$itProfesor]==$id3){
                 $profesorEncontrado=true;

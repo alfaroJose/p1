@@ -145,22 +145,6 @@ class GruposTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function seleccionarCursos()
-    {
-
-        $connect = ConnectionManager::get('default');
-        $cursos = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
-        return $cursos;
-    }
-
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
     public function seleccionarProfesores()
     {
             $users = TableRegistry::get('Usuarios');
@@ -188,6 +172,12 @@ class GruposTable extends Table
     public function obtenerCursos($id = null){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
+        return $sigla;
+    }
+
+    public function obtenerTodosCursos(){
+        $connect = ConnectionManager::get('default');
+        $sigla = $connect->execute("select distinct sigla, id from cursos")->fetchAll();
         return $sigla;
     }
 
