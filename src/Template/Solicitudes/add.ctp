@@ -53,8 +53,7 @@
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
            
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
-            echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
-            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Estado inicial es pendiente pendiente hasta que se mande a imprimir? estado inicial Anulada
             echo $this->Form->hidden('ronda', ['value'=>$roundNumber, 'readonly']);
         ?>
         <h5> Curso solicitado </h5>

@@ -66,11 +66,6 @@ tr:nth-child(even) {background-color:  #eaecee };
             <td><?= h($solicitude->estado) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Asistencia Externa') ?></th>
-            <td><?= h($solicitude->asistencia_externa) ?></td>
-        </tr>
-
-        <tr>
             <th scope="row"><?= __('Horas Asistente') ?></th>
             <td><?= h($solicitude->horas_asistente) ?></td>
         </tr>
@@ -79,17 +74,16 @@ tr:nth-child(even) {background-color:  #eaecee };
             <td><?= h($solicitude->horas_estudiante) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Asistencia Externa') ?></th>
+            <td><?= h($solicitude->asistencia_externa) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Horas Asistente Externa') ?></th>
             <td><?= h($solicitude->horas_asistente_externa) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Horas Estudiante Externa') ?></th>
             <td><?= h($solicitude->horas_estudiante_externa) ?></td>
-        </tr>
-
-        <tr>
-            <th scope="row"><?= __('Cantidad Horas') ?></th>
-            <td><?= $this->Number->format($solicitude->cantidad_horas) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Cantidad Horas Externa') ?></th>
@@ -106,7 +100,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
         <tr>
             <th scope="row"><?= __('Justificación') ?></th>
-            <td><?= h($solicitude->justificación) ?></td>
+            <td><?= h($solicitude->justificacion) ?></td>
         </tr>
 
     </table>
