@@ -15,7 +15,7 @@
                 <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Estudiante' ?></th>
                 <th scope="col"><?= 'Estado' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +29,11 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
+                <?php if(1 == $rolActual[0]){
+                echo $this->Html->link(__('<span class="typcn typcn-social-instagram-circular"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);}
+                //debug($todo);
+                //die();
+                ?>
                 <span class="typcn typcn-printer"></span>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
