@@ -158,7 +158,7 @@ class SolicitudesTable extends Table
     /*obtiene el id de usuario actualmente logueado*/
         public function getIDUsuario($carne)
     {
-        $connet = ConnectionManager::get('default');
+        $connect = ConnectionManager::get('default');
         $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll();
         return $result;
