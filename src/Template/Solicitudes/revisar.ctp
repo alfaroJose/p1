@@ -89,8 +89,8 @@
         <?php endforeach; ?>
 
         <!-- Logica basica del bloqueo, si asistente y estudiante no se cumplen, se bloquea todo menos
-        las opciones que no cumplio para poderlas cambiar, si eso no pasa pero no cumplio una general,
-        se bloquea todo menos la opcion general que no cumplio para poderla cambiar -->
+        las opciones de asistente y estudiante que no cumplio para poderlas cambiar, si eso no pasa pero 
+        no cumplio una general, se bloquea todo menos la opcion general que no cumplio para poderla cambiar -->
 
         <?php
         if($bloqueoAsistente == true and $bloqueoEstudiante == true){
