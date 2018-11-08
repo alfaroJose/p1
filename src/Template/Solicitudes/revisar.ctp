@@ -62,11 +62,11 @@
 
         <?php
         $bloqueoAsistente = false;
-        $opcionLibreAsistente;
+        $opcionLibreAsistente = '';
         $bloqueoEstudiante = false;
-        $opcionLibreEstudiante;
+        $opcionLibreEstudiante = '';
         $bloqueoGeneral = false;
-        $opcionLibreGeneral;
+        $opcionLibreGeneral = '';
         ?>
             
         <!-- Se almancena en las variables donde esta el requisito obligatorio que no cumplio -->
@@ -97,6 +97,8 @@
             $bloqueoGeneral = true;
             $opcionLibreGeneral = '';
         } else if($bloqueoGeneral == true){
+            $bloqueoAsistente = true;
+            $bloqueoEstudiante = true;
             $opcionLibreAsistente = '';
             $opcionLibreEstudiante = '';
         }
@@ -149,13 +151,13 @@
                             //Si el radio no es la opcion que debe quedar desbloqueada por defecto entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                             } else {
                                 $options= array('Sí' => 'Sí', 'No' => 'No',);
-                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoEstudiante);
+                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente);
                                 echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                             }
                         //Si el requisito no es obligatorio entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                         } else {
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoEstudiante);
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente);
                             echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                         }
                     ?>    
