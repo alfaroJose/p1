@@ -59,7 +59,55 @@ class SolicitudesController extends AppController
         $this->set('rolActual',$rolActual);
     }
 
-    
+    public function revisar($id = null)
+    {
+        $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $data = $this->request->getData();
+
+            foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
+                if ($data[$requisitosSolicitud['requisito_id']] == '0') {
+                    $data[$requisitosSolicitud['requisito_id']] = 'Sí';
+                } else if ($data[$requisitosSolicitud['requisito_id']] == '1') {
+                    $data[$requisitosSolicitud['requisito_id']] = 'No';
+                } else if ($data[$requisitosSolicitud['requisito_id']] == '2') {
+                    $data[$requisitosSolicitud['requisito_id']] = 'Inopia';
+                } else {
+                    $data[$requisitosSolicitud['requisito_id']] = 'Sin verificar';
+                }
+                $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
+            endforeach;
+
+
+
+            if ($solicitude['estado'] == '0') {
+                $solicitude['estado'] = 'Elegible';
+            } else if ($solicitude['estado'] == '1') {
+                $solicitude['estado'] = 'Rechazada - Profesor';
+            } else if ($solicitude['estado'] == '2') {
+                $solicitude['estado'] = 'Aceptada - Profesor';
+            } else if ($solicitude['estado'] == '3'){
+                $solicitude['estado'] = 'Aceptada - Profesor (Inopia)';
+            } else {
+                $solicitude['estado'] = 'Anulada';
+            }
+
+            if ($this->Solicitudes->save($solicitude)) {
+                $this->Flash->success(__('Si sirvió.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('No sirvío'));
+        }
+        $this->set(compact('solicitude','datosSolicitud','datosRequisitosSolicitud'));
+    }
+
     /**
      * View method
      *
