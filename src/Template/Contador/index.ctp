@@ -11,7 +11,13 @@
             <tr>
                 <th scope="col"><?= 'Horas Asistente' ?></th>
                 <th scope="col"><?= 'Horas Estudiante' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <?php
+                $permisoEditar = $this->Seguridad->getPermiso(22);
+                if (1 == $permisoEditar){
+                    ECHO '<th scope="col" class="actions"></th>';
+                } 
+                ?>
+                
             </tr>
         </thead>
         <tbody>
@@ -19,9 +25,13 @@
             <tr>
                 <td><?= $this->Number->format($contador->horas_asistente) ?></td>
                 <td><?= $this->Number->format($contador->horas_estudiante) ?></td>
-                <td class="actions">
-                <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $contador->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                </td>
+                <?php 
+                if (1 == $permisoEditar){
+                  echo '<td class="actions">';
+                  echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $contador->id],['escape'=>false,'style'=>'font-size:22px;']); 
+                  echo '</td>';
+                }
+               ?> 
             </tr>
             <?php endforeach; ?>
         </tbody>

@@ -9,12 +9,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $carrera
  * @property float $promedio
- * @property int $cantidad_horas
  * @property string $estado
  * @property string $asistencia_externa
  * @property int $cantidad_horas_externa
  * @property \Cake\I18n\FrozenDate $fecha
- * @property string $justificación
+ * @property string $justificacion
  * @property int $ronda
  * @property int $usuarios_id
  * @property int $grupos_id
@@ -41,12 +40,11 @@ class Solicitude extends Entity
     protected $_accessible = [
         'carrera' => true,
         'promedio' => true,
-        'cantidad_horas' => true,
         'estado' => true,
         'asistencia_externa' => true,
         'cantidad_horas_externa' => true,
         'fecha' => true,
-        'justificación' => true,
+        'justificacion' => true,
         'ronda' => true,
         'usuarios_id' => true,
         'grupos_id' => true,

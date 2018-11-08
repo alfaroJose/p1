@@ -17,7 +17,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 
 <?php echo "<center>"; ?>
-	<h1>Bienvenido <?= $nombre;?></h1>
+	<h1>Bienvenido <?= $tipoRol;?> <?=$nombre;?></h1>
 	<br>
 	<h3>Fecha del servidor&#58; <?=$today;?></h3>
 	<br>

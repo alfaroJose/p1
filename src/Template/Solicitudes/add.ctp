@@ -12,18 +12,6 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            /*Aquí se pide el nombre de usuario (cané para estudiantes) de la persona logueada*/
-            $username = $this->request->getSession()->read('id');
-
-            /*Aquí se solicita la información del estudiante según el carné de la persona logueada*/
-            /*$datosEstudiante = $this->Solicitude->getStudentInfo($username);
-            $idEstudiante = $datosEstudiante[0];
-            $nombreEstudiante = $datosEstudiante[1];
-            $primerApellidoEstudiante = $datosEstudiante[2];
-            $segundoApellidoEstudiante = $datosEstudiante[3];
-            $correoEstudiante = $datosEstudiante[4];
-            $telefonoEstudiante = $datosEstudiante[5];
-            $cedulaEstudiante = $datosEstudiante[7];*/
 
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
@@ -34,7 +22,7 @@
             echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
-            //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
+            //¿Qué tipo de horas desea solicitar?
             echo ("Solicita:");            
             echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
             echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
@@ -53,8 +41,7 @@
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
            
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
-            echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
-            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Estado inicial es pendiente pendiente hasta que se mande a imprimir? estado inicial Anulada
             echo $this->Form->hidden('ronda', ['value'=>$roundNumber, 'readonly']);
         ?>
         <h5> Curso solicitado </h5>
@@ -66,6 +53,7 @@
             }
             
             echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+
             echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
             echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
             echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);

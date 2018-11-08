@@ -73,9 +73,6 @@ class SolicitudesTable extends Table
             ->greaterThanOrEqual('promedio', 0, 'El valor mínimo del promedio ponderado es 0');
 
         $validator
-            ->allowEmpty('cantidad_horas');
-
-        $validator
             ->scalar('estado')
             ->maxLength('estado', 30)
             ->requirePresence('estado', 'create')
@@ -96,9 +93,9 @@ class SolicitudesTable extends Table
             ->notEmpty('fecha');
 
         $validator
-            ->scalar('justificación')
-            ->maxLength('justificación', 1000)
-            ->allowEmpty('justificación');
+            ->scalar('justificacion')
+            ->maxLength('justificacion', 1000)
+            ->allowEmpty('justificacion');
 
         $validator
             ->requirePresence('ronda', 'create')
