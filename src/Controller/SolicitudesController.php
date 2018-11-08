@@ -72,19 +72,11 @@ class SolicitudesController extends AppController
             $data = $this->request->getData();
 
             foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
-                if ($data[$requisitosSolicitud['requisito_id']] == '0') {
-                    $data[$requisitosSolicitud['requisito_id']] = 'Sí';
-                } else if ($data[$requisitosSolicitud['requisito_id']] == '1') {
-                    $data[$requisitosSolicitud['requisito_id']] = 'No';
-                } else if ($data[$requisitosSolicitud['requisito_id']] == '2') {
-                    $data[$requisitosSolicitud['requisito_id']] = 'Inopia';
-                } else {
+                if ($data[$requisitosSolicitud['requisito_id']] == '') {
                     $data[$requisitosSolicitud['requisito_id']] = 'Sin verificar';
                 }
                 $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
             endforeach;
-
-
 
             if ($solicitude['estado'] == '0') {
                 $solicitude['estado'] = 'Elegible';

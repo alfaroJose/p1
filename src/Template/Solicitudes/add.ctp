@@ -79,11 +79,13 @@
             echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $code, 'style' => 'visibility:hidden']); //sigla de los cursos
             echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre, 'style' => 'visibility:hidden']); //nombre de los cursos
             echo $this->Form->input('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course, 'style' => 'visibility:hidden']); //id de los cursos 
-            //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos                 
+            //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos 
+                            
         } else {
             echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'style' => 'visibility:hidden']); //número de grupo 
             echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'style' => 'visibility:hidden']); //sigla de los cursos
             echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'style' => 'visibility:hidden']); //nombre de los cursos
+
         }     
     ?>
     
