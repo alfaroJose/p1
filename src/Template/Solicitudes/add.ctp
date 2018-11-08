@@ -35,8 +35,8 @@
             echo ("Información sobre otras asistencias:<br>
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
             echo $this->Form->radio('asistencia_externa', [
-                                                            ['value'=>'0', 'text'=>'No', 'style' => 'margin-left:30px'],
-                                                            ['value'=> '1', 'text'=>'Sí', 'style'=>'margin-left:30px']]);
+                                                            ['value'=>'0', 'text'=>'No', 'style' => 'margin-left:30px', 'onclick'=> 'blockOptions()'],
+                                                            ['value'=> '1', 'text'=>'Sí', 'style'=>'margin-left:30px', 'onclick'=> 'unblockOptions()']]);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
@@ -306,6 +306,23 @@
         selID.options.add(tmp,0);
         selID.selectedIndex = s;
 
+    }
+
+    /*Función para bloquear la cantidad de horas externas y opciones de horas asistente o estudiante*/
+    function blockOptions()
+    {
+        document.getElementById('horas-asistente-externa').disabled = true;
+        document.getElementById('horas-estudiante-externa').disabled = true;
+        document.getElementById('cantidad-horas-externa').disabled = true;
+
+    }
+
+    /*Función para desbloquear las opciones de asistencia externa en caso de marcas 'Sí'*/
+    function unblockOptions()
+    {
+        document.getElementById('horas-asistente-externa').disabled = false;
+        document.getElementById('horas-estudiante-externa').disabled = false;
+        document.getElementById('cantidad-horas-externa').disabled = false;
     }
 
 </script>
