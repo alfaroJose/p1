@@ -13,8 +13,7 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-        //debug($datosSolicitud);
-        //die();
+
             echo $this->Form->control('estudiante_primer_apellido', ['label'=>['text'=>'Primer Apellido'], 'readonly', 'value'=> $datosSolicitud[0]['estudiante_primer_apellido'] ]);
             echo $this->Form->control('estudiante_segundo_apellido', ['label'=>['text'=>'Segundo Apellido'], 'readonly', 'value'=> $datosSolicitud[0]['estudiante_segundo_apellido'] ]);
             echo $this->Form->control('estudiante_nombre', ['label'=>['text'=>'Nombre'], 'readonly', 'value'=> $datosSolicitud[0]['estudiante_nombre'] ]);
@@ -136,13 +135,13 @@
                     <td><?= h($general['requisito_nombre']) ?></td>
                     <td><?= h($general['requisito_tipo']) ?></td>
                     <td class="actions">
-                    <?php if ($general['requisito_tipo'] == 'Obligatorio'): ?>
-                            <!-- echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ']); -->
-                    <?php else: ?>
-                            <!-- echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ', 'Inopia ']); -->
-                        
-                    <?php endif ?>
-                    </td>
+                    <?php
+                        if ($general['requisito_tipo'] == 'Obligatorio') {
+                            echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ']);
+                        } else {
+                            echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ', 'Inopia ']);
+                        }
+                    ?>
                 </tr>
                 <?php endif; ?>
                 <?php endforeach; ?>
@@ -178,3 +177,11 @@
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<script>
+function desactivar(radio) {
+    if (radio.checked == true){
+        alert(this);
+    }
+}
+</script>
