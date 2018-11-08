@@ -23,7 +23,6 @@ class SeguridadHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-
     public function getRol(){
         $carne = $this->request->getSession()->read('id');
          if($carne != null){

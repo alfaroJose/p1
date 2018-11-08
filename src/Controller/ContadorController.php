@@ -29,9 +29,15 @@ class ContadorController extends AppController
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $tupla =  $connect->execute($consulta)->fetchAll();
            
-             if($tupla[0][0] != '1'){//1 = Administrador
+            $consulta = "select pos.estado
+            from posee as pos join permisos as per on pos.permisos_id =  per.id
+             where per.id = 23 and roles_id = ".$tupla[0][0].";";
+             //23 = Consultar contadro
+            $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
+            }
          }
          else{
             
@@ -60,14 +66,19 @@ class ContadorController extends AppController
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $tupla =  $connect->execute($consulta)->fetchAll();
            
-             if($tupla[0][0] != '1'){//1 = Administrador
+            $consulta = "select pos.estado
+            from posee as pos join permisos as per on pos.permisos_id =  per.id
+             where per.id = 23 and roles_id = ".$tupla[0][0].";";
+             //23 = Consultar contador
+            $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
+            }           
          }
          else{
             
              $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-
          }
          //Cierra seguridad
         $contador = $this->Contador->get($id, [
@@ -129,14 +140,19 @@ class ContadorController extends AppController
             $connect = ConnectionManager::get('default');
             $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
             $tupla =  $connect->execute($consulta)->fetchAll();
-           
-             if($tupla[0][0] != '1'){//1 = Administrador
+
+            $consulta = "select pos.estado
+            from posee as pos join permisos as per on pos.permisos_id =  per.id
+             where per.id = 22 and roles_id = ".$tupla[0][0].";";
+             //22 = Editar contador
+            $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
                 $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
+            }
          }
          else{
-            
-             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
 
          }
          //Cierra seguridad
