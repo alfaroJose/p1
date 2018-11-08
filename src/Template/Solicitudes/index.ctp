@@ -29,15 +29,15 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
+                  
                 <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                <?php 
+                if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
+                   echo $this->Html->link(__('<span class="typcn typcn-clipboard"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                }
 
-                <?php if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
-                echo $this->Html->link(__('<span class="typcn typcn-social-instagram-circular"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);}
-                //debug($todo);
-                //die();
                 ?>
-                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;'])?>
                 </td>
             </tr>
             <?php endforeach; ?>
