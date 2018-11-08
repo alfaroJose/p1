@@ -208,8 +208,6 @@ class SolicitudesController extends AppController
                          where per.id = 15 and roles_id = ".$rolActual[0][0].";";
                          //15 = Insertar Solicitud
             $tupla =  $connect->execute($consulta)->fetchAll(); 
-            //debug($tupla[0][0]);
-            //die();     
  
             if(1 != $tupla[0][0] || !$estado){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
@@ -290,7 +288,6 @@ class SolicitudesController extends AppController
         $telefonoEstudiante = $datosEstudiante['telefono'];
         $cedulaEstudiante = $datosEstudiante['identificacion'];
 
-
         //Se trae la ronda actual
         $round = $this->get_round();
         $roundNumber = $round['numero'];
@@ -308,62 +305,61 @@ class SolicitudesController extends AppController
 
         //Se trae todos los grupos del semestre y año actual de la base de datos y los almacena en un vector
         $datosGrupos = $this->Solicitudes->getGrupos($idEstudiante, $semestre, $año);
-       if ($datosGrupos != null){
-          //debug($datosGrupos);
-          //die();
-        $aux;
-        $code;
-        $class;             
-        $i = 0;
-        $course_counter = 0; 
-        foreach($datosGrupos as $g)
-        {         
-          $class[$i] = $g['numero']; //Se trae el número de clase
-          $code[$i] = $g['sigla']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
-          $course[$i] = $g['cursos_id'];  //id de los cursos
-          $auto[$i] = $g['id']; //id de los grupos
-                                                
-          //Busca los cursos y los coloca solo 1 vez en el vector de cursos.
-          //Realiza la busqueda en base al codigo de curso, ya que al ser más corto entonces la busqueda será más eficiente
-          $encontrado = 0;
-          for($j = 0; $j < $course_counter && $encontrado == 0; $j = $j+1)
-          {
-            if(strcmp($aux[$j]['id'],$g['cursos_id']) == 0)
-            $encontrado = 1;
+        if ($datosGrupos != null){
+          $aux;             
+          $i = 0;
+          $course_counter = 0; 
+          foreach($datosGrupos as $g)
+          {         
+            $class[$i] = $g['numero']; //Se trae el número de clase
+            $code[$i] = $g['sigla']; //Se trae el nombre de curso. Esto es para que cuando se seleccione un grupo se pueda encontrar sus grupos sin necesidad de realizar un acceso adicional a la base de datos. Recomendado por Diego
+            $course[$i] = $g['cursos_id'];  //id de los cursos
+            $auto[$i] = $g['id']; //id de los grupos
+                                                  
+            //Busca los cursos y los coloca solo 1 vez en el vector de cursos.
+            //Realiza la busqueda en base al codigo de curso, ya que al ser más corto entonces la busqueda será más eficiente
+            $encontrado = 0;
+            for($j = 0; $j < $course_counter && $encontrado == 0; $j = $j+1)
+            {
+              if(strcmp($aux[$j]['id'],$g['cursos_id']) == 0)
+              $encontrado = 1;
+            }
+                  
+            if($encontrado == 0)
+            {
+              $aux[$course_counter] = array();
+              $aux[$course_counter]['id'] = $g['cursos_id'];
+              $aux[$course_counter]['nombre'] = $g['nombre'];
+              $aux[$course_counter]['sigla'] = $g['sigla'];  
+              $course_counter = $course_counter + 1;
+            }
+                                      
+              $i = $i + 1;
           }
-                
-          if($encontrado == 0)
+
+          //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
+          //activar el evento onChange del select de grupos
+
+          $i = 0;
+          //Esta parte se encarga de controlar los codigos y nombres de cursos
+          //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
+              
+              
+          $c2[0] = "Seleccione un Curso"; 
+          foreach($aux as $c) //Recorre cada tupla de curso
           {
-            $aux[$course_counter] = array();
-            $aux[$course_counter]['id'] = $g['cursos_id'];
-            $aux[$course_counter]['nombre'] = $g['nombre'];
-            $aux[$course_counter]['sigla'] = $g['sigla'];  
-            $course_counter = $course_counter + 1;
-          }
-                                    
+            //Dado que la primer opcion ya tiene un valor por default, los campos deben modifcar el valor proximo a i   
+            $c2[$i+1] = $c['sigla']; //Almacena el codigo de curso
+            $nombre[$i+1] = $c['nombre']; //Almacena el nombre del curso
             $i = $i + 1;
-        }
-
-        //Poner esta etiqueta en el primer campo es obligatorio, para asi obligar al usuario a seleccionar un grupo y asi se pueda
-        //activar el evento onChange del select de grupos
-
-        $i = 0;
-        //Esta parte se encarga de controlar los codigos y nombres de cursos
-        //Llama a la función encargada de traerse el codigo y nombre de cada curso en el sistema
-            
-            
-        $c2[0] = "Seleccione un Curso"; 
-        foreach($aux as $c) //Recorre cada tupla de curso
-        {
-          //Dado que la primer opcion ya tiene un valor por default, los campos deben modifcar el valor proximo a i   
-          $c2[$i+1] = $c['sigla']; //Almacena el codigo de curso
-          $nombre[$i+1] = $c['nombre']; //Almacena el nombre del curso
-          $i = $i + 1;
-                
-        }
+                  
+          }
+          $anygroupsleft = true; 
+      } else {
+          $anygroupsleft = false; //En caso de que el estudiante haya pedido asistencia en todos los grupos, se muestra un mensaje de que ya no hay más grupos disponibles
       }
 
-        $this->set(compact('solicitude', 'c2', 'class', 'course', 'nombre', 'code', 'auto', 'roundNumber', 'nombreEstudiante', 'primerApellidoEstudiante', 'segundoApellidoEstudiante', 'correoEstudiante', 'telefonoEstudiante', 'cedulaEstudiante', 'idEstudiante', 'username'));
+      $this->set(compact('solicitude', 'c2', 'class', 'course', 'nombre', 'code', 'auto', 'roundNumber', 'nombreEstudiante', 'primerApellidoEstudiante', 'segundoApellidoEstudiante', 'correoEstudiante', 'telefonoEstudiante', 'cedulaEstudiante', 'idEstudiante', 'username', 'anygroupsleft'));
     }
 
     /**
