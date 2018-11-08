@@ -371,7 +371,7 @@
         //alert(a6.options[0].text); //options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
-            var x = a4.options[c].text;
+            var x = a6.options[c].text;
             //alert(x);
             var y = x + "-no";
             var z = x + "-sí";
