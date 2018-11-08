@@ -14,6 +14,7 @@
  */
 
 $cakeDescription = 'CakePHP: the rapid development php framework';
+use Cake\Chronos\Date;
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       </div>
 
       <!-- Espacio para el nombre del proyecto. Además se definen columnas-->
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Sistema de Asistencias ECCI</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost/p1/main">Sistema de Asistencias ECCI</a>
 
       <div class = "navbar-nav px-1">
         <?= $this->html->image('ecciLogo.png',['alt' => 'CakePHP', 'width'=>"250", 'height' => '75']);?>
@@ -89,27 +90,80 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
           <div class="sidebar-sticky pt-5">
             <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
         <?php $rondaActual = $this->Ronda->getFila()?>
-        <p style = "color:red"><?=$rondaActual[0]?><br><?=$rondaActual[1]?><br><?=$rondaActual[2]?></p>
+        <?php $today = Date::today()?>
+        <?php $inic = new Date($rondaActual[1])?>
+        <?php $fin = new Date($rondaActual[2])?>
+        <?php $est = $today->between($inic, $fin) ? 'Habilitada' : 'Deshabilitada'?>
+        <p style = "color:red"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
         </div>
+
+        <br>
+
+        <?php $rol = $this->Seguridad->getRol();
+         $permisoContador = $this->Seguridad->getPermiso(23);
+        if ($permisoContador == 1) {
+          echo '<div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">';
+          $contadorActual = $this->Contador->getContador();
+          echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
+          echo '</div>';
+        }
+        ?>
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <?= $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>                            
-              <li class="nav-item">
-                <?= $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']) ?>
-              </li> 
-              <li class="nav-item">
-                <?= $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              <li class="nav-item">
-                <?= $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>
-              <li class="nav-item">
-                <?= $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>  
-              <li class="nav-item">
-                <?= $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ?>
-              </li>       
+            <?php
+            if ($rol == 1){
+             echo '<li class="nav-item" >';
+             echo $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ;
+             echo "</li>"; 
+            }
+
+            ?>  
+            <?php $permisoUsuario = $this->Seguridad->getPermiso(17); 
+            if (1 == $permisoUsuario){                          
+             echo '<li class="nav-item">';
+             echo $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']);
+             echo '</li>'; 
+             }
+              
+             $permisoCurso = $this->Seguridad->getPermiso(1); 
+             if (1 == $permisoCurso){
+              echo '<li class="nav-item">';
+              echo $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ;
+              echo '</li>';
+              
+             }
+             
+             $permisoRequisito = $this->Seguridad->getPermiso(5); 
+             if (1 == $permisoRequisito){
+              echo '<li class="nav-item">';
+              echo $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ;
+              echo '</li>';
+
+             }
+             
+
+             $permisoRonda = $this->Seguridad->getPermiso(9);
+             if (1 == $permisoRonda){
+              echo '<li class="nav-item">';
+              echo $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']);
+              echo '</li>'; 
+             }
+            
+
+             $permisoSolicitud = $this->Seguridad->getPermiso(13);
+             if (1 == $permisoSolicitud){
+              echo  '<li class="nav-item">';
+              echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
+              echo '</li>';
+             }
+              
+
+             if ( 1 == $permisoContador){
+              echo  '<li class="nav-item">';
+              echo $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ;
+              echo '</li>';  
+             }     
+             ?>      
+
             </ul>
 
           </div>

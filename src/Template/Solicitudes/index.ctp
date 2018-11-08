@@ -9,19 +9,18 @@
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Estudiante' ?></th>
                 <th scope="col"><?= 'Estado' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
             
-            <?php foreach ($todo as $solicitude): ?>
+            <?php foreach ($todo as $solicitude): //datos para el index?>
             <tr>
                 <td><?= h($solicitude[0]) ?></td>
                 <td><?= h($solicitude[1]) ?></td>
@@ -31,15 +30,26 @@
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
                 <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+
+                <?php if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
+                echo $this->Html->link(__('<span class="typcn typcn-social-instagram-circular"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);}
+                //debug($todo);
+                //die();
+                ?>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;'])?>
                 </td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </tbody> 
+    </table>    
     <br>
     <br>
-    
+    <?php //Agrega el boton de nueva solicitud solo al index de estudiante
+      $permisoAdd = $this->Seguridad->getPermiso(15);
+      if($estado && $permisoAdd)
+      echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
+     ?>
 </div>
 <script type="text/javascript">
     $(document).ready( function () {
