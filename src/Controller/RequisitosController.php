@@ -3,6 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+//Estos dos sirven para las consultas
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
+
 /**
  * Requisitos Controller
  *
@@ -20,6 +24,35 @@ class RequisitosController extends AppController
      */
     public function index()
     {
+        //Verifica por permisos y login
+        $carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne != null){
+           $connect = ConnectionManager::get('default');
+           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+          
+           $consulta = "select pos.estado
+                       from posee as pos join permisos as per on pos.permisos_id =  per.id
+                        where per.id =5 and roles_id = ".$rol[0][0].";";
+                        //5 = Consultar Requisitos
+           $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{//No hizo login
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra la seguridad
+
+        /*Saca la cantidad de tuplas de la tabla Usuarios*/
+        $cantidad = $this->Requisitos->getCountRequisitos();
+
+        /*Esto es por que la función paginate tiene un default de límite de 20 records y no permite ver más en la tabla*/
+        $this->paginate['maxLimit'] = $cantidad[0];
+        $this->paginate['limit']    = $cantidad[0];
+
         $requisitos = $this->paginate($this->Requisitos);
 
         $this->set(compact('requisitos'));
@@ -34,6 +67,27 @@ class RequisitosController extends AppController
      */
     public function view($id = null)
     {
+        //Verifica por permisos y login
+        $carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne != null){
+           $connect = ConnectionManager::get('default');
+           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+          
+           $consulta = "select pos.estado
+                       from posee as pos join permisos as per on pos.permisos_id =  per.id
+                        where per.id =5 and roles_id = ".$rol[0][0].";";
+                        //5 = Consultar Requisitos
+           $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{//No hizo login
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra la seguridad
         $requisito = $this->Requisitos->get($id, [
             'contain' => []
         ]);
@@ -48,14 +102,46 @@ class RequisitosController extends AppController
      */
     public function add()
     {
+        //Verifica por permisos y login
+        $carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne != null){
+           $connect = ConnectionManager::get('default');
+           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+          
+           $consulta = "select pos.estado
+                       from posee as pos join permisos as per on pos.permisos_id =  per.id
+                        where per.id = 7 and roles_id = ".$rol[0][0].";";
+                        //7 = Agregar Requisitos
+           $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{//No hizo login
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra la seguridad
+
         $requisito = $this->Requisitos->newEntity();
         if ($this->request->is('post')) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            
             if ($requisito->tipo == 0) {
                 $requisito->tipo = 'Obligatorio';
             } else {
-                $requisito->tipo = 'Obligatorio inopia';
+                $requisito->tipo = 'Obligatorio Inopia';
             }
+
+            if ($requisito->categoria == 0) {
+                $requisito->categoria = 'Horas Asistente';
+            } else if ($requisito->categoria == 1){
+                $requisito->categoria = 'Horas Estudiante';
+            } else {
+                $requisito->categoria = 'General';
+            }
+
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido agregado.'));
 
@@ -75,16 +161,48 @@ class RequisitosController extends AppController
      */
     public function edit($id = null)
     {
+        //Verifica por permisos y login
+        $carne = $this->getRequest()->getSession()->read('id'); 
+        if($carne != null){
+           $connect = ConnectionManager::get('default');
+           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
+           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+          
+           $consulta = "select pos.estado
+                       from posee as pos join permisos as per on pos.permisos_id =  per.id
+                        where per.id = 8 and roles_id = ".$rol[0][0].";";
+                        //8 = Editar Requisitos
+           $tupla =  $connect->execute($consulta)->fetchAll();      
+
+            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
+               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{//No hizo login
+            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        //Cierra la seguridad
+
         $requisito = $this->Requisitos->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            
             if ($requisito->tipo == 0) {
                 $requisito->tipo = 'Obligatorio';
             } else {
-                $requisito->tipo = 'Obligatorio inopia';
+                $requisito->tipo = 'Obligatorio Inopia';
             }
+            
+            if ($requisito->categoria == 0) {
+                $requisito->categoria = 'Horas Asistente';
+            } else if ($requisito->categoria == 1){
+                $requisito->categoria = 'Horas Estudiante';
+            } else {
+                $requisito->categoria = 'General';
+            }
+
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido modificado.'));
 

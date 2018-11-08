@@ -18,20 +18,27 @@ class UsuarioHelper extends Helper
      */
     protected $_defaultConfig = [];
 
+    //Devuelve el id del usuario según el carné
     public function getUser($carne){
     	$fila = (new UsuariosTable)->getUser($carne);
     	return [$fila[0]];
     }
 
+    // Devuelva el rol del usuario según el carné
     public function getRol($carne){
         $fila = (new UsuariosTable)->getRol($carne);
         return [$fila[0]];
     }
 
-    // Devuelva el rol del usuario según el carné
+    //Devuelve el rol asociado a un usuario
     public function getTipoCedula($carne){
         $fila = (new UsuariosTable)->getTipoCedula($carne);
         return [$fila[0]];
+    }
+
+    public function seleccionarProfesoresCorreos(){
+        $profesor = (new GruposTable)->seleccionarProfesoresCorreos();
+        return $profesor;
     }
 
 }

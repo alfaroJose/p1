@@ -12,7 +12,11 @@
                 <th scope="col"><?= 'Número' ?></th>
                 <th scope="col"><?= 'Fecha inicial' ?></th>
                 <th scope="col"><?= 'Fecha final' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <?php 
+                $edit = $this->Seguridad->getPermiso(12);
+                if ( 1 == $edit)
+                    echo '<th scope="col" class="actions">Actions</th>';
+                ?>
             </tr>
         </thead>
         <tbody>
@@ -21,9 +25,14 @@
                 <td><?= $this->Number->format($ronda->numero) ?></td>
                 <td><?= h($ronda->fecha_inicial) ?></td>
                 <td><?= h($ronda->fecha_final) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                </td>
+                <?php
+                if ( 1 == $edit){
+                    echo '<td class="actions">';
+                    echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->id],['escape'=>false,'style'=>'font-size:22px;']);
+                    echo '</td>';
+                }
+                ?>
+               
             </tr>
             <?php endforeach; ?>
         </tbody>

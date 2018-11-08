@@ -25,11 +25,23 @@
 
            //Se guarda el tipo de identificación que tiene asignado el usuario para mostrarlo como valor default
             $tipoCedulaActual = $this->Usuario->getTipoCedula($usuario->nombre_usuario);
+            $tipo_id;
+
+            /*Al ser un dropdown se necesita convertir las opciones a números*/
+            if($tipoCedulaActual[0] == 'Cédula Nacional'){ //Es administrador
+                $tipo_id = 1;
+            } else if ($tipoCedulaActual[0] == 'Cédula Extranjera'){
+                $tipo_id = 2;
+
+            } else if ($tipoCedulaActual[0] == 'DIMEX'){
+                $tipo_id = 3;
+
+            } else if ($tipoCedulaActual[0] == 'Pasaporte'){
+                $tipo_id = 4;
+
+            }
            
-            echo $this->Form->control('tipo_identificacion', ['options' =>["1" => 'Cédula Nacional', "2" => 'Cédula Extranjera', "3" => 'DIMEX', "4" => 'Pasaporte'], 'default'=>$tipoCedulaActual[0], 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
-            
-            //debug($tipoCedulaActual[0]);
-            //die();
+            echo $this->Form->control('tipo_identificacion', ['options' =>["1" => 'Cédula Nacional', "2" => 'Cédula Extranjera', "3" => 'DIMEX', "4" => 'Pasaporte'], 'value'=>$tipo_id, 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
             echo $this->Form->control('identificacion', ['pattern'=>"[0-9A-Za-z]{1,15}", 'label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
@@ -57,6 +69,6 @@
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
-    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
+    <?= $this->Html->link(__('Regresar'),['controller'=>'Main', 'action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>

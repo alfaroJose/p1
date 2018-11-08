@@ -8,8 +8,8 @@
 <div class="grupos form large-9 medium-8 columns content">
     <?= $this->Form->create($grupo) ?>
     <fieldset>
-        <legend><?= __('Edit Grupo') ?></legend>
-        <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
+        <legend><?= __('Editar Grupo') ?></legend>
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
         //echo $this->Form->select( 'sigla', ['options' => $cursos]);
         //foreach ($todo as $grupo)
@@ -23,14 +23,15 @@
             //echo $this->Form->select( 'sigla', $correo,['empty' =>true]);
             echo ('</div><br>');
 
-            echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $cursos]);
-            echo $this->Form->control('Profesor', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $correos, 'default'=>$defaultSelect]);
+
+            echo $this->Form->control('Profesor', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $correos, 'default'=>$defaultSelectProfesor]);
             //echo $this->Form->control('usuarios_id', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text' ]);
             //echo $this->Form->control('sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla'],'type' => 'text','readonly' ], ['options' => $cursos]);
-            //echo $this->Form->control('usuarios_id', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text','readonly' ]);
-            echo $this->Form->control('numero', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
-            echo $this->Form->control('semestre', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Semestre'],'type' => 'text' ]);
-            echo $this->Form->control('año', ['pattern'=>"[0-9]{4,4}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Año'],'type' => 'text' ]);
+            //echo $this->Form->control('usuarios_id', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Profesor'],'type' => 'text','readonly' ]);d
+            echo $this->Form->control('numero', ['pattern'=>"[0-9]{1,2}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
+            //echo $this->Form->control('semestre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Semestre'],'options'=> $opcionesSemestre]);
+            echo $this->Form->control('Semestre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $opcionesSemestre, 'default'=>$defaultSelectSemestre]);
+            echo $this->Form->control('año', ['pattern'=>"[0-9]{4}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Año'],'type' => 'text' ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>

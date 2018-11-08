@@ -46,10 +46,19 @@ class UsuariosController extends AppController
         }
         //Cierra la seguridad
 
+        /*Saca la cantidad de tuplas de la tabla Usuarios*/
+        $cantidad = $this->Usuarios->getCountUsers();
+
         $this->paginate = [
             'contain' => ['Roles']
         ];
+        /*Esto es por que la función paginate tiene un default de límite de records*/
+        $this->paginate['maxLimit'] = $cantidad[0];
+        $this->paginate['limit']    = $cantidad[0];
+
         $usuarios = $this->paginate($this->Usuarios);
+        //debug($usuarios);
+        //die();
 
         $this->set(compact('usuarios'));
     }
@@ -163,7 +172,7 @@ class UsuariosController extends AppController
     /*Función para agregar un usuario cuando la vista pertenece al estudiante*/
     public function addEstudiante()
     {
-
+        $this->layout = "inicio";
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
@@ -182,7 +191,7 @@ class UsuariosController extends AppController
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller'=>'Main', 'action'=>'index']);
             }
             $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
         }
@@ -193,6 +202,7 @@ class UsuariosController extends AppController
     /*Función para agregar un usuario cuando la vista pertenece al profesor*/
     public function addProfesor()
     {
+        $this->layout = 'inicio';
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
             $usuario = $this->Usuarios->patchEntity($usuario, $this->request->getData());           
@@ -211,7 +221,7 @@ class UsuariosController extends AppController
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido agregado.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller'=>'Main', 'action'=>'index']);
             }
             $this->Flash->error(__('El usuario no se ha podido agregar. Por favor intente de nuevo.'));
         }
@@ -284,7 +294,7 @@ class UsuariosController extends AppController
             if ($this->Usuarios->save($usuario)) {
                 $this->Flash->success(__('El usuario ha sido modificado.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'edit', $usuario->id]);
             }
             $this->Flash->error(__('El usuario no se ha podido modificar. Por favor intente de nuevo.'));
         }
@@ -303,6 +313,7 @@ class UsuariosController extends AppController
     {
         $this->request->allowMethod(['post', 'get']);
         $usuario = $this->Usuarios->get($id);
+
         if ($this->Usuarios->delete($usuario)) {
             $this->Flash->success(__('El usuario ha sido eliminado.'));
         } else {
