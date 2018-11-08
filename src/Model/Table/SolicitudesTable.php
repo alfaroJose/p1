@@ -73,9 +73,6 @@ class SolicitudesTable extends Table
             ->greaterThanOrEqual('promedio', 0, 'El valor mínimo del promedio ponderado es 0');
 
         $validator
-            ->allowEmpty('cantidad_horas');
-
-        $validator
             ->scalar('estado')
             ->maxLength('estado', 30)
             ->requirePresence('estado', 'create')
@@ -96,9 +93,9 @@ class SolicitudesTable extends Table
             ->notEmpty('fecha');
 
         $validator
-            ->scalar('justificación')
-            ->maxLength('justificación', 1000)
-            ->allowEmpty('justificación');
+            ->scalar('justificacion')
+            ->maxLength('justificacion', 1000)
+            ->allowEmpty('justificacion');
 
         $validator
             ->requirePresence('ronda', 'create')
@@ -161,8 +158,8 @@ class SolicitudesTable extends Table
     /*obtiene el id de usuario actualmente logueado*/
         public function getIDUsuario($carne)
     {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll();
         return $result;
     }
@@ -283,4 +280,44 @@ class SolicitudesTable extends Table
         $fila = $connect->execute("select roles_id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $fila[0];
     } 
+
+    public function getSolicitudCompleta($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select estudiante.nombre as 'estudiante_nombre', estudiante.primer_apellido as 'estudiante_primer_apellido',
+        estudiante.segundo_apellido as 'estudiante_segundo_apellido', estudiante.identificacion as 'estudiante_identificacion',
+        estudiante.tipo_identificacion as 'estudiante_tipo_identificacion', estudiante.nombre_usuario as 'estudiante_carne',
+        estudiante.telefono as 'estudiante_telefono', estudiante.correo as 'estudiante_correo',
+        CONCAT(profesor.nombre, ' ', profesor.primer_apellido, ' ', profesor.segundo_apellido) AS 'profesor_nombre',
+        g.numero as 'grupo_numero', c.sigla as 'curso_sigla', c.nombre as 'curso_nombre',
+        s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
+        s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
+        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
+        s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
+        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas' 
+        from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c 
+        where profesor.id = g.usuarios_id 
+        and s.usuarios_id = estudiante.id 
+        and g.id = s.grupos_id 
+        and c.id = g.cursos_id 
+        and s.id = '".$id."'")->fetchAll('assoc');
+        return $result;
+    }
+
+    public function getRequisitosSolicitud($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo', r.categoria as 'requisito_categoria', t.condicion as 'tiene_condicion'
+        from requisitos r, tiene t
+        where r.id = t.requisitos_id
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
+        return $result;
+    }
+
+    public function setCondicionTiene($solicitudes_id, $requisitos_id, $condicion)
+    {
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call asignar_condicion_tiene ($solicitudes_id, $requisitos_id, '$condicion')");
+    }
+
 }
