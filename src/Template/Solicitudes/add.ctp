@@ -34,7 +34,9 @@
 
             echo ("Información sobre otras asistencias:<br>
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
-            echo $this->Form->radio('asistencia_externa', ['No', 'Sí']);
+            echo $this->Form->radio('asistencia_externa', [
+                                                            ['value'=>'0', 'text'=>'No', 'style' => 'margin-left:30px'],
+                                                            ['value'=> '1', 'text'=>'Sí', 'style'=>'margin-left:30px']]);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
