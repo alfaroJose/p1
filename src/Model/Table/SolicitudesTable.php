@@ -205,8 +205,8 @@ class SolicitudesTable extends Table
         CONCAT(profesor.nombre, ' ', profesor.primer_apellido, ' ', profesor.segundo_apellido) AS 'profesor_nombre',
         g.numero as 'grupo_numero', c.sigla as 'curso_sigla', c.nombre as 'curso_nombre',
         s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
-        s.cantidad_horas as 'solicitud_cantidad_horas', s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
-        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificación as 'solicitud_justificación',
+        s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
+        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
         s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
         s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas' 
         from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c 
@@ -218,36 +218,20 @@ class SolicitudesTable extends Table
         return $result;
     }
 
-    public function getRequisitosEstudiante($id)
+    public function getRequisitosSolicitud($id)
     {
         $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo', r.categoria as 'requisito_categoria', t.condicion as 'tiene_condicion'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
-        and r.categoria = 'Horas Estudiante'
         and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 
-    public function getRequisitosAsistente($id)
+    public function setCondicionTiene($solicitudes_id, $requisitos_id, $condicion)
     {
-        $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
-        from requisitos r, tiene t
-        where r.id = t.requisitos_id
-        and r.categoria = 'Horas Asistente'
-        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
-        return $result;
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call asignar_condicion_tiene ($solicitudes_id, $requisitos_id, '$condicion')");
     }
 
-    public function getRequisitosGeneral($id)
-    {
-        $connect = ConnectionManager::get('default');
-        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo'
-        from requisitos r, tiene t
-        where r.id = t.requisitos_id
-        and r.categoria = 'General'
-        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
-        return $result;
-    }
 }

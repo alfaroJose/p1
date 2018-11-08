@@ -13,7 +13,7 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-        //debug($datosRequisitosEstudiante);
+        //debug($datosSolicitud);
         //die();
             echo $this->Form->control('estudiante_primer_apellido', ['label'=>['text'=>'Primer Apellido'], 'readonly', 'value'=> $datosSolicitud[0]['estudiante_primer_apellido'] ]);
             echo $this->Form->control('estudiante_segundo_apellido', ['label'=>['text'=>'Segundo Apellido'], 'readonly', 'value'=> $datosSolicitud[0]['estudiante_segundo_apellido'] ]);
@@ -78,20 +78,24 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosAsistente as $asistente): ?>
+                <?php foreach ($datosRequisitosSolicitud as $asistente): ?>
                 <tr>
+                <?php if($asistente['requisito_categoria'] == 'Horas Asistente'):?>
                     <td><?= h($asistente['requisito_nombre']) ?></td>
                     <td><?= h($asistente['requisito_tipo']) ?></td>
                     <td class="actions">
                     <?php
+                    
                         if ($asistente['requisito_tipo'] == 'Obligatorio') {
                             echo $this->Form->radio($asistente['requisito_id'], ['Sí ', 'No ']);
                         } else {
                             echo $this->Form->radio($asistente['requisito_id'], ['Sí ', 'No ', 'Inopia ']);
                         }
+                    
                     ?>    
                     </td>
                 </tr>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
 
@@ -101,8 +105,9 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosEstudiante as $estudiante): ?>
+                <?php foreach ($datosRequisitosSolicitud as $estudiante): ?>
                 <tr>
+                <?php if($estudiante['requisito_categoria'] == 'Horas Estudiante'):?>
                     <td><?= h($estudiante['requisito_nombre']) ?></td>
                     <td><?= h($estudiante['requisito_tipo']) ?></td>
                     <td class="actions">
@@ -115,6 +120,7 @@
                     ?>
                     </td>
                 </tr>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
 
@@ -124,8 +130,9 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($datosRequisitosGeneral as $general): ?>
+                <?php foreach ($datosRequisitosSolicitud as $general): ?>
                 <tr>
+                <?php if($general['requisito_categoria'] == 'General'):?>
                     <td><?= h($general['requisito_nombre']) ?></td>
                     <td><?= h($general['requisito_tipo']) ?></td>
                     <td class="actions">
@@ -138,6 +145,7 @@
                     ?>
                     </td>
                 </tr>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
@@ -147,10 +155,9 @@
         <h5> Estado </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('estado', ['options' => ['Aceptada', 'Rechazada', 'Elegible', 'Anulada'] ]);
+            echo $this->Form->control('estado', ['options' => ['Elegible', 'Rechazada - Profesor', 'Aceptada - Profesor', 'Aceptada - Profesor (Inopia)', 'Anulada'] ]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
-            echo $this->Form->control('justificación', ['label' => 'Justificación', 'type'=> 'textarea']);
-            echo $this->Form->control('cantidad_horas', ['label' => 'Cantidad de horas asignadas', 'pattern'=>"[0-9]"]);
+            echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
         ?>
 
     </fieldset>
