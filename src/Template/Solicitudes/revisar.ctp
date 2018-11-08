@@ -136,13 +136,12 @@
                     <td><?= h($general['requisito_nombre']) ?></td>
                     <td><?= h($general['requisito_tipo']) ?></td>
                     <td class="actions">
-                    <?php
-                        if ($general['requisito_tipo'] == 'Obligatorio') {
-                            echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ']);
-                        } else {
-                            echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ', 'Inopia ']);
-                        }
-                    ?>
+                    <?php if ($general['requisito_tipo'] == 'Obligatorio'): ?>
+                            <!-- echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ']); -->
+                    <?php else: ?>
+                            <!-- echo $this->Form->radio($general['requisito_id'], ['Sí ', 'No ', 'Inopia ']); -->
+                        
+                    <?php endif ?>
                     </td>
                 </tr>
                 <?php endif; ?>
