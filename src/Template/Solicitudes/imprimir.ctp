@@ -6,18 +6,24 @@
 ?>
 <div class="imprimir">
 <head> 
-<meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet" href="main.css"/> 
+<meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet"/> 
 
 <script>  
   try{ 
     theViewer.defaultViewer = new theViewer.Viewer({});
   }catch(e){} 
 </script> 
-<!-- <title></title> -->
-</head>
 <?= $this->Html->image('logoUniversidadDeCostaRica.png');?>  <?= $this->Html->image('logoECCI.jpg');?>  
+<title> Solicitud de  asistencia</title>
+</head>
+
 <body>
-<p>Solicitud de concursos para asistencias </p>
+  <br>
+  <br>
+  <br>
+<h1>Solicitud de  asistencias </h1>
+<span style="text-decoration: underline;"><?= h($solicitude->usuario->primer_apellido) ?></span><br>
+<span>Primer Apellido </span>
         <!-- <div id="sidebar"> 
             <div id="outline">
             </div>
