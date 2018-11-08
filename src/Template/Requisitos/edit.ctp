@@ -1,11 +1,11 @@
 <?php
-$tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
+$tipoRequisitos = array("Obligatorio", "Obligatorio Inopia");
+$categoriaRequisitos = array("Horas Asistente", "Horas Estudiante", "General");
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Requisito $requisito
  */
 ?>
-
 <div class="requisitos form large-9 medium-8 columns content">
     <?= $this->Form->create($requisito) ?>
     <fieldset>
@@ -13,6 +13,7 @@ $tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
         <?php
             echo $this->Form->control('nombre', ['label' => 'Descripción', 'type'=> 'textarea']);
             echo $this->Form->control('tipo', ['options' => $tipoRequisitos]);
+            echo $this->Form->control('categoria', ['options' => $categoriaRequisitos]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right'])?>

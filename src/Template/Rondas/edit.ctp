@@ -11,8 +11,8 @@
         <?php
             $numeroRonda = array('1' => '1', '2' => '2', '3' => '3');
             echo $this->Form->control('numero', ['templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'options' => $numeroRonda,'type'=> 'select']);
-            echo $this->Form->control('fecha_inicial',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly', 'value'=> '']);
-            echo $this->Form->control('fecha_final',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly', 'value'=> '']);
+            echo $this->Form->control('fecha_inicial',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly']);
+            echo $this->Form->control('fecha_final',['autocomplete' => 'off','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'],'type'=> 'text', 'readonly' => 'readonly']);
         ?>
     </fieldset>
     <br>

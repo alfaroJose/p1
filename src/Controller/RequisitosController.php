@@ -46,6 +46,13 @@ class RequisitosController extends AppController
         }
         //Cierra la seguridad
 
+        /*Saca la cantidad de tuplas de la tabla Usuarios*/
+        $cantidad = $this->Requisitos->getCountRequisitos();
+
+        /*Esto es por que la función paginate tiene un default de límite de 20 records y no permite ver más en la tabla*/
+        $this->paginate['maxLimit'] = $cantidad[0];
+        $this->paginate['limit']    = $cantidad[0];
+
         $requisitos = $this->paginate($this->Requisitos);
 
         $this->set(compact('requisitos'));
@@ -120,11 +127,21 @@ class RequisitosController extends AppController
         $requisito = $this->Requisitos->newEntity();
         if ($this->request->is('post')) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            
             if ($requisito->tipo == 0) {
                 $requisito->tipo = 'Obligatorio';
             } else {
-                $requisito->tipo = 'Obligatorio inopia';
+                $requisito->tipo = 'Obligatorio Inopia';
             }
+
+            if ($requisito->categoria == 0) {
+                $requisito->categoria = 'Horas Asistente';
+            } else if ($requisito->categoria == 1){
+                $requisito->categoria = 'Horas Estudiante';
+            } else {
+                $requisito->categoria = 'General';
+            }
+
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido agregado.'));
 
@@ -171,11 +188,21 @@ class RequisitosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            
             if ($requisito->tipo == 0) {
                 $requisito->tipo = 'Obligatorio';
             } else {
-                $requisito->tipo = 'Obligatorio inopia';
+                $requisito->tipo = 'Obligatorio Inopia';
             }
+            
+            if ($requisito->categoria == 0) {
+                $requisito->categoria = 'Horas Asistente';
+            } else if ($requisito->categoria == 1){
+                $requisito->categoria = 'Horas Estudiante';
+            } else {
+                $requisito->categoria = 'General';
+            }
+
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido modificado.'));
 

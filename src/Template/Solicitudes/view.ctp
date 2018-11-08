@@ -4,49 +4,66 @@
  * @var \App\Model\Entity\Solicitude $solicitude
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Solicitude'), ['action' => 'edit', $solicitude->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Solicitude'), ['action' => 'delete', $solicitude->id], ['confirm' => __('Are you sure you want to delete # {0}?', $solicitude->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Solicitudes'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Solicitude'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Usuarios'), ['controller' => 'Usuarios', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Usuario'), ['controller' => 'Usuarios', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Grupos'), ['controller' => 'Grupos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Grupo'), ['controller' => 'Grupos', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="solicitudes view large-9 medium-8 columns content">
-    <h3><?= h($solicitude->id) ?></h3>
-    <table class="vertical-table">
+<style> 
+table th, td{
+    border: 1px solid #ddd;
+    text-align: left;
+    padding :10px;
+}
+tr:nth-child(even) {background-color:  #eaecee };
+</style>
+<div class="row">
+
+    <div class="col-md-6">
+    <br>
+    <h5><?= 'Datos Generales' //para la vista?></h5>
+    <table class>
+
+        <tr>
+            <th scope="row"><?= __('Estudiante') ?></th>
+            <td><?= h($todo[0][4]) ?></td>
+        </tr>
+
+        <tr>
+            <th scope="row"><?= __('Promedio') ?></th>
+            <td><?= $this->Number->format($solicitude->promedio) ?></td>
+        </tr>
+
         <tr>
             <th scope="row"><?= __('Carrera') ?></th>
             <td><?= h($solicitude->carrera) ?></td>
         </tr>
+
         <tr>
-            <th scope="row"><?= __('Estado') ?></th>
-            <td><?= h($solicitude->estado) ?></td>
+            <th scope="row"><?= __('Profesor') ?></th>
+            <td><?= h($todo[0][3]) ?></td>
         </tr>
+
         <tr>
-            <th scope="row"><?= __('Asistencia Externa') ?></th>
-            <td><?= h($solicitude->asistencia_externa) ?></td>
+            <th scope="row"><?= __('Sigla') ?></th>
+            <td><?= h($todo[0][0]) ?></td>
         </tr>
+
         <tr>
-            <th scope="row"><?= __('Tipo Horas Externa') ?></th>
-            <td><?= h($solicitude->tipo_horas_externa) ?></td>
+            <th scope="row"><?= __('Curso') ?></th>
+            <td><?= h($todo[0][1]) ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Justificación') ?></th>
-            <td><?= h($solicitude->justificación) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Usuario') ?></th>
-            <td><?= $solicitude->has('usuario') ? $this->Html->link($solicitude->usuario->id, ['controller' => 'Usuarios', 'action' => 'view', $solicitude->usuario->id]) : '' ?></td>
-        </tr>
+
         <tr>
             <th scope="row"><?= __('Grupo') ?></th>
-            <td><?= $solicitude->has('grupo') ? $this->Html->link($solicitude->grupo->id, ['controller' => 'Grupos', 'action' => 'view', $solicitude->grupo->id]) : '' ?></td>
+            <td><?= h($todo[0][2]) ?></td>
+        </tr>
+        </tr>
+    </table>    
+</div>
+    <br>
+    <div class="col-md-6">
+    <br> 
+    <h5><?= "Datos de la solicitud" ?></h5>
+    <table class>    
+    <tr>
+            <th scope="row"><?= __('Estado') ?></th>
+            <td><?= h($solicitude->estado) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Horas Asistente') ?></th>
@@ -57,16 +74,16 @@
             <td><?= h($solicitude->horas_estudiante) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($solicitude->id) ?></td>
+            <th scope="row"><?= __('Asistencia Externa') ?></th>
+            <td><?= h($solicitude->asistencia_externa) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Promedio') ?></th>
-            <td><?= $this->Number->format($solicitude->promedio) ?></td>
+            <th scope="row"><?= __('Horas Asistente Externa') ?></th>
+            <td><?= h($solicitude->horas_asistente_externa) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cantidad Horas') ?></th>
-            <td><?= $this->Number->format($solicitude->cantidad_horas) ?></td>
+            <th scope="row"><?= __('Horas Estudiante Externa') ?></th>
+            <td><?= h($solicitude->horas_estudiante_externa) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Cantidad Horas Externa') ?></th>
@@ -80,5 +97,17 @@
             <th scope="row"><?= __('Fecha') ?></th>
             <td><?= h($solicitude->fecha) ?></td>
         </tr>
+
+        <tr>
+            <th scope="row"><?= __('Justificación') ?></th>
+            <td><?= h($solicitude->justificacion) ?></td>
+        </tr>
+
     </table>
+    <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
