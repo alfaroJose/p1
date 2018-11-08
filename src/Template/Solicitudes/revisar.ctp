@@ -155,7 +155,20 @@
         <h5> Estado </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('estado', ['options' => ['Elegible', 'Rechazada - Profesor', 'Aceptada - Profesor', 'Aceptada - Profesor (Inopia)', 'Anulada'] ]);
+
+        $estadoActual; 
+        if ($solicitude['estado'] == 'Elegible') {
+            $estadoActual = '0';
+        } else if ($solicitude['estado'] == 'Rechazada - Profesor') {
+            $estadoActual = '1';
+        } else if ($solicitude['estado'] == 'Aceptada - Profesor') {
+            $estadoActual = '2';
+        } else if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)'){
+            $estadoActual = '3';
+        } else {
+            $estadoActual = '4';
+        }
+            echo $this->Form->control('estado', ['options' => ['Elegible', 'Rechazada - Profesor', 'Aceptada - Profesor', 'Aceptada - Profesor (Inopia)', 'Anulada'], 'value'=>$estadoActual]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
             echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
         ?>
