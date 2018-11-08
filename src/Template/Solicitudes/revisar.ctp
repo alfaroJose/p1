@@ -141,6 +141,7 @@
             <tbody>
                 <?php 
                 $i = 0;
+                $j = 0;
                 foreach ($datosRequisitosSolicitud as $general): ?>
                 <tr>
                 <?php if($general['requisito_categoria'] == 'General'):?>
@@ -152,7 +153,7 @@
                             $auto[$i] = $general['requisito_id'];
                             $i = $i+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'onclick'=> 'prueba()',);
+                            $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'onclick'=> 'updateGenerales()',);
                             echo $this->Form->radio($general['requisito_id'], $options, $attributes);
 
 
@@ -162,6 +163,8 @@
                             
 
                         } else {
+                            $auto2[$j] = $general['requisito_id'];
+                            $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
                             $attributes = array('legend' => false, 'value' => $general['tiene_condicion'],);
                             echo $this->Form->radio($general['requisito_id'], $options, $attributes);
@@ -197,25 +200,31 @@
             echo $this->Form->control('estado', ['options' => ['Elegible', 'Rechazada - Profesor', 'Aceptada - Profesor', 'Aceptada - Profesor (Inopia)', 'Anulada'], 'value'=>$estadoActual]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
             echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
-
-            //debug($auto);
-            //die();
-
-            /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables entre php y javascript.*/
-            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $auto]); //lista de id de los requisitos obligatorios generales
-
         ?>
 
     </fieldset>
     <br>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
+
+    <?php
+        //debug($auto);
+        //die();
+
+        /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables entre php y javascript.*/
+        echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $auto, 'style' => 'visibility:hidden']); //lista de id de los requisitos obligatorios generales
+
+        echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $auto2, 'style' => 'visibility:hidden']); //lista de id de los requisitos obligatorios generales
+        //debug($auto2);
+        //die();
+    ?>
+
     <?= $this->Form->end() ?>
 </div>
 
 <script>
 
-    function prueba(){
+    function updateGenerales(){
         //selReq = document.getElementById("7-no");
         //alert(selReq.value);
 
@@ -223,22 +232,111 @@
         var r = a1.options.length;
         //alert(r);
         //alert(a1.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
-
+        var encontrado = false;
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
         {
+            
             var x = a1.options[c].text
             //alert(x);
             var y = x + "-no";
             //alert(y);
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
-            //alert(selReq);
-            if (selReq == true){ //hay que deshabilitar los demás requisitos generales
-
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                //alert(x);
+                //alert(x + selReq);
                 //Sería mejor llamar otra función que se encargue de recorrer los requisitos no obligatorios para deshabilitarlos.
+                blockGenerales(x);
 
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+                var encontrado = true;
+
             }
+            
         }
+        if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
+            unblockGenerales();
+        }
+    }
+
+    function blockGenerales(selected){
+        //alert(selected);
+        a2 = document.getElementById("a2"); //Lista de id de requisitos no obligatorios generales
+        var r = a2.options.length;
+        //alert(r);
+        //alert(a2.options[0].text); //options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a2.options[c].text;
+            //alert(x);
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            //selReq = document.getElementById(x);
+            //alert(selReq);
+            document.getElementById(y).disabled = true;
+            document.getElementById(z).disabled = true;
+            document.getElementById(w).disabled = true;
+
+        }
+
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
+        var s = a1.options.length;
+
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            
+            var x = a1.options[c].text;
+            if(x != selected){ //No bloquear el seleccionado
+                //alert(x);
+                var y = x + "-no";
+                var z = x + "-sí";
+                //selReq = document.getElementById(x);
+                //alert(selReq);
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+            }
+
+        }
+    }
+
+    function unblockGenerales(){
+        //alert(selected);
+        a2 = document.getElementById("a2"); //Lista de id de requisitos no obligatorios generales
+        var r = a2.options.length;
+        //alert(r);
+        //alert(a2.options[0].text); //options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los desbloquea
+        {
+            var x = a2.options[c].text;
+            //alert(x);
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            //selReq = document.getElementById(x);
+            //alert(selReq);
+            document.getElementById(y).disabled = false;
+            document.getElementById(z).disabled = false;
+            document.getElementById(w).disabled = false;
+
+        }
+
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
+        var s = a1.options.length;
+        //alert(a1.options[0].text);
+        //alert(a1.options[1].text);
+
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los desbloquea menos el seleccionado
+        {      
+            var x = a1.options[c].text;     
+            //alert(x);
+            var y = x + "-no";
+            var z = x + "-sí";
+            //selReq = document.getElementById(x);
+            //alert(selReq);
+            document.getElementById(y).disabled = false;
+            document.getElementById(z).disabled = false;
+        }        
     }
 </script>
 
