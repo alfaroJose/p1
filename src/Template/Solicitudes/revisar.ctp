@@ -319,7 +319,7 @@
         echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto5, 'style' => 'visibility:hidden']); //lista de id de los requisitos obligatorios de horas asistente
 
         echo $this->Form->input('a6', ['label' => '', 'id' => 'a6', 'type' => 'select' , 'options' => $auto6, 'style' => 'visibility:hidden']); //lista de id de los requisitos no obligatorios de horas asistente
-        //debug($auto4);
+        //debug($auto6);
         //die();
     ?>
 
@@ -350,7 +350,7 @@
                 //alert(x);
                 //alert(x + selReq);
                 //Sería mejor llamar otra función que se encargue de recorrer los requisitos no obligatorios para deshabilitarlos.
-                blockEstudiantes(x);
+                blockAsistentes(x);
 
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -671,7 +671,9 @@
             //alert(selReq);
             document.getElementById(y).disabled = false;
             document.getElementById(z).disabled = false;
+        
         }        
     }
+    
 </script>
 
