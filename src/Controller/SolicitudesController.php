@@ -73,7 +73,7 @@ class SolicitudesController extends AppController
 
             foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
                 if ($data[$requisitosSolicitud['requisito_id']] == '') {
-                    $data[$requisitosSolicitud['requisito_id']] = 'Sin verificar';
+                    $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
                 }
                 $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
             endforeach;
