@@ -310,7 +310,8 @@ class SolicitudesTable extends Table
         $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo', r.categoria as 'requisito_categoria', t.condicion as 'tiene_condicion'
         from requisitos r, tiene t
         where r.id = t.requisitos_id
-        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
+        and t.solicitudes_id = '".$id."'
+        order by (r.tipo)")->fetchAll('assoc');
         return $result;
     }
 
