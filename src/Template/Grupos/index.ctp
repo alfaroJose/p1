@@ -56,7 +56,7 @@
     <br>
     <?php
     if (1 == $permisoAdd){
-        echo $this->Form->button(__('Agregar curso'),['class'=>'btn btn-info float-right']) ;
+        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso'],['class'=>'btn btn-info float-right']);
         echo $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
     }
     ?>
