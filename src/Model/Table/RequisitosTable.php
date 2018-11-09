@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Requisitos Model
@@ -82,5 +83,11 @@ class RequisitosTable extends Table
         $rules->add($rules->isUnique(['nombre']));
 
         return $rules;
+    }
+
+    public function getCountRequisitos(){
+        $connect = ConnectionManager::get('default');
+        $fila = $connect->execute("select count(*) from Requisitos;")->fetchAll();
+        return $fila[0];
     }
 }

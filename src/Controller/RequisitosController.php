@@ -46,6 +46,13 @@ class RequisitosController extends AppController
         }
         //Cierra la seguridad
 
+        /*Saca la cantidad de tuplas de la tabla Usuarios*/
+        $cantidad = $this->Requisitos->getCountRequisitos();
+
+        /*Esto es por que la función paginate tiene un default de límite de 20 records y no permite ver más en la tabla*/
+        $this->paginate['maxLimit'] = $cantidad[0];
+        $this->paginate['limit']    = $cantidad[0];
+
         $requisitos = $this->paginate($this->Requisitos);
 
         $this->set(compact('requisitos'));
@@ -132,7 +139,7 @@ class RequisitosController extends AppController
             } else if ($requisito->categoria == 1){
                 $requisito->categoria = 'Horas Estudiante';
             } else {
-                $requisito->categoria = 'Ambas';
+                $requisito->categoria = 'General';
             }
 
             if ($this->Requisitos->save($requisito)) {
@@ -193,7 +200,7 @@ class RequisitosController extends AppController
             } else if ($requisito->categoria == 1){
                 $requisito->categoria = 'Horas Estudiante';
             } else {
-                $requisito->categoria = 'Ambas';
+                $requisito->categoria = 'General';
             }
 
             if ($this->Requisitos->save($requisito)) {

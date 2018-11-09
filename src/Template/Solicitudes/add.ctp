@@ -12,18 +12,6 @@
         <h5> Datos del estudiante </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            /*Aquí se pide el nombre de usuario (cané para estudiantes) de la persona logueada*/
-            $username = $this->request->getSession()->read('id');
-
-            /*Aquí se solicita la información del estudiante según el carné de la persona logueada*/
-            /*$datosEstudiante = $this->Solicitude->getStudentInfo($username);
-            $idEstudiante = $datosEstudiante[0];
-            $nombreEstudiante = $datosEstudiante[1];
-            $primerApellidoEstudiante = $datosEstudiante[2];
-            $segundoApellidoEstudiante = $datosEstudiante[3];
-            $correoEstudiante = $datosEstudiante[4];
-            $telefonoEstudiante = $datosEstudiante[5];
-            $cedulaEstudiante = $datosEstudiante[7];*/
 
             echo $this->Form->control('primer_apellido', ['readonly', 'value'=>$primerApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('segundo_apellido', ['readonly', 'value'=>$segundoApellidoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
@@ -34,7 +22,7 @@
             echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
-            //¿Qué tipo de horas desea solicitar? <checkbox></checkbox> <input type="checkbox"> Horas Asistente <input type="checkbox"> Horas Estudiante -->
+            //¿Qué tipo de horas desea solicitar?
             echo ("Solicita:");            
             echo $this->Form->control('horas_asistente', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
             echo $this->Form->control('horas_estudiante', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
@@ -46,41 +34,59 @@
 
             echo ("Información sobre otras asistencias:<br>
                 1. ¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la universidad?<br>");
-            echo $this->Form->radio('asistencia_externa', ['No', 'Sí']);
+            echo $this->Form->radio('asistencia_externa', [
+                                                            ['value'=>'0', 'text'=>'No', 'style' => 'margin-left:30px', 'onclick'=> 'blockOptions()'],
+                                                            ['value'=> '1', 'text'=>'Sí', 'style'=>'margin-left:30px', 'onclick'=> 'unblockOptions()']]);
             
             echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
-            echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);
-           
+            echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);       
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
-            echo $this->Form->hidden('cantidad_horas', ['value'=>0, 'label' =>['text'=> 'Cantidad', 'type'=> 'number', 'min'=>"0"]]); //Se crea la solicitud con cero horas asignadas
-            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Anulada o pendiente? pendiente hasta que se mande a imprimir? estado inicial Anulada
+            echo $this->Form->hidden('estado', ['value'=>'Pendiente', 'readonly']); //Estado inicial es pendiente pendiente hasta que se mande a imprimir? estado inicial Anulada
             echo $this->Form->hidden('ronda', ['value'=>$roundNumber, 'readonly']);
         ?>
         <h5> Curso solicitado </h5>
         <?php    
-            echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
-            echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], /*'options' => $class, */'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
-            echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
-            echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
-            echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);
-            echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
-
+            if ($anygroupsleft){
+                echo $this->Form->control('curso_sigla', ['label' =>['text'=> 'Sigla'], 'options' => $c2, 'onChange' => 'updateClass()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+                echo $this->Form->input('grupo_numero', ['type' => 'select', 'label' =>['text'=> 'Grupo'], 'onChange' => 'save()', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+                echo $this->Form->input('curso_nombre', ['id' => 'nc', 'label' =>['text'=> 'Nombre del curso'], 'readonly', 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+                echo $this->Form->input('grupo_profesor', ['id' => 'prof', 'disabled', 'type' =>'text', 'label' =>['text'=> 'Nombre del docente'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'], 'required'=> true]);
+                echo $this->Form->input('grupos_id', ['label' => '', 'id' => 'grupos-id', 'type' =>'text', 'readonly', 'style' => 'visibility:hidden', 'required'=> true]);
+                echo $this->Form->hidden('usuarios_id', ['readonly', 'value'=>$idEstudiante]); //Usuario id del estudiante, no debería verse
+            } else {
+                ?>
+                <h4> Ya no hay más grupos disponibles para solicitar asistencias </h4>
+            <?php
+            }
         ?>
     </fieldset>
     <br>
-    <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
+    <?php
+        if ($anygroupsleft){
+    ?>
+            <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
+    <?php
+        }
+    ?>
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
 
     <?php
-    /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables
-                entre php y javascript.*/
+        /*Estos campos solamente sirven para almacenar vectores, dado que esta es la única forma eficiente que conozco de compartir variables entre php y javascript.*/
 
-            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class, 'style' => 'visibility:hidden']); //número de grupo            
+        if($anygroupsleft){
+            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'options' => $class, 'style' => 'visibility:hidden']); //número de grupo   
             echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'options' => $code, 'style' => 'visibility:hidden']); //sigla de los cursos
             echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'options' => $nombre, 'style' => 'visibility:hidden']); //nombre de los cursos
             echo $this->Form->input('a4', ['label' => '', 'id' => 'a4', 'type' => 'select' , 'options' => $course, 'style' => 'visibility:hidden']); //id de los cursos 
-            //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos        
+            //echo $this->Form->input('a5', ['label' => '', 'id' => 'a5', 'type' => 'select' , 'options' => $auto]); //id de grupos 
+                            
+        } else {
+            echo $this->Form->input('a1', ['label' => '', 'id' => 'a1', 'type' => 'select' , 'style' => 'visibility:hidden']); //número de grupo 
+            echo $this->Form->input('a2', ['label' => '', 'id' => 'a2', 'type' => 'select' , 'style' => 'visibility:hidden']); //sigla de los cursos
+            echo $this->Form->input('a3', ['label' => '', 'id' => 'a3', 'type' => 'select' , 'style' => 'visibility:hidden']); //nombre de los cursos
+
+        }     
     ?>
     
     <?= $this->Form->end() ?>
@@ -302,6 +308,23 @@
         selID.options.add(tmp,0);
         selID.selectedIndex = s;
 
+    }
+
+    /*Función para bloquear la cantidad de horas externas y opciones de horas asistente o estudiante*/
+    function blockOptions()
+    {
+        document.getElementById('horas-asistente-externa').disabled = true;
+        document.getElementById('horas-estudiante-externa').disabled = true;
+        document.getElementById('cantidad-horas-externa').disabled = true;
+
+    }
+
+    /*Función para desbloquear las opciones de asistencia externa en caso de marcas 'Sí'*/
+    function unblockOptions()
+    {
+        document.getElementById('horas-asistente-externa').disabled = false;
+        document.getElementById('horas-estudiante-externa').disabled = false;
+        document.getElementById('cantidad-horas-externa').disabled = false;
     }
 
 </script>
