@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
-                <th scope="col"><?= 'Nombre' ?></th>
+                <th scope="col"><?= 'Curso' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Semestre' ?></th>
                 <th scope="col"><?= 'Año' ?></th>
@@ -27,6 +27,7 @@
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
+                <?php ///debug($grupo) ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
@@ -55,7 +56,7 @@
     <br>
     <?php
     if (1 == $permisoAdd){
-        echo $this->Form->button(__('Agregar curso'),['class'=>'btn btn-info float-right']) ;
+        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso'],['class'=>'btn btn-info float-right']);
         echo $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
     }
     ?>

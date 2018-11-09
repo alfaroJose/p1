@@ -5,38 +5,51 @@
  */
 ?>
 <div class="solicitudes index large-9 medium-8 columns content">
-    <h3><?= __('Solicitudes') ?></h3>
+    <h3><?= __('Solicitudes de Asistencias') ?></h3>
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Estudiante' ?></th>
                 <th scope="col"><?= 'Estado' ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($solicitudes as $solicitude): ?>
+            
+            <?php foreach ($todo as $solicitude): //datos para el index?>
             <tr>
-                <td><?= h($solicitude->estado) ?></td>
-                
+                <td><?= h($solicitude[0]) ?></td>
+                <td><?= h($solicitude[1]) ?></td>
+                <td><?= h($solicitude[2]) ?></td>
+                <td><?= h($solicitude[3]) ?></td>
+                <td><?= h($solicitude[4]) ?></td>
+                <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
-                <span class="typcn typcn-printer"></span>
-                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $solicitude->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $solicitude->id], ['confirm' => __('Are you sure you want to delete # {0}?', $solicitude->id)]) ?>
+                  
+                <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                <?php 
+                if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
+                   echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                }
+
+                ?>
                 </td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </tbody> 
+    </table>    
     <br>
     <br>
-    
+    <?php //Agrega el boton de nueva solicitud solo al index de estudiante
+      $permisoAdd = $this->Seguridad->getPermiso(15);
+      if($estado && $permisoAdd)
+      echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
+     ?>
 </div>
 <script type="text/javascript">
     $(document).ready( function () {
