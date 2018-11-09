@@ -294,13 +294,12 @@ class SolicitudesTable extends Table
         s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
         s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
         s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
-        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas' 
-        from usuarios estudiante, usuarios profesor, solicitudes s, grupos g, cursos c 
-        where profesor.id = g.usuarios_id 
-        and s.usuarios_id = estudiante.id 
-        and g.id = s.grupos_id 
-        and c.id = g.cursos_id 
-        and s.id = '".$id."'")->fetchAll('assoc');
+        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas'         
+        from solicitudes s join usuarios estudiante on s.usuarios_id = estudiante.id
+		join grupos g on s.grupos_id = g.id
+		join cursos c on g.cursos_id = c.id
+		left outer join usuarios profesor on g.usuarios_id = profesor.id
+        where s.id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
 
