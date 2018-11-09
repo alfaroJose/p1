@@ -655,6 +655,8 @@
             unblockGenerales();
             unblockAsistentes();
             unblockEstudiantes();
+            updateAsistentes();
+            updateEstudiantes();
         }
     }
 
