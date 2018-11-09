@@ -382,8 +382,8 @@ body {font-family: Arial;}
     <br>
 
     <!-- Botones para cancelar los cambios hechos y guardar los cambios -->
-    <?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
-    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>
+    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right mr-3'])?>
 </div>
 <?= $this->Form->end(); ?>
 <!-- Finaliza form -->
