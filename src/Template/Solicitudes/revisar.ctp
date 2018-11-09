@@ -354,13 +354,41 @@
 
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
-
             }
             
         }
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
             unblockAsistentes();
+            unblockGenerales();
+        } else {
+            var chkEstado = checkEstudiante();
+            if (chkEstado == true){
+                blockGenerales();
+            }
         }
+    }
+
+    function checkEstudiante(){
+        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios de horas estudiante
+        var r = a3.options.length;
+        //alert(r);
+        //alert(a3.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        var encontrado = false;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a3.options[c].text
+            //alert(x);
+            var y = x + "-no";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
     }
 
     function blockAsistentes(selected){
@@ -475,7 +503,39 @@
         }
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
             unblockEstudiantes();
+            unblockGenerales();
+        } else {
+            var chkEstado = checkAsistente();
+            if (chkEstado == true){
+                blockGenerales();
+            }
         }
+    }
+
+    function checkAsistente(){
+        //selReq = document.getElementById("5-no");
+        //alert(selReq.value);
+
+        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
+        var r = a5.options.length;
+        //alert(r);
+        //alert(a5.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        var encontrado = false;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a5.options[c].text
+            //alert(x);
+            var y = x + "-no";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
     }
 
     function blockEstudiantes(selected){
@@ -582,6 +642,8 @@
                 //alert(x + selReq);
                 //Sería mejor llamar otra función que se encargue de recorrer los requisitos no obligatorios para deshabilitarlos.
                 blockGenerales(x);
+                blockAsistentes(x);
+                blockEstudiantes(x);
 
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -591,6 +653,8 @@
         }
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
             unblockGenerales();
+            unblockAsistentes();
+            unblockEstudiantes();
         }
     }
 
