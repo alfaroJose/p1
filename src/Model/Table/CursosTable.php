@@ -45,9 +45,14 @@ class CursosTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
             ->scalar('sigla')
             ->maxLength('sigla', 7)
-            ->allowEmpty('sigla', 'create');
+            ->requirePresence('sigla', 'create')
+            ->notEmpty('sigla');
 
         $validator
             ->scalar('nombre')

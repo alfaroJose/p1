@@ -1,5 +1,6 @@
 <?php
-$tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
+$tipoRequisitos = array("Obligatorio", "Obligatorio Inopia");
+$categoriaRequisitos = array("Horas Asistente", "Horas Estudiante", "General");
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Requisito $requisito
@@ -10,8 +11,9 @@ $tipoRequisitos = array("Obligatorio", "Obligatorio inopia");
     <fieldset>
         <legend><?= __('Editar Requisito') ?></legend>
         <?php
-            echo $this->Form->control('nombre',['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => 'Descripcion', 'type'=> 'textarea']);
-            echo $this->Form->control('tipo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'options' => $tipoRequisitos]);
+            echo $this->Form->control('nombre', ['label' => 'Descripción', 'type'=> 'textarea']);
+            echo $this->Form->control('tipo', ['options' => $tipoRequisitos]);
+            echo $this->Form->control('categoria', ['options' => $categoriaRequisitos]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right'])?>

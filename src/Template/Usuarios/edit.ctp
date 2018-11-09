@@ -3,8 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Usuario $usuario
  */
-
-use Cake\ORM\TableRegistry;
 ?>
 
 <div class="usuarios">
@@ -13,49 +11,64 @@ use Cake\ORM\TableRegistry;
         <legend><?= __('Modificar usuario') ?></legend>
         <br>
         <h5> Datos personales </h5>
-
-        <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-            echo $this->Form->control('nombre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            //Se guarda el usuario de la persona que ha hecho login (carné o nombre.usuario)
+            $username = $this->request->getSession()->read('id');
 
-            echo $this->Form->control('primer_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('segundo_apellido', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('cedula', ['label'=>['text'=>'Cédula'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('primer_apellido', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('segundo_apellido', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
+           //Se guarda el tipo de identificación que tiene asignado el usuario para mostrarlo como valor default
+            $tipoCedulaActual = $this->Usuario->getTipoCedula($usuario->nombre_usuario);
+            $tipo_id;
+
+            /*Al ser un dropdown se necesita convertir las opciones a números*/
+            if($tipoCedulaActual[0] == 'Cédula Nacional'){ //Es administrador
+                $tipo_id = 1;
+            } else if ($tipoCedulaActual[0] == 'Cédula Extranjera'){
+                $tipo_id = 2;
+
+            } else if ($tipoCedulaActual[0] == 'DIMEX'){
+                $tipo_id = 3;
+
+            } else if ($tipoCedulaActual[0] == 'Pasaporte'){
+                $tipo_id = 4;
+
+            }
+           
+            echo $this->Form->control('tipo_identificacion', ['options' =>["1" => 'Cédula Nacional', "2" => 'Cédula Extranjera', "3" => 'DIMEX', "4" => 'Pasaporte'], 'value'=>$tipo_id, 'empty' => false, 'label'=>['text'=>'Tipo de identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
+            echo $this->Form->control('identificacion', ['pattern'=>"[0-9A-Za-z]{1,15}", 'label'=>['text'=>'Identificacion'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+
+            echo $this->Form->control('telefono', ['type'=>'tel', 'pattern'=>"[0-9]{8,20}", 'label'=>['text'=>'Teléfono'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
         ?>
         </div>
         <br>
         <h5> Datos de seguridad </h5>
-        <div style="padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black;">
-
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php       
             
-            echo $this->Form->control('id', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('nombre_usuario', ['required'=>true, 'type' => 'text', 'readonly', 'label'=>['text'=>'Usuario'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-            echo $this->Form->control('correo', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
+            echo $this->Form->control('correo', ['type'=>'email', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
 
-
-            /*Aquí se verifica el rol del usuario que está logueado, si es admin puede editar los roles en caso contrario el campo rol no es editable*/
-            $username = $this->request->getSession()->read('id');
-            $users = TableRegistry::get('Usuarios');
-            $index = $users->find()
-            ->select(['roles_id'])
-            ->where(['id =' => $username])
-            ->first();
+            /*Aquí se verifica el rol del usuario que está logueado, si es admin puede editar los roles en caso contrario el*/
+            $rolActual = $this->Usuario->getRol($username);
             
-            if($index->roles_id == 1){ //Es administrador
-                echo $this->Form->control('roles_id', ['options' =>['Administrador','Asistente administrativo','Profesor', 'Estudiante'], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
-
+            if($rolActual[0] == '1'){ //Es administrador
+                echo $this->Form->control('roles_id', ['options' =>["1" => "Administrador", "2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante"], 'default'=> $rolActual[0], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
             } else {
-                echo $this->Form->control('roles_id', ['value'=> $usuario->roles_id, 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
+                echo $this->Form->control('roles_id', ['value'=> $rolActual[0], 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
             }
             
         ?>
     </fieldset>
     <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
-    <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
+    <?= $this->Html->link(__('Regresar'),['controller'=>'Main', 'action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>

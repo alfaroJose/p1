@@ -5,8 +5,56 @@
  */
 ?>
 
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/*Estilo css para los tabs*/
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #fff;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+/*Termina estilo*/
+</style>
+</head>
+
+<body>
+
 <script type="text/javascript">
-    $(document).ready( function () {
+    $(document).ready( function () {//Esta funcion es para cuando se clickea el checkbox de habilitar edicion, en donde habilita o deshabilita los checkboxes
     	$('#checkBoxHabilitar').on('click', function() {
 			disabledCheckboxes();
 			if($(this).is(':checked')){
@@ -16,12 +64,9 @@
 				$('#Guardar').prop('disabled', true);
 			}
     	});
-
-    	$('.checkboxParaPerm').on('click')
-
     } );
 
-    function disabledCheckboxes(){//habilitar/deshabilitar
+    function disabledCheckboxes(){//habilitar/deshabilitar los checkboxes de permisos
     	if($('#checkBoxHabilitar').is(':checked')){
         	$('.checkboxParaPerm').removeAttr('disabled');
         }
@@ -30,83 +75,78 @@
         }	
     }
 
-    function poblarMatriz(p){//Se pasa la lista de permisos
+    function poblarMatriz(p){//Se pasa la lista de permisos de la tabla posee
     	for(var i = 0; i < p.length; i++){
-            if(p[i].estado == 1){
-                if(p[i].permisos_funcionalidad == 'Insertar'){
-                    if(p[i].permisos_modulo == 'Usuarios'){
-                        $('#checkbox1').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-                        $('#checkbox2').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Rondas'){
-                        $('#checkbox3').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Requisitos'){
-                        $('#checkbox4').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Solicitudes'){
-                        $('#checkbox5').prop("checked", true);
-                    }
-                }
-                else if(p[i].permisos_funcionalidad == 'Modificar'){
-                    if(p[i].permisos_modulo == 'Usuarios'){
-                        $('#checkbox6').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-                        $('#checkbox7').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Rondas'){
-                        $('#checkbox8').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Requisitos'){
-                        $('#checkbox9').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Solicitudes'){
-                        $('#checkbox10').prop("checked", true);
-                    }
-                }
-                else if(p[i].permisos_funcionalidad == 'Eliminar'){
-                    if(p[i].permisos_modulo == 'Usuarios'){
-                        $('#checkbox11').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-                        $('#checkbox12').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Rondas'){
-                        $('#checkbox13').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Requisitos'){
-                        $('#checkbox14').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Solicitudes'){
-                        $('#checkbox15').prop("checked", true);
-                    }
-                }
-                else if(p[i].permisos_funcionalidad == 'Consultar'){
-                    if(p[i].permisos_modulo == 'Usuarios'){
-                        $('#checkbox16').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Cursos-Grupos'){
-                        $('#checkbox17').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Rondas'){
-                        $('#checkbox18').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Requisitos'){
-                        $('#checkbox19').prop("checked", true);
-                    }
-                    else if(p[i].permisos_modulo == 'Solicitudes'){
-                        $('#checkbox20').prop("checked", true);
-                    }
+            if(p[i].estado == 1){//si su estado es encendido entonces los activa en el checkbox
+                switch(p[i].permisos_id){//Basado en el id se busca que boton se debe ponerle check
+                    case 1:
+                        $('#checkboxConsCursos').prop("checked", true);
+                        break;
+                    case 2:
+                        $('#checkboxElimCursos').prop("checked", true);
+                        break;
+                    case 3:
+                        $('#checkboxInsCursos').prop("checked", true);
+                        break;
+                    case 4:
+                        $('#checkboxModCursos').prop("checked", true);
+                        break;
+                    case 5:
+                        $('#checkboxConsReq').prop("checked", true);
+                        break;
+                    case 6:
+                        $('#checkboxElimReq').prop("checked", true);
+                        break;
+                    case 7:
+                        $('#checkboxInsReq').prop("checked", true);
+                        break;
+                    case 8:
+                        $('#checkboxModReq').prop("checked", true);
+                        break;
+                    case 9:
+                        $('#checkboxConsRondas').prop("checked", true);
+                        break;
+                    case 12:
+                        $('#checkboxModRondas').prop("checked", true);
+                        break;
+                    case 13:
+                        $('#checkboxConsSoli').prop("checked", true);
+                        break;
+                    case 14:
+                        $('#checkboxElimSoli').prop("checked", true);
+                        break;
+                    case 15:
+                        $('#checkboxInsSoli').prop("checked", true);
+                        break;
+                    case 17:
+                        $('#checkboxConsUsuarios').prop("checked", true);
+                        break;
+                    case 18:
+                        $('#checkboxElimUsuarios').prop("checked", true);
+                        break;
+                    case 19:
+                        $('#checkboxInsUsuarios').prop("checked", true);
+                        break;
+                    case 20:
+                        $('#checkboxModUsuarios').prop("checked", true);
+                        break;
+                    case 21:
+                        $('#checkboxIngresoRev').prop("checked", true);
+                        break;
+                    case 22:
+                        $('#checkboxModCont').prop("checked", true);
+                        break;
+                    case 23:
+                        $('#checkboxConsCont').prop("checked", true);
+                        break;
                 }
             }
     	}
     }
 
-    $(document).ready( function () {
+    $(document).ready( function () {//Funcion para llenar las lista de permisos para cada rol
     	var tuplas = <?php echo json_encode($posee); ?>;//todas las tuplas que hay en la tabla
+        //Se reparten las tuplas entre los roles.
     	var permAdmin = new Array();
     	var permAsis = new Array();
     	var permProf = new Array();
@@ -130,18 +170,18 @@
     	$('#seleccion').change(function() {//Si se selecciona algun elemento del select
     		$('.checkboxParaPerm').prop('checked', false);
     		if(!$('#seleccion').val()){//Si esta con la seleccion vacia no puede editar
-    			$('#Guardar').prop('disabled', true);
+    			$('#Guardar').prop('disabled', true);//Se deshabilitan los botones
     			$('#checkBoxHabilitar').prop('disabled', true);
     			$('#checkBoxHabilitar').prop('checked', false);
     			disabledCheckboxes();
     		}
-	    	else{//Cualquier otra seleccion valida
+	    	else{//Cualquier otra seleccion que sea valida
 	    		$('#checkBoxHabilitar').removeAttr('disabled');//habilita el checkbox de edicion
 
 	    		var permisos = new Array();
 				var rolId = $(this).val();//el valor actual de la lista de seleccion
 				if(rolId == 1){//admin
-					permisos = permAdmin.slice();//copia al array permisos
+					permisos = permAdmin.slice();//copia al array permisos segun rol
 				}
 				else if(rolId == 2){//asis admin
 					permisos = permAsis.slice();
@@ -161,6 +201,7 @@
     } );
 </script>
  
+ <!-- Inicia form -->
 <?= $this->Form->create(null,['url' => ['action'=>'index']]); ?>
 <div class="index large-4 medium-4 medium-offset-4 medium-offset-4 columns">
 	<h3>Administrar Roles</h3>
@@ -176,83 +217,192 @@
 		<label for="editarPermisos"><b>Habilitar Edición:</b></label>
 		<?= $this->Form->checkbox("editarPermisos", ["id" => "checkBoxHabilitar", 'disabled' => 'true']); ?>
 	</div>
-
-	<br>
-
-    <?= $this->Form->hidden("checkbox1", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox2", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox3", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox4", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox5", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox6", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox7", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox8", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox9", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox10", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox11", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox12", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox13", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox14", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox15", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox16", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox17", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox18", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox19", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-    <?= $this->Form->hidden("checkbox20", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-	
-	<table style="width:100%" class="input-matrix">
-		<thead>
-		<tr>
-			<th></th>
-			<th>Usuarios</th>
-			<th>Cursos-Grupos</th>
-			<th>Rondas</th>
-			<th>Requisitos</th>
-			<th>Solicitudes</th>
-		</tr>
-		</thead>
-		<tbody>
-
-		<tr>
-			<td>Insertar</td>
-			<td><?= $this->Form->checkbox("checkbox1", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox1"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox2", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox2"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox3", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox3"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox4", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox4"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox5", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox5"]); ?></td>
-		</tr>
-		<tr>
-			<td>Modificar</td>
-			<td><?= $this->Form->checkbox("checkbox6", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox6"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox7", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox7"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox8", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox8"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox9", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox9"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox10", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox10"]); ?></td>
-		</tr>
-		<tr>
-			<td>Eliminar</td>
-			<td><?= $this->Form->checkbox("checkbox11", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox11"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox12", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox12"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox13", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox13"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox14", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox14"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox15", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox15"]); ?></td>
-		</tr>
-		<tr>
-			<td>Consultar</td>
-			<td><?= $this->Form->checkbox("checkbox16", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox16"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox17", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox17"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox18", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox18"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox19", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox19"]); ?></td>
-			<td><?= $this->Form->checkbox("checkbox20", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkbox20"]); ?></td>
-		</tr>
-		</tbody>
-	</table>
-
+    
+    <br>
+    <br>
     <br>
     <br>
 
-	<?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right'])?>
-    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right mr-3'])?>
+    <!-- Aqui se crean los botones para los tabs con los distintos modulos y llaman al metodo implementado de JavaScript switchModule -->
+    <div class="tab">
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Usuarios')" >Usuarios</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Cursos-Grupos')">Cursos-Grupos</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Rondas')">Rondas</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Requisitos')">Requisitos</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Solicitudes')">Solicitudes</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Revisiones')">Revisiones</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Contador')">Contador de horas</button>
+    </div>
 
+    <!-- Aqui se crea el contenido para cada tab -->
+    <!-- Se tienen que crear hiddens para que tome los valores de los datos del form incluso cuando estan sin seleccionar -->
+    <div id="Usuarios" class="tabcontent">
+        <?= $this->Form->hidden("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxModUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxElimUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxInsUsuarios">Insertar</label>
+        <?= $this->Form->checkbox("checkboxInsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsUsuarios"]); ?>
+        <br>
+
+        <label for="checkboxModUsuarios">Modificar</label>
+        <?= $this->Form->checkbox("checkboxModUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModUsuarios"]); ?>
+        <br>
+
+        <label for="checkboxElimUsuarios">Eliminar</label>
+        <?= $this->Form->checkbox("checkboxElimUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimUsuarios"]); ?>
+        <br>
+
+        <label for="checkboxConsUsuarios">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsUsuarios", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsUsuarios"]); ?>
+    </div>
+
+    <div id="Cursos-Grupos" class="tabcontent">
+        <?= $this->Form->hidden("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxInsCursos">Insertar</label>
+        <?= $this->Form->checkbox("checkboxInsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsCursos"]); ?>
+        <br>
+
+        <label for="checkboxModCursos">Modificar</label>
+        <?= $this->Form->checkbox("checkboxModCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModCursos"]); ?>
+        <br>
+
+        <label for="checkboxElimCursos">Eliminar</label>
+        <?= $this->Form->checkbox("checkboxElimCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimCursos"]); ?>
+        <br>
+
+        <label for="checkboxConsCursos">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsCursos", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCursos"]); ?>
+    </div>
+
+    <div id="Rondas" class="tabcontent">
+        <?= $this->Form->hidden("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm"]); ?> 
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxModRondas">Modificar</label>
+        <?= $this->Form->checkbox("checkboxModRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModRondas"]); ?>
+        <br>
+
+        <label for="checkboxConsRondas">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsRondas", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsRondas"]); ?>
+    </div>
+
+    <div id="Requisitos" class="tabcontent">
+        <?= $this->Form->hidden("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm"]); ?> 
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxInsReq">Insertar</label>
+        <?= $this->Form->checkbox("checkboxInsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsReq"]); ?>
+        <br>
+
+        <label for="checkboxModReq">Modificar</label>
+        <?= $this->Form->checkbox("checkboxModReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModReq"]); ?>
+        <br>
+
+        <label for="checkboxElimReq">Eliminar</label>
+        <?= $this->Form->checkbox("checkboxElimReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimReq"]); ?>
+        <br>
+
+        <label for="checkboxConsReq">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsReq", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsReq"]); ?>
+
+    </div>
+
+    <div id="Solicitudes" class="tabcontent">
+        <?= $this->Form->hidden("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxInsSoli">Insertar</label>
+        <?= $this->Form->checkbox("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsSoli"]); ?>
+        <br>
+
+        <label for="checkboxElimSoli">Eliminar</label>
+        <?= $this->Form->checkbox("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimSoli"]); ?>
+        <br>
+
+        <label for="checkboxConsSoli">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsSoli"]); ?>
+
+    </div>
+
+    <div id="Revisiones" class="tabcontent">
+        <?= $this->Form->hidden("checkboxIngresoRev", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+        
+        <label for="checkboxIngresoRev">Ingresar</label>
+        <?= $this->Form->checkbox("checkboxIngresoRev", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxIngresoRev"]); ?>
+    </div>
+
+    <div id="Contador" class="tabcontent">
+        <?= $this->Form->hidden("checkboxModCont", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <?= $this->Form->hidden("checkboxConsCont", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxModCont">Modificar</label>
+        <?= $this->Form->checkbox("checkboxModCont", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxModCont"]); ?>
+        <br>
+
+        <label for="checkboxConsCont">Consultar</label>
+        <?= $this->Form->checkbox("checkboxConsCont", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCont"]); ?>
+    </div>
+
+    <br>
+
+    <!-- Botones para cancelar los cambios hechos y guardar los cambios -->
+    <?= $this->Form->submit('Guardar',['disabled' => true, 'id' => 'Guardar','class'=>'btn btn-info float-right'])?>
+    <?= $this->Html->link('Cancelar',['action'=>'index'],['class'=>'btn btn-info float-right mr-3'])?>
 </div>
 <?= $this->Form->end(); ?>
+<!-- Finaliza form -->
+
+<script>
+//Script para manejar los tabs basado en los ejemplos de https://www.w3schools.com/howto/howto_js_tabs.asp
+function switchModule(evt, nombreModulo) {
+    //toma variables basado en el codigo css de arriba
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(nombreModulo).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+</body>

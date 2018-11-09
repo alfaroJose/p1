@@ -25,6 +25,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <br>
 <?php echo "<center>";?>
         <td class="Opciones">
-                <?= $this->html->link(__('Continuar'), ['controller' => 'Inicio', 'action' => 'login']) ?> <br>
+                <?= $this->html->link(__('Ingresar'), ['controller' => 'Inicio', 'action' => 'login']) ?> <br>
         </td>
 <?php echo "</center>";?>

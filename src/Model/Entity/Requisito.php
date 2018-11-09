@@ -6,9 +6,10 @@ use Cake\ORM\Entity;
 /**
  * Requisito Entity
  *
- * @property int $numero
+ * @property int $id
  * @property string $nombre
  * @property string $tipo
+ * @property string $categoria
  */
 class Requisito extends Entity
 {
@@ -24,6 +25,7 @@ class Requisito extends Entity
      */
     protected $_accessible = [
         'nombre' => true,
-        'tipo' => true
+        'tipo' => true,
+        'categoria' => true
     ];
 }
