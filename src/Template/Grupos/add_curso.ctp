@@ -8,11 +8,13 @@
     <?= $this->Form->create($grupo) ?>
     <fieldset>
          <br>
-        <legend><?= __('Agregar Grupo') ?></legend>
+        <legend><?= __('Agregar Curso') ?></legend>
         <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
          <?php
 
-            echo $this->Form->control('Sigla', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $siglaIndex, 'default'=>$defaultSelectCurso]);
+            echo $this->Form->control('sigla',['required'=>true, 'pattern' => '[A-Z]{2}/-[0-9]{4}' ,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Sigla de curso'],'type' => 'text' ]);
+
+            echo $this->Form->control('nombre',['required'=>true, 'pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Nombre de curso'],'type' => 'text' ]);
 
             echo $this->Form->control('numero',['required'=>true, 'pattern' => '[0-9]{1,2}' ,'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero de grupo'],'type' => 'text' ]);
 
