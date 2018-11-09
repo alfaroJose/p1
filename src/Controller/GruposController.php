@@ -275,15 +275,15 @@ class GruposController extends AppController
           
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
+            if(!$profesorEncontrado){ //busca el profesor actual del grupo
+                if($profesoresIds[$itProfesor]==$idProfesor){
+                    $profesorEncontrado=true;
+                }
+                else{
+                    $itProfesor++;
+                }
+            }
         }
-         while(!$profesorEncontrado){ //busca el profesor actual del grupo
-            if($profesoresIds[$itProfesor]==$idProfesor){
-                $profesorEncontrado=true;
-            }
-            else{
-                $itProfesor++;
-            }
-         }
          $defaultSelectProfesor=$itProfesor; 
         while(!$semestreEncontrado){ //busca el semestre actual del grupo
             if($opcionesSemestre[$itSemestre]==$grupo->semestre){
