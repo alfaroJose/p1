@@ -73,9 +73,6 @@ class SolicitudesTable extends Table
             ->greaterThanOrEqual('promedio', 0, 'El valor mínimo del promedio ponderado es 0');
 
         $validator
-            ->allowEmpty('cantidad_horas');
-
-        $validator
             ->scalar('estado')
             ->maxLength('estado', 30)
             ->requirePresence('estado', 'create')
@@ -96,9 +93,9 @@ class SolicitudesTable extends Table
             ->notEmpty('fecha');
 
         $validator
-            ->scalar('justificación')
-            ->maxLength('justificación', 1000)
-            ->allowEmpty('justificación');
+            ->scalar('justificacion')
+            ->maxLength('justificacion', 1000)
+            ->allowEmpty('justificacion');
 
         $validator
             ->requirePresence('ronda', 'create')
@@ -146,11 +143,9 @@ class SolicitudesTable extends Table
         return $rules;
     }
 
+    /*carga el index con todas las solicitudes*/
     public function getIndexValues(){
         $connect = ConnectionManager::get('default');
-        /*$index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud', solicitudes.id
-            from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
-            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();*/
                         $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
                                         from solicitudes s 
                                         join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
@@ -160,34 +155,18 @@ class SolicitudesTable extends Table
         return $index;
     }
 
-    /*Obtiene el id del estudiante según el carné*/
-    /*public function getIDEstudiante($carne)
+    /*obtiene el id de usuario actualmente logueado*/
+        public function getIDUsuario($carne)
     {
         $connect = ConnectionManager::get('default');
         $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
-        $result = $result->fetchAll('assoc');
-        if($result != null){
-            return $result[0]['id'];
-        }
-    }*/
-        public function getIDEstudiante($carne)
-    {
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
         $result = $result->fetchAll();
         return $result;
     }
 
+    /*carga el index con solo los datos del estudiante actualmente logueado*/
     public function getIndexValuesEstudiante($id){
-        /*$connect = ConnectionManager::get('default');
-        $index = $connect->execute("select distinct cursos.sigla, cursos.nombre, grupos.numero, Profesores.nombre as profesor, Profesores.primer_apellido, Estudiantes.nombre as estudiante, Estudiantes.primer_apellido, solicitudes.estado as 'Estado de solicitud'
-            from grupos, cursos, usuarios as Estudiantes, solicitudes
-            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
-        return $index;*/
         $connect = ConnectionManager::get('default');
-        /*$index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, Profesores.nombre, Profesores.primer_apellido, Estudiantes.nombre as estudiante, Estudiantes.primer_apellido, s.estado as 'Estados de solicitud'
-            from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
-            where s.usuarios_id = '" .$id. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;")->fetchAll();*/
             $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
                                         from solicitudes s 
                                         join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
@@ -196,15 +175,9 @@ class SolicitudesTable extends Table
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
                                         where s.usuarios_id = '$id';")->fetchAll();
         return $index;
-
-
-        /*Esta consulta también funciona*/
-        /*select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
-        from solicitudes s, cursos c, usuarios as Estudiantes, usuarios as Profesores right outer join grupos g on Profesores.id = g.usuarios_id
-        where s.usuarios_id = '$id' and s.grupos_id = g.id and g.cursos_id = c.id  and s.usuarios_id = Estudiantes.id;
-        */
     }
 
+    /*carga el index con solo los datos del profesor actualmente logueado*/
     public function getIndexValuesProfesor($id){
         
         $connect = ConnectionManager::get('default');
@@ -219,11 +192,10 @@ class SolicitudesTable extends Table
         return $index;
     }
 
-    public function getViewValuesEstudiante($idSolicitud){
+    /*obtiene los datos de la solicitud para la vista*/
+    public function getViewValuesUsuario($idSolicitud){
         $connect = ConnectionManager::get('default');
-            $index = $connect->execute(/*"select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
-            from solicitudes s, grupos g, cursos c, usuarios as Estudiantes, usuarios as Profesores 
-            where s.id = '" .$idSolicitud. "' and s.grupos_id = g.id and g.cursos_id = c.id and Profesores.id = g.usuarios_id and s.usuarios_id = Estudiantes.id;*/
+            $index = $connect->execute(
             "select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
         from solicitudes s, cursos c, usuarios as Estudiantes, usuarios as Profesores right outer join grupos g on Profesores.id = g.usuarios_id
         where s.id = '" .$idSolicitud. "' and s.grupos_id = g.id and g.cursos_id = c.id  and s.usuarios_id = Estudiantes.id;")->fetchAll();
@@ -308,4 +280,44 @@ class SolicitudesTable extends Table
         $fila = $connect->execute("select roles_id from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $fila[0];
     } 
+
+    public function getSolicitudCompleta($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select estudiante.nombre as 'estudiante_nombre', estudiante.primer_apellido as 'estudiante_primer_apellido',
+        estudiante.segundo_apellido as 'estudiante_segundo_apellido', estudiante.identificacion as 'estudiante_identificacion',
+        estudiante.tipo_identificacion as 'estudiante_tipo_identificacion', estudiante.nombre_usuario as 'estudiante_carne',
+        estudiante.telefono as 'estudiante_telefono', estudiante.correo as 'estudiante_correo',
+        CONCAT(profesor.nombre, ' ', profesor.primer_apellido, ' ', profesor.segundo_apellido) AS 'profesor_nombre',
+        g.numero as 'grupo_numero', c.sigla as 'curso_sigla', c.nombre as 'curso_nombre',
+        s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
+        s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
+        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
+        s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
+        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas'         
+        from solicitudes s join usuarios estudiante on s.usuarios_id = estudiante.id
+		join grupos g on s.grupos_id = g.id
+		join cursos c on g.cursos_id = c.id
+		left outer join usuarios profesor on g.usuarios_id = profesor.id
+        where s.id = '".$id."'")->fetchAll('assoc');
+        return $result;
+    }
+
+    public function getRequisitosSolicitud($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select r.id AS 'requisito_id', r.nombre as 'requisito_nombre', r.tipo as 'requisito_tipo', r.categoria as 'requisito_categoria', t.condicion as 'tiene_condicion'
+        from requisitos r, tiene t
+        where r.id = t.requisitos_id
+        and t.solicitudes_id = '".$id."'
+        order by (r.tipo)")->fetchAll('assoc');
+        return $result;
+    }
+
+    public function setCondicionTiene($solicitudes_id, $requisitos_id, $condicion)
+    {
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call asignar_condicion_tiene ($solicitudes_id, $requisitos_id, '$condicion')");
+    }
+
 }
