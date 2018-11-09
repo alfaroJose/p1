@@ -5,7 +5,7 @@
  */
 ?>
 <div class="solicitudes index large-9 medium-8 columns content">
-    <h3><?= __('Solicitudes') ?></h3>
+    <h3><?= __('Solicitudes de Asistencias') ?></h3>
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -29,13 +29,15 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
-                <?php if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
-                echo $this->Html->link(__('<span class="typcn typcn-social-instagram-circular"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);}
-                //debug($todo);
-                //die();
+                  
+                <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>              
+                <?php 
+                if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
+                   echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                }
+
                 ?>
-                <span class="typcn typcn-printer"></span>
-                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
