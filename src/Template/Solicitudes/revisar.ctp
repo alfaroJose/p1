@@ -280,6 +280,7 @@
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
 
+        /*
         $estadoActual;
         if ($solicitude['estado'] == 'Rechazada - Profesor') {
             $estadoActual = '1';
@@ -292,8 +293,10 @@
         } else {
             $estadoActual = '0';
         }
+        */
 
-            echo $this->Form->control('estado', ['options' => ['Elegible', 'Rechazada - Profesor', 'Aceptada - Profesor', 'Aceptada - Profesor (Inopia)', 'Anulada'], 'value'=>$estadoActual]);
+            $estadoActual = $solicitude['estado'];
+            echo $this->Form->input('estado', ['options' => [$estadoActual], 'type' => 'select', 'label' =>['text'=> 'Estado'], 'value'=> $estadoActual]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
             echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
         ?>
@@ -327,6 +330,18 @@
 </div>
 
 <script>
+
+    function updateEstado(){
+        opcionesEstado = document.getElementById("estado");
+        while (opcionesEstado.options.length) {
+            opcionesEstado.remove(0);
+        }
+        //opcionesEstado.options.remove();
+        var tmp = document.createElement("option");               
+        tmp.text = 'Rechazado';
+        
+        opcionesEstado.options.add(tmp,1);
+    }
 
     function updateAsistentes(){
         //selReq = document.getElementById("5-no");
@@ -366,29 +381,6 @@
                 blockGenerales();
             }
         }
-    }
-
-    function checkEstudiante(){
-        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios de horas estudiante
-        var r = a3.options.length;
-        //alert(r);
-        //alert(a3.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
-        var encontrado = false;
-        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
-        {
-            
-            var x = a3.options[c].text
-            //alert(x);
-            var y = x + "-no";
-            //alert(y);
-            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
-            //alert(x + selReq);
-            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                return true;
-            }
-            
-        }
-        return false;
     }
 
     function blockAsistentes(selected){
@@ -471,6 +463,31 @@
         }        
     }
 
+    function checkAsistente(){
+        //selReq = document.getElementById("5-no");
+        //alert(selReq.value);
+
+        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
+        var r = a5.options.length;
+        //alert(r);
+        //alert(a5.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a5.options[c].text
+            //alert(x);
+            var y = x + "-no";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
+    }
+
     function updateEstudiantes(){
         //selReq = document.getElementById("5-no");
         //alert(selReq.value);
@@ -510,32 +527,6 @@
                 blockGenerales();
             }
         }
-    }
-
-    function checkAsistente(){
-        //selReq = document.getElementById("5-no");
-        //alert(selReq.value);
-
-        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
-        var r = a5.options.length;
-        //alert(r);
-        //alert(a5.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
-        var encontrado = false;
-        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
-        {
-            
-            var x = a5.options[c].text
-            //alert(x);
-            var y = x + "-no";
-            //alert(y);
-            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
-            //alert(x + selReq);
-            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                return true;
-            }
-            
-        }
-        return false;
     }
 
     function blockEstudiantes(selected){
@@ -618,6 +609,27 @@
         }        
     }
     
+    function checkEstudiante(){
+        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios de horas estudiante
+        var r = a3.options.length;
+        //alert(r);
+        //alert(a3.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a3.options[c].text
+            //alert(x);
+            var y = x + "-no";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
+    }
 
     function updateGenerales(){
         //selReq = document.getElementById("7-no");
@@ -739,6 +751,88 @@
             document.getElementById(z).disabled = false;
         
         }        
+    }
+
+    function checkGenerales(){
+        //selReq = document.getElementById("5-no");
+        //alert(selReq.value);
+
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios de horas asistente
+        var r = a1.options.length;
+        //alert(r);
+        //alert(a1.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a1.options[c].text
+            //alert(x);
+            var y = x + "-no";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
+    }
+
+    function checkInopia(){
+        //selReq = document.getElementById("5-no");
+        //alert(selReq.value);
+
+        a2 = document.getElementById("a2"); //Lista de id de requisitos obligatorios de horas asistente
+        a4 = document.getElementById("a4");
+        a6 = document.getElementById("a6");
+        var r = a2.options.length;
+        //alert(r);
+        //alert(a1.options[0].text); options[0].text devuelve el id de requisito en posicion 0, si fuera value devuelve literalmente el primer índice = 0.
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a2.options[c].text
+            //alert(x);
+            var y = x + "-inopia";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        var r = a4.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a4.options[c].text
+            //alert(x);
+            var y = x + "-inopia";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        var r = a6.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            
+            var x = a6.options[c].text
+            //alert(x);
+            var y = x + "-inopia";
+            //alert(y);
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            //alert(x + selReq);
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                return true;
+            }
+            
+        }
+        return false;
     }
     
 </script>
