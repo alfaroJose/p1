@@ -73,15 +73,15 @@
 
         <?php foreach ($datosRequisitosSolicitud as $bloqueo): ?>
         <?php 
-        if($bloqueo['requisito_categoria'] == 'Horas Asistente' and  $bloqueo['requisito_tipo'] == 'Obligatorio' and $bloqueo['tiene_condicion'] == 'No'){
+        if($bloqueo['requisito_categoria'] == 'Horas Asistente' and $bloqueo['tiene_condicion'] == 'No'){
             $bloqueoAsistente = true;
             $opcionLibreAsistente = $bloqueo['requisito_id'];
         };
-        if($bloqueo['requisito_categoria'] == 'Horas Estudiante' and  $bloqueo['requisito_tipo'] == 'Obligatorio' and $bloqueo['tiene_condicion'] == 'No'){
+        if($bloqueo['requisito_categoria'] == 'Horas Estudiante' and $bloqueo['tiene_condicion'] == 'No'){
             $bloqueoEstudiante = true;
             $opcionLibreEstudiante = $bloqueo['requisito_id'];
         };
-        if($bloqueo['requisito_categoria'] == 'General' and  $bloqueo['requisito_tipo'] == 'Obligatorio' and $bloqueo['tiene_condicion'] == 'No'){
+        if($bloqueo['requisito_categoria'] == 'General' and $bloqueo['tiene_condicion'] == 'No'){
             $bloqueoGeneral = true;
             $opcionLibreGeneral = $bloqueo['requisito_id'];
         };
@@ -145,27 +145,27 @@
                     <?php
                         //Si el requisito es obligatirio entra aquí
                         if ($asistente['requisito_tipo'] == 'Obligatorio') {
-                            //Si el radio es la opcion que debe quedar desbloqueada por defecto entra aquí
+                            $auto5[$i] = $asistente['requisito_id'];
+                            $i = $i+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No',);
                             if($asistente['requisito_id'] == $opcionLibreAsistente){
-                                $auto5[$i] = $asistente['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
                                 $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
-                                echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
-                            //Si el radio no es la opcion que debe quedar desbloqueada por defecto entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                             } else {
-                                $auto5[$i] = $asistente['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
                                 $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente, 'onclick'=> 'updateAsistentes()');
-                                echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                             }
+                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                         } else {
+                            $auto5[$i] = $asistente['requisito_id'];
+                            $i = $i+1;
                             $auto6[$j] = $asistente['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente);
+                            if($asistente['requisito_id'] == $opcionLibreAsistente){
+                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
+                            } else {
+                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente, 'onclick'=> 'updateAsistentes()');
+                            }
                             echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                         }
                     ?>    
@@ -194,27 +194,27 @@
                     <?php
                         //Si el requisito es obligatirio entra aquí
                         if ($estudiante['requisito_tipo'] == 'Obligatorio') {
-                            //Si el radio es la opcion que debe quedar desbloqueada por defecto entra aquí
+                            $auto3[$i] = $estudiante['requisito_id'];
+                            $i = $i+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No',);
                             if($estudiante['requisito_id'] == $opcionLibreEstudiante){
-                                $auto3[$i] = $estudiante['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
                                 $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
-                                echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
-                            //Si el radio no es la opcion que debe quedar desbloqueada por defecto entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                             } else {
-                                $auto3[$i] = $estudiante['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
                                 $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => $bloqueoEstudiante, 'onclick'=> 'updateEstudiantes()');
-                                echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                             }
+                            echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui, $bloqueoEstudiante define si el radio debe ser bloqueado o no
                         } else {
+                            $auto3[$i] = $estudiante['requisito_id'];
+                            $i = $i+1;
                             $auto4[$j] = $estudiante['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => $bloqueoEstudiante);
+                            if($estudiante['requisito_id'] == $opcionLibreEstudiante){
+                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
+                            } else {
+                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => $bloqueoEstudiante, 'onclick'=> 'updateEstudiantes()');
+                            }
                             echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         }
                     ?>
@@ -243,27 +243,27 @@
                     <?php
                         //Si el requisito es obligatirio entra aquí
                         if ($general['requisito_tipo'] == 'Obligatorio') {
-                            //Si el radio es la opcion que debe quedar desbloqueada por defecto entra aquí
-                            if($general['requisito_id'] == $opcionLibreGeneral){
-                                $auto[$i] = $general['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
+                            $auto[$i] = $general['requisito_id'];
+                            $i = $i+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No',);
+                            if($general['requisito_id'] == $opcionLibreGeneral){  
                                 $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
-                                echo $this->Form->radio($general['requisito_id'], $options, $attributes);
-                            //Si el radio no es la opcion que debe quedar desbloqueada por defecto entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                             } else {
-                                $auto[$i] = $general['requisito_id'];
-                                $i = $i+1;
-                                $options= array('Sí' => 'Sí', 'No' => 'No',);
                                 $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => $bloqueoGeneral, 'onclick'=> 'updateGenerales()');
-                                echo $this->Form->radio($general['requisito_id'], $options, $attributes);
                             }
+                            echo $this->Form->radio($general['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui, $bloqueoAsistente define si el radio debe ser bloqueado o no
                         } else {
+                            $auto[$i] = $general['requisito_id'];
+                            $i = $i+1;
                             $auto2[$j] = $general['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => $bloqueoGeneral);
+                            if($general['requisito_id'] == $opcionLibreGeneral){  
+                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
+                            } else {
+                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => $bloqueoGeneral, 'onclick'=> 'updateGenerales()');
+                            }
                             echo $this->Form->radio($general['requisito_id'], $options, $attributes);
                         }
                     ?>
@@ -393,15 +393,16 @@
         {
             var x = a6.options[c].text;
             //alert(x);
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            //selReq = document.getElementById(x);
-            //alert(selReq);
-            document.getElementById(y).disabled = true;
-            document.getElementById(z).disabled = true;
-            document.getElementById(w).disabled = true;
-
+            if(x != selected){
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                //selReq = document.getElementById(x);
+                //alert(selReq);
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+            }
         }
 
         a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios horas asistente
@@ -538,16 +539,17 @@
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
             var x = a4.options[c].text;
-            //alert(x);
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            //selReq = document.getElementById(x);
-            //alert(selReq);
-            document.getElementById(y).disabled = true;
-            document.getElementById(z).disabled = true;
-            document.getElementById(w).disabled = true;
-
+            if(x != selected){
+                //alert(x);
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                //selReq = document.getElementById(x);
+                //alert(selReq);
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+            }
         }
 
         a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios horas estudiante
@@ -681,16 +683,17 @@
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
             var x = a2.options[c].text;
-            //alert(x);
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            //selReq = document.getElementById(x);
-            //alert(selReq);
-            document.getElementById(y).disabled = true;
-            document.getElementById(z).disabled = true;
-            document.getElementById(w).disabled = true;
-
+            if(x != selected){
+                //alert(x);
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                //selReq = document.getElementById(x);
+                //alert(selReq);
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+            }
         }
 
         a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
@@ -836,4 +839,3 @@
     }
     
 </script>
-
