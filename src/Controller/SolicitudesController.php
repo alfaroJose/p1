@@ -45,14 +45,14 @@ class SolicitudesController extends AppController
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
 
-        if(isset($_POST['Consultar historial'])){ //if para el boton de consultar historial"Nota: getIndexValuesActuales en realidad carga los datos del semestre actual luego hay que cambiarlo por getIndexValues de cada rol"    
+        if(isset($_POST['Consultar historial'])){ //if para el boton de consultar historial   
         debug($car);
         die(); 
-        $todo = $this->Solicitudes->getIndexValuesActuales($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado 
+        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con todas las solicitudes del estudiante actualmente logueado 
         }
 
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
-        $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con solo los datos del estudiante actualmente logueado
+        $todo = $this->Solicitudes->getIndexValuesActuales($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado
         }else if(3==$rolActual[0]){ //si el usuario es un profesor 
                 $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]); //carga el index con solo los datos del profesor actualmente logueado
         }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
