@@ -5,6 +5,15 @@ use App\Controller\AppController;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Helper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+use Cake\Database\Exception;
+require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
+
 
 /**
  * Grupos Controller
@@ -334,6 +343,183 @@ class GruposController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    //Método encargado de leer el archivo de excel y mostrar la vista previa
+    public function importExcelfile (){
+        $this->loadModel('CoursesClassesVw');
+        $coursesClassesVw = $this->CoursesClassesVw->newEntity();
+        $UserController = new UsersController;
+        //Quita el límite de la memoria, ya que los archivos la pueden gastar
+        ini_set('memory_limit', '-1');
+
+        //Obtiene la carpeta y el nombre del archivo guardado en la base de datos
+        $fileDir = $this->getDir();
+        //Con los datos obtenidos indica el directorio del archivo
+        $inputFileName = WWW_ROOT. 'files'. DS. 'files'. DS. 'file'. DS. $fileDir[1]. DS. $fileDir[0];
+
+        //Identifica el tipo de archivo
+        $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+        //Crea un nuevo reader para el tipo de archivo
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+        //Hace que el reader sólo lea archivos con datos
+        $reader->setReadDataOnly(true);
+        //Carga el archivo a un spreadsheet
+        $spreadsheet = $reader->load($inputFileName);
+
+        $worksheet = $spreadsheet->getActiveSheet();
+        //Consigue la posición de la última fila
+        $highestRow = $worksheet->getHighestRow(null);
+        //Consigue la posición de la última columna
+        $highestColumn = $worksheet->getHighestDataColumn();
+        //Transforma la última fila a un index. Ejemplo C = 3
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+
+        //Contiene una matriz con las filas del archivo
+        $table = [];
+        //Contiene las filas del archivo
+        $rows = [];
+
+        $profIds = [];
+        //Se llena la matriz
+        for ($row = 5; $row <= $highestRow; ++$row) {
+            for ($col = 1; $col <= 4; ++$col) {
+                $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                $rows[$col -1] = $value;
+
+                //Revisa si el profe existe
+                if($col == 4){
+                    if($value != null){
+                        //Divide el profesor en nombre y apellido
+                        $prof = preg_split('/\s+/', $value);
+                        //Consigue el id del profesor
+                        $id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        if($id == null){
+                            //Se borra el archivo
+                            $this->deleteFiles();
+                            $this->Flash->error('El profesor '. $value .' no se encuentra en la tabla');
+                            return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+                        }else{
+                            array_push($profIds, $id);
+                        }
+                    }else{
+                        array_push($profIds, null);
+                    }
+                    
+                }
+
+            }
+            $table[$row -5] = $rows;
+            unset($rows); //resetea el array rows
+        }
+        //Se cambia el nombre de las llaves del array si no es post ya que es para la vista previa
+        if(!$this->request->is('post')){
+            $table = array_map(function($tag) {
+                return array(
+                    'Curso' => $tag['0'],
+                    'Sigla' => $tag['1'],
+                    'Grupo' => $tag['2'],
+                    'Profesor' => $tag['3']
+                );
+            }, $table);
+    
+        }
+        //Hace que table sea visible para el template
+        $this->set('table', $table);
+
+        //Cuando se da aceptar
+        if ($this->request->is('post')) {
+            //Borra todos los grupos
+            $classesModel = $this->loadmodel('Classes');
+            $classesModel->deleteAllClasses();
+
+            //Llama al método addFromFile con cada fila
+            for ($row = 0; $row < count($table); ++$row) {
+                $this->addFromFile($table[$row], $profIds[$row]);
+            }
+
+            //Se borra el archivo
+            $this->deleteFiles();
+
+            $this->Flash->success(__('Se agregaron los cursos correctamente.'));
+            return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+        }
+        $this->set(compact('coursesClassesVw'));
+    }
+
+    //Este método se usa para agregar cada fila del archivo una vez se preciona aceptar
+    public function addFromFile ($parameters, $profId){
+        //Si la fila está vacía no hace nada
+        if($parameters[0] != null){
+            $courseTable = $this->loadmodel('Courses');
+            $classTable = $this->loadmodel('Classes');
+
+            //Agrega el curso
+            $courseTable->addCourse($parameters[1], $parameters[0], 0);
+
+            //Selecciona un smestre según la fecha actual
+            if(date("m") > 6){
+                $semester = 2;
+            }else{
+                $semester = 1;
+            }
+            //Agrega el grupo
+            $classTable->addClass($parameters[1], $parameters[2], $semester, date("Y"), 1, $profId);
+
+        }
+    }
+
+    //Se llama al precionar el botón cancelar.
+    //Es necesario ya que hay que eliminar los archivos del sistema
+    public function cancelExcel(){
+        $this->deleteFiles();
+        return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+    }
+
+    //Metodo encargado de subir el archivo
+    public function uploadFile()
+    {
+        //El modelo files tiene una única tupla con el nombre y la carpeta del archivo
+        $this->loadmodel('Files');
+        //Si en la vista previa se preciona la flecha para regresar del navegador, los archivos se mantienen cargados, por lo que es necesario llamar a este método
+        $this->deleteFiles();
+        $file = $this->Files->newEntity();
+        if ($this->request->is('post')) {
+            //Recupera el nombre del archivo
+            $file = $this->Files->patchEntity($file, $this->request->getData());
+
+            //Se sube el archivo
+            if ($this->Files->save($file)) {
+                //Una vez subido, llama el método importExcelFile
+                return $this->redirect(['controller' => 'Grupos', 'action' => 'importExcelfile']);
+            }
+            //En caso de error, es importante redireccionar al index, ya que este método no tiene vista
+            $this->Flash->error(__('Error subiendo el archivo'));
+            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+        }
+        $this->set(compact('file'));
+        //Si se logra entrar a este método sin ser post, simplemente redirecciona al index
+        return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+    }
+    //Retorna el directorio de el archivo subido (nombre y carpeta). Retorna nulo si no existe
+    public function getDir(){
+        $fileTable = $this->loadmodel('Files');
+        return $fileTable->getDir();
+    }
+
+    //Borra el archivo subido, tanto del sistema como de la base
+    public function deleteFiles(){
+        //Obtiene las direcciones
+        $fileDir = $this->getDir();
+        //Revisa si el directorio existe antes de borrar
+        if($fileDir != null){
+            //Borra el folder
+            $path = WWW_ROOT. 'files'. DS. 'files'. DS. 'file'. DS. $fileDir[1];
+            $folder = new Folder($path);
+            $folder->delete();
+            $fileTable = $this->loadmodel('Files');
+            $fileTable->deleteFiles();
+        } 
     }
 
 }
