@@ -46,11 +46,11 @@ class SolicitudesController extends AppController
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
 
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
-        $todo = $this->Solicitudes->getIndexValuesActuales($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado
+                $todo = $this->Solicitudes->getIndexValuesActualesEstudiante($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado
         }else if(3==$rolActual[0]){ //si el usuario es un profesor 
-                $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]); //carga el index con solo los datos del profesor actualmente logueado
+                $todo = $this->Solicitudes->getIndexValuesActualesProfesor($idActual[0][0], $semestre, $año); //carga el index con solo las solicitudes del semestre actual del profesor actualmente logueado 
         }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
-                $todo = $this->Solicitudes->getIndexValues(); //carga el index con todas las solicitudes
+                $todo = $this->Solicitudes->getIndexActualesValues($semestre, $año); //carga el index con todas las solicitudes del semestre actual
             }
       
         $this->paginate = [
@@ -61,7 +61,8 @@ class SolicitudesController extends AppController
         $this->set('rolActual',$rolActual);
     }
 
-    public function indexHistorial()
+/*Index para el historial de solicitudes del estudiante*/
+    public function indexHistorialEstudiante()
     {     
         //$semestre = $this->get_semester(); //obtiene el semestre actual
         //$año = $this->get_year(); //obtiene el año actual
@@ -86,6 +87,78 @@ class SolicitudesController extends AppController
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         
         $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con todas las solicitudes del estudiante actualmente logueado 
+           
+      
+        $this->paginate = [
+            'contain' => ['Usuarios', 'Grupos']
+        ];
+        $estado = $this->get_estado_ronda();
+        $this->set(compact('todo','estado'));
+        $this->set('rolActual',$rolActual);
+    }
+
+    /*Index para el historial de solicitudes en total*/
+    public function indexHistorialAdmin()
+    {     
+        //$semestre = $this->get_semester(); //obtiene el semestre actual
+        //$año = $this->get_year(); //obtiene el año actual
+
+        $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
+               
+        //Inicio seguridad por URL
+        if ($username == ''){//En caso de lo haber hecho login
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        else{
+            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
+            $connect = ConnectionManager::get('default');
+            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
+            $permiso = $connect->execute($consulta)->fetchAll();
+            if ($permiso[0][0] != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        //Cierra seguridad por URL
+             
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
+        
+        $todo = $this->Solicitudes->getIndexValues(); //carga el index con todas las solicitudes existentes 
+           
+      
+        $this->paginate = [
+            'contain' => ['Usuarios', 'Grupos']
+        ];
+        $estado = $this->get_estado_ronda();
+        $this->set(compact('todo','estado'));
+        $this->set('rolActual',$rolActual);
+    }
+
+    /*Index para el historial de solicitudes del profesor*/
+    public function indexHistorialProfesor()
+    {     
+        //$semestre = $this->get_semester(); //obtiene el semestre actual
+        //$año = $this->get_year(); //obtiene el año actual
+
+        $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
+               
+        //Inicio seguridad por URL
+        if ($username == ''){//En caso de lo haber hecho login
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        else{
+            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
+            $connect = ConnectionManager::get('default');
+            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
+            $permiso = $connect->execute($consulta)->fetchAll();
+            if ($permiso[0][0] != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        //Cierra seguridad por URL
+             
+        $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
+        
+        $todo = $this->Solicitudes->getIndexValuesProfesor($idActual[0][0]); //carga el index con todas las solicitudes del profesor actualmente logueado
            
       
         $this->paginate = [
