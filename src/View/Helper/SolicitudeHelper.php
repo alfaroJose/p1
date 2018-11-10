@@ -41,4 +41,9 @@ class SolicitudeHelper extends Helper
         return [$fila];
     }
 
+    public function getIndexValuesActuales($id, $semestre, $año){
+        $fila = (new SolicitudesTable)->getIndexValuesActuales($id, $semestre, $año);
+        return [$fila];
+    }
+
 }

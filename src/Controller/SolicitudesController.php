@@ -22,7 +22,10 @@ class SolicitudesController extends AppController
      * @return \Cake\Http\Response|void
      */
     public function index()
-    {        
+    {     
+        $semestre = $this->get_semester(); //obtiene el semestre actual
+        $año = $this->get_year(); //obtiene el año actual
+
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
         //Inicio seguridad por URL
@@ -41,6 +44,12 @@ class SolicitudesController extends AppController
         //Cierra seguridad por URL
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
+
+        if(isset($_POST['Consultar historial'])){ //if para el boton de consultar historial"Nota: getIndexValuesActuales en realidad carga los datos del semestre actual luego hay que cambiarlo por getIndexValues de cada rol"    
+        debug($car);
+        die(); 
+        $todo = $this->Solicitudes->getIndexValuesActuales($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado 
+        }
 
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
         $todo = $this->Solicitudes->getIndexValuesEstudiante($idActual[0][0]); //carga el index con solo los datos del estudiante actualmente logueado

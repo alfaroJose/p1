@@ -47,9 +47,12 @@
     <br>
     <?php //Agrega el boton de nueva solicitud solo al index de estudiante
       $permisoAdd = $this->Seguridad->getPermiso(15);
-      if($estado && $permisoAdd)
+      if(4 == $rolActual[0] && $estado && $permisoAdd)
       echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
      ?>
+
+     <?= $this->Form->submit('Consultar historial',['class'=>'btn btn-info'], ['action'=>'index']); ?>
+
 </div>
 <script type="text/javascript">
     $(document).ready( function () {
