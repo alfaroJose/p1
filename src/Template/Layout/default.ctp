@@ -36,6 +36,9 @@ use Cake\Chronos\Date;
     <!-- La línea anterior no sirve si pone solicitudes/index o una nueva vista como solicitudes/index_historial. Con esto se arregla-->
     <link rel="stylesheet" href="../plugins/font/typicons.min.css"/></head><body><div class="page-header">
 
+    <!-- En caso de se mandé un slash al final lo anterior no sirve. Ej: usuarios/index/. Con esto se arregla-->
+    <link rel="stylesheet" href="../../plugins/font/typicons.min.css"/></head><body><div class="page-header">
+
     <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min']) ?>
 
     <?= $this->fetch('meta') ?>
