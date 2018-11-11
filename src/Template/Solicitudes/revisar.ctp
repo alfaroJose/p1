@@ -770,12 +770,106 @@
                 return true;
             }
         }
-        
+
         return false;
     }
 
     function checkMarcadas(){
-        return true;
+        a2 = document.getElementById("a2");
+        a4 = document.getElementById("a4");
+        a6 = document.getElementById("a6");
+        a1 = document.getElementById("a1");
+        a3 = document.getElementById("a3");
+        a5 = document.getElementById("a5");
+
+        a2 = document.getElementById("a2"); //Lista de id de requisitos no obligatorios generales
+        var r = a2.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a2.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
+                    return true;
+                }
+            }            
+        }
+
+        a4 = document.getElementById("a4"); //Lista de id de requisitos no obligatorios generales
+        var r = a4.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a4.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
+                    return true;
+                }
+            }            
+        }
+
+        a6 = document.getElementById("a6"); //Lista de id de requisitos no obligatorios generales
+        var r = a6.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a6.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
+                    return true;
+                }
+            }            
+        }
+
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
+        var s = a1.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            var x = a1.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                    return true;
+                }
+            }
+        }
+
+        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios generales
+        var s = a3.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            var x = a3.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                    return true;
+                }
+            }
+        }
+
+        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios generales
+        var s = a5.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            var x = a5.options[c].text
+            var y = x + "-no";
+            var z = x + "-sí";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                    return true;
+                }
+            }
+        }
+
+        return false;
 	}
 
 
