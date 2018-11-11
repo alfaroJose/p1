@@ -332,15 +332,33 @@
 <script>
 
     function updateEstado(){
+        var chkEstudiante = checkEstudiante();
+        var chkAsistente = checkAsistente();
+        var chkGenerales = checkGenerales();
+        var chkInopia = checkInopia();
         opcionesEstado = document.getElementById("estado");
-        while (opcionesEstado.options.length) {
+        if ((chkEstudiante == true && chkEstudiante == true) || chkGenerales == true){
+            while (opcionesEstado.options.length) {
             opcionesEstado.remove(0);
+            }
+            var tmp = document.createElement("option");               
+            tmp.text = 'No';
+            opcionesEstado.options.add(tmp,0);
+        } else if(chkInopia == true){
+            while (opcionesEstado.options.length) {
+            opcionesEstado.remove(0);
+            }
+            var tmp = document.createElement("option");               
+            tmp.text = 'Inopia';
+            opcionesEstado.options.add(tmp,0);
+        } else {
+            while (opcionesEstado.options.length) {
+            opcionesEstado.remove(0);
+            }
+            var tmp = document.createElement("option");               
+            tmp.text = 'Si';
+            opcionesEstado.options.add(tmp,0);
         }
-        //opcionesEstado.options.remove();
-        var tmp = document.createElement("option");               
-        tmp.text = 'Rechazado';
-        
-        opcionesEstado.options.add(tmp,1);
     }
 
     function updateAsistentes(){
@@ -381,6 +399,7 @@
                 blockGenerales();
             }
         }
+        updateEstado();
     }
 
     function blockAsistentes(selected){
@@ -528,6 +547,7 @@
                 blockGenerales();
             }
         }
+        updateEstado();
     }
 
     function blockEstudiantes(selected){
@@ -672,6 +692,7 @@
             updateAsistentes();
             updateEstudiantes();
         }
+        updateEstado();
     }
 
     function blockGenerales(selected){

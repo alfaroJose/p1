@@ -71,6 +71,9 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
 
+            //debug($data);
+            //die();
+
             foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
                 if ($data[$requisitosSolicitud['requisito_id']] == '') {
                     $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
