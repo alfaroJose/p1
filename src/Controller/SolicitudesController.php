@@ -81,18 +81,6 @@ class SolicitudesController extends AppController
                 $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
             endforeach;
 
-            if ($solicitude['estado'] == '0') {
-                $solicitude['estado'] = 'Elegible';
-            } else if ($solicitude['estado'] == '1') {
-                $solicitude['estado'] = 'Rechazada - Profesor';
-            } else if ($solicitude['estado'] == '2') {
-                $solicitude['estado'] = 'Aceptada - Profesor';
-            } else if ($solicitude['estado'] == '3'){
-                $solicitude['estado'] = 'Aceptada - Profesor (Inopia)';
-            } else {
-                $solicitude['estado'] = 'Anulada';
-            }
-
             if ($this->Solicitudes->save($solicitude)) {
                 $this->Flash->success(__('Si sirvió.'));
 

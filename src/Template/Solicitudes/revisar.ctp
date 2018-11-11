@@ -30,7 +30,6 @@
             echo $this->Form->control('solicitud_horas_asistente', ['label'=>['text'=>'Solicita horas asistente'], 'readonly', 'value'=> $datosSolicitud[0]['solicitud_horas_asistente'] ]);
         ?>
         </div>
-
         <!-- Aqui carga los datos de asistencia externa para que solamente se puedan ver -->
 
         <br>
@@ -109,7 +108,6 @@
         <br>
         <h5> Requisitos </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
-
         <style> 
         table {
             font-family: arial, sans-serif;
@@ -275,31 +273,19 @@
         </table>
         </div>
 
+        <!--<div onload="updateEstado()">-->
+
         <br>
         <h5> Estado </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <?php
-
-        /*
-        $estadoActual;
-        if ($solicitude['estado'] == 'Rechazada - Profesor') {
-            $estadoActual = '1';
-        } else if ($solicitude['estado'] == 'Aceptada - Profesor') {
-            $estadoActual = '2';
-        } else if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)'){
-            $estadoActual = '3';
-        } else if ($solicitude['estado'] == 'Anulada'){
-            $estadoActual = '4';
-        } else {
-            $estadoActual = '0';
-        }
-        */
-
-            $estadoActual = $solicitude['estado'];
-            echo $this->Form->input('estado', ['options' => [$estadoActual], 'type' => 'select', 'label' =>['text'=> 'Estado'], 'value'=> $estadoActual]);
+        debug($solicitude['estado']);
+            echo $this->Form->input('estado', ['type' => 'select', 'label' =>['text'=> 'Estado'], 'value'=> $solicitude['estado']]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
             echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
         ?>
+    
+    
 
     </fieldset>
     <br>
@@ -329,35 +315,73 @@
     <?= $this->Form->end() ?>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <script>
+
+    $(function(){
+    $('div[onload]').trigger('onload');
+    });
 
     function updateEstado(){
         var chkEstudiante = checkEstudiante();
         var chkAsistente = checkAsistente();
         var chkGenerales = checkGenerales();
         var chkInopia = checkInopia();
+        var chkMarcadas = checkMarcadas();
         opcionesEstado = document.getElementById("estado");
-        if ((chkEstudiante == true && chkEstudiante == true) || chkGenerales == true){
+        if ((chkEstudiante == true && chkAsistente == true) || chkGenerales == true){
             while (opcionesEstado.options.length) {
-            opcionesEstado.remove(0);
+                opcionesEstado.remove(0);
             }
             var tmp = document.createElement("option");               
-            tmp.text = 'No';
+            tmp.text = 'No Elegible';
             opcionesEstado.options.add(tmp,0);
+            tmp = document.createElement("option");
+            tmp.text = 'Anulada';
+            opcionesEstado.options.add(tmp,1);
+        } else if (chkMarcadas == true){
+            while (opcionesEstado.options.length) {
+                opcionesEstado.remove(0);
+            }
+            var tmp = document.createElement("option");               
+            tmp.text = 'Pendiente - Administrador';
+            opcionesEstado.options.add(tmp,0);
+            tmp = document.createElement("option");
+            tmp.text = 'Anulada';
+            opcionesEstado.options.add(tmp,1);
         } else if(chkInopia == true){
             while (opcionesEstado.options.length) {
-            opcionesEstado.remove(0);
+                opcionesEstado.remove(0);
             }
             var tmp = document.createElement("option");               
-            tmp.text = 'Inopia';
+            tmp.text = 'Elegible';
             opcionesEstado.options.add(tmp,0);
+            tmp = document.createElement("option");
+            tmp.text = 'Aceptada - Profesor (Inopia)';
+            opcionesEstado.options.add(tmp,1);
+            tmp = document.createElement("option");
+            tmp.text = 'Rechazada - Profesor';            
+            opcionesEstado.options.add(tmp,2);
+            tmp = document.createElement("option");
+            tmp.text = 'Anulada';
+            opcionesEstado.options.add(tmp,3);
         } else {
             while (opcionesEstado.options.length) {
-            opcionesEstado.remove(0);
+                opcionesEstado.remove(0);
             }
             var tmp = document.createElement("option");               
-            tmp.text = 'Si';
+            tmp.text = 'Elegible';
             opcionesEstado.options.add(tmp,0);
+            tmp = document.createElement("option");
+            tmp.text = 'Aceptada - Profesor';
+            opcionesEstado.options.add(tmp,1);
+            tmp = document.createElement("option");
+            tmp.text = 'Rechazada - Profesor';            
+            opcionesEstado.options.add(tmp,2);
+            tmp = document.createElement("option");
+            tmp.text = 'Anulada';
+            opcionesEstado.options.add(tmp,3);
         }
     }
 
@@ -858,5 +882,10 @@
         }
         return false;
     }
-    
+
+    function checkMarcadas(){
+        return true;
+	}
+
+
 </script>
