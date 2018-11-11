@@ -248,7 +248,7 @@
             </tbody>
         </table>
         </div>
-        <!--<div onload="updateEstado()">-->
+        <div onload="updateEstado()">
         <!-- Aqui carga el estado de la solicitud con sus datos -->
         <br>
         <h5> Datos administrativos </h5>
