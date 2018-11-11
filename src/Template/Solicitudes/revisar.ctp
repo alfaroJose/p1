@@ -249,6 +249,7 @@
         </table>
         </div>
         <div onload="updateEstado()">
+        <div onload="setEstadoInicial()">
         <!-- Aqui carga el estado de la solicitud con sus datos -->
         <br>
         <h5> Datos administrativos </h5>
@@ -287,6 +288,12 @@
     $(function(){
     $('div[onload]').trigger('onload');
     });
+
+    function setEstadoInicial(){
+        var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
+        document.getElementById("estado").value = actualizarEstado;
+
+    }
 
     function updateEstado(){
         var chkEstudiante = checkEstudiante();
