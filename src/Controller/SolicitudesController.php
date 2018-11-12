@@ -71,17 +71,19 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
 
-            debug($data);
-            die();
-
-            foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
-                if ($data[$requisitosSolicitud['requisito_id']] == '') {
-                    $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
-                }
-                $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
-            endforeach;
-
             if ($this->Solicitudes->save($solicitude)) {
+
+                foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
+                    if ($data[$requisitosSolicitud['requisito_id']] == '') {
+                        $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
+                    }
+                    $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
+                endforeach;
+    
+                if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Aceptada - Profesor'){
+                    $this->Solicitudes->setAceptados($solicitude['id'],$data['aceptados_cantidad_horas'], $data['aceptados_tipo_horas']);
+                }
+
                 $this->Flash->success(__('Si sirvió.'));
 
                 return $this->redirect(['action' => 'index']);

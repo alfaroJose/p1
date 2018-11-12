@@ -251,6 +251,7 @@
         <div onload="updateEstado()">
         <div onload="setEstadoInicial()">
         <div onload="updateHoras()">
+        <div onload="setHorasTipoInicial()">
         <!-- Aqui carga el estado de la solicitud con sus datos -->
         <br>
         <h5> Datos administrativos </h5>
@@ -259,8 +260,8 @@
             echo $this->Form->input('estado', ['type' => 'select', 'label' =>['text'=> 'Estado'], 'value'=> $solicitude['estado'], 'onChange' => 'updateHoras()', 'required'=> true]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
             echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
-            echo $this->Form->input('tipo_horas',['type' => 'select', 'label' =>['text'=> 'Tipo de Horas Asignadas'],'id' => 'tipo_horas', 'options'=> ['Horas Estudiante', 'Horas Asistente'], 'required'=> true]);
-            echo $this->Form->input('cantidad_horas', ['label' => 'Cantidad de Horas Asignadas', 'pattern'=>"[0-9]{0,2}", 'id' => 'cantidad_horas', 'required'=> true]);
+            echo $this->Form->input('aceptados_tipo_horas',['type' => 'select', 'label' =>['text'=> 'Tipo de Horas Asignadas'],'id' => 'aceptados_tipo_horas', 'options'=> ['Horas Estudiante', 'Horas Asistente'], 'required'=> true]);
+            echo $this->Form->input('aceptados_cantidad_horas', ['label' => 'Cantidad de Horas Asignadas', 'pattern'=>"[0-9]{0,2}", 'id' => 'aceptados_cantidad_horas', 'required'=> true]);
             
         ?>
     </fieldset>
@@ -294,31 +295,37 @@
     });
 
     function updateHoras(){
+        var i = 1;
         var x = document.getElementById("estado");
-        var y = document.getElementById("tipo_horas");
+        var y = document.getElementById("aceptados_tipo_horas");
         if (x.value == 'Aceptada - Profesor (Inopia)' || x.value == 'Aceptada - Profesor'){
             while (y.options.length) {
                 y.remove(0);
             }
-            var tmp = document.createElement("option");               
-            tmp.text = ' - Seleccione un tipo de horas -';
-            tmp.value = '';
-            y.options.add(tmp,0);
-            tmp = document.createElement("option");               
-            tmp.text = 'Horas Estudiante';
-            y.options.add(tmp,1);
-            tmp = document.createElement("option");
-            tmp.text = 'Horas Asistente';
-            y.options.add(tmp,2);
-            document.getElementById("tipo_horas").disabled = false;
-            document.getElementById("cantidad_horas").disabled = false;
+            var tmp1 = document.createElement("option");               
+            tmp1.text = ' - Seleccione un tipo de horas -';
+            tmp1.value = '';
+            y.options.add(tmp1,0);
+            if (checkEstudiante() == false){
+                tmp = document.createElement("option");               
+                tmp.text = 'Horas Estudiante';
+                y.options.add(tmp,i);
+                i = i + 1;
+            }
+            if (checkAsistente() == false){
+                tmp = document.createElement("option");
+                tmp.text = 'Horas Asistente';
+                y.options.add(tmp,i);
+            }
+            document.getElementById("aceptados_tipo_horas").disabled = false;
+            document.getElementById("aceptados_cantidad_horas").disabled = false;
         } else {
             while (y.options.length) {
                 y.remove(0);
             }
-            document.getElementById("tipo_horas").disabled = true;
-            document.getElementById("cantidad_horas").value = '';
-            document.getElementById("cantidad_horas").disabled = true;
+            document.getElementById("aceptados_tipo_horas").disabled = true;
+            document.getElementById("aceptados_cantidad_horas").value = '';
+            document.getElementById("aceptados_cantidad_horas").disabled = true;
         }
     }
 
@@ -328,7 +335,17 @@
             actualizarEstado = 'Pendiente - Administrador'
         }
         document.getElementById("estado").value = actualizarEstado;
+    }
 
+    function setHorasTipoInicial(){
+        var actializarHoras = "<?php echo $datosSolicitud[0]['aceptados_cantidad_horas']; ?>";
+        var actualizarTipoHoras = "<?php echo $datosSolicitud[0]['aceptados_tipo_horas']; ?>";
+        if (actializarHoras != ''){
+            document.getElementById("aceptados_cantidad_horas").value = actializarHoras;
+        }
+        if (actualizarTipoHoras != ''){
+            document.getElementById("aceptados_tipo_horas").value = actualizarTipoHoras;
+        }
     }
 
     function updateEstado(){
@@ -432,8 +449,8 @@
                 blockGenerales();
             }
         }
-
         updateEstado();
+        updateHoras();
     }
 
     function blockAsistentes(selected){
@@ -562,6 +579,7 @@
         }
 
         updateEstado();
+        updateHoras();
     }
 
     function blockEstudiantes(selected){
@@ -691,6 +709,7 @@
         }
 
         updateEstado();
+        updateHoras()
     }
 
     function blockGenerales(selected){
