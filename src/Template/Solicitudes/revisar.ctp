@@ -299,6 +299,17 @@
         var x = document.getElementById("estado");
         var y = document.getElementById("aceptados_tipo_horas");
         if (x.value == 'Aceptada - Profesor (Inopia)' || x.value == 'Aceptada - Profesor'){
+
+            var chkEstudiante = checkEstudiante(); //verdadero -> algun no esta precionado
+            var chkAsistente = checkAsistente();  //falso -> ningun no sin precionar
+
+            var chkInopiaEstudiante = checkInopiaEstudiante(); // verdadero -> algun inopia esta precionado
+            var chkInopiaAsistente = checkInopiaAsistente();    // falsto -> ningun inopia
+            var chkInopiaGeneral = checkInopiaGeneral();
+
+            var chkMarcadasEstudiante = checkMarcadasEstudiante(); //verdadero -> alguna casilla esta sin precionar
+            var chkMarcadasAsistente = checkMarcadasAsistente();  // falso -> todo precionado
+
             while (y.options.length) {
                 y.remove(0);
             }
@@ -306,16 +317,26 @@
             tmp1.text = ' - Seleccione un tipo de horas -';
             tmp1.value = '';
             y.options.add(tmp1,0);
-            if (checkEstudiante() == false){
+
+            if (chkEstudiante == false && chkAsistente == false && chkMarcadasEstudiante == false && chkMarcadasAsistente == false && (chkInopiaGeneral == true || (chkInopiaAsistente == false && chkInopiaEstudiante == false) || (chkInopiaAsistente == true && chkInopiaEstudiante == true))){
                 tmp = document.createElement("option");               
                 tmp.text = 'Horas Estudiante';
                 y.options.add(tmp,i);
                 i = i + 1;
-            }
-            if (checkAsistente() == false){
                 tmp = document.createElement("option");
                 tmp.text = 'Horas Asistente';
                 y.options.add(tmp,i);
+                i = i + 1;
+            } else if ((chkEstudiante == false && chkMarcadasEstudiante == false && (chkMarcadasAsistente == true || chkAsistente == true)) || (x.value == 'Aceptada - Profesor (Inopia)' && chkInopiaEstudiante == true) || (x.value == 'Aceptada - Profesor' && chkInopiaEstudiante == false)){
+                tmp = document.createElement("option");               
+                tmp.text = 'Horas Estudiante';
+                y.options.add(tmp,i);
+                i = i + 1;
+            } else if ((chkAsistente == false && chkMarcadasAsistente == false && (chkMarcadasEstudiante == true || chkEstudiante == true)) || (x.value == 'Aceptada - Profesor (Inopia)' && chkInopiaAsistente == true) || (x.value == 'Aceptada - Profesor' && chkInopiaAsistente == false)){
+                tmp = document.createElement("option");
+                tmp.text = 'Horas Asistente';
+                y.options.add(tmp,i);
+                i = i + 1;
             }
             document.getElementById("aceptados_tipo_horas").disabled = false;
             document.getElementById("aceptados_cantidad_horas").disabled = false;
@@ -349,20 +370,20 @@
     }
 
     function updateEstado(){
-        var chkEstudiante = checkEstudiante(); //verdadero -> algun no esta precionado
-        var chkAsistente = checkAsistente();
+        var chkEstudiante = checkEstudiante(); //verdadero -> algun NO esta precionado
+        var chkAsistente = checkAsistente();   // falso -> ningun NO esta precionado
         var chkGenerales = checkGenerales();
 
         var chkInopiaGeneral = checkInopiaGeneral(); // verdadero -> algun inopia esta precionado
-        var chkInopiaEstudiante = checkInopiaEstudiante();
+        var chkInopiaEstudiante = checkInopiaEstudiante(); // falso -> ningun inopia esta precionado
         var chkInopiaAsistente = checkInopiaAsistente();
 
         var chkMarcadasGeneral = checkMarcadasGeneral(); //verdadero -> alguna casilla esta sin precionar
-        var chkMarcadasEstudiante = checkMarcadasEstudiante();
+        var chkMarcadasEstudiante = checkMarcadasEstudiante(); // falso -> todas las casillas estan precionadas
         var chkMarcadasAsistente = checkMarcadasAsistente();
         
         opcionesEstado = document.getElementById("estado");
-        if (chkGenerales == true || (chkEstudiante == true && chkAsistente == true) || (chkGenerales == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkGenerales == false && chkAsistente == true && chkMarcadasEstudiante == true)){
+        if (chkGenerales == true || (chkEstudiante == true && chkAsistente == true) || (chkMarcadasGeneral == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkAsistente == true && chkMarcadasEstudiante == true)){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
