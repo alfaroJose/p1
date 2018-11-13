@@ -209,7 +209,7 @@
                 <?php 
                 $i = 0;
                 $j = 0;
-                //Carga los requisitos para horas asistente
+                //Carga los requisitos para horas asistente y estudiante
                 foreach ($datosRequisitosSolicitud as $general): ?>
                 <tr>
                 <?php if($general['requisito_categoria'] == 'General'):?>
@@ -299,6 +299,17 @@
         var x = document.getElementById("estado");
         var y = document.getElementById("aceptados_tipo_horas");
         if (x.value == 'Aceptada - Profesor (Inopia)' || x.value == 'Aceptada - Profesor'){
+
+            var chkEstudiante = checkEstudiante(); //verdadero -> algun no esta precionado
+            var chkAsistente = checkAsistente();  //falso -> ningun no sin precionar
+
+            var chkInopiaEstudiante = checkInopiaEstudiante(); // verdadero -> algun inopia esta precionado
+            var chkInopiaAsistente = checkInopiaAsistente();    // falsto -> ningun inopia
+            var chkInopiaGeneral = checkInopiaGeneral();
+
+            var chkMarcadasEstudiante = checkMarcadasEstudiante(); //verdadero -> alguna casilla esta sin precionar
+            var chkMarcadasAsistente = checkMarcadasAsistente();  // falso -> todo precionado
+
             while (y.options.length) {
                 y.remove(0);
             }
@@ -306,16 +317,26 @@
             tmp1.text = ' - Seleccione un tipo de horas -';
             tmp1.value = '';
             y.options.add(tmp1,0);
-            if (checkEstudiante() == false){
+
+            if (chkEstudiante == false && chkAsistente == false && chkMarcadasEstudiante == false && chkMarcadasAsistente == false && (chkInopiaGeneral == true || (chkInopiaAsistente == false && chkInopiaEstudiante == false) || (chkInopiaAsistente == true && chkInopiaEstudiante == true))){
                 tmp = document.createElement("option");               
                 tmp.text = 'Horas Estudiante';
                 y.options.add(tmp,i);
                 i = i + 1;
-            }
-            if (checkAsistente() == false){
                 tmp = document.createElement("option");
                 tmp.text = 'Horas Asistente';
                 y.options.add(tmp,i);
+                i = i + 1;
+            } else if ((chkEstudiante == false && chkMarcadasEstudiante == false && (chkMarcadasAsistente == true || chkAsistente == true)) || (x.value == 'Aceptada - Profesor (Inopia)' && chkInopiaEstudiante == true) || (x.value == 'Aceptada - Profesor' && chkInopiaEstudiante == false)){
+                tmp = document.createElement("option");               
+                tmp.text = 'Horas Estudiante';
+                y.options.add(tmp,i);
+                i = i + 1;
+            } else if ((chkAsistente == false && chkMarcadasAsistente == false && (chkMarcadasEstudiante == true || chkEstudiante == true)) || (x.value == 'Aceptada - Profesor (Inopia)' && chkInopiaAsistente == true) || (x.value == 'Aceptada - Profesor' && chkInopiaAsistente == false)){
+                tmp = document.createElement("option");
+                tmp.text = 'Horas Asistente';
+                y.options.add(tmp,i);
+                i = i + 1;
             }
             document.getElementById("aceptados_tipo_horas").disabled = false;
             document.getElementById("aceptados_cantidad_horas").disabled = false;
@@ -349,13 +370,20 @@
     }
 
     function updateEstado(){
-        var chkEstudiante = checkEstudiante();
-        var chkAsistente = checkAsistente();
+        var chkEstudiante = checkEstudiante(); //verdadero -> algun NO esta precionado
+        var chkAsistente = checkAsistente();   // falso -> ningun NO esta precionado
         var chkGenerales = checkGenerales();
-        var chkInopia = checkInopia();
-        var chkMarcadas = checkMarcadas();
+
+        var chkInopiaGeneral = checkInopiaGeneral(); // verdadero -> algun inopia esta precionado
+        var chkInopiaEstudiante = checkInopiaEstudiante(); // falso -> ningun inopia esta precionado
+        var chkInopiaAsistente = checkInopiaAsistente();
+
+        var chkMarcadasGeneral = checkMarcadasGeneral(); //verdadero -> alguna casilla esta sin precionar
+        var chkMarcadasEstudiante = checkMarcadasEstudiante(); // falso -> todas las casillas estan precionadas
+        var chkMarcadasAsistente = checkMarcadasAsistente();
+        
         opcionesEstado = document.getElementById("estado");
-        if ((chkEstudiante == true && chkAsistente == true) || chkGenerales == true){
+        if (chkGenerales == true || (chkEstudiante == true && chkAsistente == true) || (chkMarcadasGeneral == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkAsistente == true && chkMarcadasEstudiante == true)){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
@@ -365,17 +393,36 @@
             tmp = document.createElement("option");
             tmp.text = 'Anulada';
             opcionesEstado.options.add(tmp,1);
-        } else if (chkMarcadas == true){
+        } else if (chkMarcadasGeneral == true || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == false && chkAsistente == true)){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
-            var tmp = document.createElement("option");               
+            var tmp = document.createElement("option");         
             tmp.text = 'Pendiente - Administrador';
             opcionesEstado.options.add(tmp,0);
             tmp = document.createElement("option");
             tmp.text = 'Anulada';
             opcionesEstado.options.add(tmp,1);
-        } else if(chkInopia == true){
+        } else if (chkInopiaGeneral == false && chkMarcadasGeneral == false && chkMarcadasEstudiante == false && chkMarcadasAsistente == false && chkEstudiante == false && chkAsistente == false && chkGenerales == false && ((chkInopiaEstudiante == true && chkInopiaAsistente == false) || (chkInopiaEstudiante == false && chkInopiaAsistente == true))){
+            while (opcionesEstado.options.length) {
+                opcionesEstado.remove(0);
+            }
+            var tmp = document.createElement("option");               
+            tmp.text = 'Elegible';
+            opcionesEstado.options.add(tmp,0);
+            tmp = document.createElement("option");
+            tmp.text = 'Aceptada - Profesor';
+            opcionesEstado.options.add(tmp,1);
+            tmp = document.createElement("option");
+            tmp.text = 'Aceptada - Profesor (Inopia)';
+            opcionesEstado.options.add(tmp,2);
+            tmp = document.createElement("option");
+            tmp.text = 'Rechazada - Profesor';            
+            opcionesEstado.options.add(tmp,3);
+            tmp = document.createElement("option");
+            tmp.text = 'Anulada';
+            opcionesEstado.options.add(tmp,4);
+        } else if(chkInopiaGeneral == true || chkInopiaEstudiante == true || chkInopiaAsistente == true){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
@@ -796,10 +843,10 @@
         return false;
     }
 
-    function checkInopia(){
+    function checkInopiaGeneral(){
         a2 = document.getElementById("a2"); //Lista de id de requisitos obligatorios de horas asistente
-        a4 = document.getElementById("a4");
-        a6 = document.getElementById("a6");
+        
+        
         var r = a2.options.length;
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
         {    
@@ -810,7 +857,11 @@
                 return true;
             }
         }
+        return false;
+    }
 
+    function checkInopiaEstudiante(){
+        a4 = document.getElementById("a4");
         var s = a4.options.length;
         for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
         {
@@ -821,7 +872,11 @@
                 return true;
             }    
         }
+        return false;
+    }
 
+    function checkInopiaAsistente(){
+        a6 = document.getElementById("a6");
         var t = a6.options.length;
         for(c = 0;  c < t; c = c + 1) // Recorre los requisitos
         {            
@@ -832,82 +887,51 @@
                 return true;
             }
         }
+        return false;
+    }
+
+    function checkMarcadasGeneral(){
+        a1 = document.getElementById("a1");
+        a2 = document.getElementById("a2");
+
+        var s = a1.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            var x = a1.options[c].text;
+            var y = x + "-no";
+            var z = x + "-sí";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                    return true;
+                }
+            }
+        }
+
+        var r = a2.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a2.options[c].text;
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
+                    return true;
+                }
+            }            
+        }
 
         return false;
     }
 
-    function checkMarcadas(){
-        a2 = document.getElementById("a2");
-        a4 = document.getElementById("a4");
-        a6 = document.getElementById("a6");
-        a1 = document.getElementById("a1");
+    function checkMarcadasEstudiante(){
         a3 = document.getElementById("a3");
-        a5 = document.getElementById("a5");
+        a4 = document.getElementById("a4");
 
-        a2 = document.getElementById("a2"); //Lista de id de requisitos no obligatorios generales
-        var r = a2.options.length;
-        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
-        {
-            var x = a2.options[c].text
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            if(document.getElementById(y).disabled == false){
-                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
-                    return true;
-                }
-            }            
-        }
-
-        a4 = document.getElementById("a4"); //Lista de id de requisitos no obligatorios generales
-        var r = a4.options.length;
-        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
-        {
-            var x = a4.options[c].text
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            if(document.getElementById(y).disabled == false){
-                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
-                    return true;
-                }
-            }            
-        }
-
-        a6 = document.getElementById("a6"); //Lista de id de requisitos no obligatorios generales
-        var r = a6.options.length;
-        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
-        {
-            var x = a6.options[c].text
-            var y = x + "-no";
-            var z = x + "-sí";
-            var w = x + "-inopia";
-            if(document.getElementById(y).disabled == false){
-                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
-                    return true;
-                }
-            }            
-        }
-
-        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
-        var s = a1.options.length;
-        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
-        {
-            var x = a1.options[c].text
-            var y = x + "-no";
-            var z = x + "-sí";
-            if(document.getElementById(y).disabled == false){
-                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
-                    return true;
-                }
-            }
-        }
-
-        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios generales
         var s = a3.options.length;
         for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
         {
-            var x = a3.options[c].text
+            var x = a3.options[c].text;
             var y = x + "-no";
             var z = x + "-sí";
             if(document.getElementById(y).disabled == false){
@@ -917,22 +941,55 @@
             }
         }
 
-        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios generales
-        var s = a5.options.length;
-        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        var r = a4.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
-            var x = a5.options[c].text
+            var x = a4.options[c].text;
             var y = x + "-no";
             var z = x + "-sí";
+            var w = x + "-inopia";
             if(document.getElementById(y).disabled == false){
-                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
                     return true;
                 }
-            }
+            }            
         }
 
         return false;
-	}
+    }
 
+    function checkMarcadasAsistente(){
+        a5 = document.getElementById("a5");
+        a6 = document.getElementById("a6");
+        
+        var s = a5.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
+        {
+            var x = a5.options[c].text;
+            var y = x + "-no";
+            var z = x + "-sí";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false){
+                    return true;
+                }
+            }
+        }
+
+        var r = a6.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a6.options[c].text;
+            var y = x + "-no";
+            var z = x + "-sí";
+            var w = x + "-inopia";
+            if(document.getElementById(y).disabled == false){
+                if(document.getElementById(y).checked == false && document.getElementById(z).checked == false && document.getElementById(w).checked == false){
+                    return true;
+                }
+            }            
+        }
+
+        return false;
+    }
 
 </script>
