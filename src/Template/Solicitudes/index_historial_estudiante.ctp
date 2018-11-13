@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Solicitude[]|\Cake\Collection\CollectionInterface $solicitudes
  */
 ?>
+
 <div class="solicitudes index large-9 medium-8 columns content">
     <h3><?= __('Solicitudes de Asistencias') ?></h3>
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
@@ -29,7 +30,7 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
-                  
+         
                 <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>              
                 <?php 
@@ -51,15 +52,7 @@
       echo $this->Html->link('Agregar solicitud',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
      ?>
 
-     <?php //Agrega el boton de consultar historial solo al index de correspondiente 
-    if(4 == $rolActual[0]){
-    echo $this->Html->link('Consultar historial', ['action'=>'indexHistorialEstudiante'], ['class'=>'btn btn-info float-right mr-3']); 
-    }else if(3 == $rolActual[0]){
-    echo $this->Html->link('Consultar historial', ['action'=>'indexHistorialProfesor'], ['class'=>'btn btn-info float-right mr-3']); 
-    }else if(1 == $rolActual[0] || 2 == $rolActual[0]){
-    echo $this->Html->link('Consultar historial', ['action'=>'indexHistorialAdmin'], ['class'=>'btn btn-info float-right mr-3']); 
-    }
-     ?>
+     <?= $this->Html->link('Consultar actuales', ['action'=>'index'], ['class'=>'btn btn-info float-right mr-3']) ?>
 
 </div>
 <script type="text/javascript">
