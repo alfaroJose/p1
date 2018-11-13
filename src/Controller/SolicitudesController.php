@@ -183,26 +183,19 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
 
-            foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
-                if ($data[$requisitosSolicitud['requisito_id']] == '') {
-                    $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
-                }
-                $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
-            endforeach;
-
-            if ($solicitude['estado'] == '0') {
-                $solicitude['estado'] = 'Elegible';
-            } else if ($solicitude['estado'] == '1') {
-                $solicitude['estado'] = 'Rechazada - Profesor';
-            } else if ($solicitude['estado'] == '2') {
-                $solicitude['estado'] = 'Aceptada - Profesor';
-            } else if ($solicitude['estado'] == '3'){
-                $solicitude['estado'] = 'Aceptada - Profesor (Inopia)';
-            } else {
-                $solicitude['estado'] = 'Anulada';
-            }
-
             if ($this->Solicitudes->save($solicitude)) {
+
+                foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
+                    if ($data[$requisitosSolicitud['requisito_id']] == '') {
+                        $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
+                    }
+                    $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
+                endforeach;
+    
+                if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Aceptada - Profesor'){
+                    $this->Solicitudes->setAceptados($solicitude['id'],$data['aceptados_cantidad_horas'], $data['aceptados_tipo_horas']);
+                }
+
                 $this->Flash->success(__('Si sirvió.'));
 
                 return $this->redirect(['action' => 'index']);

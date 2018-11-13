@@ -335,11 +335,13 @@ class SolicitudesTable extends Table
         s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
         s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
         s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
-        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas'         
+        s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas',
+        a.cantidad_horas as 'aceptados_cantidad_horas', a.tipo_horas as 'aceptados_tipo_horas'
         from solicitudes s join usuarios estudiante on s.usuarios_id = estudiante.id
 		join grupos g on s.grupos_id = g.id
 		join cursos c on g.cursos_id = c.id
 		left outer join usuarios profesor on g.usuarios_id = profesor.id
+        left outer join aceptados a on a.id = s.id
         where s.id = '".$id."'")->fetchAll('assoc');
         return $result;
     }
@@ -358,7 +360,13 @@ class SolicitudesTable extends Table
     public function setCondicionTiene($solicitudes_id, $requisitos_id, $condicion)
     {
         $connet = ConnectionManager::get('default');
-        $connet->execute("call asignar_condicion_tiene ($solicitudes_id, $requisitos_id, '$condicion')");
+        $connet->execute("call actualizar_condicion_tiene ($solicitudes_id, $requisitos_id, '$condicion')");
+    }
+
+    public function setAceptados($solicitudes_id, $cantidad_horas, $tipo_horas)
+    {
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call insertar_modificar_aceptados ($solicitudes_id, $cantidad_horas, '$tipo_horas')");
     }
 
 }
