@@ -20,7 +20,7 @@
             echo $this->Form->control('carne', ['label'=>['text'=>'Carné'], 'readonly', 'value'=>$username, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('telefono', ['label'=>['text'=>'Teléfono'], 'readonly', 'value'=>$telefonoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
             echo $this->Form->control('correo', ['readonly', 'value'=>$correoEstudiante, 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
-            echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
+            echo $this->Form->control('carrera', ['pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,100}", 'readonly', 'value'=> 'Computación e Informática','templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);
 
             //¿Qué tipo de horas desea solicitar?
             echo ("Solicita:");            
