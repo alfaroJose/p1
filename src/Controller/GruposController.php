@@ -349,7 +349,7 @@ class GruposController extends AppController
     public function importExcelfile (){
         $this->loadModel('Grupos');
         $coursesClassesVw = $this->Grupos->newEntity();
-        $UserController = new UsersController;
+        $UserController = new UsuariosController;
         //Quita el límite de la memoria, ya que los archivos la pueden gastar
         ini_set('memory_limit', '-1');
 
@@ -487,8 +487,8 @@ class GruposController extends AppController
         if ($this->request->is('post')) {
             //Recupera el nombre del archivo
             $file = $this->Files->patchEntity($file, $this->request->getData());
-
-            //Se sube el archivo
+            debug($file);
+            die();            //Se sube el archivo
             if ($this->Files->save($file)) {
                 //Una vez subido, llama el método importExcelFile
                 return $this->redirect(['controller' => 'Grupos', 'action' => 'importExcelfile']);
