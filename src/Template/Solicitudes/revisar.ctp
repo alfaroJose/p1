@@ -114,7 +114,9 @@
             <tbody>
                 <?php
                 $i = 0;
-                $j = 0; 
+                $j = 0;
+                $auto5 = null;
+                $auto6 = null; 
                 //Carga los requisitos para horas asistente
                 foreach ($datosRequisitosSolicitud as $asistente): ?>
                 <tr>
@@ -162,6 +164,8 @@
                 <?php 
                 $i = 0;
                 $j = 0;
+                $auto3 = null;
+                $auto4 = null;
                 //Carga los requisitos para horas estudiante
                 foreach ($datosRequisitosSolicitud as $estudiante): ?>
                 <tr>
@@ -209,6 +213,8 @@
                 <?php 
                 $i = 0;
                 $j = 0;
+                $auto = null;
+                $auto2 = null;
                 //Carga los requisitos para horas asistente y estudiante
                 foreach ($datosRequisitosSolicitud as $general): ?>
                 <tr>
@@ -259,7 +265,6 @@
         <?php
             echo $this->Form->input('estado', ['type' => 'select', 'label' =>['text'=> 'Estado'], 'value'=> $solicitude['estado'], 'onChange' => 'updateHoras()', 'required'=> true]);
             echo $this->Form->control('promedio', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}"]);
-            echo $this->Form->control('justificacion', ['label' => 'Justificación', 'type'=> 'textarea']);
             echo $this->Form->input('aceptados_tipo_horas',['type' => 'select', 'label' =>['text'=> 'Tipo de Horas Asignadas'],'id' => 'aceptados_tipo_horas', 'options'=> ['Horas Estudiante', 'Horas Asistente'], 'required'=> true]);
             echo $this->Form->input('aceptados_cantidad_horas', ['label' => 'Cantidad de Horas Asignadas', 'pattern'=>"[0-9]{0,2}", 'id' => 'aceptados_cantidad_horas', 'required'=> true]);
             
