@@ -68,7 +68,6 @@ class SolicitudesController extends AppController
 
     public function imprimir($id = null){
         $tupla = $this->Solicitudes->get($id);
-        debug($horasEstudiante);
         $this->layout='none';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
