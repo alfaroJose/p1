@@ -18,12 +18,27 @@
 </head>
 
 <body>
-  <br>
-  <br>
-  <br>
 <h1>Solicitud de  asistencias </h1>
-<span style="text-decoration: underline;"><?= h($solicitude->usuario->primer_apellido) ?></span><br>
-<span>Primer Apellido </span>
+<table>
+  <tbody>
+    <tr style="height: 10px;">
+<td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->primer_apellido) ?> </td>
+<td></td>
+<td style="border-bottom: 1pt solid black";><?= h($solicitude->usuario->segundo_apellido) ?> </td>
+  </tr>
+<tr style="height :10px;">
+  <td>
+  Primer Apellido
+  </td>
+  <td></td>
+  <td>
+    Segundo Apellido
+  </td>
+  <td></td>
+  <td> Nombre </td>
+  </tr>
+  </tbody>
+  </table>
         <!-- <div id="sidebar"> 
             <div id="outline">
             </div>

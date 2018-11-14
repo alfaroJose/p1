@@ -96,11 +96,6 @@ class SolicitudesTable extends Table
             ->notEmpty('fecha');
 
         $validator
-            ->scalar('justificación')
-            ->maxLength('justificación', 1000)
-            ->allowEmpty('justificación');
-
-        $validator
             ->requirePresence('ronda', 'create')
             ->notEmpty('ronda');
 
