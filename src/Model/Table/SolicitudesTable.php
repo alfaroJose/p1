@@ -93,11 +93,6 @@ class SolicitudesTable extends Table
             ->notEmpty('fecha');
 
         $validator
-            ->scalar('justificacion')
-            ->maxLength('justificacion', 1000)
-            ->allowEmpty('justificacion');
-
-        $validator
             ->requirePresence('ronda', 'create')
             ->notEmpty('ronda');
 
@@ -333,7 +328,7 @@ class SolicitudesTable extends Table
         g.numero as 'grupo_numero', c.sigla as 'curso_sigla', c.nombre as 'curso_nombre',
         s.id as 'solicitud_id', s.carrera as 'solicitud_carrera', s.promedio as 'solicitud_promedio',
         s.estado as 'solicitud_estado', s.asistencia_externa as 'solicitud_asistencia_externa',
-        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa', s.justificacion as 'solicitud_justificacion',
+        s.cantidad_horas_externa as 'solicitud_cantidad_horas_externa',
         s.horas_asistente as 'solicitud_horas_asistente', s.horas_estudiante as 'solicitud_horas_estudiante',
         s.horas_asistente_externa as 'solicitud_horas_asistente_externas', s.horas_estudiante_externa as 'solicitud_horas_estudiante_externas',
         a.cantidad_horas as 'aceptados_cantidad_horas', a.tipo_horas as 'aceptados_tipo_horas'
