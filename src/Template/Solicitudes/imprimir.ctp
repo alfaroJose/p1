@@ -4,7 +4,11 @@
  * @var \App\Model\Entity\Solicitude[]|\Cake\Collection\CollectionInterface $solicitudes
  */
 ?>
-
+<script type="text/javascript">
+$(document).ready( function () {
+     if()
+    } );
+  </script>
 <div class="imprimir">
 <head> 
 <meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet"/> 
@@ -71,10 +75,16 @@
   <td></td>
   <td> Correo electronico </td>
   </tr>
-  <br>
-  <br>
   <tr style="height: 10px;">
   <tr style="height: 10px;"></tr>
+<td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->carrera) ?> </td>
+<td></td>
+<td> Solicita horas : </td>
+<td></td>
+<td><?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkboxParaHE", "id" => "checkboxHE"]); ?></td>
+<td></td>
+<td><?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkboxParaHD", "id" => "checkboxHA"]); ?></td>
+</tr>
   </tbody>
   </table>
        
