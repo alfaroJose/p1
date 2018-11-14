@@ -348,6 +348,7 @@ class GruposController extends AppController
     //Método encargado de leer el archivo de excel y mostrar la vista previa
     public function importExcelfile (){
         $this->loadModel('Grupos');
+        $usuariosTable = $this->loadmodel('Usuarios');
         $coursesClassesVw = $this->Grupos->newEntity();
         $UserController = new UsuariosController;
         //Quita el límite de la memoria, ya que los archivos la pueden gastar
@@ -393,7 +394,8 @@ class GruposController extends AppController
                         //Divide el profesor en nombre y apellido
                         $prof = preg_split('/\s+/', $value);
                         //Consigue el id del profesor
-                        $id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        //$id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        $id =
                         if($id == null){
                             //Se borra el archivo
                             $this->deleteFiles();
