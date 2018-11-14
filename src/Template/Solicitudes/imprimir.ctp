@@ -77,16 +77,26 @@ $(document).ready( function () {
   </tr>
   <tr style="height: 10px;">
   <tr style="height: 10px;"></tr>
-<td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->carrera) ?> </td>
+<td style="border-bottom: 1pt solid black;"><?= h($solicitude->carrera) ?> </td>
 <td></td>
 <td> Solicita horas : </td>
 <td></td>
-<td><?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkboxParaHE", "id" => "checkboxHE"]); ?></td>
+<td> Horas Estudiante <?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkboxParaHE", "id" => "checkboxHE"]); ?></td>
 <td></td>
-<td><?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkboxParaHD", "id" => "checkboxHA"]); ?></td>
+<td> Horas Asistente <?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkboxParaHD", "id" => "checkboxHA"]); ?></td>
+<tr style="height :10px;">
+<td>Carrera</td>
 </tr>
+</tr>
+<tr style="height: 10px;"></tr>
   </tbody>
   </table>
-       
+  <div class="mensaje" style="font-size: 0.875em;">
+<p> Documentos que debe adjuntar al entregar el formulario en la ECCI: </p>
+<ol>  <li>          Entregar este formulario debidamente en la Secretaria de la ECCI, sin la firma del docente. </li>
+<li>                Sí es su primera asistencia en la UCR debe traer además una carta de un Banco Público en la certifique su número de cuenta de ahorro o cuenta corriente y copia de su documento de identificación. 
+ </li>
+ </o>
+</div>     
 </body>
  </div>
