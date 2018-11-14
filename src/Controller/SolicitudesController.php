@@ -23,7 +23,7 @@ class SolicitudesController extends AppController
     {
         $todo = $this->Solicitudes->getIndexValues();
         $this->paginate = [
-            'contain' => ['Usuarios', 'Grupos']
+            'contain' => ['Usuarios', 'Grupos','Cursos']
         ];
         $solicitudes = $this->paginate($this->Solicitudes);
         $this->set(compact('solicitudes','todo'));

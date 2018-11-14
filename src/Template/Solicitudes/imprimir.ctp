@@ -105,5 +105,10 @@ $(document).ready( function () {
  <p style="text-indent: 40px;">                     Tipo </p>
  <p style="text-indent: 40px;">                     Estudiante <?= $this->Form->checkbox("checkboxHEExt", ["disabled" => true, "class" => "checkboxParaHEExt", "id" => "checkboxEstudiante Externa"]);?>  Asistente <?= $this->Form->checkbox("checkboxHAExt", ["disabled" => true, "class" => "checkboxParaHAExternas", "id" => "checkboxHAExtern"]);?></p>
 </div>    
+  <h2><b>Curso solicitado </b> </h2>
+  <table border="1">
+  <tr> <td>Sigla</td><td>Grupo</td><td>Nombre del curso</td><td>Nombre del docente</td> </tr>
+  <tr> <td><?= h($solicitude->curso->sigla) ?> </td><td><?= h($solicitude->grupo->numero) ?></td><td><?= h($solicitude->curso->nombre) ?></td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
+  </table>
 </body>
  </div>
