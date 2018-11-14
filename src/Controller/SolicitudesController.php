@@ -196,11 +196,11 @@ class SolicitudesController extends AppController
                     $this->Solicitudes->setAceptados($solicitude['id'],$data['aceptados_cantidad_horas'], $data['aceptados_tipo_horas']);
                 }
 
-                $this->Flash->success(__('Si sirvió.'));
+                $this->Flash->success(__('La solicitud ha sido revisada.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('No sirvío'));
+            $this->Flash->error(__('La solicitud no se ha podido revisar. Por favor intente de nuevo.'));
         }
         $this->set(compact('solicitude','datosSolicitud','datosRequisitosSolicitud'));
     }
