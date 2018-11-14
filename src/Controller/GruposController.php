@@ -347,8 +347,8 @@ class GruposController extends AppController
 
     //Método encargado de leer el archivo de excel y mostrar la vista previa
     public function importExcelfile (){
-        $this->loadModel('CoursesClassesVw');
-        $coursesClassesVw = $this->CoursesClassesVw->newEntity();
+        $this->loadModel('Grupos');
+        $coursesClassesVw = $this->Grupos->newEntity();
         $UserController = new UsersController;
         //Quita el límite de la memoria, ya que los archivos la pueden gastar
         ini_set('memory_limit', '-1');
@@ -398,7 +398,7 @@ class GruposController extends AppController
                             //Se borra el archivo
                             $this->deleteFiles();
                             $this->Flash->error('El profesor '. $value .' no se encuentra en la tabla');
-                            return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+                            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
                         }else{
                             array_push($profIds, $id);
                         }
@@ -430,7 +430,7 @@ class GruposController extends AppController
         //Cuando se da aceptar
         if ($this->request->is('post')) {
             //Borra todos los grupos
-            $classesModel = $this->loadmodel('Classes');
+            $classesModel = $this->loadmodel('Grupos');
             $classesModel->deleteAllClasses();
 
             //Llama al método addFromFile con cada fila
@@ -442,7 +442,7 @@ class GruposController extends AppController
             $this->deleteFiles();
 
             $this->Flash->success(__('Se agregaron los cursos correctamente.'));
-            return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
         }
         $this->set(compact('coursesClassesVw'));
     }
@@ -451,8 +451,8 @@ class GruposController extends AppController
     public function addFromFile ($parameters, $profId){
         //Si la fila está vacía no hace nada
         if($parameters[0] != null){
-            $courseTable = $this->loadmodel('Courses');
-            $classTable = $this->loadmodel('Classes');
+            $courseTable = $this->loadmodel('Cursos');
+            $classTable = $this->loadmodel('Grupos');
 
             //Agrega el curso
             $courseTable->addCourse($parameters[1], $parameters[0], 0);
@@ -473,7 +473,7 @@ class GruposController extends AppController
     //Es necesario ya que hay que eliminar los archivos del sistema
     public function cancelExcel(){
         $this->deleteFiles();
-        return $this->redirect(['controller' => 'CoursesClassesVw', 'action' => 'index']);
+        return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
     }
 
     //Metodo encargado de subir el archivo
