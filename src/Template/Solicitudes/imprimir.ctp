@@ -108,7 +108,10 @@ $(document).ready( function () {
   <h2><b>Curso solicitado </b> </h2>
   <table border="1">
   <tr> <td>Sigla</td><td>Grupo</td><td>Nombre del curso</td><td>Nombre del docente</td> </tr>
-  <tr> <td><?= h($solicitude->curso->sigla) ?> </td><td><?= h($solicitude->grupo->numero) ?></td><td><?= h($solicitude->curso->nombre) ?></td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
+  <tr> <td> </td><td><?= h($solicitude->grupo->numero) ?></td><td></td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
   </table>
+  <br>
+  <p style="text-indent: 40px;"><b>Firma del estudiante  &nbsp; </b> <u style="width: 90px;">&nbsp; &nbsp;  &nbsp;    &nbsp;    &nbsp; &nbsp;  &nbsp;  &nbsp;   &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  
+  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </u></p>
 </body>
  </div>
