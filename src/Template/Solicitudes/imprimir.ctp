@@ -96,7 +96,14 @@ $(document).ready( function () {
 <ol>  <li>          Entregar este formulario debidamente en la Secretaria de la ECCI, sin la firma del docente. </li>
 <li>                Sí es su primera asistencia en la UCR debe traer además una carta de un Banco Público en la certifique su número de cuenta de ahorro o cuenta corriente y copia de su documento de identificación. 
  </li>
- </o>
-</div>     
+</ol>
+</div> 
+<div class="asistencias externas" style="font-size: 0.875em;">
+<p> Informacion sobre otras asistencias </p>
+<ol> <li>¿Tiene o va a solicitar asistencia en otra Unidad Académica u oficina de la Universidad? <p><?= h($solicitude->asistencia_externa) ?></p></ol>
+ </li>
+ <p style="text-indent: 40px;">                     Tipo </p>
+ <p style="text-indent: 40px;">                     Estudiante <?= $this->Form->checkbox("checkboxHEExt", ["disabled" => true, "class" => "checkboxParaHEExt", "id" => "checkboxEstudiante Externa"]);?>  Asistente <?= $this->Form->checkbox("checkboxHAExt", ["disabled" => true, "class" => "checkboxParaHAExternas", "id" => "checkboxHAExtern"]);?></p>
+</div>    
 </body>
  </div>
