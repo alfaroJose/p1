@@ -19,12 +19,17 @@
 
 <body>
 <h1>Solicitud de  asistencias </h1>
+<br>
+<h2> Datos del estudiante</h2>
+<br>
 <table>
   <tbody>
     <tr style="height: 10px;">
 <td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->primer_apellido) ?> </td>
 <td></td>
-<td style="border-bottom: 1pt solid black";><?= h($solicitude->usuario->segundo_apellido) ?> </td>
+<td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->segundo_apellido) ?> </td>
+<td></td>
+  <td style="border-bottom: 1pt solid black;"><?= h($solicitude->usuario->nombre) ?> </td>
   </tr>
 <tr style="height :10px;">
   <td>
