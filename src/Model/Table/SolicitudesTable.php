@@ -147,11 +147,9 @@ class SolicitudesTable extends Table
             where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
         return $index;
     }
-    public function getCurso($idCurso){
+    public function getCurso($idSolicitud){
         $connect = ConnectionManager::get('default');
-        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores  where grupos.cursos_id = '" .$idCurso. "' and grupos.cursos_id = cursos.id and Profesores.id = grupos.usuarios_id")->fetchAll();
-        debug($curso);
-        die();
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
         return $curso;
     }
     public function getIDEstudiante($carne){

@@ -120,7 +120,7 @@ input[type=checkbox] + label {
   <h2><b>Curso solicitado </b> </h2>
   <table border="1">
   <tr> <td>Sigla</td><td>Grupo</td><td>Nombre del curso</td><td>Nombre del docente</td> </tr>
-  <tr> <td> </td><td><?= h($solicitude->grupo->numero) ?></td><td> <?=h($curso->nombre)?></td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
+  <tr> <td><?= h($curso[0][0])?> </td><td><?= h($solicitude->grupo->numero) ?></td><td> <?=h($curso[0][1])?></td> <td><?= h($curso[0][2]) ?></td></tr>
   </table>
   <br>
   <p style="text-indent: 40px;"><b>Firma del estudiante  &nbsp; </b> <u style="width: 90px;">&nbsp; &nbsp;  &nbsp;    &nbsp;    &nbsp; &nbsp;  &nbsp;  &nbsp;   &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  
