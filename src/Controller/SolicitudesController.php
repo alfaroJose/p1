@@ -176,11 +176,13 @@ class SolicitudesController extends AppController
     }
 
     public function imprimir($id = null){
-        $this->layout='none';
+        $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+        $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
+        $this->set('curso', $curso);
     }
 
     public function get_round()
@@ -234,6 +236,11 @@ class SolicitudesController extends AppController
         }
   
       return $semestre;
+
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => ['Usuarios', 'Grupos']
+        ]);
+        $this->set('solicitude', $solicitude);
     }
 
     /**

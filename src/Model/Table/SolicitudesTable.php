@@ -144,6 +144,7 @@ class SolicitudesTable extends Table
     }
 
     /*carga el index con todas las solicitudes*/
+
     public function getIndexValues(){
         $connect = ConnectionManager::get('default');
                         $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
@@ -160,6 +161,16 @@ class SolicitudesTable extends Table
     {
         $connect = ConnectionManager::get('default');
         $result = $connect->execute("select id from usuarios where nombre_usuario = '" .$carne."'");
+    }
+
+    public function getCurso($idSolicitud){
+        $connect = ConnectionManager::get('default');
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
+        return $curso;
+    }
+    public function getIDEstudiante($carne){
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne. "'")->fetchAll();
         $result = $result->fetchAll();
         return $result;
     }
