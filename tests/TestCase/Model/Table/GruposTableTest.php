@@ -25,6 +25,7 @@ class GruposTableTest extends TestCase
      */
     public $fixtures = [
         'app.grupos',
+        'app.cursos',
         'app.usuarios'
     ];
 
@@ -73,41 +74,11 @@ class GruposTableTest extends TestCase
     }
 
     /**
-     * Test getIndexValues method
-     *
-     * @return void
-     */
-    public function testGetIndexValues()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test buildRules method
      *
      * @return void
      */
     public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test seleccionarCursos method
-     *
-     * @return void
-     */
-    public function testSeleccionarCursos()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test seleccionarProfesores method
-     *
-     * @return void
-     */
-    public function testSeleccionarProfesores()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

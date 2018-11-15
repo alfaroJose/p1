@@ -32,7 +32,13 @@ use Cake\Chronos\Date;
 
     <!-- Aqui agregegué "a mano"   los iconos de typicons por que con el helper no me funcionaba-->
     <link rel="stylesheet" href="plugins/font/typicons.min.css"/></head><body><div class="page-header">
-    	
+
+    <!-- La línea anterior no sirve si pone solicitudes/index o una nueva vista como solicitudes/index_historial. Con esto se arregla-->
+    <link rel="stylesheet" href="../plugins/font/typicons.min.css"/></head><body><div class="page-header">
+
+    <!-- En caso de se mandé un slash al final lo anterior no sirve. Ej: usuarios/index/. Con esto se arregla-->
+    <link rel="stylesheet" href="../../plugins/font/typicons.min.css"/></head><body><div class="page-header">
+
     <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min']) ?>
 
     <?= $this->fetch('meta') ?>
@@ -86,89 +92,91 @@ use Cake\Chronos\Date;
       <div class="row">
 
         <!-- Barra lateral-->
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav class="col-md-2 d-none d-md-block sidebar">
+        <div style = "position: fixed;">
           <div class="sidebar-sticky pt-5">
-            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">
-        <?php $rondaActual = $this->Ronda->getFila()?>
-        <?php $today = Date::today()?>
-        <?php $inic = new Date($rondaActual[1])?>
-        <?php $fin = new Date($rondaActual[2])?>
-        <?php $est = $today->between($inic, $fin) ? 'Habilitada' : 'Deshabilitada'?>
-        <p style = "color:red"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
-        </div>
+            <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px;">
+              <?php $rondaActual = $this->Ronda->getFila()?>
+              <?php $today = Date::today()?>
+              <?php $inic = new Date($rondaActual[1])?>
+              <?php $fin = new Date($rondaActual[2])?>
+              <?php $est = $today->between($inic, $fin) ? 'Habilitada' : 'Deshabilitada'?>
+              <p style = "color:red;"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
+            </div>
 
-        <br>
+             <br>
 
-        <?php $rol = $this->Seguridad->getRol();
-         $permisoContador = $this->Seguridad->getPermiso(23);
-        if ($permisoContador == 1) {
-          echo '<div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px">';
-          $contadorActual = $this->Contador->getContador();
-          echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
-          echo '</div>';
-        }
-        ?>
-            <ul class="nav flex-column">
-            <?php
-            if ($rol == 1){
-             echo '<li class="nav-item" >';
-             echo $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ;
-             echo "</li>"; 
-            }
+          <?php $rol = $this->Seguridad->getRol();
+          $permisoContador = $this->Seguridad->getPermiso(23);
+          if ($permisoContador == 1) {
+            echo '<div style = "padding-left: 5px; border-style: solid; border-color: red; border-width: 0.75px">';
+            $contadorActual = $this->Contador->getContador();
+            echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
+            echo '</div>';
+          }
+          ?>
+              <ul class="nav flex-column">
+              <?php
+              if ($rol == 1){
+              echo '<li class="nav-item" >';
+              echo $this->Html->link('Roles',['controller'=>'Posee','action'=>'index'],['class'=>'nav-link']) ;
+              echo "</li>"; 
+              }
 
-            ?>  
-            <?php $permisoUsuario = $this->Seguridad->getPermiso(17); 
-            if (1 == $permisoUsuario){                          
-             echo '<li class="nav-item">';
-             echo $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']);
-             echo '</li>'; 
-             }
-              
-             $permisoCurso = $this->Seguridad->getPermiso(1); 
-             if (1 == $permisoCurso){
+              ?>  
+              <?php $permisoUsuario = $this->Seguridad->getPermiso(17); 
+              if (1 == $permisoUsuario){                          
               echo '<li class="nav-item">';
-              echo $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ;
-              echo '</li>';
-              
-             }
-             
-             $permisoRequisito = $this->Seguridad->getPermiso(5); 
-             if (1 == $permisoRequisito){
-              echo '<li class="nav-item">';
-              echo $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ;
-              echo '</li>';
-
-             }
-             
-
-             $permisoRonda = $this->Seguridad->getPermiso(9);
-             if (1 == $permisoRonda){
-              echo '<li class="nav-item">';
-              echo $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']);
+              echo $this->Html->link('Usuarios',['controller'=>'Usuarios','action'=>'index'],['class'=>'nav-link']);
               echo '</li>'; 
-             }
-            
+              }
+                
+              $permisoCurso = $this->Seguridad->getPermiso(1); 
+              if (1 == $permisoCurso){
+                echo '<li class="nav-item">';
+                echo $this->Html->link('Cursos',['controller'=>'Grupos','action'=>'index'],['class'=>'nav-link']) ;
+                echo '</li>';
+                
+              }
+              
+              $permisoRequisito = $this->Seguridad->getPermiso(5); 
+              if (1 == $permisoRequisito){
+                echo '<li class="nav-item">';
+                echo $this->Html->link('Requisitos',['controller'=>'Requisitos','action'=>'index'],['class'=>'nav-link']) ;
+                echo '</li>';
 
-             $permisoSolicitud = $this->Seguridad->getPermiso(13);
-             if (1 == $permisoSolicitud){
-              echo  '<li class="nav-item">';
-              echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
-              echo '</li>';
-             }
+              }
               
 
-             if ( 1 == $permisoContador){
-              echo  '<li class="nav-item">';
-              echo $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ;
-              echo '</li>';  
-             }     
-             ?>      
+              $permisoRonda = $this->Seguridad->getPermiso(9);
+              if (1 == $permisoRonda){
+                echo '<li class="nav-item">';
+                echo $this->Html->link('Rondas',['controller'=>'Rondas','action'=>'index'],['class'=>'nav-link']);
+                echo '</li>'; 
+              }
+              
+
+              $permisoSolicitud = $this->Seguridad->getPermiso(13);
+              if (1 == $permisoSolicitud){
+                echo  '<li class="nav-item">';
+                echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
+                echo '</li>';
+              }
+                
+
+              if ( 1 == $permisoContador){
+                echo  '<li class="nav-item">';
+                echo $this->Html->link('Contador',['controller'=>'Contador','action'=>'index'],['class'=>'nav-link']) ;
+                echo '</li>';  
+              }     
+              ?>      
 
             </ul>
 
           </div>
+          </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-11 px-4 pt-5">
           <!-- Linea que permite mostrar los msjs generados -->
           <?= $this->Flash->render() ?>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
