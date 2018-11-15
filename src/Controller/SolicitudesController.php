@@ -72,8 +72,8 @@ class SolicitudesController extends AppController
             'contain' => ['Usuarios', 'Grupos']
         ]);
         $curso = $this->Solicitudes->getCurso($solicitude->grupo->cursos_id);
-        $this_>set('curso', $curso);
         $this->set('solicitude', $solicitude);
+        $this->set('curso', $curso);
     }
 
         /**
