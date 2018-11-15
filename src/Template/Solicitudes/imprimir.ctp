@@ -6,7 +6,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready( function () {
-     if()
+  $("#checkboxHE").prop("checked", true);
     } );
   </script>
 <div class="imprimir">
