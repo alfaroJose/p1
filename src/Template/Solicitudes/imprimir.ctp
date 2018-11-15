@@ -11,6 +11,18 @@ $(document).ready( function () {
   </script>
 <div class="imprimir">
 <head> 
+<style>
+input[type=checkbox] + label {
+    display: inline-block;
+    position: relative;
+    padding: 8px;
+    background-color: #000000;
+    border: 5px solid #FFFFFF;
+    border-radius: 2px;
+    width: 8px;
+    height: 6px;
+}
+</style>
 <meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet"/> 
 
 <script>  
@@ -81,9 +93,9 @@ $(document).ready( function () {
 <td></td>
 <td> Solicita horas : </td>
 <td></td>
-<td> Horas Estudiante <?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkboxParaHE", "id" => "checkboxHE"]); ?></td>
+<td> Horas Estudiante <?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHE"]); ?></td>
 <td></td>
-<td> Horas Asistente <?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkboxParaHD", "id" => "checkboxHA"]); ?></td>
+<td> Horas Asistente <?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHA"]); ?></td>
 <tr style="height :10px;">
 <td>Carrera</td>
 </tr>
@@ -108,7 +120,7 @@ $(document).ready( function () {
   <h2><b>Curso solicitado </b> </h2>
   <table border="1">
   <tr> <td>Sigla</td><td>Grupo</td><td>Nombre del curso</td><td>Nombre del docente</td> </tr>
-  <tr> <td> </td><td><?= h($solicitude->grupo->numero) ?></td><td></td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
+  <tr> <td> </td><td><?= h($solicitude->grupo->numero) ?></td><td> h($curso->nombre)</td> <td><?= h($solicitude->usuario->nombre) ?></td></tr>
   </table>
   <br>
   <p style="text-indent: 40px;"><b>Firma del estudiante  &nbsp; </b> <u style="width: 90px;">&nbsp; &nbsp;  &nbsp;    &nbsp;    &nbsp; &nbsp;  &nbsp;  &nbsp;   &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  

@@ -67,12 +67,12 @@ class SolicitudesController extends AppController
     }
 
     public function imprimir($id = null){
-        $tupla = $this->Solicitudes->get($id);
-        $this->layout='none';
+        $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-        $this->set('tupla', $tupla);
+        $curso = $this->Solicitudes->getCurso($solicitude->grupo->cursos_id);
+        $this_>set('curso', $curso);
         $this->set('solicitude', $solicitude);
     }
 
@@ -88,7 +88,6 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-
         $this->set('solicitude', $solicitude);
     }
 
