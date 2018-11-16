@@ -13,7 +13,6 @@ use Cake\ORM\Entity;
  * @property string $asistencia_externa
  * @property int $cantidad_horas_externa
  * @property \Cake\I18n\FrozenDate $fecha
- * @property string $justificacion
  * @property int $ronda
  * @property int $usuarios_id
  * @property int $grupos_id
@@ -44,7 +43,6 @@ class Solicitude extends Entity
         'asistencia_externa' => true,
         'cantidad_horas_externa' => true,
         'fecha' => true,
-        'justificacion' => true,
         'ronda' => true,
         'usuarios_id' => true,
         'grupos_id' => true,
