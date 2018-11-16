@@ -8,7 +8,7 @@
 <div class="usuarios">
     <?= $this->Form->create($usuario) ?>
     <fieldset>
-        <legend><?= __('Modificar usuario') ?></legend>
+        <legend><?= __('Editar usuario') ?></legend>
         <br>
         <h5> Datos personales </h5>
         <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 40%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
