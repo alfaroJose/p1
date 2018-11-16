@@ -210,7 +210,6 @@ class GruposController extends AppController
             $grupo->cursos_id = $siglaIds[3];
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
