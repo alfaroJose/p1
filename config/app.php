@@ -382,5 +382,7 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'timeout' => 180, //Minutos
+        // 'cookieTimeout' => 1,
     ],
 ];

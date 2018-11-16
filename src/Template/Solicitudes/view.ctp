@@ -98,11 +98,6 @@ tr:nth-child(even) {background-color:  #eaecee };
             <td><?= h($solicitude->fecha) ?></td>
         </tr>
 
-        <tr>
-            <th scope="row"><?= __('Justificación') ?></th>
-            <td><?= h($solicitude->justificacion) ?></td>
-        </tr>
-
     </table>
     <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 </div>
