@@ -42,11 +42,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     
     <!-- Div para el contenido de debajo de la página--> 
     <!-- barra azul -->
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
 
     
     <div class="container-fluid">
