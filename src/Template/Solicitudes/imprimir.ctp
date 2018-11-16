@@ -8,10 +8,10 @@
 $(document).ready( function () {
   var sol = <?php echo json_encode($solicitude); ?>;
   if(sol.horas_asistente_externa === 'Sí'){
-  document.getElementById('checkbox').click();
+    document.getElementById('checkboxHAExt').setAttribute('checked', 'checked');
   }
   if(sol.horas_estudiante_externa === 'Sí'){
-    document.getElementById('checkbox').setAttribute('checked', 'checked');
+    document.getElementById('checkboxHEExt').setAttribute('checked', 'checked');
   }
   if(sol.horas_asistente === 'Sí'){
     document.getElementById('checkboxHA').setAttribute('checked', 'checked');
