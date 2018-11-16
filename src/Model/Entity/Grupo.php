@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property int $cursos_id
  * @property int $usuarios_id
  *
+ * @property \App\Model\Entity\Curso $curso
  * @property \App\Model\Entity\Usuario $usuario
  */
 class Grupo extends Entity
@@ -33,6 +34,7 @@ class Grupo extends Entity
         'año' => true,
         'cursos_id' => true,
         'usuarios_id' => true,
+        'curso' => true,
         'usuario' => true
     ];
 }
