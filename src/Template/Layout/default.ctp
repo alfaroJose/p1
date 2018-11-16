@@ -93,7 +93,7 @@ use Cake\Chronos\Date;
 
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block sidebar">
-        <div style = "position: fixed;">
+        <div style = "padding: 5px 15px; position: fixed;">
           <div class="sidebar-sticky pt-5">
             <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px;">
               <?php $rondaActual = $this->Ronda->getFila()?>
@@ -176,7 +176,7 @@ use Cake\Chronos\Date;
           </div>
           </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-11 px-4 pt-5">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5">
           <!-- Linea que permite mostrar los msjs generados -->
           <?= $this->Flash->render() ?>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
