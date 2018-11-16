@@ -146,7 +146,8 @@ class SolicitudesTable extends Table
                                         join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
-                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id;")->fetchAll();
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll();
         return $index;
     }
 
@@ -181,7 +182,7 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.usuarios_id = '$id';")->fetchAll();
+                                        where s.usuarios_id = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll();
         return $index;
     }
 
@@ -224,7 +225,7 @@ class SolicitudesTable extends Table
                 join grupos g on s.grupos_id = g.id
                 join cursos c on g.cursos_id = c.id
                 left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                where g.usuarios_id = $id and g.semestre = '$semestre' and g.año = '$año';")->fetchAll();
+                where g.usuarios_id = $id and g.semestre = '$semestre' and g.año = '$año' and (s.estado = 'Elegible' or s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll();
         return $index;
     }
 
