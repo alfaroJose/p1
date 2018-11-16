@@ -489,8 +489,8 @@ class GruposController extends AppController
         if ($this->request->is('post')) {
             //Recupera el nombre del archivo
             $file = $this->Files->patchEntity($file, $this->request->getData());
-            debug($file);
-            die();            //Se sube el archivo
+            //debug($file);
+            //die();            //Se sube el archivo
             if ($this->Files->save($file)) {
                 //Una vez subido, llama el método importExcelFile
                 return $this->redirect(['controller' => 'Grupos', 'action' => 'importExcelfile']);
