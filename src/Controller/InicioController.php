@@ -95,7 +95,7 @@ class InicioController extends AppController
                 }
             }
             else{
-                    $this->Flash->error(__('Credenciales incorrectos, vuelva a intentarlo'));
+                    $this->Flash->error(__('Credenciales incorrectas, vuelva a intentarlo'));
 
             }
                    
