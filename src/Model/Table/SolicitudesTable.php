@@ -165,6 +165,19 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    /*carga el index con todas las solicitudes Actuales*/
+    public function getIndexActualesValues($semestre, $año){
+        $connect = ConnectionManager::get('default');
+                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id 
+                                        where g.semestre = '$semestre' and g.año = '$año';")->fetchAll();
+        return $index;
+    }
+
     /*obtiene el id de usuario actualmente logueado*/
         public function getIDUsuario($carne)
     {
@@ -209,7 +222,7 @@ class SolicitudesTable extends Table
                                         where s.usuarios_id = '$id' and g.semestre = '$semestre' and g.año = '$año';")->fetchAll();
         return $index;
     }
-
+  
     /*carga el index con todas las solicitudes del profesor actualmente logueado*/
     public function getIndexValuesProfesor($id){
         
