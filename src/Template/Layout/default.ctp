@@ -111,7 +111,7 @@ use Cake\Chronos\Date;
           if ($permisoContador == 1) {
             echo '<div style = "padding-left: 5px; border-style: solid; border-color: red; border-width: 0.75px">';
             $contadorActual = $this->Contador->getContador();
-            echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'</p>';
+            echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'<br>'.$contadorActual[2].'</p>';
             echo '</div>';
           }
           ?>

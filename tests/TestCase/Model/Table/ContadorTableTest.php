@@ -70,4 +70,14 @@ class ContadorTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test getContador method
+     *
+     * @return void
+     */
+    public function testGetContador()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }
