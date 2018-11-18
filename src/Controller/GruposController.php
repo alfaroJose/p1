@@ -394,7 +394,8 @@ class GruposController extends AppController
                         //Divide el profesor en nombre y apellido
                         $prof = preg_split('/\s+/', $value);
                         //Consigue el id del profesor
-                        $id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        //$id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        $id = $usuariosTable->getID($prof[count($prof)-1], $prof[0]);
                         
                         if($id == null){
                             //Se borra el archivo
