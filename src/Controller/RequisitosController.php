@@ -188,21 +188,6 @@ class RequisitosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
-            
-            if ($requisito->tipo == 0) {
-                $requisito->tipo = 'Obligatorio';
-            } else {
-                $requisito->tipo = 'Obligatorio Inopia';
-            }
-            
-            if ($requisito->categoria == 0) {
-                $requisito->categoria = 'Horas Asistente';
-            } else if ($requisito->categoria == 1){
-                $requisito->categoria = 'Horas Estudiante';
-            } else {
-                $requisito->categoria = 'General';
-            }
-
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido modificado.'));
 
