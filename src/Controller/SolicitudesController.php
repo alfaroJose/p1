@@ -567,7 +567,20 @@ class SolicitudesController extends AppController
     }
         /***********************************************************************************************************/
 
-    public function genera(/*$siglas, $cursos, $grupos*/){
+    public function genera($id = null){
+
+        
+        /*$datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+        debug($datosSolicitud);
+die;*/
+        /*$solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+        $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);*/
 /*
       $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -577,6 +590,12 @@ $writer = new Xlsx($spreadsheet);
 $writer->save('hello world.xlsx');*/
       
       //ruta donde se guardara el archivo
+/*debug($todo);
+die;*/
+$todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
+debug($todo);
+die;
+
       $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx";
 
       //libro de trabajo

@@ -133,7 +133,7 @@ class SolicitudesTable extends Table
     /*carga el index con todas las solicitudes Actuales*/
     public function getIndexActualesValues($semestre, $año){
         $connect = ConnectionManager::get('default');
-                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador', s.usuarios_id
                                         from solicitudes s 
                                         join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
                                         join grupos g on s.grupos_id = g.id
@@ -346,4 +346,23 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $connet->execute("call insertar_modificar_aceptados ($solicitudes_id, $cantidad_horas, '$tipo_horas')");
     }
+
+
+    /*************************************************************************************/
+    /*Administrador  CONSULTA y genera Excel del historial de asistencias que ha tenido un determinado estudiante durante toda la carrera 
+    Atributos: Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad*/
+    public function getHistorialExcelEstudiante($id){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.usuarios_id = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll();
+        return $index;
+    }
+
+/*****************************************************************************************/
+
 }
