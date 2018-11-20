@@ -5,6 +5,23 @@ use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
 use Cake\Chronos\Date;
 use Cake\ORM\TableRegistry;
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Helper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+use Cake\Database\Exception;
+require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
+
+
+
+
+//Para generar el excel de solicitud
+
+require 'C:\xampp\htdocs\p1\vendor\autoload.php';
+
 /**
  * Solicitudes Controller
  *
@@ -547,5 +564,42 @@ class SolicitudesController extends AppController
     public function asignarAsistente($grupoId){
 
 
+    }
+        /***********************************************************************************************************/
+
+    public function genera(/*$siglas, $cursos, $grupos*/){
+/*
+      $spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setCellValue('A1', 'Hello World !');
+
+$writer = new Xlsx($spreadsheet);
+$writer->save('hello world.xlsx');*/
+      
+      //ruta donde se guardara el archivo
+      $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx";
+
+      //libro de trabajo
+      $spreadsheet = new Spreadsheet();
+
+
+      //acceder al objeto hoja
+      $sheet = $spreadsheet->getActiveSheet();
+
+      $fecha=date("d/m/y");
+      $sheet->setCellValue('A1', 0,5);
+      $sheet->setCellValue('A2', 10);
+      $sheet->setCellValue('A3', 'Fecha');
+      $sheet->setCellValue('B3', $fecha);
+
+     $writer = new Xlsx($spreadsheet);
+
+      try{
+      $writer->save($ruta/*.'librotest.xlsx'*/);
+      echo "Archivo Creado";
+      }
+      catch(Exception $e){
+      echo $e->getMessage();
+      }
     }
 }
