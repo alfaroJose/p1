@@ -254,8 +254,14 @@
             </tbody>
         </table>
         </div>
-        <div onload="updateEstado()">
-        <div onload="setEstadoInicial()">
+
+        <?php if($solicitude['estado'] == 'Aceptada - Profesor' or $solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Rechazada'):?>
+            <div onload="blockTodo()">
+        <?php else:?>
+            <div onload="updateEstado()">
+            <div onload="setEstadoInicial()">
+        <?php endif; ?>
+        
         <!-- Aqui carga el estado de la solicitud con sus datos -->
         <br>
         <h5> Datos administrativos </h5>
@@ -293,6 +299,86 @@
     $(function(){
     $('div[onload]').trigger('onload');
     });
+
+    function blockTodo(){
+        a1 = document.getElementById("a1");
+        a2 = document.getElementById("a2");
+        a3 = document.getElementById("a3");
+        a4 = document.getElementById("a4");
+        a5 = document.getElementById("a5");
+        a6 = document.getElementById("a6"); //Lista de id de requisitos no obligatorios horas asistente
+        var r = a6.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a6.options[c].text;
+
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+           
+        }
+        var r = a4.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a4.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+
+        }
+        var r = a2.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a2.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+                document.getElementById(w).disabled = true;
+        }
+        var r = a5.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a5.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+
+        }
+        var r = a3.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a3.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+        }
+        var r = a1.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a1.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = true;
+                document.getElementById(z).disabled = true;
+        }
+
+        var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
+        var opcionesEstado = document.getElementById("estado");
+        var tmp = document.createElement("option");               
+        tmp.text = actualizarEstado;
+        opcionesEstado.options.add(tmp,0);
+        opcionesEstado.disabled = true;
+    }
 
     function setEstadoInicial(){
         var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
