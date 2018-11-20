@@ -85,8 +85,9 @@ class GruposTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['cursos_id'], 'Cursos'));
-        $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
+        $rules->add($rules->isUnique(
+        ['numero', 'semestre', 'año', 'cursos_id', 'usuarios_id'],
+        'Este grupo ya ha sido agregado'));
 
         return $rules;
     }

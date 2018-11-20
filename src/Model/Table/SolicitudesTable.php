@@ -239,6 +239,29 @@ class SolicitudesTable extends Table
         $result = $result->fetchAll('assoc'); 
         return $result;
     }
+
+    //Obtiene los grupos que tienen un asistente asignado
+    public function getGruposSinAsignar($semestre, $year){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select distinct cur.sigla as sigla, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
+            from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
+                                    join cursos as cur on cur.id = gru.cursos_id  
+                                    left outer join usuarios as us on gru.usuarios_id = us.id
+            where sol.estado = 'Elegible'
+                  and año = ".$year." and semestre = ".$semestre."
+                  and gru.id not in (select gru.id
+                                     from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id
+                                     where sol.estado = 'Aceptada - Profesor' or sol.estado = 'Aceptada - Profesor (Inopia)');");
+        //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
+        $result = $result->fetchAll('assoc'); 
+        return $result;
+
+
+
+    }
+
+
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
     public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)
     {
