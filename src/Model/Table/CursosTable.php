@@ -62,4 +62,18 @@ class CursosTable extends Table
 
         return $validator;
     }
+
+    //Agrega el curso a la base si no está
+    public function addCourse($courseCode, $courseName)
+    {
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        //Verifica que no esté el curso en la tabla
+        $inTable = count($connect->execute("select sigla from Cursos where sigla = '$courseCode'"));
+        if ($inTable == 0) {
+            $connect->execute("call insertar_curso('$courseCode', '$courseName')");
+            $return = true;
+        }
+        return $return;
+    }
 }
