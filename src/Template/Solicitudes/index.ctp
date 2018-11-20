@@ -60,6 +60,8 @@
     }else if(1 == $rolActual[0] || 2 == $rolActual[0]){
     echo $this->Html->link('Consultar historial', ['action'=>'indexHistorialAdmin'], ['class'=>'btn btn-info float-right mr-3']); 
     }
+
+    echo $this->Html->link('Elegir asistente', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
      ?>
 
 </div>
