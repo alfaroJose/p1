@@ -119,17 +119,41 @@ class GruposController extends AppController
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
+            $cursoModel = $this->loadModel('Cursos');
+
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            $curso = $cursoModel->newEntity();
+            $curso = $cursoModel->patchEntity($curso, $this->request->getData());
             $semestreSeleccionado = $this->request->getData('Semestre');
             $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
 
+            debug($curso);
+            if ($cursoModel->save($curso)) {
+                $this->Flash->success(__('El curso ha sido agregado.'));
+                if($this->Grupos->save($grupo)){
+                    $siglaEncontrado=false;
+                    $itSigla=0;
+
+                    $cursos = $this->Grupos->obtenerTodosCursos();
+                    $siglaIndex= array(0 => "");
+                    $siglaIds=array(0 => "");
+
+                    foreach ($cursos as $key => $value) {
+                        array_push($siglaIndex, $value[0]);
+                        array_push($siglaIds, $value[1]);
+                    }
+
+                    $siglaSeleccionada = $this->request->getData('Sigla');
+                    $grupo->cursos_id = $siglaIds[3];
+
+                    debug($grupo);
+                    die();
+                }
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
