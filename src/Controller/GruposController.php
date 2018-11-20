@@ -132,24 +132,9 @@ class GruposController extends AppController
             debug($curso);
             if ($cursoModel->save($curso)) {
                 $this->Flash->success(__('El curso ha sido agregado.'));
+                $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
                 if($this->Grupos->save($grupo)){
-                    $siglaEncontrado=false;
-                    $itSigla=0;
-
-                    $cursos = $this->Grupos->obtenerTodosCursos();
-                    $siglaIndex= array(0 => "");
-                    $siglaIds=array(0 => "");
-
-                    foreach ($cursos as $key => $value) {
-                        array_push($siglaIndex, $value[0]);
-                        array_push($siglaIds, $value[1]);
-                    }
-
-                    $siglaSeleccionada = $this->request->getData('Sigla');
-                    $grupo->cursos_id = $siglaIds[3];
-
-                    debug($grupo);
-                    die();
+                    
                 }
                 return $this->redirect(['action' => 'index']);
             }
@@ -169,7 +154,7 @@ class GruposController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null, $idCurso = null, $idProfesor = null)
     {
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
@@ -210,18 +195,43 @@ class GruposController extends AppController
         foreach ($cursos as $key => $value) {
             array_push($siglaIndex, $value[0]);
             array_push($siglaIds, $value[1]);
+            if(!$siglaEncontrado){ 
+                if($siglaIds[$itSigla]==$idCurso){
+                    $siglaEncontrado=true;
+                }
+                else{
+                    $itSigla++;
+                }
+            }
         }
 
         $profesores = $this->Grupos->seleccionarProfesoresNombres();
         $profesoresCorreos= array(0 => "");
         $profesoresIds=array(0 => "");
-
+        $grupo = $this->Grupos->get($id, [
+            'contain' => []
+        ]);
         foreach ($profesores as $key => $value) {
-          
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
+            if(!$profesorEncontrado){ //busca el profesor actual del grupo
+                if($profesoresIds[$itProfesor]==$idProfesor){
+                    $profesorEncontrado=true;
+                }
+                else{
+                    $itProfesor++;
+                }
+            }
         }
 
+        while(!$semestreEncontrado){ //busca el semestre actual del grupo
+            if($opcionesSemestre[$itSemestre]==$grupo->semestre){
+                $semestreEncontrado=true;
+            }
+            else{
+                $itSemestre++;
+            }
+         }
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
@@ -231,7 +241,7 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[3];
+            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
                 return $this->redirect(['action' => 'index']);
