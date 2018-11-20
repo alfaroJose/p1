@@ -8,7 +8,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $horas_asistente
- * @property int $horas_estudiante
+ * @property int $horas_estudiante_ecci
+ * @property int $horas_estudiante_docente
  */
 class Contador extends Entity
 {
@@ -24,6 +25,7 @@ class Contador extends Entity
      */
     protected $_accessible = [
         'horas_asistente' => true,
-        'horas_estudiante' => true
+        'horas_estudiante_ecci' => true,
+        'horas_estudiante_docente' => true
     ];
 }
