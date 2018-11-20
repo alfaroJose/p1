@@ -94,7 +94,7 @@ use Cake\Chronos\Date;
         <!-- Barra lateral-->
         <nav class="col-md-2 d-none d-md-block sidebar">
         <div style = "padding: 5px 15px; position: fixed;">
-          <div class="sidebar-sticky pt-5">
+          <div class="sidebar-sticky pt-3">
             <div style = "padding-left: 5px;border-style: solid; border-color: red; border-width: 0.75px;">
               <?php $rondaActual = $this->Ronda->getFila()?>
               <?php $today = Date::today()?>
