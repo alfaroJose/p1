@@ -593,23 +593,51 @@ $writer->save('hello world.xlsx');*/
 /*debug($todo);
 die;*/
 $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
-debug($todo);
-die;
+debug($todo[0][7]);
+//die;
 
       $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx";
 
       //libro de trabajo
       $spreadsheet = new Spreadsheet();
+      //$spreadsheet = new PHPExcel();
 
 
       //acceder al objeto hoja
       $sheet = $spreadsheet->getActiveSheet();
-
+//Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad
       $fecha=date("d/m/y");
-      $sheet->setCellValue('A1', 0,5);
+      $x=$todo[0][7];
+      $sigla = $x;
+
+      //$sheet->setCellValue('A1', 0,5);
       $sheet->setCellValue('A2', 10);
-      $sheet->setCellValue('A3', 'Fecha');
-      $sheet->setCellValue('B3', $fecha);
+      
+
+      $sheet->setCellValue('A1', 'Curso');
+      $sheet->setCellValue('B1', 'Sigla');
+
+      $sheet->setCellValue('C1', 'Grupo');
+      $sheet->setCellValue('D1', 'Profesor');
+      $sheet->setCellValue('E1', 'Carnet');
+      $sheet->setCellValue('F1', 'Nombre');
+      $sheet->setCellValue('G1', 'Tipo Horas');
+      $sheet->setCellValue('D1', 'Cantidad');
+      $sheet->setCellValue('E1', 'Fecha');
+      $sheet->setCellValue('E2', $fecha);
+      debug(gettype($todo[0][7]));
+      die;
+//$sheet->getCell('B2');
+//$sheet->setValue('$sigla');
+$sheet->setCellValue('B2', $todo[0][7]);
+      /*$sheet->setCellValue('A2', $todo[0][0]);
+      $sheet->setCellValue('B2', $todo[0][1]);
+      $sheet->setCellValue('C2', $todo[0][2]);
+      $sheet->setCellValue('D2', $todo[0][3]);
+      $sheet->setCellValue('E2', $todo[0][4]);
+      $sheet->setCellValue('F2', $todo[0][5]);
+      $sheet->setCellValue('G2', $todo[0][6]);
+      $sheet->setCellValue('D2', $todo[0][7]);*/
 
      $writer = new Xlsx($spreadsheet);
 
