@@ -23,7 +23,7 @@
                 <td><?= h($grupo['grupo']) ?></td>
                 <td><?= h($grupo['profesor']) ?></td>
                 <td class="actions">
-                <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline"></span>'), ['action' => 'asignarAsistente', $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline"></span>'), ['action' => 'asignarAsistente',$grupo['sigla'],$grupo['grupo'],$grupo['profesor'], $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

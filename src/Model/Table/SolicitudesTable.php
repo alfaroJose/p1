@@ -247,7 +247,7 @@ class SolicitudesTable extends Table
             "select distinct cur.sigla as sigla, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
             from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
-                                    left outer join usuarios as us on gru.usuarios_id = us.id
+                                    join usuarios as us on gru.usuarios_id = us.id
             where sol.estado = 'Elegible'
                   and año = ".$year." and semestre = ".$semestre."
                   and gru.id not in (select gru.id
@@ -256,11 +256,20 @@ class SolicitudesTable extends Table
         //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
         $result = $result->fetchAll('assoc'); 
         return $result;
-
-
-
     }
 
+    //Devuelve el nombre y el id de los estudiantes que hicieron una solicitud para un grupo ($idGrupo)
+    public function getEstudiantesGrupoAsistencia($idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            'select Concat(us.Nombre," ",us.primer_apellido) as nombre, us.id as id
+            from usuarios as us join solicitudes as sol on sol.usuarios_id = us.id
+            where sol.grupos_id = '.$idGrupo.';');
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;    
+
+    }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
     public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)

@@ -246,6 +246,7 @@ class GruposController extends AppController
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
         if($carne != null){
+
            $connect = ConnectionManager::get('default');
            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
@@ -281,7 +282,6 @@ class GruposController extends AppController
         ]);
         $cursos = $this->Grupos->obtenerCursos($idCurso); //obtiene la sigla del curso segun el id
         foreach ($profesores as $key => $value) {
-          
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
             if(!$profesorEncontrado){ //busca el profesor actual del grupo

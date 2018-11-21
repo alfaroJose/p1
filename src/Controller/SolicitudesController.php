@@ -544,8 +544,22 @@ class SolicitudesController extends AppController
     }
 
     //Asignación de un asistente a un grupo
-    public function asignarAsistente($grupoId){
+    public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
+       
+       
+        $estudiantesNombres= array();
+        $estudiantesIds=array();
+        $dropInfo = $this->Solicitudes->getEstudiantesGrupoAsistencia($grupoId); //Carga nombres y id de estudiantes
+        foreach ($dropInfo as $key => $value) { //Llena cada vector con las colmnas de la tabla anterior
+            array_push($estudiantesNombres, $value['nombre']);
+            array_push($estudiantesIds, $value['id']);
+        }
 
+        $this->set('estudiantes', $estudiantesNombres);
+
+       // debug($estudiantesNombres); die();
+
+        $this->set(compact('sigla','numGrupo','profe','grupoId'));
 
     }
 }
