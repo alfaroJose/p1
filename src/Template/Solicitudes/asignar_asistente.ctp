@@ -2,49 +2,67 @@
 <h4>
 <?= $sigla."&nbsp"."Grupo ".$numGrupo."&nbsp"."Prof: ".$profe?>
 </h4>
-
-<div class="solicitudes index large-9 medium-8 columns content">
-    <h3><?= __('Tabla de Estudiantes') ?></h3>
-    <table id= "tabla-estudiantes" cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= 'Nombre' ?></th>
-                <th scope="col"><?= 'HE Asignadas' ?></th>
-                <th scope="col"><?= 'HA Asignadas' ?></th>
-
-                <th scope="col"><?= 'Estado' ?></th>
-                <th scope="col"><?= 'Tipo de horas' ?></th>
-                <th scope="col"><?= 'Cantidad' ?></th>
-
-            </tr>
-        </thead>
-        <tbody>
-            
-            <?php foreach ($estudiantes as $nombres): //datos para el index?>
-            <tr>
-            <td><?= h($nombres) ?></td>
-
-                <td> <?= $this->Form->control('', ['label' => 'Promedio', 'pattern'=>"[0-9]{0,2}", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);?> </td>
-            
-
-            </tr>
-            <?php endforeach; ?>
-        </tbody> 
-    </table>    
-    <br>
-    <br>
-    <?php //Agrega el boton para regresar
-         echo $this->Html->link('Regresar', ['action'=>'index'], ['class'=>'btn btn-info float-right mr-3']);
-     ?>
-</div>
-
 <br>
+<div class="solicitudes index large-9 medium-8 columns content">
+    <?= $this->Form->create() ?>
+        <fieldset>
+            <h2><?= __('Tabla de Estudiantes') ?></h2>
+            <table id= "tabla-estudiantes" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th scope="col"><?= 'Nombre' ?></th>
+                        <th scope="col"><?= 'HE Asignadas' ?></th>
+                        <th scope="col"><?= 'HA Asignadas' ?></th>
+
+                        <th scope="col"><?= 'Estado' ?></th>
+                        <th scope="col"><?= 'Tipo de horas' ?></th>
+                        <th scope="col"><?= 'Cantidad' ?></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <?php 
+                    $i = 0;
+                    foreach ($estudiantes as $nombres): //datos para el index?>
+                    <tr>
+                        <td><?= h($nombres) ?></td>
+                        <?php 
+                            if($horasE[$i] == []){ //Si es null entonces no tiene horas asignadas
+                                $horasE[$i] = 0; 
+                            }
+                        ?>
+                        <td><?= h($horasE[$i]) ?></td>
+                        <?php 
+                        if($horasA[$i] == []){//Si es null entonces no tiene horas asignadas
+                                $horasA[$i] = 0; 
+                        }
+                        ?>
+                        <td><?= h($horasA[$i]) ?></td>
+                        <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada - Profesor" => 'Aceptada - Profesor', "Aceptada - Profesor (Inopia)" => 'Aceptada - Profesor (Inopia)', "Rechazada" => 'Rechazada - Profesor' ], ['required'=>true ,"id" => "Estado", "empty" => true, 'onclick'=> 'revisarEstado()'] ); ?></td>
+                        <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],["Estudiante" => 'Estudiante', "Asistente" => 'Asistente'], ["id" => "TipoHora", "empty" => true, 'disabled' => true] ); ?></td>
+                        <td> <?= $this->Form->control('Horas'.$idEstudiante[$i], ['label' => '', 'pattern'=>"[0-9]{1,2}", 'disabled' => true,'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-5">{{content}}</div>']]);?> </td>
+
+                    </tr>
+                    <?php 
+                    $i++;
+                    endforeach; ?>
+                </tbody> 
+            </table> 
+        </fieldset>
+   
+    <br>
+    <br>
+   
+    </div>
+        <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+        <?= $this->Html->link('Cancelar', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']) ?>
+    <br>
 
 
-<div class="col-lg-3 col-md-3 float-left mr-3" id="wrapper">
-		<label for="Seleccion"> <b>Selecciones un Estudiante</b></label>
-		<?= $this->Form->select("Seleccion", $estudiantes, ["id" => "seleccion", "empty" => true] ); ?>	
-</div>
+     <?= $this->Form->end() ?>
+
+
 <script type="text/javascript">
     $(document).ready( function () {
         $('#tabla-estudiantes').DataTable(
@@ -71,7 +89,3 @@
 
 
 
-
- <?php //Agrega el boton para regresar
-         echo $this->Html->link('Regresar', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
-  ?>

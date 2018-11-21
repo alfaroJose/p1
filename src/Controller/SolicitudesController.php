@@ -547,18 +547,41 @@ class SolicitudesController extends AppController
     public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
        
        
-        $estudiantesNombres= array();
-        $estudiantesIds=array();
+        $estudiantesNombres= array();  //Guarda los nombres de estudiantes
+        $estudiantesIds=array();       //Guarda los ids de los estudiantes de arriba
+        $horasEstudiante = array();    //Guarda las HE de cada estudiante segun el orden de la tabla
+        $horasAsistente = array();     //Guarda las HA de cada estudiante segun el orden de la tabla
+
         $dropInfo = $this->Solicitudes->getEstudiantesGrupoAsistencia($grupoId); //Carga nombres y id de estudiantes
+        $i = 0;//Iterador para encontrar las horas de cada estudiante
+
         foreach ($dropInfo as $key => $value) { //Llena cada vector con las colmnas de la tabla anterior
             array_push($estudiantesNombres, $value['nombre']);
             array_push($estudiantesIds, $value['id']);
+
+            $horasAux = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId); //Horas estudiante de X estudiante
+            array_push($horasEstudiante,$horasAux);
+
+            $horasAux = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas asistente de X estudiante
+            array_push($horasAsistente,$horasAux);
+            $i++;
         }
 
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+           // debug($data['Estado'.$estudiantesIds[0]]);
+           // die();
+
+
+
+
+
+        }
+
+        $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
-
-       // debug($estudiantesNombres); die();
-
+        $this->set('horasE',$horasEstudiante);
+        $this->set('horasA',$horasAsistente);
         $this->set(compact('sigla','numGrupo','profe','grupoId'));
 
     }

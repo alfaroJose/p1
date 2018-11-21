@@ -268,7 +268,34 @@ class SolicitudesTable extends Table
 
         $result = $result->fetchAll('assoc'); 
         return $result;    
+    }
 
+    //Devuelve las horas estudiante que tenga un estudiante asignadas
+    public function getHorasEstudiante($idEstudiante,$idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select acep.cantidad_horas
+            from aceptados as acep join solicitudes as sol on acep.id = sol.id
+            where acep.tipo_horas = 'Horas Estudiante' and sol.id = (select sol.id
+                                                                    from solicitudes as sol
+                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;  
+    }
+
+    //Devuelve las horas asistente que tenga un estudiante asignadas
+    public function getHorasAsistente($idEstudiante,$idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select acep.cantidad_horas
+            from aceptados as acep join solicitudes as sol on acep.id = sol.id
+            where acep.tipo_horas = 'Horas Asistente' and sol.id = (select sol.id
+                                                                    from solicitudes as sol
+                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;  
     }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
