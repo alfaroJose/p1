@@ -394,6 +394,9 @@ class GruposController extends AppController
                         $prof = preg_split('/\s+/', $value);
                         //Consigue el id del profesor
                         //$id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        //debug($prof[count($prof)-1]);
+                        //debug($prof);
+                        //die();
                         $id = $usuariosTable->getID($prof[count($prof)-1], $prof[0]);
                         
                         if($id == null){
