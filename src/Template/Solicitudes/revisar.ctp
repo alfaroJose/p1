@@ -382,6 +382,7 @@
 
     function setEstadoInicial(){
         var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
+
         if (actualizarEstado == 'Pendiente'){
             actualizarEstado = 'Pendiente - Administrador'
         }

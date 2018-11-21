@@ -569,8 +569,8 @@ class SolicitudesController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
-           // debug($data['Estado'.$estudiantesIds[0]]);
-           // die();
+            debug($data);
+            die();
 
 
 
