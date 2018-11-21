@@ -4,13 +4,13 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Datasource\ConnectionManager;
 
 /**
  * Grupos Model
  *
+ * @property \App\Model\Table\CursosTable|\Cake\ORM\Association\BelongsTo $Cursos
  * @property \App\Model\Table\UsuariosTable|\Cake\ORM\Association\BelongsTo $Usuarios
  *
  * @method \App\Model\Entity\Grupo get($primaryKey, $options = [])
@@ -39,6 +39,10 @@ class GruposTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Cursos', [
+            'foreignKey' => 'cursos_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Usuarios', [
             'foreignKey' => 'usuarios_id'
         ]);
@@ -53,31 +57,39 @@ class GruposTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
             ->requirePresence('numero', 'create')
-            ->lengthBetween('numero', [1,2], 'Incluya solamente 1 o 2 caracteres')
-            ->notEmpty('numero', 'Por favor complete este campo.');
+            ->notEmpty('numero');
 
         $validator
             ->requirePresence('semestre', 'create')
-            ->lengthBetween('semestre', [1,1], 'Incluya solamente 1 caracter')
-            ->notEmpty('semestre', 'Por favor complete este campo.');
+            ->notEmpty('semestre');
 
         $validator
             ->scalar('año')
             ->requirePresence('año', 'create')
-            ->notEmpty('año', 'Por favor complete este campo.');
-
-        $validator
-            ->scalar('cursos_sigla')
-            ->maxLength('cursos_sigla', 7, 'Incluya solamente 7 caracteres')
-            ->requirePresence('cursos_sigla', 'create')
-            ->notEmpty('cursos_sigla', 'Por favor complete este campo.');
-
-        $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->notEmpty('año');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(
+        ['numero', 'semestre', 'año', 'cursos_id', 'usuarios_id'],
+        'Este grupo ya ha sido agregado'));
+
+        return $rules;
     }
 
     public function getIndexValues(){
@@ -101,27 +113,7 @@ class GruposTable extends Table
         ->toList();
         return $index;
     }
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
 
-        return $rules;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
     public function seleccionarCurso()
     {
         $cursos=$this->find()
@@ -219,8 +211,4 @@ class GruposTable extends Table
             where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
         return $index;
     }*/
-
 }
-
-
-
