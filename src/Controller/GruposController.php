@@ -420,15 +420,27 @@ class GruposController extends AppController
         //Se cambia el nombre de las llaves del array si no es post ya que es para la vista previa
         if(!$this->request->is('post')){
             $table = array_map(function($tag) {
+                /*Se le agrega el guión a las siglas de los cursos porque el archivo no las incluye*/
+                $name = $tag['1'];
+                $len =  strlen($name);
+                if ($len != 0){     
+                    $tag['1'] = substr($name,0,2).'-'.substr($name,2,$len-2);
+                }
+                //debug($tag['1']);
+                //debug($len);
+                //die();
                 return array(
                     'Curso' => $tag['0'],
                     'Sigla' => $tag['1'],
                     'Grupo' => $tag['2'],
                     'Profesor' => $tag['3']
                 );
+
             }, $table);
     
         }
+        /* //sirve*/
+        
         //Hace que table sea visible para el template
         $this->set('table', $table);
 
@@ -436,7 +448,7 @@ class GruposController extends AppController
         if ($this->request->is('post')) {
             //Borra todos los grupos
             $classesModel = $this->loadmodel('Grupos');
-            $classesModel->deleteAllClasses();
+            //$classesModel->deleteAllClasses();
 
             //Llama al método addFromFile con cada fila
             for ($row = 0; $row < count($table); ++$row) {
@@ -460,7 +472,12 @@ class GruposController extends AppController
             $classTable = $this->loadmodel('Grupos');
 
             //Agrega el curso
-            $courseTable->addCourse($parameters[1], $parameters[0], 0);
+            /*$name = $parameters[1];
+            $len =  strlen($name);
+            $x = substr($name,0,2).'-'.substr($name,2,$len-2); //sirve
+            //debug($x);
+            //die();*/
+            $courseTable->addCourse($parameters[1], $parameters[0]);
 
             //Selecciona un smestre según la fecha actual
             if(date("m") > 6){

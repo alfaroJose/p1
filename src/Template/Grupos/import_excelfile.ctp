@@ -51,11 +51,3 @@ tr:nth-child(even) {
     )?>
     <?= $this->Form->end() ?>
 </div>
-
-
-<style>
-    .btn-space {
-        margin-right: 3px;
-        margin-leftt: 3px;
-    }
-</style>
