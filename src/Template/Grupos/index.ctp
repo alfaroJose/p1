@@ -27,7 +27,7 @@
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
-                <?php ///debug($grupo) ?>
+                <?php ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
