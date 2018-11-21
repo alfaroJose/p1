@@ -593,15 +593,26 @@ $writer->save('hello world.xlsx');*/
 /*debug($todo);
 die;*/
 $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
-debug($todo[0][7]);
+ //$this->set(compact('todo'));
+//debug($todo[0][1]);
 //die;
+$y = strval($todo[0][1]);
+
 
       $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx";
+
+
+      
+
 
       //libro de trabajo
       $spreadsheet = new Spreadsheet();
       //$spreadsheet = new PHPExcel();
 
+
+      
+      
+      //$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
 
       //acceder al objeto hoja
       $sheet = $spreadsheet->getActiveSheet();
@@ -609,6 +620,17 @@ debug($todo[0][7]);
       $fecha=date("d/m/y");
       $x=$todo[0][7];
       $sigla = $x;
+
+      $arrayData = [
+    [NULL, 2010, 2011, 2012],
+    ['Q1',   12,   15,   21],
+    ['Q2',   56,   73,   86],
+    ['Q3',   52,   61,   69],
+    ['Q4',   30,   $todo[0][1],    $fecha],
+];
+
+//debug($arrayData);
+//die();
 
       //$sheet->setCellValue('A1', 0,5);
       $sheet->setCellValue('A2', 10);
@@ -625,11 +647,13 @@ debug($todo[0][7]);
       $sheet->setCellValue('D1', 'Cantidad');
       $sheet->setCellValue('E1', 'Fecha');
       $sheet->setCellValue('E2', $fecha);
-      debug(gettype($todo[0][7]));
-      die;
+      //debug(gettype($todo[0][7]));
+      //die;
 //$sheet->getCell('B2');
 //$sheet->setValue('$sigla');
-$sheet->setCellValue('B2', $todo[0][7]);
+//$sheet->setCellValue('B2', $y);
+      
+$sheet->fromArray($arrayData, NULL, 'A4');
       /*$sheet->setCellValue('A2', $todo[0][0]);
       $sheet->setCellValue('B2', $todo[0][1]);
       $sheet->setCellValue('C2', $todo[0][2]);
@@ -638,6 +662,8 @@ $sheet->setCellValue('B2', $todo[0][7]);
       $sheet->setCellValue('F2', $todo[0][5]);
       $sheet->setCellValue('G2', $todo[0][6]);
       $sheet->setCellValue('D2', $todo[0][7]);*/
+
+      $sheet->setCellValueByColumnAndRow('1','10', $sigla);
 
      $writer = new Xlsx($spreadsheet);
 
