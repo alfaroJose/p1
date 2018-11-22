@@ -50,44 +50,7 @@
             echo $this->Form->control('profesor_nombre', ['label'=>['text'=>'Docente'], 'readonly', 'value'=> $datosSolicitud[0]['profesor_nombre'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>'] ]);
         ?>
         </div>
-        <!-- Variables para cargar radios bloqueados si no se cumple una obligatoria -->
-        <?php
-        $bloqueoAsistente = false;
-        $opcionLibreAsistente = '';
-        $bloqueoEstudiante = false;
-        $opcionLibreEstudiante = '';
-        $bloqueoGeneral = false;
-        $opcionLibreGeneral = '';
-        ?>    
-        <!-- Se almancena en las variables de en donde esta el requisito obligatorio que no cumplio -->
-        <?php foreach ($datosRequisitosSolicitud as $bloqueo): ?>
-        <?php 
-        if($bloqueo['requisito_categoria'] == 'Horas Asistente' and $bloqueo['tiene_condicion'] == 'No'){
-            $bloqueoAsistente = true;
-            $opcionLibreAsistente = $bloqueo['requisito_id'];
-        };
-        if($bloqueo['requisito_categoria'] == 'Horas Estudiante' and $bloqueo['tiene_condicion'] == 'No'){
-            $bloqueoEstudiante = true;
-            $opcionLibreEstudiante = $bloqueo['requisito_id'];
-        };
-        if($bloqueo['requisito_categoria'] == 'General' and $bloqueo['tiene_condicion'] == 'No'){
-            $bloqueoGeneral = true;
-            $opcionLibreGeneral = $bloqueo['requisito_id'];
-        };
-        ?>
-        <?php endforeach; ?>
-        <!-- Logica para cargar los bloqueos desde la base -->
-        <?php
-        if($bloqueoAsistente == true and $bloqueoEstudiante == true){
-            $bloqueoGeneral = true;
-            $opcionLibreGeneral = '';
-        } else if($bloqueoGeneral == true){
-            $bloqueoAsistente = true;
-            $bloqueoEstudiante = true;
-            $opcionLibreAsistente = '';
-            $opcionLibreEstudiante = '';
-        }
-        ?>
+        
         <!-- Aqui carga los requisitos para ver si se cumplen o no -->
         <br>
         <h5> Requisitos </h5>
@@ -130,22 +93,14 @@
                             $auto5[$i] = $asistente['requisito_id'];
                             $i = $i+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            if($asistente['requisito_id'] == $opcionLibreAsistente){
-                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente, 'onclick'=> 'updateAsistentes()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
                             echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui
                         } else {
                             $auto6[$j] = $asistente['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            if($asistente['requisito_id'] == $opcionLibreAsistente){
-                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => $bloqueoAsistente, 'onclick'=> 'updateAsistentes()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
                             echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
                         }
                     ?>    
@@ -179,22 +134,14 @@
                             $auto3[$i] = $estudiante['requisito_id'];
                             $i = $i+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            if($estudiante['requisito_id'] == $opcionLibreEstudiante){
-                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => $bloqueoEstudiante, 'onclick'=> 'updateEstudiantes()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
                             echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui
                         } else {
                             $auto4[$j] = $estudiante['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            if($estudiante['requisito_id'] == $opcionLibreEstudiante){
-                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => $bloqueoEstudiante, 'onclick'=> 'updateEstudiantes()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $estudiante['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateEstudiantes()');
                             echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         }
                     ?>
@@ -228,22 +175,14 @@
                             $auto[$i] = $general['requisito_id'];
                             $i = $i+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            if($general['requisito_id'] == $opcionLibreGeneral){  
-                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => $bloqueoGeneral, 'onclick'=> 'updateGenerales()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
                             echo $this->Form->radio($general['requisito_id'], $options, $attributes);
                         //Si el requisito no es obligatorio entra aqui
                         } else {
                             $auto2[$j] = $general['requisito_id'];
                             $j = $j+1;
                             $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            if($general['requisito_id'] == $opcionLibreGeneral){  
-                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
-                            } else {
-                                $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => $bloqueoGeneral, 'onclick'=> 'updateGenerales()');
-                            }
+                            $attributes = array('legend' => false, 'value' => $general['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateGenerales()');
                             echo $this->Form->radio($general['requisito_id'], $options, $attributes);
                         }
                     ?>
@@ -258,6 +197,9 @@
         <?php if($solicitude['estado'] == 'Aceptada - Profesor' or $solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Rechazada'):?>
             <div onload="blockTodo()">
         <?php else:?>
+            <div onload="updateAsistentes()">
+            <div onload="updateEstudiantes()">
+            <div onload="updateGenerales()">
             <div onload="updateEstado()">
             <div onload="setEstadoInicial()">
         <?php endif; ?>
@@ -380,15 +322,6 @@
         opcionesEstado.disabled = true;
     }
 
-    function setEstadoInicial(){
-        var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
-
-        if (actualizarEstado == 'Pendiente'){
-            actualizarEstado = 'Pendiente - Administrador'
-        }
-        document.getElementById("estado").value = actualizarEstado;
-    }
-
     function updateEstado(){
         var chkEstudiante = checkEstudiante(); //verdadero -> algun NO esta precionado
         var chkAsistente = checkAsistente();   // falso -> ningun NO esta precionado
@@ -432,6 +365,17 @@
         }
     }
 
+    function setEstadoInicial(){
+        var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
+
+        if (actualizarEstado == 'Pendiente'){
+            actualizarEstado = 'Pendiente - Administrador'
+            document.getElementById("estado").value = actualizarEstado;
+        } else if (actualizarEstado == 'Anulada'){
+            document.getElementById("estado").value = actualizarEstado;
+        }
+    }
+
     function updateAsistentes(){
         var encontrado = false;
         a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
@@ -442,7 +386,7 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
-                blockAsistentes(x);
+                blockAsistentes();
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }   
@@ -456,7 +400,7 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
-                blockAsistentes(x);
+                blockAsistentes();
                 c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }            
@@ -474,14 +418,14 @@
         updateEstado();
     }
 
-    function blockAsistentes(selected){
+    function blockAsistentes(){
         a6 = document.getElementById("a6"); //Lista de id de requisitos no obligatorios horas asistente
         var r = a6.options.length;
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
             var x = a6.options[c].text;
-            if(x != selected){
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 var w = x + "-inopia";
                 document.getElementById(y).disabled = true;
@@ -495,8 +439,8 @@
         for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
         {
             var x = a5.options[c].text;
-            if(x != selected){ //No bloquear el seleccionado
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 document.getElementById(y).disabled = true;
                 document.getElementById(z).disabled = true;
@@ -569,7 +513,7 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                blockEstudiantes(x);
+                blockEstudiantes();
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }
@@ -583,7 +527,7 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                blockEstudiantes(x);
+                blockEstudiantes();
                 c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }
@@ -602,14 +546,14 @@
         updateEstado();
     }
 
-    function blockEstudiantes(selected){
+    function blockEstudiantes(){
         a4 = document.getElementById("a4"); //Lista de id de requisitos no obligatorios horas estudiante
         var r = a4.options.length;
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
             var x = a4.options[c].text;
-            if(x != selected){
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 var w = x + "-inopia";
                 document.getElementById(y).disabled = true;
@@ -623,8 +567,8 @@
         for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
         {
             var x = a3.options[c].text;
-            if(x != selected){ //No bloquear el seleccionado
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 document.getElementById(y).disabled = true;
                 document.getElementById(z).disabled = true;
@@ -696,9 +640,9 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                blockGenerales(x);
-                blockAsistentes(x);
-                blockEstudiantes(x);
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }            
@@ -712,9 +656,9 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
-                blockGenerales(x);
-                blockAsistentes(x);
-                blockEstudiantes(x);
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
                 c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
             }
@@ -731,14 +675,14 @@
         updateEstado();
     }
 
-    function blockGenerales(selected){
+    function blockGenerales(){
         a2 = document.getElementById("a2"); //Lista de id de requisitos no obligatorios generales
         var r = a2.options.length;
         for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
         {
             var x = a2.options[c].text;
-            if(x != selected){
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 var w = x + "-inopia";
                 document.getElementById(y).disabled = true;
@@ -752,8 +696,8 @@
         for(c = 0;  c < s; c = c + 1) // Recorre los requisitos obligatorios y los bloquea menos el seleccionado
         {
             var x = a1.options[c].text;
-            if(x != selected){ //No bloquear el seleccionado
-                var y = x + "-no";
+            var y = x + "-no";
+            if (document.getElementById(y).checked == false){
                 var z = x + "-sí";
                 document.getElementById(y).disabled = true;
                 document.getElementById(z).disabled = true;
