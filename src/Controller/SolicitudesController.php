@@ -376,8 +376,8 @@ class SolicitudesController extends AppController
               return $this->redirect(['action' => 'add']);
             }
             if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('La solicitud ha sido agregada.'));
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('La solicitud ha sido agregada. Debe imprimir la solicitud y presentarla en Secretaría, de lo contrario no será válida.'));
+                return $this->redirect(['action' => 'imprimir', $solicitude->id]);
             }
             $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }
