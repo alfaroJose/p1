@@ -193,6 +193,7 @@ class SolicitudesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
+            $solicitude['estado'] = 'Pendiente - Administrador';
 
             if ($this->Solicitudes->save($solicitude)) {
                 foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
@@ -201,8 +202,6 @@ class SolicitudesController extends AppController
                     }
                     $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
                 endforeach;
-
-                $solicitude['estado'] = 'Pendiente - Administrador';
 
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
