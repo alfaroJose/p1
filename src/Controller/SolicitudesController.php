@@ -269,19 +269,13 @@ class SolicitudesController extends AppController
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
-
     public function imprimir($id = null){
-        $this->layout = 'None';
+        $this->layout='none';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-      /*  debug($solicitude);
-        die(); */
-        $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
-        $this->set('curso', $curso);
     }
-    
     public function get_round()
     {
       return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
@@ -393,8 +387,8 @@ class SolicitudesController extends AppController
               return $this->redirect(['action' => 'add']);
             }
             if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('La solicitud ha sido agregada. Debe imprimir la solicitud y presentarla en Secretaría, de lo contrario no será válida.'));
-                return $this->redirect(['action' => 'view', $solicitude->id]);
+                $this->Flash->success(__('La solicitud ha sido agregada.'));
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }
@@ -575,125 +569,64 @@ class SolicitudesController extends AppController
 
     public function genera($id = null){
 
-        
-        /*$datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
-        $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => []
-        ]);
-        debug($datosSolicitud);
-die;*/
-        /*$solicitude = $this->Solicitudes->get($id, [
-            'contain' => []
-        ]);
-        $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);*/
-/*
-      $spreadsheet = new Spreadsheet();
-$sheet = $spreadsheet->getActiveSheet();
-$sheet->setCellValue('A1', 'Hello World !');
+        $solicitude = $this->Solicitudes->newEntity();
+        if ($this->request->is('post')) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
+            //debug($info);
+            //die();
 
-$writer = new Xlsx($spreadsheet);
-$writer->save('hello world.xlsx');*/
-      
-      //ruta donde se guardara el archivo
-/*debug($todo);
-die;*/
-$todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
- //$this->set(compact('todo'));
-//debug($todo[0][1]);
-//die;
-$y = strval($todo[0][1]);
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            $ruta="C:\Users\B54548\Desktop\Excel\librotest.xlsx"; 
 
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
 
-      $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx";
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
 
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
 
-      
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
 
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
 
-      //libro de trabajo
-      $spreadsheet = new Spreadsheet();
-      //$spreadsheet = new PHPExcel();
+            $writer = new Xlsx($spreadsheet);
 
-
-      
-      
-      //$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
-
-      //acceder al objeto hoja
-      $sheet = $spreadsheet->getActiveSheet();
-//Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad
-      $fecha=date("d/m/y");
-      $x=$todo[0][7];
-      $sigla = $x;
-
-
-//debug($arrayData[1][3]);
-        $datos= array(/*0 => ""*/);
-
-        foreach ($todo as $key => $value) {
-            array_push($datos, $value[0]);
-            array_push($datos, $value[1]);
-            array_push($datos, $value[2]);
-            array_push($datos, $value[3]);
-            array_push($datos, $value[4]);
-            array_push($datos, $value[5]);
-            array_push($datos, $value[6]);
-            array_push($datos, $value[7]);
+            try{
+                $writer->save($ruta/*.'librotest.xlsx'*/);
+                echo "Archivo Creado";
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
         }
-            $value[7]='ja';
-      $arrayData = [
-    [NULL, 2010, 2011, 2012],
-    ['Q1',   12,   15,   21],
-    ['Q2',   56,   73,   86],
-    ['Q3',   52,   61,   69],
-    ['Q4',   $value[7],   $todo[0][1],    $fecha],
-];
-
-//debug($datos[8]);
-//die();
-
-      //$sheet->setCellValue('A1', 0,5);
-      $sheet->setCellValue('A2', 10);
-      
-
-      $sheet->setCellValue('A1', 'Curso');
-      $sheet->setCellValue('B1', 'Sigla');
-
-      $sheet->setCellValue('C1', 'Grupo');
-      $sheet->setCellValue('D1', 'Profesor');
-      $sheet->setCellValue('E1', 'Carnet');
-      $sheet->setCellValue('F1', 'Nombre');
-      $sheet->setCellValue('G1', 'Tipo Horas');
-      $sheet->setCellValue('D1', 'Cantidad');
-      $sheet->setCellValue('E1', 'Fecha');
-      $sheet->setCellValue('E2', $arrayData[1][3]);
-      //debug(gettype($todo[0][7]));
-      //die;
-//$sheet->getCell('B2');
-//$sheet->setValue('$sigla');
-//$sheet->setCellValue('B2', $y);
-      
-$sheet->fromArray($arrayData, NULL, 'A4');
-      /*$sheet->setCellValue('A2', $todo[0][0]);
-      $sheet->setCellValue('B2', $todo[0][1]);
-      $sheet->setCellValue('C2', $todo[0][2]);
-      $sheet->setCellValue('D2', $todo[0][3]);
-      $sheet->setCellValue('E2', $todo[0][4]);
-      $sheet->setCellValue('F2', $todo[0][5]);
-      $sheet->setCellValue('G2', $todo[0][6]);
-      $sheet->setCellValue('D2', $todo[0][7]);*/
-
-      /*$sheet->setCellValueByColumnAndRow('1','10', $sigla);*/
-
-     $writer = new Xlsx($spreadsheet);
-
-      try{
-      $writer->save($ruta/*.'librotest.xlsx'*/);
-      echo "Archivo Creado";
-      }
-      catch(Exception $e){
-      echo $e->getMessage();
-      }
+    
+        $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
+        $this->set(compact('todo', 'solicitude'));
     }
+
 }
+
