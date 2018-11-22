@@ -257,9 +257,6 @@
 
         <?php if($solicitude['estado'] == 'Aceptada - Profesor' or $solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Rechazada'):?>
             <div onload="blockTodo()">
-        <?php else:?>
-            <div onload="updateEstado()">
-            <div onload="setEstadoInicial()">
         <?php endif; ?>
         
         <!-- Aqui carga el estado de la solicitud con sus datos -->
@@ -377,57 +374,6 @@
         tmp.text = actualizarEstado;
         opcionesEstado.options.add(tmp,0);
         opcionesEstado.disabled = true;
-    }
-
-    function setEstadoInicial(){
-        var actualizarEstado = "<?php echo $solicitude['estado']; ?>";
-        if (actualizarEstado == 'Pendiente'){
-            actualizarEstado = 'Pendiente - Administrador'
-        }
-        document.getElementById("estado").value = actualizarEstado;
-    }
-
-    function updateEstado(){
-        var chkEstudiante = checkEstudiante(); //verdadero -> algun NO esta precionado
-        var chkAsistente = checkAsistente();   // falso -> ningun NO esta precionado
-        var chkGenerales = checkGenerales();
-
-        var chkMarcadasGeneral = checkMarcadasGeneral(); //verdadero -> alguna casilla esta sin precionar
-        var chkMarcadasEstudiante = checkMarcadasEstudiante(); // falso -> todas las casillas estan precionadas
-        var chkMarcadasAsistente = checkMarcadasAsistente();
-        
-        opcionesEstado = document.getElementById("estado");
-        if (chkGenerales == true || (chkEstudiante == true && chkAsistente == true) || (chkMarcadasGeneral == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkAsistente == true && chkMarcadasEstudiante == true)){
-            while (opcionesEstado.options.length) {
-                opcionesEstado.remove(0);
-            }
-            var tmp = document.createElement("option");               
-            tmp.text = 'No Elegible';
-            opcionesEstado.options.add(tmp,0);
-            tmp = document.createElement("option");
-            tmp.text = 'Anulada';
-            opcionesEstado.options.add(tmp,1);
-        } else if (chkMarcadasGeneral == true || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == false && chkAsistente == true)){
-            while (opcionesEstado.options.length) {
-                opcionesEstado.remove(0);
-            }
-            var tmp = document.createElement("option");         
-            tmp.text = 'Pendiente - Administrador';
-            opcionesEstado.options.add(tmp,0);
-            tmp = document.createElement("option");
-            tmp.text = 'Anulada';
-            opcionesEstado.options.add(tmp,1);
-        } else {
-            while (opcionesEstado.options.length) {
-                opcionesEstado.remove(0);
-            }
-            var tmp = document.createElement("option");               
-            tmp.text = 'Elegible';
-            opcionesEstado.options.add(tmp,0);
-            tmp = document.createElement("option");
-            tmp.text = 'Anulada';
-            opcionesEstado.options.add(tmp,3);
-        }
     }
 
     function updateAsistentes(){
