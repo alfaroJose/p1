@@ -85,8 +85,9 @@ class GruposTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['cursos_id'], 'Cursos'));
-        $rules->add($rules->existsIn(['usuarios_id'], 'Usuarios'));
+        $rules->add($rules->isUnique(
+        ['numero', 'semestre', 'año', 'cursos_id', 'usuarios_id'],
+        'Este grupo ya ha sido agregado'));
 
         return $rules;
     }
@@ -166,6 +167,12 @@ class GruposTable extends Table
         return $sigla;
     }
 
+    public function obtenerCursoId($sigla = null){
+        $connect = ConnectionManager::get('default');
+        $sigla = $connect->execute("select distinct c.id from cursos c, grupos g where c.sigla = '".$sigla."'")->fetchAll();
+        return $sigla[0][0];
+    }
+
     public function obtenerTodosCursos(){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct sigla, id from cursos")->fetchAll();
@@ -202,6 +209,23 @@ class GruposTable extends Table
                 $connect = ConnectionManager::get('default');
         $profesor = $connect->execute("select CONCAT(Usuarios.nombre, ' ', Usuarios.primer_apellido), id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
         return $profesor;
+    }
+
+    //Agrega el grupo a la base si no está en la tabla
+    public function addClass($number, $semester, $year, $id, $profId)
+    {
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        //Verifica que no esté en la tabla
+        $inTable = count($connect->execute("select * from Grupos where cursos_id = '$id' and numero = '$number' and semestre = '$semester' and año = '$year'"));
+        if ($inTable == 0) {
+            $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            $return = true;
+        }else{
+            $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            $return = true;
+        }
+        return $return;
     }
         /*public function getIndexValues(){
         $connect = ConnectionManager::get('default');

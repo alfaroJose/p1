@@ -35,6 +35,7 @@
                 <?php 
                 if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
                    echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                   echo $this->Html->link(__('<span class="typcn typcn-folder-open"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                 }
 
                 ?>
@@ -59,6 +60,8 @@
     }else if(1 == $rolActual[0] || 2 == $rolActual[0]){
     echo $this->Html->link('Consultar historial', ['action'=>'indexHistorialAdmin'], ['class'=>'btn btn-info float-right mr-3']); 
     }
+
+    echo $this->Html->link('Elegir asistente', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
      ?>
 
 </div>
