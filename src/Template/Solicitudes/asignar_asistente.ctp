@@ -67,21 +67,9 @@
     $(document).ready( function () {
         $('#tabla-estudiantes').DataTable(
           {
-            /** Configuración del DataTable para cambiar el idioma, se puede personalizar aun más **/
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ filas por página",
-                "zeroRecords": "Sin resultados",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "Sin datos disponibles",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "sSearch": "Buscar:",
-                "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    }
-            }
+            "bPaginate": false, //hide pagination
+            "bFilter": false, //hide Search bar
+            "bInfo": false, // hide showing entries
           }
         );
     } );
