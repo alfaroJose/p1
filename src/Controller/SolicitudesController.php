@@ -175,10 +175,35 @@ class SolicitudesController extends AppController
                     }
                     $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
                 endforeach;
-    
-                if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Aceptada - Profesor'){
-                    $this->Solicitudes->setAceptados($solicitude['id'],$data['aceptados_cantidad_horas'], $data['aceptados_tipo_horas']);
-                }
+                $this->Flash->success(__('La solicitud ha sido revisada.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('La solicitud no se ha podido revisar. Por favor intente de nuevo.'));
+        }
+        $this->set(compact('solicitude','datosSolicitud','datosRequisitosSolicitud'));
+    }
+
+    public function revisarAsistente($id = null)
+    {
+        $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $data = $this->request->getData();
+
+            if ($this->Solicitudes->save($solicitude)) {
+                foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
+                    if ($data[$requisitosSolicitud['requisito_id']] == '') {
+                        $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
+                    }
+                    $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
+                endforeach;
+
+                $solicitude['estado'] = 'Pendiente - Administrador';
+
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
             }
