@@ -117,6 +117,18 @@ class UsuariosTable extends Table
             return $fila[0];
         }
     }
+    //Devuelve el ID del usuario según el nombre y apellido para el archivo de excel.
+    public function getID($name, $lastname) {
+        $connect = ConnectionManager::get('default');
+        $id = $connect->execute("select id from Usuarios where nombre like '%$name%' and primer_apellido like '$lastname%'") ->fetchAll();
+        if($id != null){
+            return $id[0][0];
+        }else{
+            return null;
+        }
+        
+    }
+
     // Devuelva el rol del usuario según el carné
     public function getRol($carne){
         $connect = ConnectionManager::get('default');

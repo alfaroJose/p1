@@ -210,6 +210,23 @@ class GruposTable extends Table
         $profesor = $connect->execute("select CONCAT(Usuarios.nombre, ' ', Usuarios.primer_apellido), id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
         return $profesor;
     }
+
+    //Agrega el grupo a la base si no está en la tabla
+    public function addClass($number, $semester, $year, $id, $profId)
+    {
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        //Verifica que no esté en la tabla
+        $inTable = count($connect->execute("select * from Grupos where cursos_id = '$id' and numero = '$number' and semestre = '$semester' and año = '$year'"));
+        if ($inTable == 0) {
+            $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            $return = true;
+        }/*else{
+            $connect->execute("update classes set state = 1 where course_id ='$id' and class_number = '$number' and semester = '$semester' and year = '$year'");
+            $return = true;
+        }*/
+        return $return;
+    }
         /*public function getIndexValues(){
         $connect = ConnectionManager::get('default');
         $index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud'

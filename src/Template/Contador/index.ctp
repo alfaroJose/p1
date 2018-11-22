@@ -10,7 +10,8 @@
         <thead>
             <tr>
                 <th scope="col"><?= 'Horas Asistente' ?></th>
-                <th scope="col"><?= 'Horas Estudiante' ?></th>
+                <th scope="col"><?= 'Horas Estudiante ECCI' ?></th>
+                <th scope="col"><?= 'Horas Estudiante Docente' ?></th>
                 <?php
                 $permisoEditar = $this->Seguridad->getPermiso(22);
                 if (1 == $permisoEditar){
@@ -24,7 +25,8 @@
             <?php foreach ($contador as $contador): ?>
             <tr>
                 <td><?= $this->Number->format($contador->horas_asistente) ?></td>
-                <td><?= $this->Number->format($contador->horas_estudiante) ?></td>
+                <td><?= $this->Number->format($contador->horas_estudiante_ecci) ?></td>
+                <td><?= $this->Number->format($contador->horas_estudiante_docente) ?></td>
                 <?php 
                 if (1 == $permisoEditar){
                   echo '<td class="actions">';

@@ -59,9 +59,71 @@
         echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right']);
         echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right mr-3']);
     }
-    ?>
-   
+        ?>
+         <button id="butExcel" class="btn btn-info float-right mr-3">Cargar Archivo</button>
+
+        <div id="Subir archivo" class="modal">
+            <div class="modal-content">
+                <div class="files form large-9 medium-8 columns content">
+                    <?= $this->Form->create(null, ['type' => 'file', 'url' => '/Grupos/uploadFile']) ?>
+                <fieldset>
+                <legend><?= __('Seleccione el archivo') ?></legend>
+                <?php
+                    echo $this->Form->control('file', ['label'=>['text'=>''], 'type' => 'file']);
+                ?>
+            </fieldset>
+            <button type="submit" class="btn btn-info float-right">Aceptar</button>
+            <button id="butCanc" type="reset" class="btn btn-secondary float-right mr-3">Cancelar</button>
+        
+            <?= $this->Form->end() ?>
+            </div>
+        </div>
+    </div>
+ 
 </div>
+
+<style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+
+    /* Fondo del modal */
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px; /*Posición del modal */
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; /* En caso de ser necesario se puede hacer scroll */
+        background-color: rgb(0,0,0); /* Color del fondo */
+        background-color: rgba(0,0,0,0.4); /* Color con transparencia */
+    }
+
+    /* Contenido del modal */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
 
 <script type="text/javascript">
     $(document).ready( function () {
@@ -85,4 +147,30 @@
           }
         );
     } );
+
+    // Recupera el modal
+var modal = document.getElementById('Subir archivo');
+
+// Recupera el botón que abre el modal
+var btn = document.getElementById("butExcel");
+
+// Recupera el botón que cierra el modal
+var span = document.getElementById("butCanc");
+
+// Cuando se hace click, se abre el modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Cuando se hace click se cierra el modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Cuando se hace click fuera del modal este se cierra
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 </script>
