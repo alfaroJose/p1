@@ -470,6 +470,7 @@ class GruposController extends AppController
         if($parameters[0] != null){
             $courseTable = $this->loadmodel('Cursos');
             $classTable = $this->loadmodel('Grupos');
+            $SolicitudController = new SolicitudesController;
 
             //Agrega el curso
             /*$name = $parameters[1];
@@ -479,14 +480,13 @@ class GruposController extends AppController
             //die();*/
             $courseTable->addCourse($parameters[1], $parameters[0]);
 
-            //Selecciona un smestre según la fecha actual
-            if(date("m") > 6){
-                $semester = 2;
-            }else{
-                $semester = 1;
-            }
-            //Agrega el grupo
-            $classTable->addClass($parameters[1], $parameters[2], $semester, date("Y"), 1, $profId);
+            //Recupera el semestre y año de las funciones ya hechas anteriormente en el controlador de Solicitudes           
+            $semester = $SolicitudController->get_semester();
+            $year = $SolicitudController->get_year();
+            //debug($year);
+            //die();
+            //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
+            $classTable->addClass($parameters[1], $parameters[2], $semester, $year, $profId);
 
         }
     }
