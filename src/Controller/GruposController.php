@@ -128,17 +128,26 @@ class GruposController extends AppController
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
+            $cursoModel = $this->loadModel('Cursos');
+
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            $curso = $cursoModel->newEntity();
+            $curso = $cursoModel->patchEntity($curso, $this->request->getData());
             $semestreSeleccionado = $this->request->getData('Semestre');
             $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
 
+            debug($curso);
+            if ($cursoModel->save($curso)) {
+                $this->Flash->success(__('El curso ha sido agregado.'));
+                $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
+                if($this->Grupos->save($grupo)){
+                    
+                }
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
@@ -154,7 +163,7 @@ class GruposController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null, $idCurso = null, $idProfesor = null)
     {
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
@@ -195,18 +204,43 @@ class GruposController extends AppController
         foreach ($cursos as $key => $value) {
             array_push($siglaIndex, $value[0]);
             array_push($siglaIds, $value[1]);
+            if(!$siglaEncontrado){ 
+                if($siglaIds[$itSigla]==$idCurso){
+                    $siglaEncontrado=true;
+                }
+                else{
+                    $itSigla++;
+                }
+            }
         }
 
         $profesores = $this->Grupos->seleccionarProfesoresNombres();
         $profesoresCorreos= array(0 => "");
         $profesoresIds=array(0 => "");
-
+        $grupo = $this->Grupos->get($id, [
+            'contain' => []
+        ]);
         foreach ($profesores as $key => $value) {
-          
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
+            if(!$profesorEncontrado){ //busca el profesor actual del grupo
+                if($profesoresIds[$itProfesor]==$idProfesor){
+                    $profesorEncontrado=true;
+                }
+                else{
+                    $itProfesor++;
+                }
+            }
         }
 
+        while(!$semestreEncontrado){ //busca el semestre actual del grupo
+            if($opcionesSemestre[$itSemestre]==$grupo->semestre){
+                $semestreEncontrado=true;
+            }
+            else{
+                $itSemestre++;
+            }
+         }
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
@@ -216,7 +250,7 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[3];
+            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
                 return $this->redirect(['action' => 'index']);
