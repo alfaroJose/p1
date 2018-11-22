@@ -252,13 +252,19 @@ class SolicitudesController extends AppController
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
+
     public function imprimir($id = null){
-        $this->layout='none';
+        $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+      /*  debug($solicitude);
+        die(); */
+        $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
+        $this->set('curso', $curso);
     }
+    
     public function get_round()
     {
       return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
