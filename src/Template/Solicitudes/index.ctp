@@ -37,6 +37,10 @@
                    echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                    echo $this->Html->link(__('<span class="typcn typcn-folder-open"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                 }
+                if(2 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el asistente del admin
+                    echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar_asistente', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                    echo $this->Html->link(__('<span class="typcn typcn-folder-open"></span>'), ['action' => 'revisar_asistente', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                }
 
                 ?>
                 </td>
