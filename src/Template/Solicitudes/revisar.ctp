@@ -6,7 +6,7 @@
 ?>
 
 <div class="solicitudes form large-9 medium-8 columns content">
-    <?= $this->Form->create($solicitude) ?>
+    <?= $this->Form->create($solicitude, array('onsubmit' => 'unblockTodo();')); ?>
     <fieldset>
         <legend><?= __('Revisar Solicitud') ?></legend>
         <!-- Aqui carga los datos del estudiante para que solamente se puedan ver -->
@@ -241,6 +241,79 @@
     $(function(){
     $('div[onload]').trigger('onload');
     });
+
+    function unblockTodo(){
+        a1 = document.getElementById("a1");
+        a2 = document.getElementById("a2");
+        a3 = document.getElementById("a3");
+        a4 = document.getElementById("a4");
+        a5 = document.getElementById("a5");
+        a6 = document.getElementById("a6"); //Lista de id de requisitos no obligatorios horas asistente
+        var r = a6.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a6.options[c].text;
+
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+                document.getElementById(w).disabled = false;
+           
+        }
+        var r = a4.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a4.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+                document.getElementById(w).disabled = false;
+
+        }
+        var r = a2.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a2.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                var w = x + "-inopia";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+                document.getElementById(w).disabled = false;
+        }
+        var r = a5.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a5.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+
+        }
+        var r = a3.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a3.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+        }
+        var r = a1.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos no obligatorios y los bloquea
+        {
+            var x = a1.options[c].text;
+                var y = x + "-no";
+                var z = x + "-sí";
+                document.getElementById(y).disabled = false;
+                document.getElementById(z).disabled = false;
+        }
+    }
 
     function blockTodo(){
         a1 = document.getElementById("a1");
