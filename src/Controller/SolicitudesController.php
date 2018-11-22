@@ -621,15 +621,30 @@ $y = strval($todo[0][1]);
       $x=$todo[0][7];
       $sigla = $x;
 
+
+//debug($arrayData[1][3]);
+        $datos= array(/*0 => ""*/);
+
+        foreach ($todo as $key => $value) {
+            array_push($datos, $value[0]);
+            array_push($datos, $value[1]);
+            array_push($datos, $value[2]);
+            array_push($datos, $value[3]);
+            array_push($datos, $value[4]);
+            array_push($datos, $value[5]);
+            array_push($datos, $value[6]);
+            array_push($datos, $value[7]);
+        }
+            $value[7]='ja';
       $arrayData = [
     [NULL, 2010, 2011, 2012],
     ['Q1',   12,   15,   21],
     ['Q2',   56,   73,   86],
     ['Q3',   52,   61,   69],
-    ['Q4',   30,   $todo[0][1],    $fecha],
+    ['Q4',   $value[7],   $todo[0][1],    $fecha],
 ];
 
-//debug($arrayData);
+//debug($datos[8]);
 //die();
 
       //$sheet->setCellValue('A1', 0,5);
@@ -646,7 +661,7 @@ $y = strval($todo[0][1]);
       $sheet->setCellValue('G1', 'Tipo Horas');
       $sheet->setCellValue('D1', 'Cantidad');
       $sheet->setCellValue('E1', 'Fecha');
-      $sheet->setCellValue('E2', $fecha);
+      $sheet->setCellValue('E2', $arrayData[1][3]);
       //debug(gettype($todo[0][7]));
       //die;
 //$sheet->getCell('B2');
@@ -663,7 +678,7 @@ $sheet->fromArray($arrayData, NULL, 'A4');
       $sheet->setCellValue('G2', $todo[0][6]);
       $sheet->setCellValue('D2', $todo[0][7]);*/
 
-      $sheet->setCellValueByColumnAndRow('1','10', $sigla);
+      /*$sheet->setCellValueByColumnAndRow('1','10', $sigla);*/
 
      $writer = new Xlsx($spreadsheet);
 
