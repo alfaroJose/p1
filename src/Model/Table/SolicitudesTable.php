@@ -325,6 +325,14 @@ class SolicitudesTable extends Table
         $result = $result->fetchAll('assoc');
         return $result[0];
     }
+
+    public function getContadorHoras()
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select * from contador");
+        $result = $result->fetchAll('assoc');
+        return $result[0];
+    }
     public function getViewValues($grupo_id, $usuario_id, $solicitudes_id)
     {
         $connect = ConnectionManager::get('default');

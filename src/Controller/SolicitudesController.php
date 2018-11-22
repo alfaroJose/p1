@@ -286,8 +286,14 @@ class SolicitudesController extends AppController
     }
     public function get_round()
     {
-      return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
+      return $this->Solicitudes->getRonda(); 
     }
+
+    public function get_contador_horas()
+    {
+      return $this->Solicitudes->getContadorHoras(); 
+    }
+
      public function get_estado_ronda(){
         $ronda = $this->get_round();
         $today = Date::today();
@@ -596,18 +602,15 @@ class SolicitudesController extends AppController
             $data = $this->request->getData();
             debug($data);
             die();
-
-
-
-
-
         }
+
+        $contadorHoras = $this->get_contador_horas();
 
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
         $this->set('horasE',$horasEstudiante);
         $this->set('horasA',$horasAsistente);
-        $this->set(compact('sigla','numGrupo','profe','grupoId'));
+        $this->set(compact('sigla','numGrupo','profe','grupoId', 'contadorHoras'));
 
     }
 }
