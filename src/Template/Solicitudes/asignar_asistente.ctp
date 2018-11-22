@@ -40,7 +40,7 @@
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
                         <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada - Profesor" => 'Aceptada - Profesor', "Aceptada - Profesor (Inopia)" => 'Aceptada - Profesor (Inopia)', "Rechazada - Profesor" => 'Rechazada - Profesor' ], ['required'=>true ,"id" => 'Estado'.$idEstudiante[$i], "empty" => true, 'onclick'=> 'revisarEstado('.$idEstudiante[$i].')'] ); ?></td>
-                        <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],["Estudiante" => 'Estudiante', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true] ); ?></td>
+                        <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],["Estudiante" => 'Estudiante', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                         <td> <?= $this->Form->control('Horas'.$idEstudiante[$i], ['id' => "Horas".$idEstudiante[$i], 'label' => '', 'pattern'=>"[0-9]{1,2}", 'disabled' => true,'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-5">{{content}}</div>']]);?> </td>
 
                     </tr>
@@ -74,6 +74,7 @@
         );
     } );
 </script>
+
 <script>
 
     $(function(){
@@ -100,6 +101,32 @@
             document.getElementById("TipoHora"+id).value = "";
             document.getElementById("Horas"+id).value = "";
        }
+    }
+</script>
+
+
+<?php 
+echo $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
+echo $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
+echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];
+ ?>
+
+
+<script>
+
+    $(function(){
+    $('div[onload]').trigger('onload');
+    });
+
+    function revisarTipoHora(id){
+
+        tipo = document.getElementById("TipoHora"+id).value;
+        if(tipo == "Estudiante"){
+                //document.getElementById("Horas"+id).max = true;
+            }
+            else if (tipo == "Asistente"){
+               document.getElementById("Horas"+id).max = <?php $maxHorasAsistente ?>;
+            }
     }
 </script>
 
