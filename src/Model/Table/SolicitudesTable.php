@@ -150,6 +150,20 @@ class SolicitudesTable extends Table
         $result = $result->fetchAll();
         return $result;
     }
+
+    public function getCurso($idSolicitud){
+        $connect = ConnectionManager::get('default');
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
+        return $curso;
+    }
+    
+    public function getIDEstudiante($carne){
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne. "'")->fetchAll();
+        $result = $result->fetchAll();
+        return $result;
+    }
+
     /*carga el index con todas las solicitudes del estudiante actualmente logueado*/
     public function getIndexValuesEstudiante($id){
         $connect = ConnectionManager::get('default');
@@ -233,8 +247,8 @@ class SolicitudesTable extends Table
                                                                     where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')  and
                                     g.id NOT IN(
                                                                     select g.id
-                                                                    from grupos g, solicitudes r
-                                                                    where g.id = r.grupos_id and r.estado = 'Aceptada');");
+                                                                    from grupos g join solicitudes r on g.id = r.grupos_id 
+                                                                    where r.estado = 'Aceptada - Profesor' or r.estado = 'Aceptada - Profesor (Inopia)');");
         //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
         $result = $result->fetchAll('assoc'); 
         return $result;
@@ -244,23 +258,146 @@ class SolicitudesTable extends Table
     public function getGruposSinAsignar($semestre, $year){
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute(
-            "select distinct cur.sigla as sigla, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
-            from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
+            "select distinct cur.sigla as sigla, cur.nombre, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
+            from solicitudes as sol right join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
-                                    left outer join usuarios as us on gru.usuarios_id = us.id
-            where sol.estado = 'Elegible'
-                  and año = ".$year." and semestre = ".$semestre."
+                                    join usuarios as us on gru.usuarios_id = us.id
+            where año = ".$year." and semestre = ".$semestre."
                   and gru.id not in (select gru.id
                                      from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id
                                      where sol.estado = 'Aceptada - Profesor' or sol.estado = 'Aceptada - Profesor (Inopia)');");
         //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
         $result = $result->fetchAll('assoc'); 
         return $result;
-
-
-
     }
 
+    //Devuelve el nombre, el id de los estudiantes y id de la solicitud que se hizo para un grupo ($idGrupo)
+    public function getEstudiantesGrupoAsistencia($idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select Concat(us.Nombre,' ',us.primer_apellido) as nombre, us.id as id, sol.id as sol_id
+            from usuarios as us join solicitudes as sol on sol.usuarios_id = us.id
+            where sol.estado = 'Elegible' and sol.grupos_id = '".$idGrupo."'");
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;    
+    }
+
+    /*Requisitos que son Inopia de una determinada solicitud*/            
+    public function getRequisitosInopia($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select r.id, r.nombre, r.tipo, r.categoria, t.condicion, t.solicitudes_id
+            from Tiene t join Requisitos r on t.requisitos_id = r.id
+            join Solicitudes s on t.solicitudes_id = s.id
+            where t.solicitudes_id = '$idSolicitud' and t.condicion = 'Inopia';")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        return $result; 
+    }
+
+    /*Requisitos de categoría Asistente de cada solicitud que no están aprobados*/                      
+    public function getRequisitosAsistenteReprobados($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select r.id, r.nombre, r.tipo, r.categoria, t.condicion, t.solicitudes_id
+            from Tiene t join Requisitos r on t.requisitos_id = r.id
+            join Solicitudes s on t.solicitudes_id = s.id
+            where t.solicitudes_id = '$idSolicitud' and r.categoria = 'Horas Asistente' and t.condicion = 'No';")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        return $result; 
+    }
+
+    //Actualiza el estado de una Solicitud
+    public function setEstadoSolicitud($id,$estado){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = '".$estado."'
+            where id = ".$id."");
+    }
+
+    //Actualiza el estado de una Solicitud para que quede como Rechazada
+    public function setSolicitudRechazada($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = 'Rechazada' 
+            where id = ".$idSolicitud.";");
+    }
+
+    //Devuelve verdadero o falso si tuvo HA por asistencia
+    public function InopiaAsistente($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Asistente' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
+
+     //Devuelve verdadero o falso si tuvo HE por asistencia
+     public function InopiaEstudiante($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Estudiante' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
+
+    //Devuelve las horas estudiante que tenga un estudiante asignadas
+    public function getHorasEstudiante($idEstudiante,$idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select acep.cantidad_horas
+            from aceptados as acep join solicitudes as sol on acep.id = sol.id
+            where acep.tipo_horas = 'Horas Estudiante' and sol.id = (select sol.id
+                                                                    from solicitudes as sol
+                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;  
+    }
+
+    //Devuelve las horas asistente que tenga un estudiante asignadas
+    public function getHorasAsistente($idEstudiante,$idGrupo){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select acep.cantidad_horas
+            from aceptados as acep join solicitudes as sol on acep.id = sol.id
+            where acep.tipo_horas = 'Horas Asistente' and sol.id = (select sol.id
+                                                                    from solicitudes as sol
+                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+
+        $result = $result->fetchAll('assoc'); 
+        return $result;  
+    }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
     public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)
@@ -286,6 +423,14 @@ class SolicitudesTable extends Table
     {
         $connect = ConnectionManager::get('default');
         $result = $connect->execute("select * from Rondas");
+        $result = $result->fetchAll('assoc');
+        return $result[0];
+    }
+
+    public function getContadorHoras()
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select * from contador");
         $result = $result->fetchAll('assoc');
         return $result[0];
     }
