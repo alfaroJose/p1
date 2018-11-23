@@ -65,16 +65,6 @@ class FilesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->scalar('file')
-            ->maxLength('file', 255)
-            ->allowEmpty('file');
-
-        $validator
-            ->scalar('file_dir')
-            ->maxLength('file_dir', 255)
-            ->allowEmpty('file_dir');
-
         return $validator;
     }
 

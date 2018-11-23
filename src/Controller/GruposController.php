@@ -16,7 +16,7 @@ require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
 
 
 /**
- * Grupos Controller
+ * Cursos/Grupos Controller
  *
  * @property \App\Model\Table\GruposTable $Grupos
  *
@@ -64,25 +64,13 @@ class GruposController extends AppController
     }
 
     /**
-     * View method
-     *
+     * Función que agrega un curso nuevo y un grupo a este curso recíen agregado
+     * de lo contrario informa que el curso no se ha podido agregar.
      * @param string|null $id Grupo id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     *//*
-    public function view($id = null)
-    {
-        $grupo = $this->Grupos->get($id, [
-            'contain' => ['Usuarios']
-        ]);
-
-        $this->set('grupo', $grupo);
-    } COMENTADO PARA EVITAR ACCESOS POR URL*/
-
-    /**
-     * Add method
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add.
      */
     public function addCurso()
     {
@@ -128,17 +116,26 @@ class GruposController extends AppController
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
+            $cursoModel = $this->loadModel('Cursos');
+
             $grupo = $this->Grupos->patchEntity($grupo, $this->request->getData());
+            $curso = $cursoModel->newEntity();
+            $curso = $cursoModel->patchEntity($curso, $this->request->getData());
             $semestreSeleccionado = $this->request->getData('Semestre');
             $grupo->semestre = $opcionesSemestre[$semestreSeleccionado];
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
 
+            debug($curso);
+            if ($cursoModel->save($curso)) {
+                $this->Flash->success(__('El curso ha sido agregado.'));
+                $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
+                if($this->Grupos->save($grupo)){
+                    
+                }
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+            $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
@@ -150,11 +147,15 @@ class GruposController extends AppController
 
 
     /**
-     * Add method
+     * Función que agrega un grupo a un curso ya existente, de lo contrario 
+     * informa que no se ha podido agregar el grupo.
+     * @param string|null $id Grupo id.
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add.
      */
-    public function add()
+    public function add($id = null, $idCurso = null, $idProfesor = null)
     {
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
@@ -195,18 +196,43 @@ class GruposController extends AppController
         foreach ($cursos as $key => $value) {
             array_push($siglaIndex, $value[0]);
             array_push($siglaIds, $value[1]);
+            if(!$siglaEncontrado){ 
+                if($siglaIds[$itSigla]==$idCurso){
+                    $siglaEncontrado=true;
+                }
+                else{
+                    $itSigla++;
+                }
+            }
         }
 
         $profesores = $this->Grupos->seleccionarProfesoresNombres();
         $profesoresCorreos= array(0 => "");
         $profesoresIds=array(0 => "");
-
+        $grupo = $this->Grupos->get($id, [
+            'contain' => []
+        ]);
         foreach ($profesores as $key => $value) {
-          
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
+            if(!$profesorEncontrado){ //busca el profesor actual del grupo
+                if($profesoresIds[$itProfesor]==$idProfesor){
+                    $profesorEncontrado=true;
+                }
+                else{
+                    $itProfesor++;
+                }
+            }
         }
 
+        while(!$semestreEncontrado){ //busca el semestre actual del grupo
+            if($opcionesSemestre[$itSemestre]==$grupo->semestre){
+                $semestreEncontrado=true;
+            }
+            else{
+                $itSemestre++;
+            }
+         }
     
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {
@@ -216,7 +242,7 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[3];
+            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
             if ($this->Grupos->save($grupo)) {
                 $this->Flash->success(__('El grupo ha sido agregado.'));
                 return $this->redirect(['action' => 'index']);
@@ -234,10 +260,12 @@ class GruposController extends AppController
     }
 
     /**
-     * Edit method
+     * Función que permite editar los campos de un grupo.
      *
      * @param string|null $id Grupo id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
+     * @return \Cake\Http\Response|null Redirects on successful edit.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
      public function edit($id = null, $idCurso = null, $idProfesor = null)
@@ -325,7 +353,7 @@ class GruposController extends AppController
     }
 
     /**
-     * Delete method
+     * Función que borra un grupo existente.
      *
      * @param string|null $id Grupo id.
      * @return \Cake\Http\Response|null Redirects to index.
@@ -393,7 +421,11 @@ class GruposController extends AppController
                         //Divide el profesor en nombre y apellido
                         $prof = preg_split('/\s+/', $value);
                         //Consigue el id del profesor
-                        $id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        //$id = $UserController->getId($prof[count($prof)-1], $prof[0]);
+                        //debug($prof[count($prof)-1]);
+                        //debug($prof);
+                        //die();
+                        $id = $usuariosTable->getID($prof[count($prof)-1], $prof[0]);
                         
                         if($id == null){
                             //Se borra el archivo
@@ -416,15 +448,27 @@ class GruposController extends AppController
         //Se cambia el nombre de las llaves del array si no es post ya que es para la vista previa
         if(!$this->request->is('post')){
             $table = array_map(function($tag) {
+                /*Se le agrega el guión a las siglas de los cursos porque el archivo no las incluye*/
+                $name = $tag['1'];
+                $len =  strlen($name);
+                if ($len != 0){     
+                    $tag['1'] = substr($name,0,2).'-'.substr($name,2,$len-2);
+                }
+                //debug($tag['1']);
+                //debug($len);
+                //die();
                 return array(
                     'Curso' => $tag['0'],
                     'Sigla' => $tag['1'],
                     'Grupo' => $tag['2'],
                     'Profesor' => $tag['3']
                 );
+
             }, $table);
     
         }
+        /* //sirve*/
+        
         //Hace que table sea visible para el template
         $this->set('table', $table);
 
@@ -432,7 +476,7 @@ class GruposController extends AppController
         if ($this->request->is('post')) {
             //Borra todos los grupos
             $classesModel = $this->loadmodel('Grupos');
-            $classesModel->deleteAllClasses();
+            //$classesModel->deleteAllClasses();
 
             //Llama al método addFromFile con cada fila
             for ($row = 0; $row < count($table); ++$row) {
@@ -450,22 +494,29 @@ class GruposController extends AppController
 
     //Este método se usa para agregar cada fila del archivo una vez se preciona aceptar
     public function addFromFile ($parameters, $profId){
-        //Si la fila está vacía no hace nada
+        
         if($parameters[0] != null){
             $courseTable = $this->loadmodel('Cursos');
             $classTable = $this->loadmodel('Grupos');
+            $SolicitudController = new SolicitudesController;
 
+            //Se incluye el guión en la sigla de los cursos
+            $len =  strlen($parameters[1]);
+            $name = substr($parameters[1],0,2).'-'.substr($parameters[1],2,$len-2); //sirve
+            
             //Agrega el curso
-            $courseTable->addCourse($parameters[1], $parameters[0], 0);
+            $courseTable->addCourse($name, $parameters[0]);
 
-            //Selecciona un smestre según la fecha actual
-            if(date("m") > 6){
-                $semester = 2;
-            }else{
-                $semester = 1;
-            }
-            //Agrega el grupo
-            $classTable->addClass($parameters[1], $parameters[2], $semester, date("Y"), 1, $profId);
+            //Recupera el semestre y año de las funciones ya hechas anteriormente en el controlador de Solicitudes           
+            $semester = $SolicitudController->get_semester();
+            $year = $SolicitudController->get_year();
+            //debug($year);
+            //die();
+            //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
+            $idCurso = $this->Grupos->obtenerCursoId($name);
+            //debug($idCurso);
+            //die();
+            $classTable->addClass($parameters[2], $semester, $year, $idCurso, $profId);
 
         }
     }
