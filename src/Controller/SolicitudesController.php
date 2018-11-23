@@ -626,8 +626,6 @@ class SolicitudesController extends AppController
 
             $reqAux = $this->Solicitudes->getRequisitosAsistenteReprobados($idSolicitud[$i]);
             array_push($requisitosAsistenteReprobados,$reqAux);
-            //debug($idSolicitud);
-            //die();
             $i++;
         }
 
@@ -635,19 +633,38 @@ class SolicitudesController extends AppController
             $data = $this->request->getData(); //data es un solo vector, hay que recorrerlo con iterador? los campos no están en [0] sino en ['Estado23'] o [TipoHoras23]
             $i = 0;                             //Itera sobre todos los estudiantes
             $end = count($idSolicitud);         //Cantidad de estudiantes
-
-            debug($data); die();
+           
             while($i < $end){
-                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){
+                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
                     $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
                 }
                 else{
+                   // debug($data); die();
                     //Agregar al estudiante a la tabla de Aceptados .
-                    //$this->setAceptados($idSolicitud[$i],$cantidad, $tipoHs);
+                        $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
+
+                    //Verificar si fue dada la asistencia por inopia
+                    if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                        //Consulta por inopia en ASISTENTE
+                        $inopia = $this->Solicitudes->InopiaAsistente($idSolicitud[$i]);   
+                    }
+                    else{
+                        //Consulta por inopia en ESTUDIANTE
+                        $inopia = $this->Solicitudes->InopiaEstudiante($idSolicitud[$i]);
+                    }
+
+                    if($inopia){
+                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor (Inopia)');
+                    }
+                    else{
+                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
+                    }
                     //Además de actualizar los valores en el contador
                 }
                 $i++;
             }
+            $this->Flash->success(__('Se han guardado los cambios para el grupo'));
+            return $this->redirect(['action' => 'grupoAsignar']);
         }
 
         $contadorHoras = $this->get_contador_horas();
