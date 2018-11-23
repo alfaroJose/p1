@@ -17,6 +17,8 @@ tr:nth-child(even) {background-color:  #eaecee };
 
         <?= $this->Html->link('Generar reporte por rondas',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
+         <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+
         
 
         <h4> Generar reporte de asistencias por estudiante <h4>
