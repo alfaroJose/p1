@@ -5,6 +5,23 @@ use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
 use Cake\Chronos\Date;
 use Cake\ORM\TableRegistry;
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Helper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+use Cake\Database\Exception;
+require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
+
+
+
+
+//Para generar el excel de solicitud
+
+require 'C:\xampp\htdocs\p1\vendor\autoload.php';
+
 /**
  * Solicitudes Controller
  *
@@ -252,7 +269,6 @@ class SolicitudesController extends AppController
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
-
     public function imprimir($id = null){
         $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
@@ -264,7 +280,6 @@ class SolicitudesController extends AppController
         $this->set('solicitude', $solicitude);
         $this->set('curso', $curso);
     }
-    
     public function get_round()
     {
       return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
@@ -554,4 +569,68 @@ class SolicitudesController extends AppController
 
 
     }
+        /***********************************************************************************************************/
+
+    public function genera($id = null){
+
+        $solicitude = $this->Solicitudes->newEntity();
+        if ($this->request->is('post')) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
+            //debug($info);
+            //die();
+
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            $ruta="C:\Users\B54548\Desktop\Excel\librotest.xlsx"; 
+
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
+
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
+
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
+
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
+
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
+
+            $writer = new Xlsx($spreadsheet);
+
+            try{
+                $writer->save($ruta/*.'librotest.xlsx'*/);
+                echo "Archivo Creado";
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
+        }
+    
+        $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
+        $this->set(compact('todo', 'solicitude'));
+    }
+
 }
+

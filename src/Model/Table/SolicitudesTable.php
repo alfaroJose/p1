@@ -133,7 +133,7 @@ class SolicitudesTable extends Table
     /*carga el index con todas las solicitudes Actuales*/
     public function getIndexActualesValues($semestre, $año){
         $connect = ConnectionManager::get('default');
-                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
+                        $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador', s.usuarios_id
                                         from solicitudes s 
                                         join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
                                         join grupos g on s.grupos_id = g.id
@@ -150,20 +150,6 @@ class SolicitudesTable extends Table
         $result = $result->fetchAll();
         return $result;
     }
-
-    public function getCurso($idSolicitud){
-        $connect = ConnectionManager::get('default');
-        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
-        return $curso;
-    }
-
-    public function getIDEstudiante($carne){
-        $connet = ConnectionManager::get('default');
-        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne. "'")->fetchAll();
-        $result = $result->fetchAll();
-        return $result;
-    }
-
     /*carga el index con todas las solicitudes del estudiante actualmente logueado*/
     public function getIndexValuesEstudiante($id){
         $connect = ConnectionManager::get('default');
@@ -360,4 +346,25 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $connet->execute("call insertar_modificar_aceptados ($solicitudes_id, $cantidad_horas, '$tipo_horas')");
     }
+
+
+    /*************************************************************************************/
+    /*Administrador  CONSULTA y genera Excel del historial de asistencias que ha tenido un determinado estudiante durante toda la carrera 
+    Atributos: Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad*/
+    public function getHistorialExcelEstudiante($id){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join usuarios u on s.usuarios_id = u.id
+                                        join aceptados a on s.id = a.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.usuarios_id = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+        return $index;
+    }
+
+/*****************************************************************************************/
+
 }
