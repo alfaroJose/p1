@@ -16,7 +16,7 @@
 
             echo $this->Form->control('nombre',['required'=>true, 'pattern'=>"[A-Za-zñÑáéíóúÁÉÍÓÚ\s]{1,50}", 'placeholder'=>'Nuevo Curso','templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Nombre De curso'],'type' => 'text' ]);
 
-            echo $this->Form->control('numero',['required'=>true, 'pattern' => '[1-9]{1,2}', 'placeholder'=>'01', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero De grupo'],'type' => 'text' ]);
+            echo $this->Form->control('numero',['required'=>true, 'pattern' => '[1-9]{1,2}', 'placeholder'=>'1', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Numero De grupo'],'type' => 'text' ]);
 
             echo $this->Form->control('Semestre', ['templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $opcionesSemestre, 'default'=>$defaultSelectSemestre]);
 

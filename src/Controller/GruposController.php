@@ -16,7 +16,7 @@ require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
 
 
 /**
- * Grupos Controller
+ * Cursos/Grupos Controller
  *
  * @property \App\Model\Table\GruposTable $Grupos
  *
@@ -64,25 +64,13 @@ class GruposController extends AppController
     }
 
     /**
-     * View method
-     *
+     * Función que agrega un curso nuevo y un grupo a este curso recíen agregado
+     * de lo contrario informa que el curso no se ha podido agregar.
      * @param string|null $id Grupo id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     *//*
-    public function view($id = null)
-    {
-        $grupo = $this->Grupos->get($id, [
-            'contain' => ['Usuarios']
-        ]);
-
-        $this->set('grupo', $grupo);
-    } COMENTADO PARA EVITAR ACCESOS POR URL*/
-
-    /**
-     * Add method
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add.
      */
     public function addCurso()
     {
@@ -159,9 +147,13 @@ class GruposController extends AppController
 
 
     /**
-     * Add method
+     * Función que agrega un grupo a un curso ya existente, de lo contrario 
+     * informa que no se ha podido agregar el grupo.
+     * @param string|null $id Grupo id.
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add.
      */
     public function add($id = null, $idCurso = null, $idProfesor = null)
     {
@@ -268,10 +260,12 @@ class GruposController extends AppController
     }
 
     /**
-     * Edit method
+     * Función que permite editar los campos de un grupo.
      *
      * @param string|null $id Grupo id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @param string|null $idCurso Curso id.
+     * @param string|null $idProfesor Profesor id.
+     * @return \Cake\Http\Response|null Redirects on successful edit.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
      public function edit($id = null, $idCurso = null, $idProfesor = null)
@@ -279,6 +273,7 @@ class GruposController extends AppController
         //Verifica por permisos y login
         $carne = $this->getRequest()->getSession()->read('id'); 
         if($carne != null){
+
            $connect = ConnectionManager::get('default');
            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
@@ -314,7 +309,6 @@ class GruposController extends AppController
         ]);
         $cursos = $this->Grupos->obtenerCursos($idCurso); //obtiene la sigla del curso segun el id
         foreach ($profesores as $key => $value) {
-          
             array_push($profesoresCorreos, $value[0]);
             array_push($profesoresIds, $value[1]);
             if(!$profesorEncontrado){ //busca el profesor actual del grupo
@@ -359,7 +353,7 @@ class GruposController extends AppController
     }
 
     /**
-     * Delete method
+     * Función que borra un grupo existente.
      *
      * @param string|null $id Grupo id.
      * @return \Cake\Http\Response|null Redirects to index.
