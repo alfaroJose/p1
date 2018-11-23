@@ -118,9 +118,9 @@ class UsuariosTable extends Table
         }
     }
     //Devuelve el ID del usuario según el nombre y apellido para el archivo de excel.
-    public function getId($name, $lastname) {
+    public function getID($name, $lastname) {
         $connect = ConnectionManager::get('default');
-        $id = $connect->execute("select id from Usuarios where nombre like '%$name' and primer_apellido like '$lastname%'") ->fetchAll();
+        $id = $connect->execute("select id from Usuarios where nombre like '%$name%' and primer_apellido like '$lastname%'") ->fetchAll();
         if($id != null){
             return $id[0][0];
         }else{

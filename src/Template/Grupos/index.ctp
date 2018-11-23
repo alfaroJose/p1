@@ -27,7 +27,7 @@
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
-                <?php ///debug($grupo) ?>
+                <?php ?>
             <tr>
                 <td><?= h($grupo->Cursos['sigla']) ?></td>
                 <td><?= h($grupo->Cursos['nombre']) ?></td>
@@ -56,9 +56,8 @@
     <br>
     <?php
     if (1 == $permisoAdd){
-        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso'],['class'=>'btn btn-info float-right']);
-        echo $this->Html->link('Agregar grupo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);
-        /*echo $this->Html->link('Cargar Archivo',['action'=>'add'],['class'=>'btn btn-info float-right mr-3']);*/
+        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right']);
+        echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right mr-3']);
     }
         ?>
          <button id="butExcel" class="btn btn-info float-right mr-3">Cargar Archivo</button>
