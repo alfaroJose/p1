@@ -69,50 +69,9 @@
         <table id="requisitos" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
-                    <th scope="col"><?= 'Horas Asistente' ?></th>
+                    <th scope="col"><?= 'Horas Estudiante' ?></th>
                     <th scope="col"><?= 'Tipo' ?></th>
                     <th scope="col" class="actions"><?= __('Cumple el requisito?') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $i = 0;
-                $j = 0;
-                $auto5 = null;
-                $auto6 = null; 
-                //Carga los requisitos para horas asistente
-                foreach ($datosRequisitosSolicitud as $asistente): ?>
-                <tr>
-                <?php if($asistente['requisito_categoria'] == 'Horas Asistente'):?>
-                    <td><?= h($asistente['requisito_nombre']) ?></td>
-                    <td><?= h($asistente['requisito_tipo']) ?></td>
-                    <td class="actions">
-                    <?php
-                        //Si el requisito es obligatirio entra aquí
-                        if ($asistente['requisito_tipo'] == 'Obligatorio') {
-                            $auto5[$i] = $asistente['requisito_id'];
-                            $i = $i+1;
-                            $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false,);
-                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
-                        //Si el requisito no es obligatorio entra aqui
-                        } else {
-                            $auto6[$j] = $asistente['requisito_id'];
-                            $j = $j+1;
-                            $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false,);
-                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
-                        }
-                    ?>    
-                    </td>
-                </tr>
-                <?php endif; ?>
-                <?php endforeach; ?>
-            </tbody>
-
-            <thead>
-                <tr>
-                    <th scope="col"><?= 'Horas Estudiante' ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -145,6 +104,47 @@
                             echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         }
                     ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th scope="col"><?= 'Horas Asistente' ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $i = 0;
+                $j = 0;
+                $auto5 = null;
+                $auto6 = null; 
+                //Carga los requisitos para horas asistente
+                foreach ($datosRequisitosSolicitud as $asistente): ?>
+                <tr>
+                <?php if($asistente['requisito_categoria'] == 'Horas Asistente'):?>
+                    <td><?= h($asistente['requisito_nombre']) ?></td>
+                    <td><?= h($asistente['requisito_tipo']) ?></td>
+                    <td class="actions">
+                    <?php
+                        //Si el requisito es obligatirio entra aquí
+                        if ($asistente['requisito_tipo'] == 'Obligatorio') {
+                            $auto5[$i] = $asistente['requisito_id'];
+                            $i = $i+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No',);
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false,);
+                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
+                        //Si el requisito no es obligatorio entra aqui
+                        } else {
+                            $auto6[$j] = $asistente['requisito_id'];
+                            $j = $j+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false,);
+                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
+                        }
+                    ?>    
                     </td>
                 </tr>
                 <?php endif; ?>
