@@ -572,7 +572,6 @@ class SolicitudesController extends AppController
         /***********************************************************************************************************/
 
     public function genera($id = null){
-
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
@@ -633,4 +632,3 @@ class SolicitudesController extends AppController
     }
 
 }
-
