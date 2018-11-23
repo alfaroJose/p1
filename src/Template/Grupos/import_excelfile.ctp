@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Grupos $grupos
+ * @var \App\Model\Entity\Grupos $coursesClassesVw
  */
 ?>
 <style>
@@ -21,8 +21,8 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 </style>
-<div class="grupos form large-9 medium-8 columns content">
-    <?= $this->Form->create($grupos) ?>
+<div class="coursesClassesVw form large-9 medium-8 columns content">
+    <?= $this->Form->create($coursesClassesVw) ?>
     <fieldset>
         <legend><?= __('Vista previa del archivo') ?></legend>
 
@@ -42,19 +42,12 @@ tr:nth-child(even) {
         </table>
 
     </fieldset>
-    <button type="submit" class="btn btn-primary float-right">Aceptar</button>
+    <br>
+    <button type="submit" class="btn btn-info float-right">Aceptar</button>
     <?= $this->Html->link(
         'Cancelar',
         ['controller'=>'Grupos','action'=>'cancelExcel'],
-        ['class'=>'btn btn-secondary float-right btn-space']
+        ['class'=>'btn btn-info float-right mr-3']
     )?>
     <?= $this->Form->end() ?>
 </div>
-
-
-<style>
-    .btn-space {
-        margin-right: 3px;
-        margin-leftt: 3px;
-    }
-</style>
