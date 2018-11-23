@@ -248,7 +248,7 @@ class SolicitudesTable extends Table
             from solicitudes as sol right join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
                                     join usuarios as us on gru.usuarios_id = us.id
-            where año = ".$year." and semestre = ".$semestre."
+            where año = ".$year." and semestre = ".$semestre." and estado = 'Elegible'
                   and gru.id not in (select gru.id
                                      from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id
                                      where sol.estado = 'Aceptada - Profesor' or sol.estado = 'Aceptada - Profesor (Inopia)');");
@@ -360,29 +360,49 @@ class SolicitudesTable extends Table
     //Devuelve las horas estudiante que tenga un estudiante asignadas
     public function getHorasEstudiante($idEstudiante,$idGrupo){
         $connect = ConnectionManager::get('default');      
-        $result = $connect->execute(
-            "select acep.cantidad_horas
-            from aceptados as acep join solicitudes as sol on acep.id = sol.id
-            where acep.tipo_horas = 'Horas Estudiante' and sol.id = (select sol.id
-                                                                    from solicitudes as sol
-                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+        $result = $connect->execute("select sum(acep.cantidad_horas) 
+        from aceptados as acep join solicitudes as sol on acep.id = sol.id
+        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente';");
+        $result = $result->fetchAll(); 
 
-        $result = $result->fetchAll('assoc'); 
-        return $result;  
+        $result2 = $connect->execute("select sol.cantidad_horas_externa
+        from solicitudes as sol
+        where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_estudiante_externa = 'Sí';");
+        $result2 = $result2->fetchAll(); 
+
+        if ($result[0][0] == null){
+            $result[0][0] = 0;
+        }
+        if ($result2[0][0] == null){
+            $result2[0][0] = 0;
+        }
+        $HE = $result[0][0] + $result2[0][0];
+
+        return $HE;  
     }
 
     //Devuelve las horas asistente que tenga un estudiante asignadas
     public function getHorasAsistente($idEstudiante,$idGrupo){
         $connect = ConnectionManager::get('default');      
-        $result = $connect->execute(
-            "select acep.cantidad_horas
-            from aceptados as acep join solicitudes as sol on acep.id = sol.id
-            where acep.tipo_horas = 'Horas Asistente' and sol.id = (select sol.id
-                                                                    from solicitudes as sol
-                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+        $result = $connect->execute("select sum(acep.cantidad_horas) 
+        from aceptados as acep join solicitudes as sol on acep.id = sol.id
+        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Asistente';");
+        $result = $result->fetchAll(); 
 
-        $result = $result->fetchAll('assoc'); 
-        return $result;  
+        $result2 = $connect->execute("select sol.cantidad_horas_externa
+        from solicitudes as sol
+        where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_asistente_externa = 'Sí';");
+        $result2 = $result2->fetchAll(); 
+
+        if ($result[0][0] == null){
+            $result[0][0] = 0;
+        }
+        if ($result2[0][0] == null){
+            $result2[0][0] = 0;
+        }
+        $HE = $result[0][0] + $result2[0][0];
+
+        return $HE;  
     }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/

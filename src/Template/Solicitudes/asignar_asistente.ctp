@@ -36,17 +36,19 @@
                     foreach ($estudiantes as $nombres): //datos para el index?>
                     <tr>
                         <td><?= h($nombres) ?></td>
-                        <?php 
-                            if($horasE[$i] == []){ //Si es null entonces no tiene horas asignadas
-                                $horasE[$i] = 0; 
-                            }
+                        <?php /*
+                       
+                            if($horasE[0][$i]['horas'] == []){ //Si es null entonces no tiene horas asignadas
+                                $horasE[0][$i]['horas'] = 0; 
+                            }*/
                         ?>
                         <td><?= h($horasE[$i]) ?></td>
-                        <?php 
-                        if($horasA[$i] == []){//Si es null entonces no tiene horas asignadas
-                                $horasA[$i] = 0; 
+                        <?php /*
+                       // debug($horasA); die();
+                        if($horasA[0] == []){//Si es null entonces no tiene horas asignadas
+                                $horasA[0][$i]['horas'] = 0; 
                         }
-                       
+                       */
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
 
@@ -128,10 +130,10 @@
 </script>
 
 
-<?php /*
-echo $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
-echo $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
-echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];*/
+<?php 
+ $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
+ $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
+ $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];
  ?>
 
 

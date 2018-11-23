@@ -600,9 +600,6 @@ class SolicitudesController extends AppController
             $horasAux = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas asistente de X estudiante
             array_push($horasAsistente,$horasAux);
 
-            $data = $this->Solicitudes->getRequisitosInopia($idSolicitud[$i]);
-            array_push($requisitosInopia,$data);
-
             $reqAux = $this->Solicitudes->getRequisitosAsistenteReprobados($idSolicitud[$i]);
             array_push($requisitosAsistenteReprobados,$reqAux);
             $i++;
@@ -638,7 +635,30 @@ class SolicitudesController extends AppController
                     else{
                         $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
                     }
-                    //Además de actualizar los valores en el contador
+
+                    //Además hay que actualizar los valores del contador
+                    switch($data["TipoHora".$estudiantesIds[$i]]){
+                        case "Asistente":
+                            //this->actualizarContador
+
+
+                        
+                        break;
+                        case 'Estudiante ECCI':
+
+
+
+                        
+                        break;
+
+
+
+                        case 'Estudiante Docente':
+
+
+                        break;
+                    }
+
                 }
                 $i++;
             }
