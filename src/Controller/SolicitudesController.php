@@ -192,10 +192,34 @@ class SolicitudesController extends AppController
                     }
                     $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
                 endforeach;
-    
-                if ($solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Aceptada - Profesor'){
-                    $this->Solicitudes->setAceptados($solicitude['id'],$data['aceptados_cantidad_horas'], $data['aceptados_tipo_horas']);
-                }
+                $this->Flash->success(__('La solicitud ha sido revisada.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('La solicitud no se ha podido revisar. Por favor intente de nuevo.'));
+        }
+        $this->set(compact('solicitude','datosSolicitud','datosRequisitosSolicitud'));
+    }
+
+    public function revisarAsistente($id = null)
+    {
+        $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
+        $solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $data = $this->request->getData();
+            $solicitude['estado'] = 'Pendiente - Administrador';
+
+            if ($this->Solicitudes->save($solicitude)) {
+                foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
+                    if ($data[$requisitosSolicitud['requisito_id']] == '') {
+                        $data[$requisitosSolicitud['requisito_id']] = $requisitosSolicitud['tiene_condicion'];
+                    }
+                    $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
+                endforeach;
+
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -282,8 +306,14 @@ class SolicitudesController extends AppController
     }
     public function get_round()
     {
-      return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
+      return $this->Solicitudes->getRonda(); 
     }
+
+    public function get_contador_horas()
+    {
+      return $this->Solicitudes->getContadorHoras(); 
+    }
+
      public function get_estado_ronda(){
         $ronda = $this->get_round();
         $today = Date::today();
@@ -565,14 +595,76 @@ class SolicitudesController extends AppController
     }
 
     //Asignación de un asistente a un grupo
-    public function asignarAsistente($grupoId){
+    public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
+       
+       
+        $estudiantesNombres= array();               //Guarda los nombres de estudiantes
+        $estudiantesIds=array();                    //Guarda los ids de los estudiantes de arriba
+        $horasEstudiante = array();                 //Guarda las HE de cada estudiante segun el orden de la tabla
+        $horasAsistente = array();                  //Guarda las HA de cada estudiante segun el orden de la tabla
+        $idSolicitud = array();                     //Guarda los ids de las solicitudes elegibles para dicho grpo
+        $requisitosInopia = array();                //Guarda los requisitos asociados a la solicitud
+        $requisitosAsistenteReprobados = array();   //Guarda los requisitos de categoría asistente que estén en "No"
 
+
+        $dropInfo = $this->Solicitudes->getEstudiantesGrupoAsistencia($grupoId); //Carga nombres y id de estudiantes
+        $i = 0;//Iterador para encontrar las horas de cada estudiante
+
+        foreach ($dropInfo as $key => $value) { //Llena cada vector con las colmnas de la tabla anterior
+            array_push($estudiantesNombres, $value['nombre']);
+            array_push($estudiantesIds, $value['id']);
+            array_push($idSolicitud, $value['sol_id']);
+
+            $horasAux = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId); //Horas estudiante de X estudiante
+            array_push($horasEstudiante,$horasAux);
+
+            $horasAux = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas asistente de X estudiante
+            array_push($horasAsistente,$horasAux);
+
+            $data = $this->Solicitudes->getRequisitosInopia($idSolicitud[$i]);
+            array_push($requisitosInopia,$data);
+
+            $reqAux = $this->Solicitudes->getRequisitosAsistenteReprobados($idSolicitud[$i]);
+            array_push($requisitosAsistenteReprobados,$reqAux);
+            //debug($idSolicitud);
+            //die();
+            $i++;
+        }
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData(); //data es un solo vector, hay que recorrerlo con iterador? los campos no están en [0] sino en ['Estado23'] o [TipoHoras23]
+            $i = 0;                             //Itera sobre todos los estudiantes
+            $end = count($idSolicitud);         //Cantidad de estudiantes
+
+            debug($data); die();
+            while($i < $end){
+                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){
+                    $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
+                }
+                else{
+                    //Agregar al estudiante a la tabla de Aceptados .
+                    //$this->setAceptados($idSolicitud[$i],$cantidad, $tipoHs);
+                    //Además de actualizar los valores en el contador
+                }
+                $i++;
+            }
+        }
+
+        $contadorHoras = $this->get_contador_horas();
+
+        $this->set('idEstudiante',$estudiantesIds);
+        $this->set('estudiantes', $estudiantesNombres);
+        $this->set('idSolicitud',$idSolicitud);
+        $this->set('reqInopia',$requisitosInopia);
+        $this->set('reqReprobados',$requisitosAsistenteReprobados);
+        $this->set('horasE',$horasEstudiante);
+        $this->set('horasA',$horasAsistente);
+        $this->set(compact('sigla','numGrupo','profe','grupoId', 'contadorHoras'));
 
     }
         /***********************************************************************************************************/
 
     public function genera($id = null){
-
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
@@ -633,4 +725,3 @@ class SolicitudesController extends AppController
     }
 
 }
-

@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
+                <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col" class="actions"><?= __('Asignar') ?></th>
@@ -20,10 +21,11 @@
             <?php foreach ($tabla as $grupo): //datos para el index?>
             <tr>
                 <td><?= h($grupo['sigla']) ?></td>
+                <td><?= h($grupo['nombre']) ?></td>
                 <td><?= h($grupo['grupo']) ?></td>
                 <td><?= h($grupo['profesor']) ?></td>
                 <td class="actions">
-                <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline"></span>'), ['action' => 'asignarAsistente', $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline"></span>'), ['action' => 'asignarAsistente',$grupo['sigla'],$grupo['grupo'],$grupo['profesor'], $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
