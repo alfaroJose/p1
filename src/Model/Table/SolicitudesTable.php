@@ -262,9 +262,9 @@ class SolicitudesTable extends Table
     public function getEstudiantesGrupoAsistencia($idGrupo){
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute(
-            'select Concat(us.Nombre," ",us.primer_apellido) as nombre, us.id as id
+            "select Concat(us.Nombre,' ',us.primer_apellido) as nombre, us.id as id
             from usuarios as us join solicitudes as sol on sol.usuarios_id = us.id
-            where sol.grupos_id = '.$idGrupo.';');
+            where sol.estado = 'Elegible' and sol.grupos_id = '".$idGrupo."'");
 
         $result = $result->fetchAll('assoc'); 
         return $result;    
