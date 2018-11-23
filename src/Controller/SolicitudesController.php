@@ -577,11 +577,14 @@ class SolicitudesController extends AppController
     public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
        
        
-        $estudiantesNombres= array();  //Guarda los nombres de estudiantes
-        $estudiantesIds=array();       //Guarda los ids de los estudiantes de arriba
-        $horasEstudiante = array();    //Guarda las HE de cada estudiante segun el orden de la tabla
-        $horasAsistente = array();     //Guarda las HA de cada estudiante segun el orden de la tabla
-        $idSolicitud = array();
+        $estudiantesNombres= array();               //Guarda los nombres de estudiantes
+        $estudiantesIds=array();                    //Guarda los ids de los estudiantes de arriba
+        $horasEstudiante = array();                 //Guarda las HE de cada estudiante segun el orden de la tabla
+        $horasAsistente = array();                  //Guarda las HA de cada estudiante segun el orden de la tabla
+        $idSolicitud = array();                     //Guarda los ids de las solicitudes elegibles para dicho grpo
+        $requisitosInopia = array();                //Guarda los requisitos asociados a la solicitud
+        $requisitosAsistenteReprobados = array();   //Guarda los requisitos de categoría asistente que estén en "No"
+
 
         $dropInfo = $this->Solicitudes->getEstudiantesGrupoAsistencia($grupoId); //Carga nombres y id de estudiantes
         $i = 0;//Iterador para encontrar las horas de cada estudiante
@@ -596,6 +599,14 @@ class SolicitudesController extends AppController
 
             $horasAux = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas asistente de X estudiante
             array_push($horasAsistente,$horasAux);
+
+            $data = $this->Solicitudes->getRequisitosInopia($idSolicitud[$i]);
+            array_push($requisitosInopia,$data);
+
+            $reqAux = $this->Solicitudes->getRequisitosAsistenteReprobados($idSolicitud[$i]);
+            array_push($requisitosAsistenteReprobados,$reqAux);
+            //debug($idSolicitud);
+            //die();
             $i++;
         }
 
@@ -610,6 +621,8 @@ class SolicitudesController extends AppController
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
         $this->set('idSolicitud',$idSolicitud);
+        $this->set('reqInopia',$requisitosInopia);
+        $this->set('reqReprobados',$requisitosAsistenteReprobados);
         $this->set('horasE',$horasEstudiante);
         $this->set('horasA',$horasAsistente);
         $this->set(compact('sigla','numGrupo','profe','grupoId', 'contadorHoras'));

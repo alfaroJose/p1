@@ -269,6 +269,39 @@ class SolicitudesTable extends Table
         return $result;    
     }
 
+    /*Requisitos que son Inopia de una determinada solicitud*/            
+    public function getRequisitosInopia($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select r.id, r.nombre, r.tipo, r.categoria, t.condicion, t.solicitudes_id
+            from Tiene t join Requisitos r on t.requisitos_id = r.id
+            join Solicitudes s on t.solicitudes_id = s.id
+            where t.solicitudes_id = '$idSolicitud' and t.condicion = 'Inopia';")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        return $result; 
+    }
+
+    /*Requisitos de categoría Asistente de cada solicitud que no están aprobados*/                      
+    public function getRequisitosAsistenteReprobados($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select r.id, r.nombre, r.tipo, r.categoria, t.condicion, t.solicitudes_id
+            from Tiene t join Requisitos r on t.requisitos_id = r.id
+            join Solicitudes s on t.solicitudes_id = s.id
+            where t.solicitudes_id = '$idSolicitud' and r.categoria = 'Horas Asistente' and t.condicion = 'No';")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        return $result; 
+    }
+
+
     //Devuelve las horas estudiante que tenga un estudiante asignadas
     public function getHorasEstudiante($idEstudiante,$idGrupo){
         $connect = ConnectionManager::get('default');      

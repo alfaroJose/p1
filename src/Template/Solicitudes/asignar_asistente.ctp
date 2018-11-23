@@ -31,6 +31,8 @@
                     
                     <?php 
                     $i = 0;
+                    //debug($reqReprobados);
+                    //die();
                     foreach ($estudiantes as $nombres): //datos para el index?>
                     <tr>
                         <td><?= h($nombres) ?></td>
@@ -44,10 +46,31 @@
                         if($horasA[$i] == []){//Si es null entonces no tiene horas asignadas
                                 $horasA[$i] = 0; 
                         }
+
+                        $options1 = array("Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente');
+
+                        $options2 = array("Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente');
+
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
-                        <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada - Profesor" => 'Aceptada - Profesor', "Aceptada - Profesor (Inopia)" => 'Aceptada - Profesor (Inopia)', "Rechazada - Profesor" => 'Rechazada - Profesor' ], ['required'=>true ,"id" => 'Estado'.$idEstudiante[$i], "empty" => true, 'onclick'=> 'revisarEstado('.$idEstudiante[$i].')'] ); ?></td>
-                        <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],["Estudiante" => 'Estudiante', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+
+                        <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada" => 'Aceptada', "Rechazada - Profesor" => 'Rechazada - Profesor' ], ['required'=>true ,"id" => 'Estado'.$idEstudiante[$i], "empty" => true, 'onclick'=> 'revisarEstado('.$idEstudiante[$i].')'] ); ?></td>
+
+                        <?php
+
+                            if ($reqReprobados[$i] == false){
+                                ?>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],[$options1], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                               <?php 
+                            } else {
+                                ?>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],[$options2], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <?php
+                            }
+                        ?>
+
+                        
+                        
                         <td> <?= $this->Form->control('Horas'.$idEstudiante[$i], ['id' => "Horas".$idEstudiante[$i], 'label' => '', 'pattern'=>"[0-9]{1,2}", 'disabled' => true,'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-5">{{content}}</div>']]);?> </td>
 
                     </tr>
@@ -91,15 +114,8 @@
     function revisarEstado(id){
 
         estado = document.getElementById("Estado"+id).value;
-        if(estado == "Aceptada - Profesor" || estado == "Aceptada - Profesor (Inopia)"){
-            if(estado == "Aceptada - Profesor (Inopia)"){
-               // document.getElementById("TipoHora"+id).value = "Estudiante";
-                document.getElementById("TipoHora"+id).disabled = true;
-            }
-            else{
-               // document.getElementById("TipoHora"+id).value = "";
-                document.getElementById("TipoHora"+id).disabled = false;
-            }
+        if(estado == "Aceptada"){         
+            document.getElementById("TipoHora"+id).disabled = false;           
             document.getElementById("Horas"+id).disabled = false;
        }
        else{
