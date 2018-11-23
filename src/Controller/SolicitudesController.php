@@ -612,11 +612,21 @@ class SolicitudesController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData(); //data es un solo vector, hay que recorrerlo con iterador? los campos no están en [0] sino en ['Estado23'] o [TipoHoras23]
-            //$vector = $this->Solicitudes->getRequisitosInopia($idSolicitud[$i]);
-            //debug(count($data));
-            //debug($data['Estado23']);
-            debug($data);
-            die();
+            $i = 0;                             //Itera sobre todos los estudiantes
+            $end = count($idSolicitud);         //Cantidad de estudiantes
+
+            debug($data); die();
+            while($i < $end){
+                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){
+                    $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
+                }
+                else{
+                    //Agregar al estudiante a la tabla de Aceptados .
+                    //$this->setAceptados($idSolicitud[$i],$cantidad, $tipoHs);
+                    //Además de actualizar los valores en el contador
+                }
+                $i++;
+            }
         }
 
         $contadorHoras = $this->get_contador_horas();

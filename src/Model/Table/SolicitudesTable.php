@@ -330,6 +330,16 @@ class SolicitudesTable extends Table
         return $result;  
     }
 
+
+    //Actualiza el estado de una Solicitud para que quede como Rechazada
+    public function setSolicitudRechazada($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = 'Rechazada' 
+            where id = ".$idSolicitud.";");
+    }
+
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
     public function getTeacher($siglaCurso, $numeroGrupo, $semestre, $year)
     {

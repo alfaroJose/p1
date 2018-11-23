@@ -113,21 +113,25 @@
         if(estado == "Aceptada"){         
             document.getElementById("TipoHora"+id).disabled = false;           
             document.getElementById("Horas"+id).disabled = false;
+            document.getElementById("TipoHora"+id).required = true;           
+            document.getElementById("Horas"+id).required = true;
        }
        else{
             document.getElementById("TipoHora"+id).disabled = true;
             document.getElementById("Horas"+id).disabled = true;
             document.getElementById("TipoHora"+id).value = "";
             document.getElementById("Horas"+id).value = "";
+            document.getElementById("TipoHora"+id).required = false;           
+            document.getElementById("Horas"+id).required = false;
        }
     }
 </script>
 
 
-<?php 
+<?php /*
 echo $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
 echo $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
-echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];
+echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];*/
  ?>
 
 
