@@ -67,52 +67,12 @@
         }
         </style>
         <table id="requisitos" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th scope="col"><?= 'Horas Asistente' ?></th>
-                    <th scope="col"><?= 'Tipo' ?></th>
-                    <th scope="col" class="actions"><?= __('Cumple el requisito?') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $i = 0;
-                $j = 0;
-                $auto5 = null;
-                $auto6 = null; 
-                //Carga los requisitos para horas asistente
-                foreach ($datosRequisitosSolicitud as $asistente): ?>
-                <tr>
-                <?php if($asistente['requisito_categoria'] == 'Horas Asistente'):?>
-                    <td><?= h($asistente['requisito_nombre']) ?></td>
-                    <td><?= h($asistente['requisito_tipo']) ?></td>
-                    <td class="actions">
-                    <?php
-                        //Si el requisito es obligatirio entra aquí
-                        if ($asistente['requisito_tipo'] == 'Obligatorio') {
-                            $auto5[$i] = $asistente['requisito_id'];
-                            $i = $i+1;
-                            $options= array('Sí' => 'Sí', 'No' => 'No',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
-                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
-                        //Si el requisito no es obligatorio entra aqui
-                        } else {
-                            $auto6[$j] = $asistente['requisito_id'];
-                            $j = $j+1;
-                            $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
-                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
-                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
-                        }
-                    ?>    
-                    </td>
-                </tr>
-                <?php endif; ?>
-                <?php endforeach; ?>
-            </tbody>
 
             <thead>
                 <tr>
                     <th scope="col"><?= 'Horas Estudiante' ?></th>
+                    <th scope="col"><?= 'Tipo' ?></th>
+                    <th scope="col" class="actions"><?= __('Cumple el requisito?') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -145,6 +105,47 @@
                             echo $this->Form->radio($estudiante['requisito_id'], $options, $attributes);
                         }
                     ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th scope="col"><?= 'Horas Asistente' ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $i = 0;
+                $j = 0;
+                $auto5 = null;
+                $auto6 = null; 
+                //Carga los requisitos para horas asistente
+                foreach ($datosRequisitosSolicitud as $asistente): ?>
+                <tr>
+                <?php if($asistente['requisito_categoria'] == 'Horas Asistente'):?>
+                    <td><?= h($asistente['requisito_nombre']) ?></td>
+                    <td><?= h($asistente['requisito_tipo']) ?></td>
+                    <td class="actions">
+                    <?php
+                        //Si el requisito es obligatirio entra aquí
+                        if ($asistente['requisito_tipo'] == 'Obligatorio') {
+                            $auto5[$i] = $asistente['requisito_id'];
+                            $i = $i+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No',);
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
+                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
+                        //Si el requisito no es obligatorio entra aqui
+                        } else {
+                            $auto6[$j] = $asistente['requisito_id'];
+                            $j = $j+1;
+                            $options= array('Sí' => 'Sí', 'No' => 'No', 'Inopia' => 'Inopia',);
+                            $attributes = array('legend' => false, 'value' => $asistente['tiene_condicion'], 'disabled' => false, 'onclick'=> 'updateAsistentes()');
+                            echo $this->Form->radio($asistente['requisito_id'], $options, $attributes);
+                        }
+                    ?>    
                     </td>
                 </tr>
                 <?php endif; ?>
@@ -405,7 +406,7 @@
         var chkMarcadasAsistente = checkMarcadasAsistente();
         
         opcionesEstado = document.getElementById("estado");
-        if (chkGenerales == true || (chkEstudiante == true && chkAsistente == true) || (chkMarcadasGeneral == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkAsistente == true && chkMarcadasEstudiante == true)){
+        if (chkGenerales == true || chkEstudiante == true || (chkMarcadasGeneral == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkAsistente == true && chkMarcadasEstudiante == true)){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
@@ -415,7 +416,7 @@
             tmp = document.createElement("option");
             tmp.text = 'Anulada';
             opcionesEstado.options.add(tmp,1);
-        } else if (chkMarcadasGeneral == true || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == false && chkAsistente == true)){
+        } else if (chkMarcadasGeneral == true || chkMarcadasEstudiante == true || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == false && chkEstudiante == true && chkMarcadasAsistente == true) || (chkMarcadasGeneral == false && chkMarcadasEstudiante == true && chkMarcadasAsistente == false && chkAsistente == true)){
             while (opcionesEstado.options.length) {
                 opcionesEstado.remove(0);
             }
@@ -481,13 +482,9 @@
 
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
             unblockAsistentes();
-            unblockGenerales();
-        } else {
-            var chkEstado = checkEstudiante();
-            if (chkEstado == true){
-                blockGenerales();
-            }
+            updateTodo();
         }
+        
         updateEstado();
     }
 
@@ -586,6 +583,8 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
                 blockEstudiantes();
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -600,6 +599,8 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
                 blockEstudiantes();
                 c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -607,13 +608,11 @@
         }
 
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
-            unblockEstudiantes();
             unblockGenerales();
-        } else {
-            var chkEstado = checkAsistente();
-            if (chkEstado == true){
-                blockGenerales();
-            }
+            unblockAsistentes();
+            unblockEstudiantes();
+            updateTodo();
+            
         }
 
         updateEstado();
@@ -741,8 +740,7 @@
             unblockGenerales();
             unblockAsistentes();
             unblockEstudiantes();
-            updateAsistentes();
-            updateEstudiantes();
+            updateTodo();
         }
 
         updateEstado();
@@ -830,6 +828,94 @@
         }
         
         return false;
+    }
+
+    function updateTodo(){
+        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
+        var r = a5.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {        
+            var x = a5.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
+                blockAsistentes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }   
+        }
+
+        a6 = document.getElementById("a6");
+        var s = a6.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {
+            var x = a6.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
+                blockAsistentes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }            
+        }
+		
+        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios de horas estudiante
+        var r = a3.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            var x = a3.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
+
+        a4 = document.getElementById("a4");
+        var s = a4.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {
+            var x = a4.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
+		
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
+        var r = a1.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {    
+            var x = a1.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }            
+        }
+
+        a2 = document.getElementById("a2"); //Lista de id de requisitos obligatorios generales
+        var s = a2.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {            
+            var x = a2.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
     }
 
     function checkMarcadasGeneral(){
