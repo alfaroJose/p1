@@ -257,11 +257,11 @@ class SolicitudesTable extends Table
         return $result;
     }
 
-    //Devuelve el nombre y el id de los estudiantes que hicieron una solicitud para un grupo ($idGrupo)
+    //Devuelve el nombre, el id de los estudiantes y id de la solicitud que se hizo para un grupo ($idGrupo)
     public function getEstudiantesGrupoAsistencia($idGrupo){
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute(
-            "select Concat(us.Nombre,' ',us.primer_apellido) as nombre, us.id as id
+            "select Concat(us.Nombre,' ',us.primer_apellido) as nombre, us.id as id, sol.id as sol_id
             from usuarios as us join solicitudes as sol on sol.usuarios_id = us.id
             where sol.estado = 'Elegible' and sol.grupos_id = '".$idGrupo."'");
 

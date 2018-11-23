@@ -581,6 +581,7 @@ class SolicitudesController extends AppController
         $estudiantesIds=array();       //Guarda los ids de los estudiantes de arriba
         $horasEstudiante = array();    //Guarda las HE de cada estudiante segun el orden de la tabla
         $horasAsistente = array();     //Guarda las HA de cada estudiante segun el orden de la tabla
+        $idSolicitud = array();
 
         $dropInfo = $this->Solicitudes->getEstudiantesGrupoAsistencia($grupoId); //Carga nombres y id de estudiantes
         $i = 0;//Iterador para encontrar las horas de cada estudiante
@@ -588,6 +589,7 @@ class SolicitudesController extends AppController
         foreach ($dropInfo as $key => $value) { //Llena cada vector con las colmnas de la tabla anterior
             array_push($estudiantesNombres, $value['nombre']);
             array_push($estudiantesIds, $value['id']);
+            array_push($idSolicitud, $value['sol_id']);
 
             $horasAux = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId); //Horas estudiante de X estudiante
             array_push($horasEstudiante,$horasAux);
@@ -607,6 +609,7 @@ class SolicitudesController extends AppController
 
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
+        $this->set('idSolicitud',$idSolicitud);
         $this->set('horasE',$horasEstudiante);
         $this->set('horasA',$horasAsistente);
         $this->set(compact('sigla','numGrupo','profe','grupoId', 'contadorHoras'));

@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Solicitude[]|\Cake\Collection\CollectionInterface $solicitudes
+ */
+?>
+
 <h3>Asignar Asistente</h3>
 <h4>
 <?= $sigla."&nbsp"."Grupo ".$numGrupo."&nbsp"."Prof: ".$profe?>
