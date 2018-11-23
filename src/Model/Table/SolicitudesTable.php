@@ -233,8 +233,8 @@ class SolicitudesTable extends Table
                                                                     where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')  and
                                     g.id NOT IN(
                                                                     select g.id
-                                                                    from grupos g, solicitudes r
-                                                                    where g.id = r.grupos_id and r.estado = 'Aceptada');");
+                                                                    from grupos g join solicitudes r on g.id = r.grupos_id 
+                                                                    where r.estado = 'Aceptada - Profesor' or r.estado = 'Aceptada - Profesor (Inopia)');");
         //El assoc hace que los resultados del array no queden en result[0] sino en result['numero'], result['nombre'], etc.
         $result = $result->fetchAll('assoc'); 
         return $result;
@@ -244,12 +244,11 @@ class SolicitudesTable extends Table
     public function getGruposSinAsignar($semestre, $year){
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute(
-            "select distinct cur.sigla as sigla, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
-            from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
+            "select distinct cur.sigla as sigla, cur.nombre, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
+            from solicitudes as sol right join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
                                     join usuarios as us on gru.usuarios_id = us.id
-            where sol.estado = 'Elegible'
-                  and año = ".$year." and semestre = ".$semestre."
+            where año = ".$year." and semestre = ".$semestre."
                   and gru.id not in (select gru.id
                                      from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id
                                      where sol.estado = 'Aceptada - Profesor' or sol.estado = 'Aceptada - Profesor (Inopia)');");
