@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
+
 
 /**
  * Cursos Model
@@ -61,5 +63,19 @@ class CursosTable extends Table
             ->notEmpty('nombre');
 
         return $validator;
+    }
+
+    //Agrega el curso a la base si no está
+    public function addCourse($courseCode, $courseName)
+    {
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        //Verifica que no esté el curso en la tabla
+        $inTable = count($connect->execute("select sigla from Cursos where sigla = '$courseCode'"));
+        if ($inTable == 0) {
+            $connect->execute("call insertar_curso('$courseCode', '$courseName')");
+            $return = true;
+        }
+        return $return;
     }
 }
