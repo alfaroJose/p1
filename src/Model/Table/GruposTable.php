@@ -271,6 +271,9 @@ class GruposTable extends Table
         if ($inTable == 0) {
             $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
             $return = true;
+        }else{
+            $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            $return = true;
         }
         return $return;
     }

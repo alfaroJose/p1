@@ -252,13 +252,19 @@ class SolicitudesController extends AppController
         $this->set('todo',$todo);
         $this->set('solicitude', $solicitude);
     }
+
     public function imprimir($id = null){
-        $this->layout='none';
+        $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+      /*  debug($solicitude);
+        die(); */
+        $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
+        $this->set('curso', $curso);
     }
+    
     public function get_round()
     {
       return $this->Solicitudes->getRonda(); //En realidad deberia llamar a la controladora de ronda, la cual luego ejecuta esta instruccion
@@ -370,8 +376,8 @@ class SolicitudesController extends AppController
               return $this->redirect(['action' => 'add']);
             }
             if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('La solicitud ha sido agregada.'));
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('La solicitud ha sido agregada. Debe imprimir la solicitud y presentarla en Secretaría, de lo contrario no será válida.'));
+                return $this->redirect(['action' => 'view', $solicitude->id]);
             }
             $this->Flash->error(__('La solicitud no se ha podido agregar. Por favor intente de nuevo.'));
         }

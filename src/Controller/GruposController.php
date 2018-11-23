@@ -494,19 +494,18 @@ class GruposController extends AppController
 
     //Este método se usa para agregar cada fila del archivo una vez se preciona aceptar
     public function addFromFile ($parameters, $profId){
-        //Si la fila está vacía no hace nada
+        
         if($parameters[0] != null){
             $courseTable = $this->loadmodel('Cursos');
             $classTable = $this->loadmodel('Grupos');
             $SolicitudController = new SolicitudesController;
 
+            //Se incluye el guión en la sigla de los cursos
+            $len =  strlen($parameters[1]);
+            $name = substr($parameters[1],0,2).'-'.substr($parameters[1],2,$len-2); //sirve
+            
             //Agrega el curso
-            /*$name = $parameters[1];
-            $len =  strlen($name);
-            $x = substr($name,0,2).'-'.substr($name,2,$len-2); //sirve
-            //debug($x);
-            //die();*/
-            $courseTable->addCourse($parameters[1], $parameters[0]);
+            $courseTable->addCourse($name, $parameters[0]);
 
             //Recupera el semestre y año de las funciones ya hechas anteriormente en el controlador de Solicitudes           
             $semester = $SolicitudController->get_semester();
@@ -514,7 +513,10 @@ class GruposController extends AppController
             //debug($year);
             //die();
             //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
-            $classTable->addClass($parameters[1], $parameters[2], $semester, $year, $profId);
+            $idCurso = $this->Grupos->obtenerCursoId($name);
+            //debug($idCurso);
+            //die();
+            $classTable->addClass($parameters[2], $semester, $year, $idCurso, $profId);
 
         }
     }
