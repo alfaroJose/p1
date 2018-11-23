@@ -46,11 +46,7 @@
                         if($horasA[$i] == []){//Si es null entonces no tiene horas asignadas
                                 $horasA[$i] = 0; 
                         }
-
-                        $options1 = array("Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente');
-
-                        $options2 = array("Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente');
-
+                       
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
 
@@ -58,20 +54,20 @@
 
                         <?php
 
-                            if ($reqReprobados[$i] == false){
+                            if ($reqReprobados[$i] == false){ //Los requisitos de categoría Asistente están todos en 'Sí'
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],[$options1], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                <?php 
                             } else {
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i],[$options2], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                 <?php
                             }
-                        ?>
-
-                        
+                        ?>                 
                         
                         <td> <?= $this->Form->control('Horas'.$idEstudiante[$i], ['id' => "Horas".$idEstudiante[$i], 'label' => '', 'pattern'=>"[0-9]{1,2}", 'disabled' => true,'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-5">{{content}}</div>']]);?> </td>
+
+                        <?= $this->Form->hidden('id'.$idEstudiante[$i], ['value'=>$idSolicitud[$i]]);?>                  
 
                     </tr>
                     <?php 
@@ -144,7 +140,7 @@ echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 1
     function revisarTipoHora(id){
 
         tipo = document.getElementById("TipoHora"+id).value;
-        if(tipo == "Estudiante"){
+        if(tipo == "Estudiante ECCI" or tipo == "Estudiante Docente"){
                 //document.getElementById("Horas"+id).max = true;
             }
             else if (tipo == "Asistente"){
