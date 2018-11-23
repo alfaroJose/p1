@@ -6,7 +6,7 @@
 ?>
 
 <div class="solicitudes index large-9 medium-8 columns content">
-    <h3><?= __('Solicitudes de Asistencias') ?></h3>
+    <h3><?= __('Historial de Asistencias') ?></h3>
     <table id="solicitudes-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
