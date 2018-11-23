@@ -92,6 +92,12 @@ class GruposTable extends Table
         return $rules;
     }
 
+    /**
+     * Función que devuelve los datos necesarios para listar los grupos asociados a
+     * cada curso existente
+     *
+     * @return un arreglo de arreglos con la información de cada grupo
+     */
     public function getIndexValues(){
 
         $index=$this->find()
@@ -114,6 +120,12 @@ class GruposTable extends Table
         return $index;
     }
 
+    /**
+     * Función que devuelve una lista con todas las siglas de los cursos existentes en
+     * la base de datos mediante un select de cake.
+     *
+     * @return un arreglo con las siglas de los cursos
+     */
     public function seleccionarCurso()
     {
         $cursos=$this->find()
@@ -129,12 +141,10 @@ class GruposTable extends Table
         return $cursos;
     }
 
-
     /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
+     * Función que devuelve los nombres de los usuarios con permisos de profesor
+     * en la base de datos mediante un select de cake.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function seleccionarProfesores()
@@ -147,44 +157,69 @@ class GruposTable extends Table
         return $profesores;
     }
 
-
-
-        /*Función para obtener los datos de un curso para poder modificarlos*/
-        /**
-     * Función para obtener directamente desde la base de datos una tupla de grupos
+    /**
+     * Función para obtener la sigla de un curso en especifico mediante un select
+     * directo en la base de datos.
      *
-     * @param string|null $curso_sigla Grupo llave foranea cursos_sigla, parte de la llave compuesta.
-     * @param string|null $numero Grupo numero, parte de la llave compuesta.
-     * @param string|null $semestre Grupo semestre, parte de la llave compuesta.
-     * @param string|null $año Grupo año, parte de la llave compuesta.
-     * @return true si la operación es exitosa
+     * @param string|null $id Grupo curso_id.
+     * @return un arreglo con la sigla del curso en especifico.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-
     public function obtenerCursos($id = null){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct sigla from cursos, grupos where cursos.id = '".$id."'")->fetchAll();
         return $sigla;
     }
 
+    /**
+     * Función para obtener el id de un curso en especifico identificada por su sigla
+     * mediante un select directo en la base de datos.
+     *
+     * @param string|null $sigla Curso sigla.
+     * @return el id del curso en especifico.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function obtenerCursoId($sigla = null){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct c.id from cursos c, grupos g where c.sigla = '".$sigla."'")->fetchAll();
         return $sigla[0][0];
     }
 
+    /**
+     * Funcion para obtener todos los ids y siglas de los cursos existentes            
+     * identificada por su sigla mediante un select directo en la base de datos.
+     *
+     * @return un arreglo de arreglos con los ids y siglas de cada curso.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function obtenerTodosCursos(){
         $connect = ConnectionManager::get('default');
         $sigla = $connect->execute("select distinct sigla, id from cursos")->fetchAll();
         return $sigla;
     }
 
+    /**
+     * Función para obtener el correo de un profesor en especifico identificado por su id
+     * mediante un select directo en la base de datos.
+     *
+     * @param string|null $id Usuario id.
+     * @return un arreglo con el correo del profesor.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function obtenerProfesor($id = null){
         $connect = ConnectionManager::get('default');
         $profesor = $connect->execute("select distinct correo from usuarios, grupos where usuarios.id = '".$id."'")->fetchAll();
         return $profesor;
     }
 
+    /**
+     * Función para obtener la sigla de un curso en especifico mediante un select
+     * de cake.
+     *
+     * @param string|null $id Grupo curso_id.
+     * @return un arreglo con la sigla del curso en especifico.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function obtenerDatosCurso($id = null){
 
         $datos=$this->find()
@@ -202,16 +237,31 @@ class GruposTable extends Table
         return $datos;
     }
 
+    /**
+     * Función para obtener los nombres de todos los profesores
+     * mediante un select directo en la base de datos.
+     *
+     * @param string|null $id Usuario id.
+     * @return un arreglo con los nombres de los profesores.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function seleccionarProfesoresNombres(){
-        /*$connect = ConnectionManager::get('default');
-        $profesor = $connect->execute("select distinct correo, id from usuarios where usuarios.id = 3")->fetchAll();*/
-
-                $connect = ConnectionManager::get('default');
+        $connect = ConnectionManager::get('default');
         $profesor = $connect->execute("select CONCAT(Usuarios.nombre, ' ', Usuarios.primer_apellido), id from Usuarios where Usuarios.roles_id = 3")->fetchAll();
         return $profesor;
     }
 
-    //Agrega el grupo a la base si no está en la tabla
+    /**
+     * Función que llama a un procedimiento almacenado que permiter agregar un grupo
+     * directamente a la base de datos mediante una conecxión directa a ella.
+     *
+     * @param string|null $number Grupo number.
+     * @param string|null $semester Grupo semester.
+     * @param string|null $year Grupo year.
+     * @param string|null $id Grupo curso_id.
+     * @param string|null $profId Grupo profesor_id.
+     * @return true si la inserción es exitosa.
+     */
     public function addClass($number, $semester, $year, $id, $profId)
     {
         $return = false;
@@ -227,11 +277,4 @@ class GruposTable extends Table
         }
         return $return;
     }
-        /*public function getIndexValues(){
-        $connect = ConnectionManager::get('default');
-        $index = $connect->execute("select cursos.sigla, cursos.nombre, grupos.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, solicitudes.estado as 'Estado de solicitud'
-            from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes
-            where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id")->fetchAll();
-        return $index;
-    }*/
 }
