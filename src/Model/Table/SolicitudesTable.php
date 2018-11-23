@@ -451,6 +451,12 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    public function getAllStudents(){
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select * from Usuarios where roles_id = 4;")->fetchAll('assoc');
+        return $index;
+    }
+
 /*****************************************************************************************/
 
 }

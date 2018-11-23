@@ -67,6 +67,9 @@
     }
 
     echo $this->Html->link('Elegir asistente', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
+
+    echo $this->Html->link('Generar Reporte', ['action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']);
+
      ?>
 
 </div>

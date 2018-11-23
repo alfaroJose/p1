@@ -664,6 +664,25 @@ class SolicitudesController extends AppController
     }
         /***********************************************************************************************************/
 
+    public function reporte(){
+        /*$solicitude = $this->Solicitudes->get($id, [
+            'contain' => []
+        ]);*/
+        $estudiantes = $this->Solicitudes->getAllStudents();
+        //debug($estudiantes);
+        //die();
+
+        $estudiantesUsuarios= array();
+        $i = 0;
+        foreach ($estudiantes as $key => $value) {
+            array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
+            $i = $i + 1;
+        }
+        
+        $this->set(compact('estudiantes', 'estudiantesUsuarios'));
+
+    }
+
     public function genera($id = null){
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
