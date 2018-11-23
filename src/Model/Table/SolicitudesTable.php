@@ -150,6 +150,20 @@ class SolicitudesTable extends Table
         $result = $result->fetchAll();
         return $result;
     }
+
+    public function getCurso($idSolicitud){
+        $connect = ConnectionManager::get('default');
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
+        return $curso;
+    }
+    
+    public function getIDEstudiante($carne){
+        $connet = ConnectionManager::get('default');
+        $result = $connet->execute("select id from usuarios where nombre_usuario = '" .$carne. "'")->fetchAll();
+        $result = $result->fetchAll();
+        return $result;
+    }
+
     /*carga el index con todas las solicitudes del estudiante actualmente logueado*/
     public function getIndexValuesEstudiante($id){
         $connect = ConnectionManager::get('default');
@@ -301,6 +315,61 @@ class SolicitudesTable extends Table
         return $result; 
     }
 
+    //Actualiza el estado de una Solicitud
+    public function setEstadoSolicitud($id,$estado){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = '".$estado."'
+            where id = ".$id."");
+    }
+
+    //Actualiza el estado de una Solicitud para que quede como Rechazada
+    public function setSolicitudRechazada($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = 'Rechazada' 
+            where id = ".$idSolicitud.";");
+    }
+
+    //Devuelve verdadero o falso si tuvo HA por asistencia
+    public function InopiaAsistente($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Asistente' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
+
+     //Devuelve verdadero o falso si tuvo HE por asistencia
+     public function InopiaEstudiante($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Estudiante' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
 
     //Devuelve las horas estudiante que tenga un estudiante asignadas
     public function getHorasEstudiante($idEstudiante,$idGrupo){
@@ -328,16 +397,6 @@ class SolicitudesTable extends Table
 
         $result = $result->fetchAll('assoc'); 
         return $result;  
-    }
-
-
-    //Actualiza el estado de una Solicitud para que quede como Rechazada
-    public function setSolicitudRechazada($idSolicitud){
-        $connect = ConnectionManager::get('default');      
-        $connect->execute(
-            "update Solicitudes
-            set estado = 'Rechazada' 
-            where id = ".$idSolicitud.";");
     }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
