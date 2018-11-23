@@ -301,6 +301,61 @@ class SolicitudesTable extends Table
         return $result; 
     }
 
+    //Actualiza el estado de una Solicitud
+    public function setEstadoSolicitud($id,$estado){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = '".$estado."'
+            where id = ".$id."");
+    }
+
+    //Actualiza el estado de una Solicitud para que quede como Rechazada
+    public function setSolicitudRechazada($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = 'Rechazada' 
+            where id = ".$idSolicitud.";");
+    }
+
+    //Devuelve verdadero o falso si tuvo HA por asistencia
+    public function InopiaAsistente($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Asistente' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
+
+     //Devuelve verdadero o falso si tuvo HE por asistencia
+     public function InopiaEstudiante($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select solicitudes_id  
+            from requisitos join tiene on requisitos_id = requisitos.id
+            where condicion = 'Inopia' and tipo = 'Obligatorio Inopia' and categoria = 'Horas Estudiante' 
+               and solicitudes_id = ".$idSolicitud.";")->fetchAll('assoc');
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = false;           
+        }
+        else{
+            $result = true;
+        }
+        return $result; 
+    }
 
     //Devuelve las horas estudiante que tenga un estudiante asignadas
     public function getHorasEstudiante($idEstudiante,$idGrupo){
@@ -328,16 +383,6 @@ class SolicitudesTable extends Table
 
         $result = $result->fetchAll('assoc'); 
         return $result;  
-    }
-
-
-    //Actualiza el estado de una Solicitud para que quede como Rechazada
-    public function setSolicitudRechazada($idSolicitud){
-        $connect = ConnectionManager::get('default');      
-        $connect->execute(
-            "update Solicitudes
-            set estado = 'Rechazada' 
-            where id = ".$idSolicitud.";");
     }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
