@@ -532,6 +532,16 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+        public function getCarnetId(){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct u.nombre_usuario, s.usuarios_id
+                            from solicitudes s
+                            join usuarios u on s.usuarios_id = u.id
+                            left outer join aceptados a on s.id = a.id
+                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+        return $index;
+    }
+
 /*****************************************************************************************/
 
 }

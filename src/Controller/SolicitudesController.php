@@ -17,10 +17,11 @@ require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
 
 
 
-
 //Para generar el excel de solicitud
 
 require 'C:\xampp\htdocs\p1\vendor\autoload.php';
+
+//$carnetCompartido='b67130';variable para guardar el carnet seleccionado en reporte y obtenertlo en genera
 
 /**
  * Solicitudes Controller
@@ -41,7 +42,6 @@ class SolicitudesController extends AppController
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
-               
         //Inicio seguridad por URL
         if ($username == ''){//En caso de lo haber hecho login
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
@@ -680,34 +680,50 @@ class SolicitudesController extends AppController
 
     }
         /***********************************************************************************************************/
-
     public function reporte(){
         /*$solicitude = $this->Solicitudes->get($id, [
             'contain' => []
         ]);*/
-        $estudiantes = $this->Solicitudes->getAllStudents();
-        //debug($estudiantes);
-        //die();
-
+        /*$estudiantes = $this->Solicitudes->getAllStudents();
         $estudiantesUsuarios= array();
         $i = 0;
         foreach ($estudiantes as $key => $value) {
             array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
             $i = $i + 1;
         }
-        
-        $this->set(compact('estudiantes', 'estudiantesUsuarios'));
+        $this->set(compact('estudiantes', 'estudiantesUsuarios'));*/
 
+        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista de la tabla 
+        $carnetId = $this->Solicitudes->getCarnetId();
+        $carnet=array();
+        $Ids=array();
+        foreach ($carnetId as $key => $value) {
+          array_push($carnet, $value['nombre_usuario']);
+          array_push($Ids, $value['usuarios_id']);
+        }
+                $carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
+                $idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
+        $uno=1;//para poner el valor del campo 1 como default y no el primero
+        $this->set(compact('carnet', 'uno'));
+        return $idEstudiante;
     }
 
     public function genera($id = null){
+        
+      $id = $this->reporte();
+          debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
+          die;
         $solicitude = $this->Solicitudes->newEntity();
+
         if ($this->request->is('post')) {
+
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            //$id = $this->Solicitudes->reporte();
+            //debug($id);
+            //die;
             $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
             //debug($info);
             //die();
-
             /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
             $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
 
@@ -757,6 +773,7 @@ class SolicitudesController extends AppController
         }
     
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
+        //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude'));
     }
 

@@ -26,10 +26,8 @@ tr:nth-child(even) {background-color:  #eaecee };
         <?php
         //debug ($estudiantesUsuarios);
         //die();
-        echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $estudiantesUsuarios]);
+        echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $carnet, 'default'=>$uno]);
         ?>
 
         <?= $this->Html->link('Generar',['action'=>'genera'],['class'=>'btn btn-info btn-medium float-left mr-3'])?>
-
-	
 </div>
