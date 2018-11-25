@@ -681,17 +681,15 @@ class SolicitudesController extends AppController
     }
         /***********************************************************************************************************/
     public function reporte(){
-        /*$solicitude = $this->Solicitudes->get($id, [
-            'contain' => []
-        ]);*/
-        /*$estudiantes = $this->Solicitudes->getAllStudents();
+        $solicitude = $this->Solicitudes->newEntity();
+
+        $estudiantes = $this->Solicitudes->getAllStudents();
         $estudiantesUsuarios= array();
         $i = 0;
         foreach ($estudiantes as $key => $value) {
             array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
             $i = $i + 1;
         }
-        $this->set(compact('estudiantes', 'estudiantesUsuarios'));*/
 
         //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista de la tabla 
         $carnetId = $this->Solicitudes->getCarnetId();
@@ -701,22 +699,32 @@ class SolicitudesController extends AppController
           array_push($carnet, $value['nombre_usuario']);
           array_push($Ids, $value['usuarios_id']);
         }
-                $carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
-                $idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
+
+        //$carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
+        //$idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
         $uno=1;//para poner el valor del campo 1 como default y no el primero
-        $this->set(compact('carnet', 'uno'));
+
+        if ($this->request->is('post')) {          
+            $data = $this->request->getData();
+            $id = $data['Carné'];
+            return $this->redirect(['action' => 'genera', $id]);
+
+        }
+
+        $this->set(compact('carnet', 'uno', 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
         return $idEstudiante;
     }
 
     public function genera($id = null){
         
-      $id = $this->reporte();
+      //$id = $this->reporte();
+      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
           debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          die;
+          die();
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
-
+            
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             //$id = $this->Solicitudes->reporte();
             //debug($id);

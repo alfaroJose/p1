@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Solicitude $solicitude
+ * @var \App\Model\Entity\Solicitude $report
  */
 ?>
 <style> 
@@ -14,10 +14,12 @@ tr:nth-child(even) {background-color:  #eaecee };
 </style>
 
 <div class="reporte index large-9 medium-8 columns content">
+    <?= $this->Form->create($solicitude) ?>
+
 
         <?= $this->Html->link('Generar reporte por rondas',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
-         <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+        <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
         
 
@@ -27,7 +29,11 @@ tr:nth-child(even) {background-color:  #eaecee };
         //debug ($estudiantesUsuarios);
         //die();
         echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $carnet, 'default'=>$uno]);
+
         ?>
 
-        <?= $this->Html->link('Generar',['action'=>'genera'],['class'=>'btn btn-info btn-medium float-left mr-3'])?>
+        <?= $this->Form->button(__('Generar'),['class'=>'btn btn-info float-left']) ?>
+
+    <?= $this->Form->end() ?>
+
 </div>
