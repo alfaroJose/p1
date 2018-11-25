@@ -589,8 +589,8 @@ class SolicitudesController extends AppController
     //Grupos sin asistente que se deben asignar
     public function grupoAsignar(){
         $try = $this->loadModel('Usuarios');
-        $prueba = $try->
-        debug($prueba); die();
+        //$prueba = $try->
+        //debug($prueba); die();
 
 
         $semestre = $this->get_semester(); //obtiene el semestre actual
