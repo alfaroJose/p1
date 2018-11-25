@@ -192,3 +192,31 @@ use Cake\Chronos\Date;
     </footer>
 </body>
 </html>
+
+<style>
+/*.nav {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  /*margin-top:51px;
+  margin-bottom: 0;
+  list-style: none;
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  bottom: 0;  
+  width:250px;
+}*/
+/*.sidebar{
+  position:relative;
+  top:0;
+  left:0;
+  bottom:0;
+  width:250px;
+  padding:0;
+  margin:0;
+  overflow:auto;
+}*/
+</style>
