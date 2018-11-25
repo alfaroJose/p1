@@ -702,25 +702,25 @@ class SolicitudesController extends AppController
 
         //$carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
         //$idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
-        $uno=1;//para poner el valor del campo 1 como default y no el primero
+        //$uno=1;//para poner el valor del campo 1 como default y no el primero
 
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
             $id = $data['Carné'];
-            return $this->redirect(['action' => 'genera', $id]);
+            return $this->redirect(['action' => 'genera', /*$id*/$Ids[$id]]);
 
         }
 
-        $this->set(compact('carnet', 'uno', 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
-        return $idEstudiante;
+        $this->set(compact('carnet',/* 'uno',*/ 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
+        //return $idEstudiante;
     }
 
     public function genera($id = null){
         
       //$id = $this->reporte();
       //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
-          debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          die();
+          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
+          //die();
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
