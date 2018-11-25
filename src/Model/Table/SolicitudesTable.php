@@ -511,7 +511,11 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $connet->execute("call insertar_modificar_aceptados ($solicitudes_id, $cantidad_horas, '$tipo_horas')");
     }
-
+    public function setPromedio($promedio, $grupos_id, $usuarios_id)
+    {
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call actualizar_promedio ($promedio, $grupos_id, $usuarios_id)");
+    }
 
     /*************************************************************************************/
     /*Administrador  CONSULTA y genera Excel del historial de asistencias que ha tenido un determinado estudiante durante toda la carrera 

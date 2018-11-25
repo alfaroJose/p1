@@ -192,6 +192,9 @@ class SolicitudesController extends AppController
                     }
                     $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
                 endforeach;
+                if ($datosSolicitud[0]['solicitud_promedio'] != $solicitude['promedio']){
+                    $this->Solicitudes->setPromedio($solicitude['promedio'], $solicitude['grupos_id'], $solicitude['usuarios_id']);
+                }
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
             }
