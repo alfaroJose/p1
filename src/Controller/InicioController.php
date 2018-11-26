@@ -57,8 +57,7 @@ class InicioController extends AppController
         }
         
         // $this->getRequest()->getSession()->write('id','');
-        if ($this->request->is(['patch', 'post', 'put'])){
-            // debug("holiwies"); die();   
+        if ($this->request->is(['patch', 'post', 'put'])){   
             $usuario = $this->request->getData('Usuario');
             $pass = $this->request->getData('Contraseña'); 
 

@@ -234,6 +234,18 @@ class SolicitudesTable extends Table
             return $result[0];
         }
     }
+
+
+    //Devuelve algo si el id del profe calza con el id del profe de la solicitud
+    public function getIdProfeSolicitud($id){
+        $connect = ConnectionManager::get('default');
+        $consulta = "select us.id
+                    from grupos as gr join solicitudes on grupos_id = gr.id
+                                        join usuarios as us on gr.usuarios_id = us.id
+                        where solicitudes.id = ".$id.";";
+        $resultado =  $connect->execute($consulta)->fetchAll();
+        return $resultado[0][0];
+    }
     //Obtiene los números de grupo, nombre del curso, sigla y id de los grupos disponibles para solicitar una asistenia de dicho semestre y año en el que el estudiante no haya solicitado asistencia todavía.
     public function getGrupos($id_estudiante, $semestre, $year)
     {
