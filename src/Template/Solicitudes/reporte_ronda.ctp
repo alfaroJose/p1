@@ -16,19 +16,17 @@ tr:nth-child(even) {background-color:  #eaecee };
 <div class="reporte index large-9 medium-8 columns content">
     <?= $this->Form->create($solicitude) ?>
 
-
-        <?= $this->Html->link('Generar reporte por rondas',['action'=>'reporteRonda'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
-
-        <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
-
         
 
-        <h4> Generar reporte de asistencias por estudiante <h4>
+        <h4> Generar reporte de asistencias por ronda <h4>
             
         <?php
         //debug ($estudiantesUsuarios);
         //die();
-        echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $carnet/*, 'default'=>$uno*/]);
+
+        $numeroRonda = array('1' => '1', '2' => '2', '3' => '3');
+
+        echo $this->Form->control('Ronda', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $numeroRonda, 'type'=> 'select']);
 
         ?>
 
