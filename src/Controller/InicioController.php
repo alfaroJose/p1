@@ -20,6 +20,11 @@ class InicioController extends AppController
 
     //Función que se encarga de hacer la autenticación con la base de datos de la ECCI
     private function entrar($usuario, $pass){
+
+        $usuario = strtolower($usuario);
+        if ($usuario == 'estudiante'){
+            return false;
+        }
          // conexión al servidor LDAP
          $ldapconn = ldap_connect("10.1.4.78")
          or die("No se ha podido conectar a la red ECCI");
