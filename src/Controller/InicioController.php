@@ -56,18 +56,16 @@ class InicioController extends AppController
             //DEVOLVER AL INICIO DE CADA USUARIO
         }
         
+        // $this->getRequest()->getSession()->write('id','');
+        if ($this->request->is(['patch', 'post', 'put'])){   
+            $usuario = $this->request->getData('Usuario');
+            $pass = $this->request->getData('Contraseña'); 
 
-        $usuario = $this->request->getData('Usuario');
-        $pass = $this->request->getData('Contraseña');  
-    
-       // $this->getRequest()->getSession()->write('id','');
-        if($usuario != null && $pass != null){
-
-           if ($this->entrar($usuario,$pass)){//Credenciales válidos
+            if ($this->entrar($usuario,$pass)){//Credenciales válidos
 
                 //Todos los nombre_usuario se guardan en minúscula
                 $usuario = strtolower($usuario);
-              
+            
                 //Guardamos el id del usuario en la sesion
                 $name = $this->getRequest()->getSession()->write('id',$usuario);
                 //Para sacarlos es $this->getRequest()->getSession()->read('id');
@@ -88,18 +86,19 @@ class InicioController extends AppController
                     if ($pos === false){ //El usuario es un estudiante, puesto que el username no tiene el caracter punto
                         return $this->redirect(['controller' => 'Usuarios','action' => 'addEstudiante']);    
 
-                    } else {
+                    } 
+                    else {
                         return $this->redirect(['controller' => 'Usuarios','action' => 'addProfesor']);    
                     }
 
                 }
             }
             else{
-                    $this->Flash->error(__('Credenciales incorrectas, vuelva a intentarlo'));
+                $this->Flash->error(__('Credenciales incorrectas, vuelva a intentarlo'));
 
             }
-                   
-        }
+
+        }                  
         
     }
 

@@ -5,6 +5,8 @@ use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
 use Cake\Chronos\Date;
 use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
+use Cake\Network\Email\Email;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -41,21 +43,23 @@ class SolicitudesController extends AppController
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
-               
-        //Inicio seguridad por URL
-        if ($username == ''){//En caso de lo haber hecho login
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{
-            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){
+          
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,13);
+            if($resultado != 1){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
-        //Cierra seguridad por URL
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+        }
+        /*Cierra la seguridad*/
+
+        $rolActual =  $seguridad->getRol($carne);
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
@@ -80,20 +84,20 @@ class SolicitudesController extends AppController
         //$año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
-        //Inicio seguridad por URL
-        if ($username == ''){//En caso de lo haber hecho login
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{
-            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        //Cierra seguridad por URL
+       /*Inicia seguridad*/
+       $seguridad = $this->loadModel('Seguridad');
+       $carne = $this->request->getSession()->read('id');
+       if ($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,13);
+           if($resultado != 1){
+               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+       }
+       else{
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+       }
+       /*Cierra la seguridad*/
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         
@@ -114,20 +118,20 @@ class SolicitudesController extends AppController
         //$año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
-        //Inicio seguridad por URL
-        if ($username == ''){//En caso de lo haber hecho login
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{
-            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,13);
+            if($resultado != 1){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
-        //Cierra seguridad por URL
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+        }
+        /*Cierra la seguridad*/
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         
@@ -148,20 +152,20 @@ class SolicitudesController extends AppController
         //$año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
-        //Inicio seguridad por URL
-        if ($username == ''){//En caso de lo haber hecho login
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{
-            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,13);
+            if($resultado != 1){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
-        //Cierra seguridad por URL
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+        }
+        /*Cierra la seguridad*/
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         
@@ -185,6 +189,7 @@ class SolicitudesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
+
             if ($this->Solicitudes->save($solicitude)) {
                 foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
                     if ($data[$requisitosSolicitud['requisito_id']] == '') {
@@ -192,6 +197,12 @@ class SolicitudesController extends AppController
                     }
                     $this->Solicitudes->setCondicionTiene($solicitude['id'], $requisitosSolicitud['requisito_id'], $data[$requisitosSolicitud['requisito_id']]);
                 endforeach;
+                if ($datosSolicitud[0]['solicitud_promedio'] != $solicitude['promedio']){
+                    $this->Solicitudes->setPromedio($solicitude['promedio'], $solicitude['grupos_id'], $solicitude['usuarios_id']);
+                }
+                if ($datosSolicitud[0]['solicitud_estado'] != $solicitude['promedio']){
+                    $this->sendMail($id);
+                }
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -238,52 +249,39 @@ class SolicitudesController extends AppController
        
         $username = $this->Getrequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
         
-        //Inicia seguridad
-        if (null != $username){ //Si hubo login
-            //Rol de quien hizo login
-            $rolActual = $this->Solicitudes->getRol($username); //obtiene el rol de usuario actualmente logueado
-            //idActual es el id de quien hizo login
-            $idActual = $this->Solicitudes->getIDUsuario($username); //Lo devuelve en string, se pasa a int para comparar
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){//Lo primero es preguntar por el permiso de consulta
+       
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $rol = $seguridad->getRol($carne);
+            $resultado = $seguridad->getPermiso($carne,13);
+            if($resultado != 1){//Se pregunta por el permiso
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
-            if (4 == $rolActual[0]){ //Si el estudiante está tratando de ver su solicitud
-                
-                $connect = ConnectionManager::get('default');
-                $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
-                $idSolicitud = $connect->execute($consulta)->fetchAll();
-                //El id correspondiente a la solicitud que se quiere ver
-                $idEstudianteSolicitud = $idSolicitud[0][0];
-                //Se compara si el estudiante que hizo login está viendo uno solicitud suya o no
-                if ($idActual[0][0] != $idEstudianteSolicitud){
+            if(4 == $rol){
+                $usuarios = $this->loadMoled('Usuarios');
+                $usuarioActual = $usuarios->getUsuariosId($id);
+                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                if($id != $idActual[0][0]){
+                    return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+                }
+            else if (3 == $rol){
+                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                $idProfe = $idActual[0][0];
+                $idProfeSolicitud = $this->Solicitudes->getIdProfeSolicitud($id);
+                if($idProfe != $idProfeSolicitud){
                     return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
                 }
             }
-            //Si el profesor quiere ver las solicitudes que le llegan
-            else if(3 == $rolActual[0]){
-                $connect = ConnectionManager::get('default');
-                $idActual = $this->Solicitudes->getIDUsuario($username); 
-                $idProfe = $idActual[0][0]; //Retorna el id del profesor que está logeado
-                
-                $consulta = "select us.id , us.nombre
-                            from grupos as gr join solicitudes on grupos_id = gr.id
-                                              join usuarios as us on gr.usuarios_id = us.id
-                             where solicitudes.id = ".$id.";";
-                $resultado =  $connect->execute($consulta)->fetchAll();
-                //La consulta devuelve el id del profesor asociado al grupo de la solicitud 
-                $idProfeSolicitud = $resultado[0][0];
-                if ($idProfeSolicitud != $idProfe){ //Tratar de acceder a consultas de otros profes
-                    return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-                }
             }
         }
         else{
             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
         }
-        //Cierra seguridad
+        /*Cierra la seguridad*/
+       
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
@@ -361,27 +359,21 @@ class SolicitudesController extends AppController
      */
     public function add()
     {
-       
-        //Inicio de seguridad
-        $username = $this->getRequest()->getSession()->read('id');
-        if ($username != null){
-            $rolActual = $this->Solicitudes->getRol($username); 
-            $estado = $this->get_estado_ronda();
-            $connect = ConnectionManager::get('default');
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 15 and roles_id = ".$rolActual[0][0].";";
-                         //15 = Insertar Solicitud
-            $tupla =  $connect->execute($consulta)->fetchAll(); 
- 
-            if(1 != $tupla[0][0] || !$estado){
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
+      
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,15);
+           if($resultado != 1){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
         }
         else{
-            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
-        //Cierre de Seguridad
+        /*Cierra la seguridad*/
+
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
@@ -588,6 +580,22 @@ class SolicitudesController extends AppController
 
     //Grupos sin asistente que se deben asignar
     public function grupoAsignar(){
+     
+
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,21);
+           if($resultado != 1){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+        }
+        else{
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
+
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $tabla = $this->Solicitudes->getGruposSinAsignar($semestre,$año); //Grupos sin asistente asignado
@@ -597,6 +605,19 @@ class SolicitudesController extends AppController
     //Asignación de un asistente a un grupo
     public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
        
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,21);
+            if($resultado != 1){
+               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+         }
+         else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
        
         $estudiantesNombres= array();               //Guarda los nombres de estudiantes
         $estudiantesIds=array();                    //Guarda los ids de los estudiantes de arriba
@@ -620,9 +641,6 @@ class SolicitudesController extends AppController
 
             $horasAux = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas asistente de X estudiante
             array_push($horasAsistente,$horasAux);
-
-            $data = $this->Solicitudes->getRequisitosInopia($idSolicitud[$i]);
-            array_push($requisitosInopia,$data);
 
             $reqAux = $this->Solicitudes->getRequisitosAsistenteReprobados($idSolicitud[$i]);
             array_push($requisitosAsistenteReprobados,$reqAux);
@@ -659,8 +677,9 @@ class SolicitudesController extends AppController
                     else{
                         $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
                     }
-                    //Además de actualizar los valores en el contador
+
                 }
+                $this->sendMail($idSolicitud[$i]);
                 $i++;
             }
             $this->Flash->success(__('Se han guardado los cambios para el grupo'));
@@ -739,6 +758,89 @@ class SolicitudesController extends AppController
     
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
         $this->set(compact('todo', 'solicitude'));
+    }
+
+    public function reprovedMessage($id)
+    {
+        $requirements = $this->Solicitudes->getRequisitosIncumplidos($id); //Llama al método que está en el modelo
+        $list = ' '; //Inicializa la lista de los requisitos rechazados
+        foreach($requirements as $r) //Aquí se van concatenando los requisitos recuperados
+        {
+            $list .= '
+            ' . $r['requisito_nombre'];
+        }
+        return $list; //Se devuelve la lista de requisitos rechazados del estudiante
+    }
+
+    public function sendMail($id)
+    {
+        //Aquí se obtienen datos de la solicitud, nombre de profesor, curso, grupo y nombre de estudiante, 
+        // necesarios para el correo
+        $solicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $professor = $solicitud[0]['profesor_nombre'];
+        $course = $solicitud[0]['curso_nombre'];
+        $group = $solicitud[0]['grupo_numero'];
+        $mail = $solicitud[0]['estudiante_correo'];
+        $name = $solicitud[0]['estudiante_nombre'] . " " . $solicitud[0]['estudiante_primer_apellido'] . " " . $solicitud[0]['estudiante_segundo_apellido'];
+        $state = $solicitud[0]['solicitud_estado'];
+        $text = null;
+
+        //Se crea una nueva instancia de correo de cakephp
+        $email = new Email();
+        $email->transport('email'); //Se debe cambiar 'mailjet' por el nombre de transporte que se puso en config/app.php
+        //En todos los mensajes se debe cambiar la parte "correo de contacto" por el correo utilizado para atender dudas con respecto al tema de solicitudes de horas
+        //Indica que si el estado es 1, se debe enviar mensaje de estudiante no elegible.
+        if($state == 'No Elegible'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue RECHAZADA debido a que no cumplió el(los) siguiente(s) requisito(s):';
+        $text .= "\n" ;
+        $text .= '' . $list;
+        $text .= '
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        // Si el estado es 2, se debe enviar mensaje de estudiante rechazado.
+        if($state == 'Rechazada'){
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue RECHAZADA por el profesor.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        //Si el estado es 3, se debe enviar mensaje de estudiante aceptado.
+        if($state == 'Aceptada - Profesor'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        if($state == 'Aceptada - Profesor (Inopia)'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA POR INOPIA.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+
+        //Despues de poner el pass descomentar esto para empezar a enviar correos
+        /*
+        if ($text != null){
+            //Se envía el correo.
+            try {
+                $res = $email->from('asistencias.ecci@gmail.com') // Se debe cambiar este correo por el que se usa en config/app.php
+                      ->to($mail)
+                      ->subject('Resultado del concurso de asistencia')                  
+                      ->send($text);
+            } catch (Exception $e) {
+                echo 'Exception : ',  $e->getMessage(), "\n";
+            }
+        }
+        */
     }
 
 }
