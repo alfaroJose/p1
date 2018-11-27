@@ -289,7 +289,7 @@ class SolicitudesController extends AppController
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
             if(4 == $rol){
-                $usuarios = $this->loadMoled('Usuarios');
+                $usuarios = $this->loadModel('Usuarios');
                 $usuarioActual = $usuarios->getUsuariosId($id);
                 $idActual = $this->Solicitudes->getIDUsuarios($carne);
                 if($id != $idActual[0][0]){
