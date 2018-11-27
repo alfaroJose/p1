@@ -396,10 +396,10 @@ class SolicitudesTable extends Table
         where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_estudiante_externa = 'Sí';");
         $result2 = $result2->fetchAll(); 
 
-        if ($result[0][0] == null){
+        if ($result == null){
             $result[0][0] = 0;
         }
-        if ($result2[0][0] == null){
+        if ($result2 == null){
             $result2[0][0] = 0;
         }
         $HE = $result[0][0] + $result2[0][0];
@@ -420,10 +420,10 @@ class SolicitudesTable extends Table
         where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_asistente_externa = 'Sí';");
         $result2 = $result2->fetchAll(); 
 
-        if ($result[0][0] == null){
+        if ($result == null){
             $result[0][0] = 0;
         }
-        if ($result2[0][0] == null){
+        if ($result2 == null){
             $result2[0][0] = 0;
         }
         $HE = $result[0][0] + $result2[0][0];
