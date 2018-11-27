@@ -69,6 +69,7 @@
                 <fieldset>
                 <legend><?= __('Seleccione el archivo') ?></legend>
                 <?php
+                if(1 == $this->Seguridad->getRol())
                     echo $this->Form->control('file', ['label'=>['text'=>''], 'type' => 'file']);
                 ?>
             </fieldset>
