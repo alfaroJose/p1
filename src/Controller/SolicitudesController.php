@@ -854,7 +854,7 @@ class SolicitudesController extends AppController
             //debug($info);
             //die();
             /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
+            $ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
