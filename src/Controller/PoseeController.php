@@ -82,6 +82,12 @@ class PoseeController extends AppController
             else if($dato == "checkboxIngresoRev"){
                 $poseeTupla = $this->Posee->get([$rolId, 21]);
             }
+            else if($dato == "checkboxIngresoRep"){
+                $poseeTupla = $this->Posee->get([$rolId, 24]);
+            }
+            else if($dato == "checkboxIngresoImp"){
+                $poseeTupla = $this->Posee->get([$rolId, 25]);
+            }
             else{
                 $noCheckbox = true;//Cualquier dato que no sea checkbox
             }
