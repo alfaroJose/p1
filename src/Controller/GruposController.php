@@ -362,13 +362,16 @@ class GruposController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post']);
-        $grupo = $this->Grupos->get($id);
-        if ($this->Grupos->delete($grupo)) {
-            $this->Flash->success(__('El grupo ha sido eliminado.'));
+        if($this->Grupos->existenSolicitudes($id)){
+            $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
         } else {
-            $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            $grupo = $this->Grupos->get($id);
+            if ($this->Grupos->delete($grupo)) {
+                $this->Flash->success(__('El grupo ha sido eliminado.'));
+            } else {
+                $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            }
         }
-
         return $this->redirect(['action' => 'index']);
     }
 

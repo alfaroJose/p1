@@ -277,4 +277,21 @@ class GruposTable extends Table
         }
         return $return;
     }
+
+    /**
+     * Función que revisa si existen solicitudes asociadas a un grupo mediante una consulta directa
+     * a la base de datos.
+     *
+     * @param string|null $grupoId Solicitudes grupos_id.
+     * @return true si existen solicitudes, false de manera contraria.
+     */
+    public function existenSolicitudes($grupoId){
+        $existen = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Solicitudes where grupos_id = '$grupoId'"));
+        if($inTable != 0){
+            $existen = true;
+        } 
+        return $existen;
+    }
 }
