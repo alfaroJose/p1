@@ -344,17 +344,17 @@ class SolicitudesController extends AppController
         $this->set('solicitude', $solicitude);
         $this->set('curso', $curso);
     }
-    private function get_round()
+    public function get_round()
     {
       return $this->Solicitudes->getRonda(); 
     }
 
-    private function get_contador_horas()
+    public function get_contador_horas()
     {
       return $this->Solicitudes->getContadorHoras(); 
     }
 
-     private function get_estado_ronda(){
+    public function get_estado_ronda(){
         $ronda = $this->get_round();
         $today = Date::today();
         $inic = new Date($ronda['fecha_inicial']);
@@ -362,7 +362,7 @@ class SolicitudesController extends AppController
         $est = $today->between($inic, $fin) ;
         return $est;
     }
-    private function get_year()
+    public function get_year()
     {
         //Se trae la ronda actusl
         $round = $this->get_round();
@@ -374,7 +374,7 @@ class SolicitudesController extends AppController
   
       return $año;
     }
-    private function get_semester()
+    public function get_semester()
     {
         //Se trae la ronda actusl
         $round = $this->get_round();
@@ -559,7 +559,7 @@ class SolicitudesController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
-    private function obtenerProfesor()
+    public function obtenerProfesor()
     {
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
@@ -572,7 +572,7 @@ class SolicitudesController extends AppController
       }       
       $this->autoRender = false ;       
     }
-    private function obtenerGrupoID()
+    public function obtenerGrupoID()
     {
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
@@ -587,7 +587,7 @@ class SolicitudesController extends AppController
       
              
     }
-    private function viewFile($filename) {
+    public function viewFile($filename) {
         $this->viewBuilder()
             ->className('Dompdf.Pdf')
             ->layout('Dompdf.default')
