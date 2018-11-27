@@ -546,6 +546,53 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+
+    public function getHistorialExcelRonda($id){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join usuarios u on s.usuarios_id = u.id
+                                        join aceptados a on s.id = a.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.ronda = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+        return $index;
+    }
+
+    /*Administrador  CONSULTA y genera Excel del historial total de asistencias durante toda la carrera 
+    Atributos: Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad*/
+    public function getHistorialExcelEstudianteTodo(){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
+                                        from solicitudes s 
+                                        join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                                        join usuarios u on s.usuarios_id = u.id
+                                        join aceptados a on s.id = a.id
+                                        join grupos g on s.grupos_id = g.id
+                                        join cursos c on g.cursos_id = c.id
+                                        left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+                                        where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+        return $index;
+    }
+
+    public function getAllStudents(){
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select * from Usuarios where roles_id = 4;")->fetchAll('assoc');
+        return $index;
+    }
+
+        public function getCarnetId(){
+        $connect = ConnectionManager::get('default');
+            $index = $connect->execute("select distinct u.nombre_usuario, s.usuarios_id
+                            from solicitudes s
+                            join usuarios u on s.usuarios_id = u.id
+                            left outer join aceptados a on s.id = a.id
+                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+        return $index;
+    }
+
 /*****************************************************************************************/
 
 

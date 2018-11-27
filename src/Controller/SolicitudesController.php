@@ -19,10 +19,11 @@ require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
 
 
 
-
 //Para generar el excel de solicitud
 
 require 'C:\xampp\htdocs\p1\vendor\autoload.php';
+
+//$carnetCompartido='b67130';variable para guardar el carnet seleccionado en reporte y obtenertlo en genera
 
 /**
  * Solicitudes Controller
@@ -43,7 +44,24 @@ class SolicitudesController extends AppController
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
-          
+
+        //Seguridad en Reportes
+        //Inicio seguridad por URL
+        if ($username == ''){//En caso de lo haber hecho login
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        else{
+            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
+            $connect = ConnectionManager::get('default');
+            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
+            $permiso = $connect->execute($consulta)->fetchAll();
+            if ($permiso[0][0] != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        //Cierra seguridad por URL
+      
+        //Seguridad en VerificarRequisitos
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
@@ -699,17 +717,144 @@ class SolicitudesController extends AppController
 
     }
         /***********************************************************************************************************/
+    public function reporte(){
+        $solicitude = $this->Solicitudes->newEntity();
+
+        $estudiantes = $this->Solicitudes->getAllStudents();
+        $estudiantesUsuarios= array();
+        $i = 0;
+        foreach ($estudiantes as $key => $value) {
+            array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
+            $i = $i + 1;
+        }
+
+        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista de la tabla 
+        $carnetId = $this->Solicitudes->getCarnetId();
+        $carnet=array();
+        $Ids=array();
+        foreach ($carnetId as $key => $value) {
+          array_push($carnet, $value['nombre_usuario']);
+          array_push($Ids, $value['usuarios_id']);
+        }
+
+        //$carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
+        //$idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
+        //$uno=1;//para poner el valor del campo 1 como default y no el primero
+
+        if ($this->request->is('post')) {          
+            $data = $this->request->getData();
+            $id = $data['Carné'];
+            return $this->redirect(['action' => 'genera', /*$id*/$Ids[$id]]);
+
+        }
+
+        $this->set(compact('carnet',/* 'uno',*/ 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
+        //return $idEstudiante;
+    }
+
+
+     public function reporteRonda(){
+        $solicitude = $this->Solicitudes->newEntity();
+        if ($this->request->is('post')) {          
+            $data = $this->request->getData();
+            $id = $data['Ronda'];
+            return $this->redirect(['action' => 'generaRonda', $id]);
+
+        }
+
+        $this->set(compact('solicitude'));
+        //return $idEstudiante;
+    }
+
+    public function generaRonda($id = null){
+        
+      //$id = $this->reporte();
+      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
+          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
+          //die();
+        $solicitude = $this->Solicitudes->newEntity();
+
+        if ($this->request->is('post')) {
+            
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            //$id = $this->Solicitudes->reporte();
+            //debug($id);
+            //die;
+            $info = $this->Solicitudes->getHistorialExcelRonda($id);
+            //debug($info);
+            //die();
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            $ruta="C:\Users\b26505\Desktop\librotest.xlsx"; 
+
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
+
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
+
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
+
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
+
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
+
+            $writer = new Xlsx($spreadsheet);
+
+            try{
+                $writer->save($ruta/*.'librotest.xlsx'*/);
+                echo "Archivo Creado";
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
+        }
+    
+        $todo = $this->Solicitudes->getHistorialExcelRonda($id);
+        //$this->set('carnet',$carnet);
+        $this->set(compact('todo', 'solicitude'));
+    }
 
     public function genera($id = null){
+        
+      //$id = $this->reporte();
+      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
+          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
+          //die();
         $solicitude = $this->Solicitudes->newEntity();
+
         if ($this->request->is('post')) {
+            
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            //$id = $this->Solicitudes->reporte();
+            //debug($id);
+            //die;
             $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
             //debug($info);
             //die();
-
             /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            $ruta="C:\Users\B54548\Desktop\Excel\librotest.xlsx"; 
+            $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -757,6 +902,67 @@ class SolicitudesController extends AppController
         }
     
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
+        //$this->set('carnet',$carnet);
+        $this->set(compact('todo', 'solicitude'));
+    }
+
+      public function generatodo(){
+        $solicitude = $this->Solicitudes->newEntity();
+        if ($this->request->is('post')) {
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo();
+            //debug($info);
+            //die();
+
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
+
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
+
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
+
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
+
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
+
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
+
+            $writer = new Xlsx($spreadsheet);
+
+            try{
+                $writer->save($ruta/*.'librotest.xlsx'*/);
+                echo "Archivo Creado";
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
+        }
+    
+        $todo = $this->Solicitudes->getHistorialExcelEstudianteTodo();
         $this->set(compact('todo', 'solicitude'));
     }
 
