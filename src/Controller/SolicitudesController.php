@@ -291,12 +291,12 @@ class SolicitudesController extends AppController
             if(4 == $rol){
                 $usuarios = $this->loadModel('Usuarios');
                 $usuarioActual = $usuarios->getUsuariosId($id);
-                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                $idActual = $this->Solicitudes->getIDUsuario($carne);
                 if($id != $idActual[0][0]){
                     return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
                 }
             else if (3 == $rol){
-                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                $idActual = $this->Solicitudes->getIDUsuario($carne);
                 $idProfe = $idActual[0][0];
                 $idProfeSolicitud = $this->Solicitudes->getIdProfeSolicitud($id);
                 if($idProfe != $idProfeSolicitud){
@@ -322,6 +322,20 @@ class SolicitudesController extends AppController
     }
     public function imprimir($id = null){
 
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,25);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
@@ -705,6 +719,22 @@ class SolicitudesController extends AppController
     }
         /***********************************************************************************************************/
     public function reporte(){
+
+
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
 
         $estudiantes = $this->Solicitudes->getAllStudents();
@@ -737,6 +767,20 @@ class SolicitudesController extends AppController
 
 
      public function reporteRonda(){
+         /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
@@ -751,7 +795,20 @@ class SolicitudesController extends AppController
 
     public function generaRonda($id = null){
         
-     
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
@@ -813,7 +870,20 @@ class SolicitudesController extends AppController
 
     public function genera($id = null){
         
-      
+      /*Inicia seguridad*/
+      $seguridad = $this->loadModel('Seguridad');
+      $carne = $this->request->getSession()->read('id');
+      $rolActual = $seguridad->getRol($carne);
+      if ($carne != ''){
+          $resultado = $seguridad->getPermiso($carne,24);
+          if($resultado != 1){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+          }
+      }
+      else{
+          return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+      }
+      /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
@@ -874,6 +944,21 @@ class SolicitudesController extends AppController
     }
 
       public function generatodo(){
+
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
