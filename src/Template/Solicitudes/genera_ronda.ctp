@@ -26,9 +26,7 @@ tr:nth-child(even) {background-color:  #eaecee };
                 <th scope="col"><?= 'Carné' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Tipo Horas' ?></th>
-                <th scope="col"><?= 'Cantidad' ?></th>
-                <th scope="col"><?= 'id' ?></th>
-                
+                <th scope="col"><?= 'Cantidad' ?></th>                
             </tr>
         </thead>
         <tbody>
@@ -43,7 +41,6 @@ tr:nth-child(even) {background-color:  #eaecee };
                 <td><?= h($solicitud['estudiante']) ?></td> 
 				<td><?= h($solicitud['tipo_horas']) ?></td>
                 <td><?= h($solicitud['cantidad_horas']) ?></td>
-                <td><?= h($solicitud['identificador']) ?></td>                          
             </tr>
             <?php endforeach; ?>
         </tbody>

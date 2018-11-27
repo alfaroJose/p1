@@ -11,7 +11,7 @@ use Cake\Network\Email\Email;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Helper;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 use Cake\Database\Exception;
@@ -816,7 +816,11 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
            
             $info = $this->Solicitudes->getHistorialExcelRonda($id);
-            $ruta="C:\Users\b26505\Desktop\librotest.xlsx"; 
+          
+            //debug($info);
+            //die();
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -851,11 +855,20 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }          
 
-            $writer = new Xlsx($spreadsheet);
+            //$writer = new Xlsx($spreadsheet);
+            $writer = new Xls($spreadsheet);
+
 
             try{
-                $writer->save($ruta/*.'librotest.xlsx'*/);
-                echo "Archivo Creado";
+                //$writer->save($ruta/*.'librotest.xlsx'*/);
+        
+                //Descarga el archivo excel
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'. "Reporte de Ronda" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Cache-Control: max-age=0');
+        
+                $writer->save('php://output');
+                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -891,7 +904,11 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
            
             $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
-            $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
+
+            //debug($info);
+            //die();
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -924,17 +941,26 @@ class SolicitudesController extends AppController
 
                 $i = $i + 1;
                 $fila = $fila + 1;
-            }          
+            }    
 
-            $writer = new Xlsx($spreadsheet);
+            //$writer = new Xlsx($spreadsheet);
+            $writer = new Xls($spreadsheet);
+
 
             try{
-                $writer->save($ruta/*.'librotest.xlsx'*/);
-                echo "Archivo Creado";
+                //$writer->save($ruta/*.'librotest.xlsx'*/);
+        
+                //Descarga el archivo excel
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'. "Reporte Estudiante" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Cache-Control: max-age=0');
+        
+                $writer->save('php://output');
+                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
-            }
+            }      
             
         }
     
@@ -963,7 +989,12 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $info = $this->Solicitudes->getHistorialExcelEstudianteTodo();
-            $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
+
+            //debug($info);
+            //die();
+            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
+            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
+
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -998,11 +1029,20 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }          
 
-            $writer = new Xlsx($spreadsheet);
+            //$writer = new Xlsx($spreadsheet);
+            $writer = new Xls($spreadsheet);
+
 
             try{
-                $writer->save($ruta/*.'librotest.xlsx'*/);
-                echo "Archivo Creado";
+                //$writer->save($ruta/*.'librotest.xlsx'*/);
+        
+                //Descarga el archivo excel
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'. "Reporte Historico" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Cache-Control: max-age=0');
+        
+                $writer->save('php://output');
+                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
