@@ -276,7 +276,11 @@ class GruposTable extends Table
             }
             $return = true;
         }else{
-            $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            if ($profId == ""){ //En caso de que el grupo no tenga profesor asignado
+                $connect->execute("update Grupos set usuarios_id = NULL where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }else{
+                $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }
             $return = true;
         }
         return $return;
