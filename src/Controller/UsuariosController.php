@@ -222,6 +222,9 @@ class UsuariosController extends AppController
            if($resultado != 1 && $carne != $usuario->nombre_usuario){
               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
            }
+           else if ($resultado == 1 && 88 == $usuario->id && 88 != $seguridad->getId($carne)){
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
         }
         else{
            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);

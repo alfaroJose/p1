@@ -54,5 +54,20 @@ class SeguridadTable extends Table
         }
    }
 
+   //Devuelve el id de la persona logeada
+   public function getId($carne){
+    
+     if($carne != null){
+        $connect = ConnectionManager::get('default');
+        $consulta = "select id from usuarios where nombre_usuario = '".$carne."';";
+        $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+        return $rol[0][0];
+     }
+     else{
+         return 0;
+     }
+
+}
+
 
 }
