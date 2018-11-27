@@ -82,13 +82,12 @@ class SolicitudesController extends AppController
 /*Index para el historial de solicitudes del estudiante*/
     public function indexHistorialEstudiante()
     {     
-        //$semestre = $this->get_semester(); //obtiene el semestre actual
-        //$año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
        /*Inicia seguridad*/
        $seguridad = $this->loadModel('Seguridad');
        $carne = $this->request->getSession()->read('id');
+       $rolActual = $seguridad->getRol($carne);
        if ($carne != ''){
            $resultado = $seguridad->getPermiso($carne,13);
            if($resultado != 1){
@@ -116,13 +115,13 @@ class SolicitudesController extends AppController
     /*Index para el historial de solicitudes en total*/
     public function indexHistorialAdmin()
     {     
-        //$semestre = $this->get_semester(); //obtiene el semestre actual
-        //$año = $this->get_year(); //obtiene el año actual
+        
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
                
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
             if($resultado != 1){
@@ -157,6 +156,7 @@ class SolicitudesController extends AppController
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
             if($resultado != 1){
@@ -182,6 +182,20 @@ class SolicitudesController extends AppController
     }
     public function revisar($id = null)
     {
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,21);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
         $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
         $solicitude = $this->Solicitudes->get($id, [
@@ -214,6 +228,20 @@ class SolicitudesController extends AppController
 
     public function revisarAsistente($id = null)
     {
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,21);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
         $datosSolicitud = $this->Solicitudes->getSolicitudCompleta($id);
         $datosRequisitosSolicitud = $this->Solicitudes->getRequisitosSolicitud($id);
         $solicitude = $this->Solicitudes->get($id, [
@@ -293,27 +321,26 @@ class SolicitudesController extends AppController
         $this->set('solicitude', $solicitude);
     }
     public function imprimir($id = null){
+
         $this->layout = 'None';
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-      /*  debug($solicitude);
-        die(); */
         $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
         $this->set('curso', $curso);
     }
-    public function get_round()
+    private function get_round()
     {
       return $this->Solicitudes->getRonda(); 
     }
 
-    public function get_contador_horas()
+    private function get_contador_horas()
     {
       return $this->Solicitudes->getContadorHoras(); 
     }
 
-     public function get_estado_ronda(){
+     private function get_estado_ronda(){
         $ronda = $this->get_round();
         $today = Date::today();
         $inic = new Date($ronda['fecha_inicial']);
@@ -321,7 +348,7 @@ class SolicitudesController extends AppController
         $est = $today->between($inic, $fin) ;
         return $est;
     }
-    public function get_year()
+    private function get_year()
     {
         //Se trae la ronda actusl
         $round = $this->get_round();
@@ -333,7 +360,7 @@ class SolicitudesController extends AppController
   
       return $año;
     }
-    public function get_semester()
+    private function get_semester()
     {
         //Se trae la ronda actusl
         $round = $this->get_round();
@@ -499,30 +526,7 @@ class SolicitudesController extends AppController
       }
       $this->set(compact('solicitude', 'c2', 'class', 'course', 'nombre', 'code', 'auto', 'roundNumber', 'nombreEstudiante', 'primerApellidoEstudiante', 'segundoApellidoEstudiante', 'correoEstudiante', 'telefonoEstudiante', 'cedulaEstudiante', 'idEstudiante', 'username', 'anygroupsleft'));
     }
-    /**
-     * Edit method
-     *
-     * @param string|null $id Solicitude id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $solicitude = $this->Solicitudes->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            if ($this->Solicitudes->save($solicitude)) {
-                $this->Flash->success(__('La solicitud ha sido modificado.'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('La solicitud no se ha podido modificar. Por favor intente de nuevo.'));
-        }
-        $usuarios = $this->Solicitudes->Usuarios->find('list', ['limit' => 200]);
-        $grupos = $this->Solicitudes->Grupos->find('list', ['limit' => 200]);
-        $this->set(compact('solicitude', 'usuarios', 'grupos'));
-    }
+    
     /**
      * Delete method
      *
@@ -541,7 +545,7 @@ class SolicitudesController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
-    public function obtenerProfesor()
+    private function obtenerProfesor()
     {
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
@@ -554,7 +558,7 @@ class SolicitudesController extends AppController
       }       
       $this->autoRender = false ;       
     }
-    public function obtenerGrupoID()
+    private function obtenerGrupoID()
     {
       $curso = $_GET['curso'];
       $grupo = $_GET['grupo'];
@@ -720,10 +724,6 @@ class SolicitudesController extends AppController
           array_push($Ids, $value['usuarios_id']);
         }
 
-        //$carnetSeleccionado = $this->request->getData('Carné');//esta es la que no esta jalando el indice seleccionado
-        //$idEstudiante = $Ids[$carnetSeleccionado];// como $carnetSeleccionado es null salen los warnings en reporte
-        //$uno=1;//para poner el valor del campo 1 como default y no el primero
-
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
             $id = $data['Carné'];
@@ -751,22 +751,14 @@ class SolicitudesController extends AppController
 
     public function generaRonda($id = null){
         
-      //$id = $this->reporte();
-      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
-          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          //die();
+     
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            //$id = $this->Solicitudes->reporte();
-            //debug($id);
-            //die;
+           
             $info = $this->Solicitudes->getHistorialExcelRonda($id);
-            //debug($info);
-            //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
             $ruta="C:\Users\b26505\Desktop\librotest.xlsx"; 
 
             //libro de trabajo
@@ -821,22 +813,14 @@ class SolicitudesController extends AppController
 
     public function genera($id = null){
         
-      //$id = $this->reporte();
-      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
-          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          //die();
+      
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            //$id = $this->Solicitudes->reporte();
-            //debug($id);
-            //die;
+           
             $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
-            //debug($info);
-            //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
             $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
 
             //libro de trabajo
@@ -894,10 +878,6 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $info = $this->Solicitudes->getHistorialExcelEstudianteTodo();
-            //debug($info);
-            //die();
-
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
             $ruta="C:\Users\B55830\Desktop\Excel\librotest.xlsx"; 
 
             //libro de trabajo

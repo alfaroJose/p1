@@ -29,14 +29,15 @@
                 <td><?= h($solicitude[4]) ?></td>
                 <td><?= h($solicitude[5]) ?></td>
                 <td class="actions">
-                  
-                <?= $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>
-                <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']) ?>              
-                <?php 
+                <?php  
+                 if (1 ==$this->Seguridad->getPermiso(25)){
+                     $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                 } 
+                 if ( 1 == $this->Seguridad->getPermiso(13)){
+                    $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                 }
                 if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
                    echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
-               /*echo $this->Html->link(__('<span class="typcn typcn-folder-open"></span>'), ['action' => 'genera', $solicitude[7]],['escape'=>false,'style'=>'font-size:22px;']);
-                //debug($solicitude[7]);*/
                 }
                 if(2 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el asistente del admin
                     echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar_asistente', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
@@ -69,7 +70,8 @@
     if(1 == $this->Seguridad->getPermiso(21))
         echo $this->Html->link('Elegir asistente', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
      
-    echo $this->Html->link('Generar Reporte', ['action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']);
+    if(1 == $this->Seguridad->getPermiso(24))    
+        echo $this->Html->link('Generar Reporte', ['action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']);
 
      ?>
 
