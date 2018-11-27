@@ -45,23 +45,7 @@ class SolicitudesController extends AppController
         $año = $this->get_year(); //obtiene el año actual
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
 
-        //Seguridad en Reportes
-        //Inicio seguridad por URL
-        if ($username == ''){//En caso de lo haber hecho login
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        else{
-            $rolActual = $this->Solicitudes->getRol($username);  //obtiene el rol de usuario actualmente logueado
-            $connect = ConnectionManager::get('default');
-            $consulta = "select estado from posee where roles_id = ".$rolActual[0]." and permisos_id = 13;";
-            $permiso = $connect->execute($consulta)->fetchAll();
-            if ($permiso[0][0] != 1){
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        //Cierra seguridad por URL
-      
-        //Seguridad en VerificarRequisitos
+
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
@@ -181,7 +165,6 @@ class SolicitudesController extends AppController
         }
         else{
             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-
         }
         /*Cierra la seguridad*/
              
