@@ -5,6 +5,8 @@ use Dompdf\Dompdf;
 use Cake\Datasource\ConnectionManager;
 use Cake\Chronos\Date;
 use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
+use Cake\Network\Email\Email;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -187,6 +189,7 @@ class SolicitudesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
             $data = $this->request->getData();
+
             if ($this->Solicitudes->save($solicitude)) {
                 foreach ($datosRequisitosSolicitud as $requisitosSolicitud):
                     if ($data[$requisitosSolicitud['requisito_id']] == '') {
@@ -196,6 +199,9 @@ class SolicitudesController extends AppController
                 endforeach;
                 if ($datosSolicitud[0]['solicitud_promedio'] != $solicitude['promedio']){
                     $this->Solicitudes->setPromedio($solicitude['promedio'], $solicitude['grupos_id'], $solicitude['usuarios_id']);
+                }
+                if ($datosSolicitud[0]['solicitud_estado'] != $solicitude['promedio']){
+                    $this->sendMail($id);
                 }
                 $this->Flash->success(__('La solicitud ha sido revisada.'));
                 return $this->redirect(['action' => 'index']);
@@ -673,6 +679,7 @@ class SolicitudesController extends AppController
                     }
 
                 }
+                $this->sendMail($idSolicitud[$i]);
                 $i++;
             }
             $this->Flash->success(__('Se han guardado los cambios para el grupo'));
@@ -751,6 +758,89 @@ class SolicitudesController extends AppController
     
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
         $this->set(compact('todo', 'solicitude'));
+    }
+
+    public function reprovedMessage($id)
+    {
+        $requirements = $this->Solicitudes->getRequisitosIncumplidos($id); //Llama al método que está en el modelo
+        $list = ' '; //Inicializa la lista de los requisitos rechazados
+        foreach($requirements as $r) //Aquí se van concatenando los requisitos recuperados
+        {
+            $list .= '
+            ' . $r['requisito_nombre'];
+        }
+        return $list; //Se devuelve la lista de requisitos rechazados del estudiante
+    }
+
+    public function sendMail($id)
+    {
+        //Aquí se obtienen datos de la solicitud, nombre de profesor, curso, grupo y nombre de estudiante, 
+        // necesarios para el correo
+        $solicitud = $this->Solicitudes->getSolicitudCompleta($id);
+        $professor = $solicitud[0]['profesor_nombre'];
+        $course = $solicitud[0]['curso_nombre'];
+        $group = $solicitud[0]['grupo_numero'];
+        $mail = $solicitud[0]['estudiante_correo'];
+        $name = $solicitud[0]['estudiante_nombre'] . " " . $solicitud[0]['estudiante_primer_apellido'] . " " . $solicitud[0]['estudiante_segundo_apellido'];
+        $state = $solicitud[0]['solicitud_estado'];
+        $text = null;
+
+        //Se crea una nueva instancia de correo de cakephp
+        $email = new Email();
+        $email->transport('email'); //Se debe cambiar 'mailjet' por el nombre de transporte que se puso en config/app.php
+        //En todos los mensajes se debe cambiar la parte "correo de contacto" por el correo utilizado para atender dudas con respecto al tema de solicitudes de horas
+        //Indica que si el estado es 1, se debe enviar mensaje de estudiante no elegible.
+        if($state == 'No Elegible'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue RECHAZADA debido a que no cumplió el(los) siguiente(s) requisito(s):';
+        $text .= "\n" ;
+        $text .= '' . $list;
+        $text .= '
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        // Si el estado es 2, se debe enviar mensaje de estudiante rechazado.
+        if($state == 'Rechazada'){
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue RECHAZADA por el profesor.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        //Si el estado es 3, se debe enviar mensaje de estudiante aceptado.
+        if($state == 'Aceptada - Profesor'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+        if($state == 'Aceptada - Profesor (Inopia)'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA POR INOPIA.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+
+        //Despues de poner el pass descomentar esto para empezar a enviar correos
+        /*
+        if ($text != null){
+            //Se envía el correo.
+            try {
+                $res = $email->from('asistencias.ecci@gmail.com') // Se debe cambiar este correo por el que se usa en config/app.php
+                      ->to($mail)
+                      ->subject('Resultado del concurso de asistencia')                  
+                      ->send($text);
+            } catch (Exception $e) {
+                echo 'Exception : ',  $e->getMessage(), "\n";
+            }
+        }
+        */
     }
 
 }

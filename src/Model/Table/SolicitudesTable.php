@@ -548,4 +548,16 @@ class SolicitudesTable extends Table
 
 /*****************************************************************************************/
 
+
+    public function getRequisitosIncumplidos($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select r.nombre as requisito_nombre
+        from requisitos r, tiene t
+        where t.requisitos_id = r.id
+        and t.condicion = 'No'
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
+        return $result;
+    }
+
 }
