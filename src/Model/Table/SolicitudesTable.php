@@ -234,6 +234,18 @@ class SolicitudesTable extends Table
             return $result[0];
         }
     }
+
+
+    //Devuelve algo si el id del profe calza con el id del profe de la solicitud
+    public function getIdProfeSolicitud($id){
+        $connect = ConnectionManager::get('default');
+        $consulta = "select us.id
+                    from grupos as gr join solicitudes on grupos_id = gr.id
+                                        join usuarios as us on gr.usuarios_id = us.id
+                        where solicitudes.id = ".$id.";";
+        $resultado =  $connect->execute($consulta)->fetchAll();
+        return $resultado[0][0];
+    }
     //Obtiene los números de grupo, nombre del curso, sigla y id de los grupos disponibles para solicitar una asistenia de dicho semestre y año en el que el estudiante no haya solicitado asistencia todavía.
     public function getGrupos($id_estudiante, $semestre, $year)
     {
@@ -259,10 +271,10 @@ class SolicitudesTable extends Table
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute(
             "select distinct cur.sigla as sigla, cur.nombre, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
-            from solicitudes as sol right join grupos as gru on sol.grupos_id = gru.id 
+            from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
                                     join usuarios as us on gru.usuarios_id = us.id
-            where año = ".$year." and semestre = ".$semestre."
+            where sol.estado = 'Elegible' and año = ".$year." and semestre = ".$semestre." and estado = 'Elegible'
                   and gru.id not in (select gru.id
                                      from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id
                                      where sol.estado = 'Aceptada - Profesor' or sol.estado = 'Aceptada - Profesor (Inopia)');");
@@ -374,29 +386,49 @@ class SolicitudesTable extends Table
     //Devuelve las horas estudiante que tenga un estudiante asignadas
     public function getHorasEstudiante($idEstudiante,$idGrupo){
         $connect = ConnectionManager::get('default');      
-        $result = $connect->execute(
-            "select acep.cantidad_horas
-            from aceptados as acep join solicitudes as sol on acep.id = sol.id
-            where acep.tipo_horas = 'Horas Estudiante' and sol.id = (select sol.id
-                                                                    from solicitudes as sol
-                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+        $result = $connect->execute("select sum(acep.cantidad_horas) 
+        from aceptados as acep join solicitudes as sol on acep.id = sol.id
+        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente';");
+        $result = $result->fetchAll(); 
 
-        $result = $result->fetchAll('assoc'); 
-        return $result;  
+        $result2 = $connect->execute("select sol.cantidad_horas_externa
+        from solicitudes as sol
+        where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_estudiante_externa = 'Sí';");
+        $result2 = $result2->fetchAll(); 
+
+        if ($result == null){
+            $result[0][0] = 0;
+        }
+        if ($result2 == null){
+            $result2[0][0] = 0;
+        }
+        $HE = $result[0][0] + $result2[0][0];
+
+        return $HE;  
     }
 
     //Devuelve las horas asistente que tenga un estudiante asignadas
     public function getHorasAsistente($idEstudiante,$idGrupo){
         $connect = ConnectionManager::get('default');      
-        $result = $connect->execute(
-            "select acep.cantidad_horas
-            from aceptados as acep join solicitudes as sol on acep.id = sol.id
-            where acep.tipo_horas = 'Horas Asistente' and sol.id = (select sol.id
-                                                                    from solicitudes as sol
-                                                                    where usuarios_id = ".$idEstudiante." and grupos_id  = ".$idGrupo.");");
+        $result = $connect->execute("select sum(acep.cantidad_horas) 
+        from aceptados as acep join solicitudes as sol on acep.id = sol.id
+        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Asistente';");
+        $result = $result->fetchAll(); 
 
-        $result = $result->fetchAll('assoc'); 
-        return $result;  
+        $result2 = $connect->execute("select sol.cantidad_horas_externa
+        from solicitudes as sol
+        where asistencia_externa = 'Sí' and usuarios_id = ".$idEstudiante." and grupos_id = ".$idGrupo." and horas_asistente_externa = 'Sí';");
+        $result2 = $result2->fetchAll(); 
+
+        if ($result == null){
+            $result[0][0] = 0;
+        }
+        if ($result2 == null){
+            $result2[0][0] = 0;
+        }
+        $HE = $result[0][0] + $result2[0][0];
+
+        return $HE;  
     }
 
     /*Obtiene el nombre y primer apellido del profesor según el curso, grupo, año y semestre especificado.*/
@@ -491,7 +523,11 @@ class SolicitudesTable extends Table
         $connet = ConnectionManager::get('default');
         $connet->execute("call insertar_modificar_aceptados ($solicitudes_id, $cantidad_horas, '$tipo_horas')");
     }
-
+    public function setPromedio($promedio, $grupos_id, $usuarios_id)
+    {
+        $connet = ConnectionManager::get('default');
+        $connet->execute("call actualizar_promedio ($promedio, $grupos_id, $usuarios_id)");
+    }
 
     /*************************************************************************************/
     /*Administrador  CONSULTA y genera Excel del historial de asistencias que ha tenido un determinado estudiante durante toda la carrera 
@@ -558,5 +594,17 @@ class SolicitudesTable extends Table
     }
 
 /*****************************************************************************************/
+
+
+    public function getRequisitosIncumplidos($id)
+    {
+        $connect = ConnectionManager::get('default');
+        $result = $connect->execute("select r.nombre as requisito_nombre
+        from requisitos r, tiene t
+        where t.requisitos_id = r.id
+        and t.condicion = 'No'
+        and t.solicitudes_id = '".$id."'")->fetchAll('assoc');
+        return $result;
+    }
 
 }

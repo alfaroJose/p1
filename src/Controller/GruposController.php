@@ -362,13 +362,16 @@ class GruposController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post']);
-        $grupo = $this->Grupos->get($id);
-        if ($this->Grupos->delete($grupo)) {
-            $this->Flash->success(__('El grupo ha sido eliminado.'));
+        if($this->Grupos->existenSolicitudes($id)){
+            $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
         } else {
-            $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            $grupo = $this->Grupos->get($id);
+            if ($this->Grupos->delete($grupo)) {
+                $this->Flash->success(__('El grupo ha sido eliminado.'));
+            } else {
+                $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            }
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
@@ -409,6 +412,13 @@ class GruposController extends AppController
         $rows = [];
 
         $profIds = [];
+
+        //Los profesores que deben ser agregados antes
+        $errorProf = [];
+
+        //Indica si se pueden agregar cursos
+        $canContinue = true;
+
         //Se llena la matriz
         for ($row = 5; $row <= $highestRow; ++$row) {
             for ($col = 1; $col <= 4; ++$col) {
@@ -427,11 +437,10 @@ class GruposController extends AppController
                         //die();
                         $id = $usuariosTable->getID($prof[count($prof)-1], $prof[0]);
                         
-                        if($id == null){
-                            //Se borra el archivo
-                            $this->deleteFiles();
-                            $this->Flash->error('El profesor '. $value .' no se encuentra en la tabla');
-                            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+                        if($id == null){                            
+                            $canContinue = false;
+                            array_push($errorProf, $value);
+                        
                         }else{
                             array_push($profIds, $id);
                         }
@@ -445,6 +454,21 @@ class GruposController extends AppController
             $table[$row -5] = $rows;
             unset($rows); //resetea el array rows
         }
+
+        //En caso de que un profesor no exista
+        if(!$canContinue){
+            $message = "Los siguientes profesores no están en el sistema : \n";
+
+            for($i = 0; $i < count($errorProf); $i++){
+                $message = $message . $errorProf[$i] . ",\n";
+            }
+
+            //Se borra el archivo
+            $this->deleteFiles();
+            $this->Flash->error($message);
+            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+        }
+
         //Se cambia el nombre de las llaves del array si no es post ya que es para la vista previa
         if(!$this->request->is('post')){
             $table = array_map(function($tag) {
@@ -514,10 +538,9 @@ class GruposController extends AppController
             //die();
             //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
             $idCurso = $this->Grupos->obtenerCursoId($name);
-            //debug($idCurso);
-            //die();
+            
             $classTable->addClass($parameters[2], $semester, $year, $idCurso, $profId);
-
+            
         }
     }
 

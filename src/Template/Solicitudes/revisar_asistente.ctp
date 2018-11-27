@@ -347,13 +347,9 @@
 
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
             unblockAsistentes();
-            unblockGenerales();
-        } else {
-            var chkEstado = checkEstudiante();
-            if (chkEstado == true){
-                blockGenerales();
-            }
+            updateTodo();
         }
+        
         updateEstado();
     }
 
@@ -452,6 +448,8 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
                 blockEstudiantes();
                 c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -466,6 +464,8 @@
             var y = x + "-no";
             selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
             if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
                 blockEstudiantes();
                 c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
                 var encontrado = true;
@@ -473,13 +473,11 @@
         }
 
         if(encontrado == false){ //Ninguno está marcada no por lo que hay que desbloquear todas las opciones
-            unblockEstudiantes();
             unblockGenerales();
-        } else {
-            var chkEstado = checkAsistente();
-            if (chkEstado == true){
-                blockGenerales();
-            }
+            unblockAsistentes();
+            unblockEstudiantes();
+            updateTodo();
+            
         }
 
         updateEstado();
@@ -607,8 +605,7 @@
             unblockGenerales();
             unblockAsistentes();
             unblockEstudiantes();
-            updateAsistentes();
-            updateEstudiantes();
+            updateTodo();
         }
 
         updateEstado();
@@ -696,6 +693,94 @@
         }
         
         return false;
+    }
+
+    function updateTodo(){
+        a5 = document.getElementById("a5"); //Lista de id de requisitos obligatorios de horas asistente
+        var r = a5.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {        
+            var x = a5.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
+                blockAsistentes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }   
+        }
+
+        a6 = document.getElementById("a6");
+        var s = a6.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {
+            var x = a6.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos de horas asistente
+                blockAsistentes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }            
+        }
+		
+        a3 = document.getElementById("a3"); //Lista de id de requisitos obligatorios de horas estudiante
+        var r = a3.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {
+            var x = a3.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
+
+        a4 = document.getElementById("a4");
+        var s = a4.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {
+            var x = a4.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
+		
+        a1 = document.getElementById("a1"); //Lista de id de requisitos obligatorios generales
+        var r = a1.options.length;
+        for(c = 0;  c < r; c = c + 1) // Recorre los requisitos
+        {    
+            var x = a1.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = r; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }            
+        }
+
+        a2 = document.getElementById("a2"); //Lista de id de requisitos obligatorios generales
+        var s = a2.options.length;
+        for(c = 0;  c < s; c = c + 1) // Recorre los requisitos
+        {            
+            var x = a2.options[c].text
+            var y = x + "-no";
+            selReq = document.getElementById(y).checked; //devuelve en orden de la lista de id's si la opcion "no" is checked es true.
+            if (selReq == true){ //La opción seleccionada es no por lo que hay que deshabilitar los demás requisitos generales
+                blockGenerales();
+                blockAsistentes();
+                blockEstudiantes();
+                c = s; //termino el for de una vez, no necesito ver los demás requisitos ya que encontré uno obligatorio que está marcado no
+            }
+        }
     }
 
     function checkMarcadasGeneral(){
