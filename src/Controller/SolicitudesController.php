@@ -291,12 +291,12 @@ class SolicitudesController extends AppController
             if(4 == $rol){
                 $usuarios = $this->loadModel('Usuarios');
                 $usuarioActual = $usuarios->getUsuariosId($id);
-                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                $idActual = $this->Solicitudes->getIDUsuario($carne);
                 if($id != $idActual[0][0]){
                     return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
                 }
             else if (3 == $rol){
-                $idActual = $this->Solicitudes->getIDUsuarios($carne);
+                $idActual = $this->Solicitudes->getIDUsuario($carne);
                 $idProfe = $idActual[0][0];
                 $idProfeSolicitud = $this->Solicitudes->getIdProfeSolicitud($id);
                 if($idProfe != $idProfeSolicitud){
