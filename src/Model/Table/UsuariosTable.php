@@ -118,9 +118,9 @@ class UsuariosTable extends Table
         }
     }
     //Devuelve el ID del usuario según el nombre y apellido para el archivo de excel.
-    public function getId($name, $lastname) {
+    public function getID($name, $lastname) {
         $connect = ConnectionManager::get('default');
-        $id = $connect->execute("select id from Usuarios where nombre like '%$name' and primer_apellido like '$lastname%'") ->fetchAll();
+        $id = $connect->execute("select id from Usuarios where nombre like '%$name%' and primer_apellido like '$lastname%'") ->fetchAll();
         if($id != null){
             return $id[0][0];
         }else{
@@ -148,5 +148,13 @@ class UsuariosTable extends Table
         $connect = ConnectionManager::get('default');
         $fila = $connect->execute("select count(*) from Usuarios;")->fetchAll();
         return $fila[0];
+    }
+
+    //Devuelve el usuarios_id en referencia al id que se provea
+    public function getUsuariosId($id){
+        $connect = ConnectionManager::get('default');
+        $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
+        $usuariosId = $connect->execute($consulta)->fetchAll();
+        return $usuariosId[0][0];
     }
 }
