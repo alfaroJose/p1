@@ -20,6 +20,20 @@ class ContadorController extends AppController
      */
     public function index()
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,23);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+
         $contador = $this->paginate($this->Contador);
 
         $this->set(compact('contador'));
@@ -34,31 +48,24 @@ class ContadorController extends AppController
      */
     public function view($id = null)
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,23);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
         $contador = $this->Contador->get($id, [
             'contain' => []
         ]);
 
         $this->set('contador', $contador);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $contador = $this->Contador->newEntity();
-        if ($this->request->is('post')) {
-            $contador = $this->Contador->patchEntity($contador, $this->request->getData());
-            if ($this->Contador->save($contador)) {
-                $this->Flash->success(__('The contador has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The contador could not be saved. Please, try again.'));
-        }
-        $this->set(compact('contador'));
     }
 
     /**
@@ -70,6 +77,19 @@ class ContadorController extends AppController
      */
     public function edit($id = null)
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,22);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
         $contador = $this->Contador->get($id, [
             'contain' => []
         ]);
