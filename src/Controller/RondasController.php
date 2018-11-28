@@ -22,27 +22,20 @@ class RondasController extends AppController
      */
     public function index()
     {
-         //Verifica por permisos y login
-         $carne = $this->getRequest()->getSession()->read('id'); 
-         if($carne != null){
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 9 and roles_id = ".$rol[0][0].";";
-                         //9 = Consultar Ronda
-            $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,9);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
              }
          }
          else{
-             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
          }
-         //Cierra la seguridad
+         /*Cierra la seguridad*/
+         
         $rondas = $this->paginate($this->Rondas);
         $this->set(compact('rondas'));
     }
@@ -55,27 +48,19 @@ class RondasController extends AppController
      */
     public function view($id = null)
     {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 9 and roles_id = ".$rol[0][0].";";
-                        //9 = Consultar Ronda
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        //Cierra la seguridad
+       /*Inicia seguridad*/
+       $seguridad = $this->loadModel('Seguridad');
+       $carne = $this->request->getSession()->read('id');
+       if ($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,9);
+           if($resultado != 1){
+               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+       }
+       else{
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+       }
+       /*Cierra la seguridad*/
 
         $ronda = $this->Rondas->get($id, [
             'contain' => []
@@ -89,27 +74,19 @@ class RondasController extends AppController
      */
     public function add()
     {
-         //Verifica por permisos y login
-         $carne = $this->getRequest()->getSession()->read('id'); 
-         if($carne != null){
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 11 and roles_id = ".$rol[0][0].";";
-                         //11 = Agregar Ronda
-            $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
-         }
-         else{
-             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-         }
-         //Cierra la seguridad
+          /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,11);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
 
         $ronda = $this->Rondas->newEntity();
         if ($this->request->is('post')) {
@@ -131,27 +108,19 @@ class RondasController extends AppController
      */
     public function edit($id = null)
     {
-         //Verifica por permisos y login
-         $carne = $this->getRequest()->getSession()->read('id'); 
-         if($carne != null){
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 12 and roles_id = ".$rol[0][0].";";
-                         //12 = Modificar Ronda
-            $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,12);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
              }
          }
          else{
-             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
          }
-         //Cierra la seguridad
+         /*Cierra la seguridad*/
 
         $ronda = $this->Rondas->get($id, [
             'contain' => []

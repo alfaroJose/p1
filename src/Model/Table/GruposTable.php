@@ -269,10 +269,18 @@ class GruposTable extends Table
         //Verifica que no esté en la tabla
         $inTable = count($connect->execute("select * from Grupos where cursos_id = '$id' and numero = '$number' and semestre = '$semester' and año = '$year'"));
         if ($inTable == 0) {
-            $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            if ($profId == ""){ //En caso de que el grupo no tenga profesor asignado
+                $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', NULL)");
+            }else{
+                $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            }
             $return = true;
         }else{
-            $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            if ($profId == ""){ //En caso de que el grupo no tenga profesor asignado
+                $connect->execute("update Grupos set usuarios_id = NULL where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }else{
+                $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }
             $return = true;
         }
         return $return;
