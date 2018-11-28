@@ -30,7 +30,7 @@ tr:nth-child(even) {background-color:  #eaecee };
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($todo as $solicitud): ?>
+            <?php foreach ($todo as $solicitud): //datos para la vista previa de reporte estudiante antes de generar el excel?>
             	<?php //debug($solicitud) ?>
             <tr>
                 <td><?= h($solicitud['nombre']) ?></td> 
@@ -48,9 +48,9 @@ tr:nth-child(even) {background-color:  #eaecee };
 </div>
 
     
-     <button type="submit" class="btn btn-info float-right">Aceptar</button>
-    <?= $this->Html->link('Cancelar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3'])?>
-    <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3'])?>
+     <button type="submit" class="btn btn-info float-right">Descargar</button>
+    <?= $this->Html->link('Cancelar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3']) //boton cancelar?>
+    <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']) //boton regresar a pantalla reporte?>
     <?= $this->Form->end() ?>
 </div>
 
