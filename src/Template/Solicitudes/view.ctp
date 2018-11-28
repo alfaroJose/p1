@@ -99,8 +99,11 @@ tr:nth-child(even) {background-color:  #eaecee };
         </tr>
 
     </table>
-    
-    <?= $this->Html->link('Imprimir',['action'=>'imprimir', $solicitude->id],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+    <?php  
+    if (1 ==$this->Seguridad->getPermiso(25)){
+    echo $this->Html->link('Imprimir',['action'=>'imprimir', $solicitude->id],['class'=>'btn btn-info btn-medium float-right mr-3']);
+    }
+    ?>
 
     <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 </div>
