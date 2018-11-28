@@ -162,6 +162,12 @@ use Cake\Chronos\Date;
                 echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
                 echo '</li>';
               }
+
+                if(1 == $this->Seguridad->getPermiso(24))  
+                echo  '<li class="nav-item">';
+                echo $this->Html->link('Reportes',['controller'=>'Solicitudes','action'=>'reporte'],['class'=>'nav-link']) ;
+                echo '</li>';
+              
                 
 
               if ( 1 == $permisoContador){
