@@ -736,20 +736,14 @@ class SolicitudesController extends AppController
             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         /*Cierra la seguridad*/
-        $solicitude = $this->Solicitudes->newEntity();
 
-        $estudiantes = $this->Solicitudes->getAllStudents();
-        $estudiantesUsuarios= array();
-        $i = 0;
-        foreach ($estudiantes as $key => $value) {
-            array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
-            $i = $i + 1;
-        }
+        //datos para la vista previa en genera y beneratodo
+        $solicitude = $this->Solicitudes->newEntity();
 
         //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista donde se seleecionara algun estudiante
         $carnetId = $this->Solicitudes->getCarnetId();
-        $carnet=array();
-        $Ids=array();
+        $carnet=array(); //vector para guardad los carnet de estudiantes que han sido asistentes
+        $Ids=array(); //vector para guardad los id de estudiantes que han sido asistentes
         foreach ($carnetId as $key => $value) {
           array_push($carnet, $value['nombre_usuario']);
           array_push($Ids, $value['usuarios_id']);
@@ -762,7 +756,7 @@ class SolicitudesController extends AppController
 
         }
 
-        $this->set(compact('carnet',  'estudiantes', 'estudiantesUsuarios', 'solicitude'));
+        $this->set(compact('carnet', 'solicitude'));
     }
 
     /*Creación del excel con el total de solicitudes de un estudiante en especifico*/
