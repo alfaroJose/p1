@@ -718,6 +718,7 @@ class SolicitudesController extends AppController
 
     }
         /***********************************************************************************************************/
+        /*Vista previa a generara un reporte en excel del historico de asistencias*/
     public function reporte(){
 
 
@@ -745,7 +746,7 @@ class SolicitudesController extends AppController
             $i = $i + 1;
         }
 
-        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista de la tabla 
+        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista donde se seleecionara algun estudiante
         $carnetId = $this->Solicitudes->getCarnetId();
         $carnet=array();
         $Ids=array();
@@ -757,35 +758,23 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
             $id = $data['Carné'];
-            return $this->redirect(['action' => 'genera', /*$id*/$Ids[$id]]);
+            return $this->redirect(['action' => 'genera', $Ids[$id]]);
 
         }
 
-        $this->set(compact('carnet',/* 'uno',*/ 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
-        //return $idEstudiante;
+        $this->set(compact('carnet',  'estudiantes', 'estudiantesUsuarios', 'solicitude'));
     }
 
+    /*Creación del excel con el total de solicitudes de un estudiante en especifico*/
     public function genera($id = null){
-        
-      //$id = $this->reporte();
-      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
-          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          //die();
+
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            //$id = $this->Solicitudes->reporte();
-            //debug($id);
-            //die;
-            $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
-            //debug($info);
-            //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
-            //libro de trabajo
+            $info = $this->Solicitudes->getHistorialExcelEstudiante($id); //Se trae la informacion que se agrega al excel segun el id del estudiante
             $spreadsheet = new Spreadsheet();
 
             //acceder al objeto hoja
@@ -803,8 +792,8 @@ class SolicitudesController extends AppController
 
             $i = 0;
             $fila = 2;
+            /*Se agrega la informacion al excel*/
             foreach ($info as $data) {
-                //$sheet->setCellValue('A2', $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
                 $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
@@ -818,21 +807,17 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }    
 
-            //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
-            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls';
+            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
 
+            /*Descarga el archivo en la carpeta descargas independientemente de la computadora*/
             try{
-                //$writer->save($ruta/*.'librotest.xlsx'*/);
-        
-                //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. $nombreArchivo); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. $nombreArchivo);
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
-                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -840,8 +825,8 @@ class SolicitudesController extends AppController
             
         }
     
+        /*Se envia la indormacion a genera para crear la vista previa de la tabla*/
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
-        //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude'));
     }
 
