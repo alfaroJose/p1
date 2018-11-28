@@ -146,7 +146,7 @@ class UsuariosTable extends Table
     public function existenSolicitudes($usuarioId){
         $existen = false;
         $connect = ConnectionManager::get('default');
-        $inTable = count($connect->execute("select * from Solicitudes where usuarios_id = '$usuariosId'"));
+        $inTable = count($connect->execute("select * from Solicitudes where usuarios_id = '$usuarioId'"));
         if($inTable != 0){
             $existen = true;
         } 
@@ -155,7 +155,7 @@ class UsuariosTable extends Table
     public function esProfesor($usuarioId){
         $prof = false;
         $connect = ConnectionManager::get('default');
-        $usuarioProfesor = count($connect->execute("select * from Usuarios where id = '$usuariosId' and roles_id = 'Profesor'"));
+        $usuarioProfesor = count($connect->execute("select * from Usuarios where id = '$usuarioId' and roles_id = 3"));
         if($usuarioProfesor != 0){
             $prof = true;
         } 
