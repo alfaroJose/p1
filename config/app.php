@@ -210,6 +210,16 @@ return [
             'tls' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+        //Este es un transporte de prueba, para utilizar un correo oficial de la ecci,
+        // se debe crear otro transporte con host y puerto de la ecci o modificar el transporte 'mailjet'
+        'email' => [
+            'host' => 'ssl://smtp.gmail.com',
+            'port' => 465,
+            'timeout' => 60,
+            'username' => 'asistencias.ecci@gmail.com',
+            'password' => '123quesito',
+            'className' => 'Smtp'
+        ],
     ],
 
     /**
@@ -382,5 +392,7 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'timeout' => 180, //Minutos
+        // 'cookieTimeout' => 1,
     ],
 ];

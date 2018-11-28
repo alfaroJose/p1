@@ -9,9 +9,12 @@
         "cakephp/cakephp": "3.6.*",
         "cakephp/migrations": "^2.0.0",
         "cakephp/plugin-installer": "^1.0",
+        "daoandco/cakephp-dompdf": "^1.2",
+        "davidyell/proffer": "^0.8",
         "friendsofcake/bootstrap-ui": "^1.4",
         "josegonzalez/dotenv": "3.*",
-        "mobiledetect/mobiledetectlib": "2.*"
+        "mobiledetect/mobiledetectlib": "2.*",
+        "phpoffice/phpspreadsheet": "^1.5"
     },
     "require-dev": {
         "cakephp/bake": "^1.1",

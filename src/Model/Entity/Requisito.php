@@ -1,15 +1,19 @@
 <?php
 namespace App\Model\Entity;
+
 use Cake\ORM\Entity;
+
 /**
  * Requisito Entity
  *
  * @property int $id
  * @property string $nombre
  * @property string $tipo
+ * @property string $categoria
  */
 class Requisito extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -21,6 +25,7 @@ class Requisito extends Entity
      */
     protected $_accessible = [
         'nombre' => true,
-        'tipo' => true
+        'tipo' => true,
+        'categoria' => true
     ];
 }

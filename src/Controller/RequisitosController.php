@@ -3,6 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+//Estos dos sirven para las consultas
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
+
 /**
  * Requisitos Controller
  *
@@ -20,6 +24,28 @@ class RequisitosController extends AppController
      */
     public function index()
     {
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,5);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
+        }
+        /*Cierra la seguridad*/
+
+        /*Saca la cantidad de tuplas de la tabla Usuarios*/
+        $cantidad = $this->Requisitos->getCountRequisitos();
+
+        /*Esto es por que la función paginate tiene un default de límite de 20 records y no permite ver más en la tabla*/
+        $this->paginate['maxLimit'] = $cantidad[0];
+        $this->paginate['limit']    = $cantidad[0];
+
         $requisitos = $this->paginate($this->Requisitos);
 
         $this->set(compact('requisitos'));
@@ -34,6 +60,20 @@ class RequisitosController extends AppController
      */
     public function view($id = null)
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,5);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+
         $requisito = $this->Requisitos->get($id, [
             'contain' => []
         ]);
@@ -48,14 +88,38 @@ class RequisitosController extends AppController
      */
     public function add()
     {
+       /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,7);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+
         $requisito = $this->Requisitos->newEntity();
         if ($this->request->is('post')) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
+            
             if ($requisito->tipo == 0) {
                 $requisito->tipo = 'Obligatorio';
             } else {
-                $requisito->tipo = 'Obligatorio inopia';
+                $requisito->tipo = 'Obligatorio Inopia';
             }
+
+            if ($requisito->categoria == 0) {
+                $requisito->categoria = 'Horas Asistente';
+            } else if ($requisito->categoria == 1){
+                $requisito->categoria = 'Horas Estudiante';
+            } else {
+                $requisito->categoria = 'General';
+            }
+
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido agregado.'));
 
@@ -75,16 +139,25 @@ class RequisitosController extends AppController
      */
     public function edit($id = null)
     {
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,8);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
+
         $requisito = $this->Requisitos->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $requisito = $this->Requisitos->patchEntity($requisito, $this->request->getData());
-            if ($requisito->tipo == 0) {
-                $requisito->tipo = 'Obligatorio';
-            } else {
-                $requisito->tipo = 'Obligatorio inopia';
-            }
             if ($this->Requisitos->save($requisito)) {
                 $this->Flash->success(__('El requisito ha sido modificado.'));
 

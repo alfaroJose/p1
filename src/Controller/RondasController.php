@@ -1,6 +1,11 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
+
+
+//Estos dos sirven para las consultas
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 /**
  * Rondas Controller
  *
@@ -17,6 +22,20 @@ class RondasController extends AppController
      */
     public function index()
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,9);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+         
         $rondas = $this->paginate($this->Rondas);
         $this->set(compact('rondas'));
     }
@@ -29,6 +48,20 @@ class RondasController extends AppController
      */
     public function view($id = null)
     {
+       /*Inicia seguridad*/
+       $seguridad = $this->loadModel('Seguridad');
+       $carne = $this->request->getSession()->read('id');
+       if ($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,9);
+           if($resultado != 1){
+               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+       }
+       else{
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+       }
+       /*Cierra la seguridad*/
+
         $ronda = $this->Rondas->get($id, [
             'contain' => []
         ]);
@@ -41,6 +74,20 @@ class RondasController extends AppController
      */
     public function add()
     {
+          /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,11);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
+
         $ronda = $this->Rondas->newEntity();
         if ($this->request->is('post')) {
             $ronda = $this->Rondas->patchEntity($ronda, $this->request->getData());
@@ -61,6 +108,20 @@ class RondasController extends AppController
      */
     public function edit($id = null)
     {
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,12);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+
         $ronda = $this->Rondas->get($id, [
             'contain' => []
         ]);
