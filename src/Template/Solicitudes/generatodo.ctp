@@ -15,7 +15,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
 <div class="reporte index large-9 medium-8 columns content">
 	<?= $this->Form->create($solicitude) ?>
-    <h3><?= __('Reporte Estudiante') ?></h3>
+    <h3><?= __('Reporte Historico') ?></h3>
     <table id="reporte-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -26,7 +26,7 @@ tr:nth-child(even) {background-color:  #eaecee };
                 <th scope="col"><?= 'Carné' ?></th>
                 <th scope="col"><?= 'Nombre' ?></th>
                 <th scope="col"><?= 'Tipo Horas' ?></th>
-                <th scope="col"><?= 'Cantidad' ?></th>
+                <th scope="col"><?= 'Cantidad' ?></th>                
             </tr>
         </thead>
         <tbody>

@@ -38,7 +38,7 @@
                                                             ['value'=>'0', 'text'=>'No', 'style' => 'margin-left:30px', 'onclick'=> 'blockOptions()'],
                                                             ['value'=> '1', 'text'=>'Sí', 'style'=>'margin-left:30px', 'onclick'=> 'unblockOptions()']]);
             
-            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
+            echo $this->Form->control('cantidad_horas_externa', ['label' =>['text'=> 'Cantidad'], 'type'=> 'number', 'min'=>"0", 'max'=>"20", 'step'=>"1", 'templates'=> ['inputContainer'=>'<div class="row col-xs-4 col-sm-4 col-md-4 col-lg-4">{{content}}</div><br>']]);            
             echo $this->Form->control('horas_asistente_externa', ['label' =>['text'=> 'Horas Asistente'], 'type' => 'checkbox', 'required' => false]);
             echo $this->Form->control('horas_estudiante_externa', ['label' =>['text'=>'Horas Estudiante'], 'type' => 'checkbox', 'required' => false]);       
             echo $this->Form->hidden('fecha', ['default' => date('Y-m-d')]);
