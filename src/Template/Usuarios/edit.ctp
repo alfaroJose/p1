@@ -63,7 +63,7 @@
             if($rolActual[0] == '1'){ //Es administrador
                 echo $this->Form->control('roles_id', ['options' =>["1" => "Administrador", "2" => "Asistente Administrativo", "3" => "Profesor", "4" => "Estudiante"], 'default'=> $rolActual[0], 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]);
             } else {
-                echo $this->Form->control('roles_id', ['value'=> $rolActual[0], 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); 
+                /*echo $this->Form->control('roles_id', ['value'=> $rolActual[0], 'readonly', 'type' => 'text', 'empty' => false, 'label'=>['text'=>'Rol'], 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>']]); */
             }
             
         ?>
