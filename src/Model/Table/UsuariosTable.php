@@ -130,4 +130,13 @@ class UsuariosTable extends Table
         $fila = $connect->execute("select tipo_identificacion from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $fila[0];
     }
+    public function existenSolicitudes($usuarioId){
+        $existen = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Solicitudes where usuarios_id = '$usuariosId'"));
+        if($inTable != 0){
+            $existen = true;
+        } 
+        return $existen;
+    }
 }
