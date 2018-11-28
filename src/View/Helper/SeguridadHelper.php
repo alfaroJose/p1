@@ -36,6 +36,20 @@ class SeguridadHelper extends Helper
          }
 
     }
+
+    public function getId(){
+        $carne = $this->request->getSession()->read('id');
+         if($carne != null){
+            $connect = ConnectionManager::get('default');
+            $consulta = "select id from usuarios where nombre_usuario = '".$carne."';";
+            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
+            return $rol[0][0];
+         }
+         else{
+             return 0;
+         }
+
+    }
     public function getPermiso($id){
          //Verifica por permisos y login
          $carne = $this->request->getSession()->read('id'); 
@@ -49,8 +63,6 @@ class SeguridadHelper extends Helper
                          where per.id =".$id." and roles_id = ".$rol[0][0].";";
                          
             $tupla =  $connect->execute($consulta)->fetchAll();      
-//debug($consulta);
-            //die();
             return $tupla[0][0];
 
          }
