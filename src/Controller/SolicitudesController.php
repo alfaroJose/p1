@@ -686,8 +686,7 @@ class SolicitudesController extends AppController
 
                     $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                          
 
-                    if(!empty($horas)){ //Si se ingreso un valor en horas, lo verificamos
-
+                    
                         $valido = false; //Para verificar si lo que se quiere asignar es valido o no
 
                         $error = '';
@@ -714,7 +713,7 @@ class SolicitudesController extends AppController
                             if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
                                 if($contHA >= $min ){  //Si hay horas disponibles
                                     $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
-                                    $minA = $minA > $contHA ? $contHA : $minA;
+                                    $min = $min > $contHA ? $contHA : $min;
                                     if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
                                 }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
                             }
@@ -725,7 +724,7 @@ class SolicitudesController extends AppController
                                         if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
                                             $maxE = $maxE > $maxA ? $maxA : $maxE;
                                         }
-                                        $minE = $minE > $contHEE ? $contHEE : $minE;
+                                        $min = $min > $contHEE ? $contHEE : $min;
                                         if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
                                     }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
                                 }
@@ -735,8 +734,8 @@ class SolicitudesController extends AppController
                                         if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
                                             $maxE = $maxE > $maxA ? $maxA : $maxE;
                                         }
-                                        $minE = $minE > $contHED ? $contHED : $minE;
-                                        if($horas <= $maxE && $horas >= $minE){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
+                                        $min = $min > $contHED ? $contHED : $min;
+                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
                                     }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
                                 }
                             }
@@ -746,7 +745,6 @@ class SolicitudesController extends AppController
                             $this->Flash->error(__('Hubo un error: '.$error. '. Por favor intente de nuevo.'));
                             return $this->redirect(['action' => 'grupoAsignar']);
                         }
-                    }
 
 
                     /*if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente' ){
