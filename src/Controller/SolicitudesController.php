@@ -996,7 +996,7 @@ class SolicitudesController extends AppController
         /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {          
-            $data = $this->request->getData();
+            $data = $this->request->getData();           
             $id = $data['Ronda'];
             return $this->redirect(['action' => 'generaRonda', $id]);
 
@@ -1027,6 +1027,9 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+
+            debug($solicitude);
+            die();
            
             $info = $this->Solicitudes->getHistorialExcelRonda($id);
           

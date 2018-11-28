@@ -49,7 +49,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
         ?>
 
-        <?= $this->Form->button(__('Generar reporte por rondas'),['class'=>'btn btn-info float-left']) ?>
+        <?= $this->Html->link('Generar reporte por rondas',['action'=>'generaRonda'],['class'=>'btn btn-info btn-medium float-left mr-3']) ?>
 
         <br>
         <br>
