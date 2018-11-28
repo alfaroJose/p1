@@ -90,7 +90,7 @@ class SolicitudesController extends AppController
        $rolActual = $seguridad->getRol($carne);
        if ($carne != ''){
            $resultado = $seguridad->getPermiso($carne,13);
-           if($resultado != 1){
+           if($resultado != 1 || $rolActual != 4){
                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
            }
        }
@@ -124,7 +124,11 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
-            if($resultado != 1){
+            $rolAdecuado = false;
+            if($rolActual == 1 || $rolActual == 2){
+                $rolAdecuado = true;
+            }
+            if($resultado != 1 || !$rolAdecuado){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -159,7 +163,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
-            if($resultado != 1){
+            if($resultado != 1 || $rolActual != 3){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -188,7 +192,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,21);
-            if($resultado != 1){
+            if($resultado != 1 && $rolActual != 1){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -234,7 +238,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,21);
-            if($resultado != 1){
+            if($resultado != 1 && $rolActual != 2){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
