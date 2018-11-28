@@ -75,7 +75,9 @@ class SolicitudesTable extends Table
             ->requirePresence('asistencia_externa', 'create')
             ->notEmpty('asistencia_externa');
         $validator
-            ->allowEmpty('cantidad_horas_externa');
+            ->scalar('cantidad_horas_externa')
+            ->allowEmpty('cantidad_horas_externa')
+            ->range('cantidad_horas_externa', [0, 20]);                        
         $validator
             ->date('fecha')
             ->requirePresence('fecha', 'create')

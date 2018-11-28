@@ -33,7 +33,7 @@
                  if (1 ==$this->Seguridad->getPermiso(25)){
                      echo $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                  } 
-                 if ( 1 == $this->Seguridad->getPermiso(13)){
+                 if (1 == $this->Seguridad->getPermiso(13)){
                     echo $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                  }
                 if(1 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el admin
@@ -41,7 +41,6 @@
                 }
                 if(2 == $rolActual[0]){//Agrega el boton para ir a verificar requisitos solo para el asistente del admin
                     echo $this->Html->link(__('<span class="typcn typcn-input-checked"></span>'), ['action' => 'revisar_asistente', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
-                    echo $this->Html->link(__('<span class="typcn typcn-folder-open"></span>'), ['action' => 'revisar_asistente', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                 }
 
                 ?>
