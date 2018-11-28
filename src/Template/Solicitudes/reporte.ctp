@@ -33,6 +33,7 @@ tr:nth-child(even) {background-color:  #eaecee };
         ?>
 
         <?= $this->Form->button(__('Generar'),['class'=>'btn btn-info float-left']) ?>
+        <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3'])?>
 
     <?= $this->Form->end() ?>
 

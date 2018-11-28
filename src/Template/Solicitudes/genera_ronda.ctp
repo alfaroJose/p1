@@ -15,7 +15,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
 <div class="reporte index large-9 medium-8 columns content">
 	<?= $this->Form->create($solicitude) ?>
-    <h3><?= __('Reporte') ?></h3>
+    <h3><?= __('Reporte por Ronda') ?></h3>
     <table id="reporte-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -50,6 +50,7 @@ tr:nth-child(even) {background-color:  #eaecee };
     
      <button type="submit" class="btn btn-info float-right">Aceptar</button>
     <?= $this->Html->link('Cancelar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3'])?>
+    <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'reporte_ronda'], ['class'=>'btn btn-info float-right mr-3'])?>
     <?= $this->Form->end() ?>
 </div>
 
