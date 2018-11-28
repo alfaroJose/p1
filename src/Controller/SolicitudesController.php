@@ -775,7 +775,7 @@ class SolicitudesController extends AppController
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
 
             $info = $this->Solicitudes->getHistorialExcelEstudiante($id); //Se trae la informacion que se agrega al excel segun el id del estudiante
-            $spreadsheet = new Spreadsheet();
+            $spreadsheet = new Spreadsheet(); //para usar excel
 
             //acceder al objeto hoja
             $sheet = $spreadsheet->getActiveSheet();           
@@ -790,9 +790,9 @@ class SolicitudesController extends AppController
             $sheet->setCellValue('G1', 'Tipo Horas');
             $sheet->setCellValue('H1', 'Cantidad');
 
-            $i = 0;
-            $fila = 2;
-            /*Se agrega la informacion al excel*/
+            /*Se agrega la informacion a las filas y columnas del excel*/
+            $i = 0; //indice en el vector de la asistencia que se esta llenando
+            $fila = 2; //indice de la fila en el excel
             foreach ($info as $data) {
                 $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
@@ -810,7 +810,7 @@ class SolicitudesController extends AppController
             $writer = new Xls($spreadsheet);
             $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
 
-            /*Descarga el archivo en la carpeta descargas independientemente de la computadora*/
+            /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
@@ -830,19 +830,13 @@ class SolicitudesController extends AppController
         $this->set(compact('todo', 'solicitude'));
     }
 
+      /*Creacion del excel con el historico de asistencias*/
       public function generatodo(){
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo();
-            //debug($info);
-            //die();
-
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
-
-            //libro de trabajo
-            $spreadsheet = new Spreadsheet();
+            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo(); //Se trae la informacion que se agrega al excel com todas las asistencias de la historia
+            $spreadsheet = new Spreadsheet(); //para usar excel
 
             //acceder al objeto hoja
             $sheet = $spreadsheet->getActiveSheet();           
@@ -857,10 +851,10 @@ class SolicitudesController extends AppController
             $sheet->setCellValue('G1', 'Tipo Horas');
             $sheet->setCellValue('H1', 'Cantidad');
 
-            $i = 0;
-            $fila = 2;
+            /*Se agrega la informacion a las filas y columnas del excel*/
+            $i = 0; //indice en el vector de la asistencia que se esta llenando
+            $fila = 2; //indice de la fila en el excel
             foreach ($info as $data) {
-                //$sheet->setCellValue('A2', $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
                 $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
@@ -874,21 +868,16 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }          
 
-            //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
 
-
+            /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
-                //$writer->save($ruta/*.'librotest.xlsx'*/);
-        
-                //Descarga el archivo excel
-              $sheet->getDefaultColumnDimension()->setWidth(20);
+                $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. "Reporte Historico" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. "Reporte Historico" .'.xls"');
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
-                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -896,6 +885,7 @@ class SolicitudesController extends AppController
             
         }
     
+        /*Se envia la indormacion a generatodo para crear la vista previa de la tabla*/
         $todo = $this->Solicitudes->getHistorialExcelEstudianteTodo();
         $this->set(compact('todo', 'solicitude'));
     }
