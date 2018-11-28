@@ -149,4 +149,12 @@ class UsuariosTable extends Table
         $fila = $connect->execute("select count(*) from Usuarios;")->fetchAll();
         return $fila[0];
     }
+
+    //Devuelve el usuarios_id en referencia al id que se provea
+    public function getUsuariosId($id){
+        $connect = ConnectionManager::get('default');
+        $consulta = "select usuarios_id from solicitudes where id = ".$id.";";
+        $usuariosId = $connect->execute($consulta)->fetchAll();
+        return $usuariosId[0][0];
+    }
 }

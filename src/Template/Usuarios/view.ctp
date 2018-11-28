@@ -73,14 +73,14 @@ tr:nth-child(even) {background-color:  #eaecee };
         <?php 
             $edit = $this->Seguridad->getPermiso(20);
             $borrar = $this->Seguridad->getPermiso(18);
-            if  (1 == $edit){
-                echo  $this->Html->link('Modificar usuario',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-right']);
+            if  (1 == $edit && 88 == $this->Seguridad->getId() || 88 != $usuario->id){
+                echo  $this->Html->link('Modificar datos',['action'=>'edit', $usuario->id],['class'=>'btn btn-info btn-medium float-right']);
             }
-            if (1 == $borrar){
+            if (1 == $borrar && 88 != $usuario->id){
                 echo  $this->Form->postlink('Eliminar usuario', array('action' => 'delete', $usuario->id), array('confirm'=>'Se va a eliminar al usuario '. $usuario->nombre_usuario, 'class' => 'btn btn-info btn-medium float-right mr-3'));
             }
         ?>  
-        <?= $this->Html->link('Regresar',['action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+        <?= $this->Html->link('Regresar',['controller'=>'Main', 'action'=>'index'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
     </div>
 </div>
 
