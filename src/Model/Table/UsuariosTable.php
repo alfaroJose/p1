@@ -142,7 +142,25 @@ class UsuariosTable extends Table
         $fila = $connect->execute("select tipo_identificacion from Usuarios where nombre_usuario = '" .$carne."'")->fetchAll();
         return $fila[0];
     }
-
+    //Devuelve true si el usuario tiene solicitudes
+    public function existenSolicitudes($usuarioId){
+        $existen = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Solicitudes where usuarios_id = '$usuarioId'"));
+        if($inTable != 0){
+            $existen = true;
+        } 
+        return $existen;
+    }
+    public function esProfesor($usuarioId){
+        $prof = false;
+        $connect = ConnectionManager::get('default');
+        $usuarioProfesor = count($connect->execute("select * from Usuarios where id = '$usuarioId' and roles_id = 3"));
+        if($usuarioProfesor != 0){
+            $prof = true;
+        } 
+        return $prof;
+    }
     //Devuelva la cantidad de usuarios que existen
     public function getCountUsers(){
         $connect = ConnectionManager::get('default');

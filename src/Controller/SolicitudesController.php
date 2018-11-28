@@ -90,7 +90,7 @@ class SolicitudesController extends AppController
        $rolActual = $seguridad->getRol($carne);
        if ($carne != ''){
            $resultado = $seguridad->getPermiso($carne,13);
-           if($resultado != 1){
+           if($resultado != 1 || $rolActual != 4){
                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
            }
        }
@@ -124,7 +124,11 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
-            if($resultado != 1){
+            $rolAdecuado = false;
+            if($rolActual == 1 || $rolActual == 2){
+                $rolAdecuado = true;
+            }
+            if($resultado != 1 || !$rolAdecuado){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -159,7 +163,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,13);
-            if($resultado != 1){
+            if($resultado != 1 || $rolActual != 3){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -188,7 +192,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,21);
-            if($resultado != 1){
+            if($resultado != 1 && $rolActual != 1){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -234,7 +238,7 @@ class SolicitudesController extends AppController
         $rolActual = $seguridad->getRol($carne);
         if ($carne != ''){
             $resultado = $seguridad->getPermiso($carne,21);
-            if($resultado != 1){
+            if($resultado != 1 && $rolActual != 2){
                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
@@ -637,6 +641,9 @@ class SolicitudesController extends AppController
             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
          }
          /*Cierra la seguridad*/
+
+        $contadorHoras = $this->get_contador_horas();
+
        
         $estudiantesNombres= array();               //Guarda los nombres de estudiantes
         $estudiantesIds=array();                    //Guarda los ids de los estudiantes de arriba
@@ -676,6 +683,90 @@ class SolicitudesController extends AppController
                     $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
                 }
                 else{
+
+                    $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                          
+
+                    if(!empty($horas)){ //Si se ingreso un valor en horas, lo verificamos
+
+                        $valido = false; //Para verificar si lo que se quiere asignar es valido o no
+
+                        $error = '';
+
+                        $horasA = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas que ya tiene
+                        $horasE = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId);
+                        $horasTotal = $horasA + $horasE;                       
+
+
+                        if($horasTotal < 20){ //Si el total de horas que ya tiene es menor que el limite, se le pueden asignar
+
+                            $maxE = 12 - $horasE; //Maximo de horas que se le puede asignar
+                            $maxA = 20 - $horasTotal;
+
+                           // $minE = $horasE > 0 ? 1 : 3;//Minimo de horas que se le puede asignar
+                            //$minA = $horasA > 0 ? 1 : 3;
+
+                            $min = $horasTotal > 3 ? 1 : 3;
+
+                            $contHA = $contadorHoras['horas_asistente'];
+                            $contHEE= $contadorHoras['horas_estudiante_ecci'];
+                            $contHED= $contadorHoras['horas_estudiante_docente'];
+
+                            if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                                if($contHA >= $min ){  //Si hay horas disponibles
+                                    $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
+                                    $minA = $minA > $contHA ? $contHA : $minA;
+                                    if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
+                                }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
+                            }
+                            else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
+                                if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
+                                    if($contHEE >= $min){ // Si hay horas disponibles
+                                        $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
+                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                        }
+                                        $minE = $minE > $contHEE ? $contHEE : $minE;
+                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
+                                }
+                                else{
+                                    if($contHED >= $min){ // Si hay horas disponibles
+                                        $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
+                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                        }
+                                        $minE = $minE > $contHED ? $contHED : $minE;
+                                        if($horas <= $maxE && $horas >= $minE){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
+                                }
+                            }
+                        }
+
+                        if(!$valido){ //Si no es valido hubo un error en las Horas asignadas
+                            $this->Flash->error(__('Hubo un error: '.$error. '. Por favor intente de nuevo.'));
+                            return $this->redirect(['action' => 'grupoAsignar']);
+                        }
+                    }
+
+
+                    /*if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente' ){
+                        $maxHA = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
+
+                        if($data["Horas".$estudiantesIds[$i]] > $maxHA) {
+                            $this->Flash->error(__('Supera limite de horas asistente. No se guardaron los cambios. Por favor intente de nuevo.'));
+                            return $this->redirect(['action' => 'grupoAsignar']);
+                        }
+                    }
+                    else{
+                        if($data["Horas".$estudiantesIds[$i]] > 12){
+                            $this->Flash->error(__('Horas estudiante no mas de 12. No se guardaron los cambios. Por favor intente de nuevo.'));
+                            return $this->redirect(['action' => 'grupoAsignar']);
+                        }
+                    }*/
+
+
+                    
+
                    // debug($data); die();
                     //Agregar al estudiante a la tabla de Aceptados .
                         $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
@@ -705,7 +796,7 @@ class SolicitudesController extends AppController
             return $this->redirect(['action' => 'grupoAsignar']);
         }
 
-        $contadorHoras = $this->get_contador_horas();
+        
 
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
@@ -718,6 +809,7 @@ class SolicitudesController extends AppController
 
     }
         /***********************************************************************************************************/
+        /*Vista previa a generara un reporte en excel del historico de asistencias*/
     public function reporte(){
 
 
@@ -735,20 +827,14 @@ class SolicitudesController extends AppController
             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
         /*Cierra la seguridad*/
+
+        //datos para la vista previa en genera y beneratodo
         $solicitude = $this->Solicitudes->newEntity();
 
-        $estudiantes = $this->Solicitudes->getAllStudents();
-        $estudiantesUsuarios= array();
-        $i = 0;
-        foreach ($estudiantes as $key => $value) {
-            array_push($estudiantesUsuarios, $estudiantes[$i]['nombre_usuario']);
-            $i = $i + 1;
-        }
-
-        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista de la tabla 
+        //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista donde se seleecionara algun estudiante
         $carnetId = $this->Solicitudes->getCarnetId();
-        $carnet=array();
-        $Ids=array();
+        $carnet=array(); //vector para guardad los carnet de estudiantes que han sido asistentes
+        $Ids=array(); //vector para guardad los id de estudiantes que han sido asistentes
         foreach ($carnetId as $key => $value) {
           array_push($carnet, $value['nombre_usuario']);
           array_push($Ids, $value['usuarios_id']);
@@ -757,36 +843,24 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
             $id = $data['Carné'];
-            return $this->redirect(['action' => 'genera', /*$id*/$Ids[$id]]);
+            return $this->redirect(['action' => 'genera', $Ids[$id]]);
 
         }
 
-        $this->set(compact('carnet',/* 'uno',*/ 'estudiantes', 'estudiantesUsuarios', 'solicitude'));
-        //return $idEstudiante;
+        $this->set(compact('carnet', 'solicitude'));
     }
 
+    /*Creación del excel con el total de solicitudes de un estudiante en especifico*/
     public function genera($id = null){
-        
-      //$id = $this->reporte();
-      //$carnetSeleccionado = $this->request->getData('');//esta es la que no esta jalando el indice seleccionado
-          //debug($id); //para ver el retorno de reporte cuando se preciona el boton "Generar"
-          //die();
+
         $solicitude = $this->Solicitudes->newEntity();
 
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            //$id = $this->Solicitudes->reporte();
-            //debug($id);
-            //die;
-            $info = $this->Solicitudes->getHistorialExcelEstudiante($id);
-            //debug($info);
-            //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
-            //libro de trabajo
-            $spreadsheet = new Spreadsheet();
+            $info = $this->Solicitudes->getHistorialExcelEstudiante($id); //Se trae la informacion que se agrega al excel segun el id del estudiante
+            $spreadsheet = new Spreadsheet(); //para usar excel
 
             //acceder al objeto hoja
             $sheet = $spreadsheet->getActiveSheet();           
@@ -801,10 +875,10 @@ class SolicitudesController extends AppController
             $sheet->setCellValue('G1', 'Tipo Horas');
             $sheet->setCellValue('H1', 'Cantidad');
 
-            $i = 0;
-            $fila = 2;
+            /*Se agrega la informacion a las filas y columnas del excel*/
+            $i = 0; //indice en el vector de la asistencia que se esta llenando
+            $fila = 2; //indice de la fila en el excel
             foreach ($info as $data) {
-                //$sheet->setCellValue('A2', $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
                 $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
@@ -818,21 +892,17 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }    
 
-            //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
-            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls';
+            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
 
+            /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
-                //$writer->save($ruta/*.'librotest.xlsx'*/);
-        
-                //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. $nombreArchivo); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. $nombreArchivo);
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
-                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -840,24 +910,18 @@ class SolicitudesController extends AppController
             
         }
     
+        /*Se envia la indormacion a genera para crear la vista previa de la tabla*/
         $todo = $this->Solicitudes->getHistorialExcelEstudiante($id);
-        //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude'));
     }
 
+      /*Creacion del excel con el historico de asistencias*/
       public function generatodo(){
         $solicitude = $this->Solicitudes->newEntity();
         if ($this->request->is('post')) {
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo();
-            //debug($info);
-            //die();
-
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
-
-            //libro de trabajo
-            $spreadsheet = new Spreadsheet();
+            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo(); //Se trae la informacion que se agrega al excel com todas las asistencias de la historia
+            $spreadsheet = new Spreadsheet(); //para usar excel
 
             //acceder al objeto hoja
             $sheet = $spreadsheet->getActiveSheet();           
@@ -872,10 +936,10 @@ class SolicitudesController extends AppController
             $sheet->setCellValue('G1', 'Tipo Horas');
             $sheet->setCellValue('H1', 'Cantidad');
 
-            $i = 0;
-            $fila = 2;
+            /*Se agrega la informacion a las filas y columnas del excel*/
+            $i = 0; //indice en el vector de la asistencia que se esta llenando
+            $fila = 2; //indice de la fila en el excel
             foreach ($info as $data) {
-                //$sheet->setCellValue('A2', $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
                 $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
                 $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
@@ -889,21 +953,16 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }          
 
-            //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
 
-
+            /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
-                //$writer->save($ruta/*.'librotest.xlsx'*/);
-        
-                //Descarga el archivo excel
-              $sheet->getDefaultColumnDimension()->setWidth(20);
+                $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. "Reporte Historico" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. "Reporte Historico" .'.xls"');
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
-                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -911,6 +970,7 @@ class SolicitudesController extends AppController
             
         }
     
+        /*Se envia la indormacion a generatodo para crear la vista previa de la tabla*/
         $todo = $this->Solicitudes->getHistorialExcelEstudianteTodo();
         $this->set(compact('todo', 'solicitude'));
     }
