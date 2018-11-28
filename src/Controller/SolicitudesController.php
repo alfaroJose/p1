@@ -698,34 +698,42 @@ class SolicitudesController extends AppController
                             $maxE = 12 - $horasE; //Maximo de horas que se le puede asignar
                             $maxA = 20 - $horasTotal;
 
+                           // $minE = $horasE > 0 ? 1 : 3;//Minimo de horas que se le puede asignar
+                            //$minA = $horasA > 0 ? 1 : 3;
+
+                            $min = $horasTotal > 3 ? 1 : 3;
+
                             $contHA = $contadorHoras['horas_asistente'];
                             $contHEE= $contadorHoras['horas_estudiante_ecci'];
                             $contHED= $contadorHoras['horas_estudiante_docente'];
 
                             if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
-                                if($contHA > 0){  //Si hay horas disponibles
+                                if($contHA >= $min ){  //Si hay horas disponibles
                                     $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
-                                    if($horas <= $maxA){$valido = true;}else{$error = "valor supera limite horas asistente";}  //Si las horas no superan el limite son validas
-                                }else{$error = 'no hay horas asistente disponibles';}
+                                    $minA = $minA > $contHA ? $contHA : $minA;
+                                    if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
+                                }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
                             }
                             else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
                                 if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
-                                    if($contHEE > 0){ // Si hay horas disponibles
+                                    if($contHEE >= $min){ // Si hay horas disponibles
                                         $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
                                         if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
                                             $maxE = $maxE > $maxA ? $maxA : $maxE;
                                         }
-                                        if($horas <= $maxE){$valido = true;}else{$error = "valor supera limite horas estudiante";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante ecci disponibles';}
+                                        $minE = $minE > $contHEE ? $contHEE : $minE;
+                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
                                 }
                                 else{
-                                    if($contHED > 0){ // Si hay horas disponibles
+                                    if($contHED >= $min){ // Si hay horas disponibles
                                         $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
                                         if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
                                             $maxE = $maxE > $maxA ? $maxA : $maxE;
                                         }
-                                        if($horas <= $maxE){$valido = true;}else{$error = "valor supera limite horas estudiante";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante docente disponibles';}
+                                        $minE = $minE > $contHED ? $contHED : $minE;
+                                        if($horas <= $maxE && $horas >= $minE){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
                                 }
                             }
                         }
