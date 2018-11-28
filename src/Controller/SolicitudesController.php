@@ -1016,6 +1016,7 @@ class SolicitudesController extends AppController
                 //$writer->save($ruta/*.'librotest.xlsx'*/);
         
                 //Descarga el archivo excel
+                $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
                 header('Content-Disposition: attachment;filename="'. "Reporte de Ronda" .'.xls"'); /*-- $filename is  xsl filename ---*/
                 header('Cache-Control: max-age=0');
