@@ -281,7 +281,7 @@ class UsuariosController extends AppController
             $this->Flash->error(__('No se puede eliminar un profesor.'));
         }
         if($this->Usuarios->existenSolicitudes($id)){
-            $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
+            $this->Flash->error(__('No se puede eliminar un usuario con solicitudes asociadas.'));
         }
         return $this->redirect(['action' => 'index']);   
     }else {
