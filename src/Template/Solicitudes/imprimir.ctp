@@ -88,7 +88,7 @@ input[type=checkbox] + label {
   <tr style="height : 5px";>
 <tr style="height :10px;">
   <td>
- Cedula
+ Cédula
   </td>
   <td></td>
   <td>
