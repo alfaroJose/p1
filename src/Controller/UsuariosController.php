@@ -276,14 +276,16 @@ class UsuariosController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'get']);
-        $usuario = $this->Usuarios->get($id);
-
-        if ($this->Usuarios->delete($usuario)) {
-            $this->Flash->success(__('El usuario ha sido eliminado.'));
+        if($this->Usuarios->existenSolicitudes($id)){
+            $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
         } else {
-            $this->Flash->error(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
+            $usuario = $this->Usuarios->get($id);
+            if ($this->Usuarios->delete($usuario)) {
+                $this->Flash->success(__('El grupo ha sido eliminado.'));
+            } else {
+                $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            }
         }
-
         return $this->redirect(['action' => 'index']);
-    }
+}
 }
