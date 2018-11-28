@@ -55,9 +55,14 @@ class ContadorTable extends Table
             ->notEmpty('horas_asistente');
 
         $validator
-            ->integer('horas_estudiante')
-            ->requirePresence('horas_estudiante', 'create')
-            ->notEmpty('horas_estudiante');
+            ->integer('horas_estudiante_ecci')
+            ->requirePresence('horas_estudiante_ecci', 'create')
+            ->notEmpty('horas_estudiante_ecci');
+
+        $validator
+            ->integer('horas_estudiante_docente')
+            ->requirePresence('horas_estudiante_docente', 'create')
+            ->notEmpty('horas_estudiante_docente');
 
         return $validator;
     }

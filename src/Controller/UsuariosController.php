@@ -24,27 +24,19 @@ class UsuariosController extends AppController
      */
     public function index()
     {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 17 and roles_id = ".$rol[0][0].";";
-                        //17 = Consultar Usuario
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,17);
+           if($resultado != 1){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
         }
         else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
-        //Cierra la seguridad
+        /*Cierra la seguridad*/
 
         /*Saca la cantidad de tuplas de la tabla Usuarios*/
         $cantidad = $this->Usuarios->getCountUsers();
@@ -76,30 +68,20 @@ class UsuariosController extends AppController
             'contain' => ['Roles']
         ]);
 
-        //Inicia seguridad
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        
-        //Puedo ser un usuario con permisos y quiero ver el ususario
-        if($carne != ''){
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-            
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                            where per.id = 17 and roles_id = ".$rol[0][0].";";
-                            //17 = Consultar Usuario
-            $tupla =  $connect->execute($consulta)->fetchAll();      
-
-                if($tupla[0][0] != '1' && $carne != $usuario->nombre_usuario){//1 = Tiene permisos para consultar usuarios
-                                        //Soy el mismo usuario que quiero ver
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-                }
-        }
-        else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        //Cierra la seguridad
+        /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,17);
+            if($resultado != 1 && $carne != $usuario->nombre_usuario){
+               return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+         }
+         else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+         }
+         /*Cierra la seguridad*/
+       
 
         $this->set('usuario', $usuario);
     }
@@ -111,29 +93,19 @@ class UsuariosController extends AppController
      */
     public function add()
     {
-         //Verifica por permisos y login
-         $carne = $this->getRequest()->getSession()->read('id'); 
-         if($carne != null){
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 19 and roles_id = ".$rol[0][0].";";
-                         //19 = Insertar Usuario
-            $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
-         }
-         else{
-            
-             $this->redirect(['controller' => 'Inicio','action' => 'fail']);
- 
-         }
-         //Cierra la seguridad
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,19);
+           if($resultado != 1){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+        }
+        else{
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
 
         $usuario = $this->Usuarios->newEntity();
         if ($this->request->is('post')) {
@@ -242,30 +214,22 @@ class UsuariosController extends AppController
             'contain' => []
         ]);
        
-        //Inicia seguridad
-        $carne = $this->getRequest()->getSession()->read('id'); 
-
-        if($carne != '' ){//Puedo ser un usuario con permisos
-            $connect = ConnectionManager::get('default');
-            $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-            $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-           
-            $consulta = "select pos.estado
-                        from posee as pos join permisos as per on pos.permisos_id =  per.id
-                         where per.id = 20 and roles_id = ".$rol[0][0].";";
-                         //20 = Editar Usuario
-            $tupla =  $connect->execute($consulta)->fetchAll();      
- 
-             if($tupla[0][0] != '1' && $carne != $usuario->nombre_usuario){//1 = Tiene permisos para consultar usuarios
-                                    //Si soy el mismo usuario me puedo editar
-                $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-             }
-
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if($carne != ''){
+           $resultado = $seguridad->getPermiso($carne,20);
+           if($resultado != 1 && $carne != $usuario->nombre_usuario){
+              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
+           else if ($resultado == 1 && 88 == $usuario->id && 88 != $seguridad->getId($carne)){
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           }
         }
         else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+           return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
         }
-        //Cierra la seguridad
+        /*Cierra la seguridad*/
 
 
 
@@ -312,14 +276,22 @@ class UsuariosController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'get']);
-        $usuario = $this->Usuarios->get($id);
-
-        if ($this->Usuarios->delete($usuario)) {
-            $this->Flash->success(__('El usuario ha sido eliminado.'));
-        } else {
-            $this->Flash->error(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
+        if($this->Usuarios->esProfesor($id) || $this->Usuarios->existenSolicitudes($id)){
+        if($this->Usuarios->esProfesor($id)){
+            $this->Flash->error(__('No se puede eliminar un profesor.'));
         }
-
+        if($this->Usuarios->existenSolicitudes($id)){
+            $this->Flash->error(__('No se puede eliminar un usuario con solicitudes asociadas.'));
+        }
+        return $this->redirect(['action' => 'index']);   
+    }else {
+            $usuario = $this->Usuarios->get($id);
+            if ($this->Usuarios->delete($usuario)) {
+                $this->Flash->success(__('El usuario ha sido eliminado.'));
+            } else {
+                $this->Flash->error(__('El usuario no se ha podido eliminar. Por favor intente de nuevo.'));
+            }
+        }
         return $this->redirect(['action' => 'index']);
-    }
+}
 }

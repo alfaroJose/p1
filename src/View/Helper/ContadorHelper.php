@@ -20,6 +20,6 @@ class ContadorHelper extends Helper
 
     public function getContador(){
     	$fila = (new ContadorTable)->getContador();
-    	return ["Horas Asistente: " . $fila[1], "Horas Estudiante: " . $fila[2]];
+    	return ["HA: " . $fila[1], "HE ECCI: " . $fila[2], "HE Docente: " . $fila[3]];
     }
 }
