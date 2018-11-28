@@ -155,7 +155,7 @@ class UsuariosTable extends Table
     public function esProfesor($usuarioId){
         $prof = false;
         $connect = ConnectionManager::get('default');
-        $usuarioProfesor = count($connect->execute("select * from Usuarios where usuarios_id = '$usuariosId' and rol = 'Profesor'"));
+        $usuarioProfesor = count($connect->execute("select * from Usuarios where id = '$usuariosId' and roles_id = 'Profesor'"));
         if($usuarioProfesor != 0){
             $prof = true;
         } 

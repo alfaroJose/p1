@@ -276,12 +276,15 @@ class UsuariosController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'get']);
+        if($this->Usuarios->esProfesor($id) || $this->Usuarios->existenSolicitudes($id)){
         if($this->Usuarios->esProfesor($id)){
             $this->Flash->error(__('No se puede eliminar un profesor.'));
         }
         if($this->Usuarios->existenSolicitudes($id)){
             $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
-        } else {
+        }
+        return $this->redirect(['action' => 'index']);   
+    }else {
             $usuario = $this->Usuarios->get($id);
             if ($this->Usuarios->delete($usuario)) {
                 $this->Flash->success(__('El grupo ha sido eliminado.'));
