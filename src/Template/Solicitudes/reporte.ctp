@@ -17,9 +17,7 @@ tr:nth-child(even) {background-color:  #eaecee };
     <?= $this->Form->create($solicitude) ?>
 
 
-        <?= $this->Html->link('Generar reporte por rondas',['action'=>'reporteRonda'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
-        <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
 
         
 
@@ -32,7 +30,43 @@ tr:nth-child(even) {background-color:  #eaecee };
 
         ?>
 
-        <?= $this->Form->button(__('Generar'),['class'=>'btn btn-info float-left']) ?>
+        <?= $this->Form->button(__('Generar reporte Estudiante'),['class'=>'btn btn-info float-left']) ?>
+        <br>
+        <br>
+        <br>
+
+<div>
+
+        <h4> Generar reporte de asistencias por ronda </h4>
+            
+        <?php
+        //debug ($estudiantesUsuarios);
+        //die();
+
+        $numeroRonda = array('1' => '1', '2' => '2', '3' => '3');
+
+        echo $this->Form->control('Ronda', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $numeroRonda, 'type'=> 'select']);
+
+        ?>
+
+        <?= $this->Form->button(__('Generar reporte por rondas'),['class'=>'btn btn-info float-left']) ?>
+
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <div>
+
+
+
+        <h4> Generar reporte histórico de asistencias </h4>
+
+        <?= $this->Html->link('Generar reporte Completo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-left mr-3'])// $this->Html->link('Generar reporte por rondas',['action'=>'reporteRonda'],['class'=>'btn btn-info btn-medium float-right mr-3'])?>
+
+
+
+</div>
         <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3'])?>
 
     <?= $this->Form->end() ?>
