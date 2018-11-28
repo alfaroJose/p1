@@ -69,8 +69,7 @@
     if(1 == $this->Seguridad->getPermiso(21))
         echo $this->Html->link('Elegir asistente', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']);
      
-    if(1 == $this->Seguridad->getPermiso(24))    
-        echo $this->Html->link('Generar Reporte', ['action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']);
+
 
      ?>
 
