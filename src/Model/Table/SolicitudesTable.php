@@ -592,6 +592,19 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    public function getHistorialExcelCiclo($semestre, $year){
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
+            from solicitudes s 
+                 join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                 join usuarios u on s.usuarios_id = u.id
+                 join aceptados a on s.id = a.id
+                 join grupos g on s.grupos_id = g.id
+                 join cursos c on g.cursos_id = c.id
+                 left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+            where g.semestre = '$semestre' and g.año = '$year' and (s.ronda = 1 or s.ronda = 2 or s.ronda = 3)and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+        return $index;
+    }
 
     public function getRequisitosIncumplidos($id)
     {

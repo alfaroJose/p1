@@ -842,9 +842,15 @@ class SolicitudesController extends AppController
 
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
+            //debug($data);
+            //die();
             $id = $data['Carné'];
-            return $this->redirect(['action' => 'genera', $Ids[$id]]);
-
+            $ronda = $data['Ronda'];
+            if ($ronda == 0){
+                return $this->redirect(['action' => 'genera', $Ids[$id]]);
+            } else {
+                return $this->redirect(['action' => 'generaRonda', $ronda]);
+            }
         }
 
         $this->set(compact('carnet', 'solicitude'));
@@ -1009,6 +1015,8 @@ class SolicitudesController extends AppController
     public function generaRonda($id = null){
         
         /*Inicia seguridad*/
+        //debug($id);
+        //die();
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
         $rolActual = $seguridad->getRol($carne);
@@ -1023,6 +1031,8 @@ class SolicitudesController extends AppController
         }
         /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
+        //debug($solicitude->getData());
+        //die();
 
         if ($this->request->is('post')) {
             
@@ -1094,6 +1104,93 @@ class SolicitudesController extends AppController
         }
     
         $todo = $this->Solicitudes->getHistorialExcelRonda($id);
+        //$this->set('carnet',$carnet);
+        $this->set(compact('todo', 'solicitude'));
+    }
+
+    public function generaCiclo(){
+        
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
+        $solicitude = $this->Solicitudes->newEntity();
+
+        if ($this->request->is('post')) {
+            
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
+
+            debug($solicitude);
+            die();
+           
+            $info = $this->Solicitudes->getHistorialExcelCiclo('2', '2018'); 
+
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
+
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
+
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
+
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
+
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
+
+            //$writer = new Xlsx($spreadsheet);
+            $writer = new Xls($spreadsheet);
+
+
+            try{
+                //$writer->save($ruta/*.'librotest.xlsx'*/);
+        
+                //Descarga el archivo excel
+                $sheet->getDefaultColumnDimension()->setWidth(20);
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'. "Reporte de Ciclo" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Cache-Control: max-age=0');
+        
+                $writer->save('php://output');
+                //echo "Archivo Creado";
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
+        }
+    
+        $todo = $this->Solicitudes->getHistorialExcelCiclo('2', '2018');
         //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude'));
     }
