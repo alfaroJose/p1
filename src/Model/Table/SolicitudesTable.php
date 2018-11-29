@@ -275,7 +275,7 @@ class SolicitudesTable extends Table
             "select distinct cur.sigla as sigla, cur.nombre, concat(us.nombre,' ',us.primer_apellido) as profesor,  gru.numero as grupo, gru.año, gru.semestre, gru.id as id
             from solicitudes as sol join grupos as gru on sol.grupos_id = gru.id 
                                     join cursos as cur on cur.id = gru.cursos_id  
-                                    join usuarios as us on gru.usuarios_id = us.id
+                                    left outer join usuarios as us on gru.usuarios_id = us.id
             where sol.estado = 'Elegible' and año = ".$year." and semestre = ".$semestre." and estado = 'Elegible'
                   and gru.id not in (select gru.id
                                      from solicitudes as sol join grupos as gru on gru.id = sol.grupos_id

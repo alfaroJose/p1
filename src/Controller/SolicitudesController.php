@@ -626,7 +626,7 @@ class SolicitudesController extends AppController
     }
 
     //Asignación de un asistente a un grupo
-    public function asignarAsistente($sigla,$numGrupo,$profe,$grupoId){
+    public function asignarAsistente($sigla,$numGrupo,$profe = '',$grupoId){
        
          /*Inicia seguridad*/
          $seguridad = $this->loadModel('Seguridad');
