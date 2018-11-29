@@ -113,9 +113,6 @@ body {font-family: Arial;}
                     case 13:
                         $('#checkboxConsSoli').prop("checked", true);
                         break;
-                    case 14:
-                        $('#checkboxElimSoli').prop("checked", true);
-                        break;
                     case 15:
                         $('#checkboxInsSoli').prop("checked", true);
                         break;
@@ -347,16 +344,10 @@ body {font-family: Arial;}
 
         <?= $this->Form->hidden("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 
-        <?= $this->Form->hidden("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-
         <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
 
         <label for="checkboxInsSoli">Insertar</label>
         <?= $this->Form->checkbox("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsSoli"]); ?>
-        <br>
-
-        <label for="checkboxElimSoli">Eliminar</label>
-        <?= $this->Form->checkbox("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimSoli"]); ?>
         <br>
 
         <label for="checkboxConsSoli">Consultar</label>
