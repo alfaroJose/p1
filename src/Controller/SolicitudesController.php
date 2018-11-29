@@ -743,27 +743,11 @@ class SolicitudesController extends AppController
 
                         if(!$valido){ //Si no es valido hubo un error en las Horas asignadas
                             $this->Flash->error(__('Hubo un error: '.$error. '. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
+
+                            //redirige a la misma pantalla
+                            return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
                         }
-
-
-                    /*if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente' ){
-                        $maxHA = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
-
-                        if($data["Horas".$estudiantesIds[$i]] > $maxHA) {
-                            $this->Flash->error(__('Supera limite de horas asistente. No se guardaron los cambios. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
-                        }
-                    }
-                    else{
-                        if($data["Horas".$estudiantesIds[$i]] > 12){
-                            $this->Flash->error(__('Horas estudiante no mas de 12. No se guardaron los cambios. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
-                        }
-                    }*/
-
-
-                    
+                                      
 
                    // debug($data); die();
                     //Agregar al estudiante a la tabla de Aceptados .
@@ -851,7 +835,7 @@ class SolicitudesController extends AppController
             }
         }
 
-        $this->set(compact('carnet', 'solicitude'));
+        $this->set(compact('carnet', 'solicitude', 'ronda'));
     }
 
     /*Creación del excel con el total de solicitudes de un estudiante en especifico*/
@@ -982,35 +966,7 @@ class SolicitudesController extends AppController
 
     /***************Fin genera Excel historico y estudiante**************/ 
 
-
-     public function reporteRonda(){
-         /*Inicia seguridad*/
-        $seguridad = $this->loadModel('Seguridad');
-        $carne = $this->request->getSession()->read('id');
-        $rolActual = $seguridad->getRol($carne);
-        if ($carne != ''){
-            $resultado = $seguridad->getPermiso($carne,24);
-            if($resultado != 1){
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        else{
-            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        /*Cierra la seguridad*/
-        $solicitude = $this->Solicitudes->newEntity();
-        if ($this->request->is('post')) {          
-            $data = $this->request->getData();           
-            $id = $data['Ronda'];
-            return $this->redirect(['action' => 'generaRonda', $id]);
-
-        }
-
-        $this->set(compact('solicitude'));
-        //return $idEstudiante;
-    }
-
-    public function generaRonda($id = null){
+    public function generaRonda($ronda = null){
         
         /*Inicia seguridad*/
         //debug($id);
@@ -1029,22 +985,14 @@ class SolicitudesController extends AppController
         }
         /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
-        //debug($solicitude->getData());
-        //die();
 
         if ($this->request->is('post')) {
             
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-
-            debug($solicitude);
-            die();
-           
-            $info = $this->Solicitudes->getHistorialExcelRonda($id);
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());        
+            $info = $this->Solicitudes->getHistorialExcelRonda($ronda);
           
             //debug($info);
             //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -1089,7 +1037,7 @@ class SolicitudesController extends AppController
                 //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. "Reporte de Ronda" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. "Reporte de Ronda ".$ronda.'.xls"'); /*-- $filename is  xsl filename ---*/
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
@@ -1101,9 +1049,9 @@ class SolicitudesController extends AppController
             
         }
     
-        $todo = $this->Solicitudes->getHistorialExcelRonda($id);
+        $todo = $this->Solicitudes->getHistorialExcelRonda($ronda);
         //$this->set('carnet',$carnet);
-        $this->set(compact('todo', 'solicitude'));
+        $this->set(compact('todo', 'solicitude', 'ronda'));
     }
 
     public function generaCiclo(){
@@ -1126,11 +1074,7 @@ class SolicitudesController extends AppController
 
         if ($this->request->is('post')) {
             
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-
-            debug($solicitude);
-            die();
-
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());       
             $semestre = $this->get_semester(); //obtiene el semestre actual
             $año = $this->get_year(); //obtiene el año actual           
             $info = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año); 
@@ -1170,6 +1114,7 @@ class SolicitudesController extends AppController
 
             //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
+            $nombreArchivo='Reporte_'.$semestre.'-'.$año.'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
 
 
             try{
@@ -1178,7 +1123,7 @@ class SolicitudesController extends AppController
                 //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. "Reporte de Ciclo" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. $nombreArchivo); /*-- $filename is  xsl filename ---*/
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
@@ -1193,8 +1138,7 @@ class SolicitudesController extends AppController
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $todo = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año);
-        //$this->set('carnet',$carnet);
-        $this->set(compact('todo', 'solicitude'));
+        $this->set(compact('todo', 'solicitude', 'semestre', 'año'));
     }
 
     

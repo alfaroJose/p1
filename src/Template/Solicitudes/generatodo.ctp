@@ -47,9 +47,8 @@ tr:nth-child(even) {background-color:  #eaecee };
     </table>
 </div>
 
-    
+    <br>
      <button type="submit" class="btn btn-info float-right">Descargar</button>
-    <?= $this->Html->link('Cancelar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3']) //boton cancelar?>
     <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']) //boton regresar a pantalla reporte?>
     <?= $this->Form->end() ?>
 </div>

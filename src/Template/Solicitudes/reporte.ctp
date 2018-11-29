@@ -52,7 +52,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
         <h4> Generar reporte del ciclo </h4>
 
-        <?= $this->Html->link('Generar reporte del ciclo',['action'=>'generatodo'],['class'=>'btn btn-info btn-medium float-left mr-3'])?>
+        <?= $this->Html->link('Generar reporte del ciclo',['action'=>'generaCiclo'],['class'=>'btn btn-info btn-medium float-left mr-3'])?>
 
         <br>
         <br>
@@ -67,8 +67,6 @@ tr:nth-child(even) {background-color:  #eaecee };
         <br>
         <br>
     </div>
-
-    <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'index'], ['class'=>'btn btn-info float-right mr-3'])?>
 
     <?= $this->Form->end() ?>
 
