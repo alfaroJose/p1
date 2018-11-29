@@ -1132,8 +1132,10 @@ class SolicitudesController extends AppController
 
             debug($solicitude);
             die();
-           
-            $info = $this->Solicitudes->getHistorialExcelCiclo('2', '2018'); 
+
+            $semestre = $this->get_semester(); //obtiene el semestre actual
+            $año = $this->get_year(); //obtiene el año actual           
+            $info = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año); 
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -1189,8 +1191,10 @@ class SolicitudesController extends AppController
             }
             
         }
-    
-        $todo = $this->Solicitudes->getHistorialExcelCiclo('2', '2018');
+
+        $semestre = $this->get_semester(); //obtiene el semestre actual
+        $año = $this->get_year(); //obtiene el año actual
+        $todo = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año);
         //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude'));
     }
