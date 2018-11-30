@@ -19,8 +19,9 @@ tr:nth-child(even) {background-color:  #eaecee };
         <h4> Generar reporte de asistencias por estudiante <h4>
             
         <?php
+        $uno=0;
 
-        echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $carnet/*, 'default'=>$uno*/]);
+        echo $this->Form->control('Carné', ['templates'=> ['inputContainer'=>'<div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6">{{content}}</div><br>'], 'options' => $carnet, 'default'=>$uno]);
 
         ?>
 

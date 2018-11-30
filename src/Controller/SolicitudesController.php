@@ -810,8 +810,8 @@ class SolicitudesController extends AppController
 
         //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista donde se seleecionara algun estudiante
         $carnetId = $this->Solicitudes->getCarnetId();
-        $carnet=array(); //vector para guardad los carnet de estudiantes que han sido asistentes
-        $Ids=array(); //vector para guardad los id de estudiantes que han sido asistentes
+        $carnet=array(0 => ""); //vector para guardad los carnet de estudiantes que han sido asistentes
+        $Ids=array(0 => ""); //vector para guardad los id de estudiantes que han sido asistentes
         foreach ($carnetId as $key => $value) {
           array_push($carnet, $value['nombre_usuario']);
           array_push($Ids, $value['usuarios_id']);
@@ -874,8 +874,11 @@ class SolicitudesController extends AppController
             }    
 
             $writer = new Xls($spreadsheet);
-            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
-
+            if($info != null){
+              $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
+            }else{
+              $nombreArchivo='ReporteEstudiante.xls';
+            }
             /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
                 $sheet->getDefaultColumnDimension()->setWidth(20);
