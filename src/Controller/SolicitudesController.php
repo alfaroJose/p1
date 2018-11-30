@@ -748,10 +748,8 @@ class SolicitudesController extends AppController
                             return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
                         }
                                       
-
-                   // debug($data); die();
                     //Agregar al estudiante a la tabla de Aceptados .
-                        $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
+                    $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
 
                     //Verificar si fue dada la asistencia por inopia
                     if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
@@ -778,8 +776,6 @@ class SolicitudesController extends AppController
             return $this->redirect(['action' => 'grupoAsignar']);
         }
 
-        
-
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
         $this->set('idSolicitud',$idSolicitud);
@@ -793,7 +789,6 @@ class SolicitudesController extends AppController
         /***********************************************************************************************************/
         /*Vista previa a generara un reporte en excel del historico de asistencias*/
     public function reporte(){
-
 
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
@@ -824,8 +819,6 @@ class SolicitudesController extends AppController
 
         if ($this->request->is('post')) {          
             $data = $this->request->getData();
-            //debug($data);
-            //die();
             $id = $data['Carné'];
             $ronda = $data['Ronda'];
             if ($ronda == 0){
@@ -969,8 +962,6 @@ class SolicitudesController extends AppController
     public function generaRonda($ronda = null){
         
         /*Inicia seguridad*/
-        //debug($id);
-        //die();
         $seguridad = $this->loadModel('Seguridad');
         $carne = $this->request->getSession()->read('id');
         $rolActual = $seguridad->getRol($carne);
@@ -989,10 +980,7 @@ class SolicitudesController extends AppController
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());        
-            $info = $this->Solicitudes->getHistorialExcelRonda($ronda);
-          
-            //debug($info);
-            //die();
+            $info = $this->Solicitudes->getHistorialExcelRonda($ronda);       
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -1030,7 +1018,6 @@ class SolicitudesController extends AppController
             //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
 
-
             try{
                 //$writer->save($ruta/*.'librotest.xlsx'*/);
         
@@ -1050,7 +1037,6 @@ class SolicitudesController extends AppController
         }
     
         $todo = $this->Solicitudes->getHistorialExcelRonda($ronda);
-        //$this->set('carnet',$carnet);
         $this->set(compact('todo', 'solicitude', 'ronda'));
     }
 
@@ -1112,14 +1098,10 @@ class SolicitudesController extends AppController
                 $fila = $fila + 1;
             }          
 
-            //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
             $nombreArchivo='Reporte_'.$semestre.'-'.$año.'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
 
-
-            try{
-                //$writer->save($ruta/*.'librotest.xlsx'*/);
-        
+            try{        
                 //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
@@ -1127,7 +1109,6 @@ class SolicitudesController extends AppController
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
-                //echo "Archivo Creado";
             }
             catch(Exception $e){
                 echo $e->getMessage();
@@ -1140,8 +1121,6 @@ class SolicitudesController extends AppController
         $todo = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año);
         $this->set(compact('todo', 'solicitude', 'semestre', 'año'));
     }
-
-    
 
     public function reprovedMessage($id)
     {
