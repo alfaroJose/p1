@@ -818,10 +818,10 @@ class SolicitudesController extends AppController
         }
 
         if ($this->request->is('post')) {          
-            $data = $this->request->getData();
-            $id = $data['Carné'];
+            $data = $this->request->getData();           
             $ronda = $data['Ronda'];
             if ($ronda == 0){
+                $id = $data['Carné'];
                 return $this->redirect(['action' => 'genera', $Ids[$id]]);
             } else {
                 return $this->redirect(['action' => 'generaRonda', $ronda]);

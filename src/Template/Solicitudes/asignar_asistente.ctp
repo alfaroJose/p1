@@ -83,7 +83,7 @@
     <br>
    
     </div>
-        <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+        <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right', 'onClick'=>'form.submit();this.disabled=true']) ?>
         <?= $this->Html->link('Cancelar', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']) ?>
     <br>
 
