@@ -158,8 +158,7 @@ class SolicitudesTable extends Table
         $connect = ConnectionManager::get('default');
         $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
        if($curso == NULL){
-           $curso[0][0] = " ";
-           $curso[0][1] = " ";
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre from grupos, cursos, solicitudes  where grupos.cursos_id = cursos.id  and  grupos.id = solicitudes.grupos_id  and solicitudes.id = $idSolicitud ")->fetchAll();
            $curso[0][2] = " ";
        }
         return $curso;
