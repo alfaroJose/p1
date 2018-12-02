@@ -344,7 +344,7 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
-      DEBUG($solicitude);
+      //DEBUG($solicitude);
         $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
         $this->set('curso', $curso);
