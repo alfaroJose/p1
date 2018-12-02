@@ -394,7 +394,7 @@ class SolicitudesTable extends Table
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute("select sum(acep.cantidad_horas) 
         from aceptados as acep join solicitudes as sol on acep.id = sol.id
-        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente';");
+        where usuarios_id = ".$idEstudiante." and (acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente');");
         $result = $result->fetchAll(); 
 
         $result2 = $connect->execute("select sol.cantidad_horas_externa
