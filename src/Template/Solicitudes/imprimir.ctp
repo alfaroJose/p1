@@ -125,7 +125,7 @@ $(document).ready( function (){
  </li>
  <p style="text-indent: 40px;">                     Tipo </p>
  <p style="text-indent: 40px;">                     Estudiante <?= $this->Form->checkbox("checkboxHEExt", ["disabled" => true, "class" => "checkboxParaHEExt", "id" => "checkboxEstudiante Externa"]);?>  Asistente <?= $this->Form->checkbox("checkboxHAExt", ["disabled" => true, "class" => "checkboxParaHAExternas", "id" => "checkboxHAExtern"]);?></p>
- <p style="text-indent: 40px;"> Cantidad de horas externas  <?= h($solicitude->cantidad_horas_externa) ?> </p>
+ <p style="text-indent: 40px;"> Cantidad de horas externas:  <?= h($solicitude->cantidad_horas_externa) ?> </p>
 </div>    
   <h3><b>Curso solicitado </b> </h3>
   <table border="1">
