@@ -58,11 +58,11 @@
 
                             if ($reqReprobados[$i] == false){ //Los requisitos de categoría Asistente están todos en 'Sí'
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'requiered'=>true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                <?php 
                             } else {
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'requiered'=>true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                 <?php
                             }
                         ?>                 

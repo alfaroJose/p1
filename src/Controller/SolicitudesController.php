@@ -678,103 +678,112 @@ class SolicitudesController extends AppController
             $data = $this->request->getData(); //data es un solo vector, hay que recorrerlo con iterador? los campos no están en [0] sino en ['Estado23'] o [TipoHoras23]
             $i = 0;                             //Itera sobre todos los estudiantes
             $end = count($idSolicitud);         //Cantidad de estudiantes
+
+            foreach($data as $g)
+            {         
+                //debug($g);
+                //die();
+                if ($g == ''){
+                    $this->Flash->error(__('Hubo un error22: Por favor llene todos los campos'));
+                    //redirige a la misma pantalla
+                    return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]); 
+                }
+            }
            
             while($i < $end){
-                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
-                    $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
-                }
-                else{
 
-                    $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                          
+                    if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
+                        $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
+                    }
+                    else{
 
-                    
+                        $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                                                                     
                         $valido = false; //Para verificar si lo que se quiere asignar es valido o no
-
                         $error = '';
 
                         $horasA = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas que ya tiene
                         $horasE = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId);
                         $horasTotal = $horasA + $horasE;                       
 
-
                         if($horasTotal < 20){ //Si el total de horas que ya tiene es menor que el limite, se le pueden asignar
-
                             $maxE = 12 - $horasE; //Maximo de horas que se le puede asignar
                             $maxA = 20 - $horasTotal;
-
-                           // $minE = $horasE > 0 ? 1 : 3;//Minimo de horas que se le puede asignar
-                            //$minA = $horasA > 0 ? 1 : 3;
-
                             $min = $horasTotal > 3 ? 1 : 3;
 
                             $contHA = $contadorHoras['horas_asistente'];
                             $contHEE= $contadorHoras['horas_estudiante_ecci'];
                             $contHED= $contadorHoras['horas_estudiante_docente'];
 
-                            if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
-                                if($contHA >= $min ){  //Si hay horas disponibles
-                                    $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
-                                    $min = $min > $contHA ? $contHA : $min;
-                                    if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
-                                }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
-                            }
-                            else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
-                                if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
-                                    if($contHEE >= $min){ // Si hay horas disponibles
-                                        $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
-                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
-                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
-                                        }
-                                        $min = $min > $contHEE ? $contHEE : $min;
-                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
+                            if($data["TipoHora".$estudiantesIds[$i]] == ''){
+                                $this->Flash->error(__('Hubo un error: Por favor llene todos los campos'));
+                                //redirige a la misma pantalla
+                                return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
+                            } else {
+
+                                if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                                    if($contHA >= $min ){  //Si hay horas disponibles
+                                        $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
+                                        $min = $min > $contHA ? $contHA : $min;
+                                        if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
                                 }
-                                else{
-                                    if($contHED >= $min){ // Si hay horas disponibles
-                                        $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
-                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
-                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
-                                        }
-                                        $min = $min > $contHED ? $contHED : $min;
-                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
+                                else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
+                                    if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
+                                        if($contHEE >= $min){ // Si hay horas disponibles
+                                            $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
+                                            if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                                $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                            }
+                                            $min = $min > $contHEE ? $contHEE : $min;
+                                            if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
+                                        }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
+                                    }
+                                    else{
+                                        if($contHED >= $min){ // Si hay horas disponibles
+                                            $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
+                                            if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                                $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                            }
+                                            $min = $min > $contHED ? $contHED : $min;
+                                            if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
+                                        }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
+                                    }
                                 }
                             }
                         }
 
                         if(!$valido){ //Si no es valido hubo un error en las Horas asignadas
                             $this->Flash->error(__('Hubo un error: '.$error. '. Por favor intente de nuevo.'));
-
                             //redirige a la misma pantalla
                             return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
                         }
                                       
-                    //Agregar al estudiante a la tabla de Aceptados .
-                    $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
+                        //Agregar al estudiante a la tabla de Aceptados .
+                        $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
 
-                    //Verificar si fue dada la asistencia por inopia
-                    if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
-                        //Consulta por inopia en ASISTENTE
-                        $inopia = $this->Solicitudes->InopiaAsistente($idSolicitud[$i]);   
-                    }
-                    else{
-                        //Consulta por inopia en ESTUDIANTE
-                        $inopia = $this->Solicitudes->InopiaEstudiante($idSolicitud[$i]);
-                    }
+                        //Verificar si fue dada la asistencia por inopia
+                        if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                            //Consulta por inopia en ASISTENTE
+                            $inopia = $this->Solicitudes->InopiaAsistente($idSolicitud[$i]);   
+                        }
+                        else{
+                            //Consulta por inopia en ESTUDIANTE
+                            $inopia = $this->Solicitudes->InopiaEstudiante($idSolicitud[$i]);
+                        }
 
-                    if($inopia){
-                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor (Inopia)');
+                        if($inopia){
+                            $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor (Inopia)');
+                        }
+                        else{
+                            $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
+                        }
                     }
-                    else{
-                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
-                    }
-
+                    $this->sendMail($idSolicitud[$i]);
+                    $i++;
                 }
-                $this->sendMail($idSolicitud[$i]);
-                $i++;
-            }
-            $this->Flash->success(__('Se han guardado los cambios para el grupo'));
-            return $this->redirect(['action' => 'grupoAsignar']);
+                $this->Flash->success(__('Se han guardado los cambios para el grupo'));
+                return $this->redirect(['action' => 'grupoAsignar']);
+            //}           
         }
 
         $this->set('idEstudiante',$estudiantesIds);
