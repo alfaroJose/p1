@@ -8,31 +8,23 @@
 $(document).ready( function (){
    var sol = <?php echo json_encode($solicitude); ?>;
   //document.write(sol.horas_estudiante);
-   if(sol.horas_estudiante === "No"){
-    
+ // document.write(sol.horas_estudiante);
+ // document.write(sol.horas_asistente);
+   if(sol.horas_estudiante != 'No'){
+     //document.write("Primer if");
+     $('#checkboxHE').prop('checked', true);
    }
-   else{
-    $('#checkBoxHE').prop('checked', true);
+   if(sol.horas_asistente != 'No'){
+   // document.write('Segundo if');
+   $('#checkboxHA').prop('checked', true);
    }
-   if(sol.horas_asistente === 'No'){
-    
+   if(sol.horas_asistente_externa != 'No'){
+    $('#checkboxHAExtern').prop('checked', true);
    }
-   else{
-    $('#checkBoxHA').prop("checked", true);
+   if(sol.horas_estudiante_externa != 'No'){
+    $('#checkBoxEstudianteExterna').prop('checked', true);
    }
-   if(sol.horas_asistente_externa === 'No'){
-    
-   }
-   else{
-    $('#checkBoxHAExt').prop("checked", true);
-   }
-   if(sol.horas_estudiante_externa === 'No'){
-   
-   }
-   else{
-    $('#checkBoxHEExt').prop("checked", true);
-   }
-  }
+}
  );
   </script>
 <div class="imprimir">
