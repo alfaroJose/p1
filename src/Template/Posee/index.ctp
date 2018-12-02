@@ -157,8 +157,7 @@ body {font-family: Arial;}
     	var permAdmin = new Array();
     	var permAsis = new Array();
     	var permProf = new Array();
-    	var permEst = new Array();
-
+    	var permEst = new Array();;
     	for(var i = 0; i < tuplas.length; i++){
     		if(tuplas[i].roles_id == 1){//si es admin
     			permAdmin.push(tuplas[i]);

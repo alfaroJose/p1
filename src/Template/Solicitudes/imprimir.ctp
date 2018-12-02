@@ -5,35 +5,40 @@
  */
 ?>
 <script type="text/javascript">
-$(document).ready( function () {
-  var sol = <?php echo json_encode($solicitude); ?>;
-  if(sol.horas_asistente_externa == 'Sí'){
-    document.getElementById('checkboxHAExt').setAttribute('checked', 'checked');
+$(document).ready( function (){
+   var sol = <?php echo json_encode($solicitude); ?>;
+  //document.write(sol.horas_estudiante);
+   if(sol.horas_estudiante === "No"){
+    
+   }
+   else{
+    $('#checkBoxHE').prop('checked', true);
+   }
+   if(sol.horas_asistente === 'No'){
+    
+   }
+   else{
+    $('#checkBoxHA').prop("checked", true);
+   }
+   if(sol.horas_asistente_externa === 'No'){
+    
+   }
+   else{
+    $('#checkBoxHAExt').prop("checked", true);
+   }
+   if(sol.horas_estudiante_externa === 'No'){
+   
+   }
+   else{
+    $('#checkBoxHEExt').prop("checked", true);
+   }
   }
-  if(sol.horas_estudiante_externa == 'Sí'){
-    document.getElementById('checkboxHEExt').setAttribute('checked', 'checked');
-  }
-  if(sol.horas_asistente == 'Sí'){
-    document.getElementById('checkboxHA').setAttribute('checked', 'checked');
-  }
-  if(sol.horas_estudiante == 'Sí'){
-    document.getElementById('checkboxHE').setAttribute('checked', 'checked');
-  }
-    } );
+ );
   </script>
 <div class="imprimir">
 <head> 
 <style>
-input[type=checkbox] + label {
-    display: inline-block;
-    position: relative;
-    padding: 8px;
-    background-color: #000000;
-    border: 5px solid #FFFFFF;
-    border-radius: 2px;
-    width: 8px;
-    height: 6px;
-}
+
 </style>
 <meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet"/> 
 
@@ -105,9 +110,9 @@ input[type=checkbox] + label {
 <td></td>
 <td> Solicita horas : </td>
 <td></td>
-<td> Horas Estudiante <?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHE"]); ?></td>
+<td> Horas Estudiante <?= $this->Form->checkbox("checkbox", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHE"]); ?></td>
 <td></td>
-<td> Horas Asistente <?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHA"]); ?></td>
+<td> Horas Asistente <?= $this->Form->checkbox("checkbox", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHA"]); ?></td>
 <tr style="height :10px;">
 <td>Carrera</td>
 </tr>
