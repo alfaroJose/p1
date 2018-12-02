@@ -684,7 +684,7 @@ class SolicitudesController extends AppController
                 //debug($g);
                 //die();
                 if ($g == ''){
-                    $this->Flash->error(__('Hubo un error22: Por favor llene todos los campos'));
+                    $this->Flash->error(__('Hubo un error: Por favor llene todos los campos'));
                     //redirige a la misma pantalla
                     return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]); 
                 }
