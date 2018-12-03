@@ -163,12 +163,12 @@ use Cake\Chronos\Date;
                 echo '</li>';
               }
 
-                if(1 == $this->Seguridad->getPermiso(24))  
+              $permisoReporte = $this->Seguridad->getPermiso(24);
+              if(1 == $permisoReporte){ 
                 echo  '<li class="nav-item">';
                 echo $this->Html->link('Reportes',['controller'=>'Solicitudes','action'=>'reporte'],['class'=>'nav-link']) ;
                 echo '</li>';
-              
-                
+              }           
 
               if ( 1 == $permisoContador){
                 echo  '<li class="nav-item">';
