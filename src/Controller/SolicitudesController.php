@@ -1203,7 +1203,7 @@ class SolicitudesController extends AppController
         }
 
         //Despues de poner el pass descomentar esto para empezar a enviar correos
-        /*
+        
         if ($text != null){
             //Se envía el correo.
             try {
@@ -1215,7 +1215,7 @@ class SolicitudesController extends AppController
                 echo 'Exception : ',  $e->getMessage(), "\n";
             }
         }
-        */
+        
     }
 
 }
