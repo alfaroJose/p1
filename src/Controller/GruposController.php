@@ -112,16 +112,17 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
 
-            debug($curso);
-            if ($cursoModel->save($curso)) {
+            if($this->Grupos->existeCurso($curso->sigla)){
+                $this->Flash->error(__('El curso ya existe'));
+            }else{
+                if ($cursoModel->save($curso)) {
                 $this->Flash->success(__('El curso ha sido agregado.'));
                 $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
-                if($this->Grupos->save($grupo)){
-                    
-                }
+                $this->Grupos->save($grupo);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
+            }
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
@@ -223,11 +224,15 @@ class GruposController extends AppController
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
             $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
-                return $this->redirect(['action' => 'index']);
+            if($this->Grupos->existeGrupo($grupo->semestre,$grupo->año,$grupo->numero)){
+                $this->Flash->error(__('Este grupo ya existe.'));
+            } else {
+                if ($this->Grupos->save($grupo)) {
+                    $this->Flash->success(__('El grupo ha sido agregado.'));
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
         }
         
         $this->set('siglaIndex', $siglaIndex);
