@@ -223,16 +223,21 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
-            if($this->Grupos->existeGrupo($grupo->semestre,$grupo->año,$grupo->numero)){
-                $this->Flash->error(__('Este grupo ya existe.'));
+            if($siglaSeleccionada == "0"){
+                $this->Flash->error(__('La sigla debe ser llenada'));
             } else {
-                if ($this->Grupos->save($grupo)) {
-                    $this->Flash->success(__('El grupo ha sido agregado.'));
-                    return $this->redirect(['action' => 'index']);
+                $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
+                if($this->Grupos->existeGrupo($grupo->semestre,$grupo->año,$grupo->numero)){
+                    $this->Flash->error(__('Este grupo ya existe.'));
+                } else {
+                    if ($this->Grupos->save($grupo)) {
+                        $this->Flash->success(__('El grupo ha sido agregado.'));
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
                 }
-                $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
             }
+            
         }
         
         $this->set('siglaIndex', $siglaIndex);
