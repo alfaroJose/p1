@@ -181,7 +181,7 @@ class GruposTable extends Table
      */
     public function obtenerCursoId($sigla = null){
         $connect = ConnectionManager::get('default');
-        $sigla = $connect->execute("select distinct c.id from cursos c, grupos g where c.sigla = '".$sigla."'")->fetchAll();
+        $sigla = $connect->execute("select distinct c.id from cursos c where c.sigla = '".$sigla."'")->fetchAll();
         return $sigla[0][0];
     }
 
