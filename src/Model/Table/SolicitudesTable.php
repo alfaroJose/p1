@@ -555,7 +555,7 @@ class SolicitudesTable extends Table
 
     /*Administrador  CONSULTA y genera Excel del historial total de asistencias durante toda la carrera 
     Atributos: Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad*/
-    public function getHistorialExcelEstudianteTodo(){
+    public function getHistorialExcelEstudianteTodo($semester, $year){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
                                         from solicitudes s 
@@ -565,7 +565,9 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+                                        where s.estado = ('Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)') and g.id not in (select distinct g.id 
+                                                                                                                                                from grupos g
+                                                                                                                                                where g.semestre = '$semester' and g.año = '$year');")->fetchAll('assoc');
         return $index;
     }
 
@@ -582,7 +584,7 @@ class SolicitudesTable extends Table
 
 /*****************************************************************************************/
 
-    public function getHistorialExcelRonda($id){
+    public function getHistorialExcelRonda($id, $semester, $year){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
                                         from solicitudes s 
@@ -592,7 +594,7 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.ronda = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+                                        where s.ronda = '$id' and g.semestre = '$semester' and g.año = '$year' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
         return $index;
     }
 
