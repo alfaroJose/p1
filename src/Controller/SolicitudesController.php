@@ -43,6 +43,8 @@ class SolicitudesController extends AppController
     {     
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
+        $round = $this->get_round();
+        $ronda = $round['numero'];
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
 
 
@@ -65,11 +67,11 @@ class SolicitudesController extends AppController
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
-                $todo = $this->Solicitudes->getIndexValuesActualesEstudiante($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado
+                $todo = $this->Solicitudes->getIndexValuesActualesEstudiante($idActual[0][0], $semestre, $año, $ronda); //carga el index con solo los datos de este semestre de la ronda actual del estudiante actualmente logueado
         }else if(3==$rolActual[0]){ //si el usuario es un profesor 
-                $todo = $this->Solicitudes->getIndexValuesActualesProfesor($idActual[0][0], $semestre, $año); //carga el index con solo las solicitudes del semestre actual del profesor actualmente logueado 
+                $todo = $this->Solicitudes->getIndexValuesActualesProfesor($idActual[0][0], $semestre, $año, $ronda); //carga el index con solo las solicitudes del semestre actual de la ronda actual del profesor actualmente logueado 
         }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
-                $todo = $this->Solicitudes->getIndexActualesValues($semestre, $año); //carga el index con todas las solicitudes del semestre actual
+                $todo = $this->Solicitudes->getIndexActualesValues($semestre, $año, $ronda); //carga el index con todas las solicitudes del semestre actual de la ronda actual
             }
       
         $this->paginate = [
@@ -912,9 +914,11 @@ class SolicitudesController extends AppController
       /*Creacion del excel con el historico de asistencias*/
       public function generatodo(){
         $solicitude = $this->Solicitudes->newEntity();
+        $sem = $this->get_semester(); //obtiene el semestre actual
+        $año = $this->get_year(); //obtiene el año actual    
         if ($this->request->is('post')) {
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo(); //Se trae la informacion que se agrega al excel com todas las asistencias de la historia
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());         
+            $info = $this->Solicitudes->getHistorialExcelEstudianteTodo($sem, $año); //Se trae la informacion que se agrega al excel com todas las asistencias de la historia
             $spreadsheet = new Spreadsheet(); //para usar excel
 
             //acceder al objeto hoja
@@ -963,9 +967,9 @@ class SolicitudesController extends AppController
             }
             
         }
-    
+       
         /*Se envia la indormacion a generatodo para crear la vista previa de la tabla*/
-        $todo = $this->Solicitudes->getHistorialExcelEstudianteTodo();
+        $todo = $this->Solicitudes->getHistorialExcelEstudianteTodo($sem, $año);
         $this->set(compact('todo', 'solicitude'));
     }
 
@@ -989,11 +993,13 @@ class SolicitudesController extends AppController
         }
         /*Cierra la seguridad*/
         $solicitude = $this->Solicitudes->newEntity();
+        $semestre = $this->get_semester(); //obtiene el semestre actual
+        $año = $this->get_year(); //obtiene el año actual 
 
         if ($this->request->is('post')) {
             
             $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());        
-            $info = $this->Solicitudes->getHistorialExcelRonda($ronda);       
+            $info = $this->Solicitudes->getHistorialExcelRonda($ronda, $semstre, $año);       
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -1049,8 +1055,8 @@ class SolicitudesController extends AppController
             
         }
     
-        $todo = $this->Solicitudes->getHistorialExcelRonda($ronda);
-        $this->set(compact('todo', 'solicitude', 'ronda'));
+        $todo = $this->Solicitudes->getHistorialExcelRonda($ronda, $semestre, $año);
+        $this->set(compact('todo', 'solicitude', 'ronda', 'semestre', 'año'));
     }
 
     public function generaCiclo(){

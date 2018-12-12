@@ -15,7 +15,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
 <div class="reporte index large-9 medium-8 columns content">
 	<?= $this->Form->create($solicitude) ?>
-    <h3><?= __('Reporte de Ronda '.$ronda) ?></h3>
+    <h3><?= __('Reporte de Ronda '.$ronda.' del ciclo '.$semestre.'-'.$año) ?></h3>
     <table id="reporte-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>

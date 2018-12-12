@@ -32,7 +32,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
     <div>
 
-        <h4> Generar reporte de asistencias por ronda </h4>
+        <h4> Generar reporte de asistencias por ronda del ciclo actual</h4>
             
         <?php
 
@@ -51,7 +51,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
     <div>
 
-        <h4> Generar reporte del ciclo </h4>
+        <h4> Generar reporte del ciclo actual</h4>
 
         <?= $this->Html->link('Generar reporte del ciclo',['action'=>'generaCiclo'],['class'=>'btn btn-info btn-medium float-left mr-3'])?>
 

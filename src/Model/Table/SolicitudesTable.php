@@ -133,7 +133,7 @@ class SolicitudesTable extends Table
         return $index;
     }
     /*carga el index con todas las solicitudes Actuales*/
-    public function getIndexActualesValues($semestre, $año){
+    public function getIndexActualesValues($semestre, $año, $ronda){
         $connect = ConnectionManager::get('default');
                         $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador', s.usuarios_id
                                         from solicitudes s 
@@ -141,7 +141,7 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id 
-                                        where g.semestre = '$semestre' and g.año = '$año';")->fetchAll();
+                                        where g.semestre = '$semestre' and g.año = '$año' and s.ronda = '$ronda';")->fetchAll();
         return $index;
     }
     /*obtiene el id de usuario actualmente logueado*/
@@ -183,7 +183,7 @@ class SolicitudesTable extends Table
         return $index;
     }
         /*carga el index con solo las solicitudes del estudiante actualmente logueado en el semestre actual*/
-    public function getIndexValuesActualesEstudiante($id, $semestre, $año){
+    public function getIndexValuesActualesEstudiante($id, $semestre, $año, $ronda){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute("select distinct c.sigla, c.nombre, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, s.estado as 'Estados de solicitud', s.id as 'identificador'
                                         from solicitudes s 
@@ -191,7 +191,7 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.usuarios_id = '$id' and g.semestre = '$semestre' and g.año = '$año';")->fetchAll();
+                                        where s.usuarios_id = '$id' and g.semestre = '$semestre' and g.año = '$año' and s.ronda = '$ronda';")->fetchAll();
         return $index;
     }
     /*carga el index con todas las solicitudes del profesor actualmente logueado*/
@@ -209,7 +209,7 @@ class SolicitudesTable extends Table
         return $index;
     }
         /*carga el index con solo las solicitudes del profesor actualmente logueado en semestre actual*/
-    public function getIndexValuesActualesProfesor($id, $semestre, $año){
+    public function getIndexValuesActualesProfesor($id, $semestre, $año, $ronda){
         
         $connect = ConnectionManager::get('default');
         
@@ -219,7 +219,7 @@ class SolicitudesTable extends Table
                 join grupos g on s.grupos_id = g.id
                 join cursos c on g.cursos_id = c.id
                 left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                where g.usuarios_id = $id and g.semestre = '$semestre' and g.año = '$año' and (s.estado = 'Elegible' or s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll();
+                where g.usuarios_id = $id and g.semestre = '$semestre' and g.año = '$año' and s.ronda = '$ronda' and (s.estado = 'Elegible' or s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll();
         return $index;
     }
     /*obtiene los datos de la solicitud para la vista*/
@@ -555,7 +555,7 @@ class SolicitudesTable extends Table
 
     /*Administrador  CONSULTA y genera Excel del historial total de asistencias durante toda la carrera 
     Atributos: Curso Sigla Grupo Profesor Carnet Nombre Tipo Horas y Cantidad*/
-    public function getHistorialExcelEstudianteTodo(){
+    public function getHistorialExcelEstudianteTodo($semester, $year){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
                                         from solicitudes s 
@@ -565,7 +565,9 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+                                        where s.estado = ('Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)') and g.id not in (select distinct g.id 
+                                                                                                                                                from grupos g
+                                                                                                                                                where g.semestre = '$semester' and g.año = '$year');")->fetchAll('assoc');
         return $index;
     }
 
@@ -576,13 +578,14 @@ class SolicitudesTable extends Table
                             from solicitudes s
                             join usuarios u on s.usuarios_id = u.id
                             left outer join aceptados a on s.id = a.id
-                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)'
+                            order by u.nombre_usuario;")->fetchAll('assoc');
         return $index;
     }
 
 /*****************************************************************************************/
 
-    public function getHistorialExcelRonda($id){
+    public function getHistorialExcelRonda($id, $semester, $year){
         $connect = ConnectionManager::get('default');
             $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
                                         from solicitudes s 
@@ -592,7 +595,7 @@ class SolicitudesTable extends Table
                                         join grupos g on s.grupos_id = g.id
                                         join cursos c on g.cursos_id = c.id
                                         left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
-                                        where s.ronda = '$id' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+                                        where s.ronda = '$id' and g.semestre = '$semester' and g.año = '$year' and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
         return $index;
     }
 
