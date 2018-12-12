@@ -43,6 +43,8 @@ class SolicitudesController extends AppController
     {     
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
+        $round = $this->get_round();
+        $ronda = $round['numero'];
         $username = $this->getRequest()->getSession()->read('id'); //obtiene el nombre de usuario actualmente logueado
 
 
@@ -65,11 +67,11 @@ class SolicitudesController extends AppController
              
         $idActual = $this->Solicitudes->getIDUsuario($username); //obtiene el id de usuario actualmente logueado
         if(4==$rolActual[0]){ //si el usuario es un estudiante     
-                $todo = $this->Solicitudes->getIndexValuesActualesEstudiante($idActual[0][0], $semestre, $año); //carga el index con solo los datos de este semestre del estudiante actualmente logueado
+                $todo = $this->Solicitudes->getIndexValuesActualesEstudiante($idActual[0][0], $semestre, $año, $ronda); //carga el index con solo los datos de este semestre de la ronda actual del estudiante actualmente logueado
         }else if(3==$rolActual[0]){ //si el usuario es un profesor 
-                $todo = $this->Solicitudes->getIndexValuesActualesProfesor($idActual[0][0], $semestre, $año); //carga el index con solo las solicitudes del semestre actual del profesor actualmente logueado 
+                $todo = $this->Solicitudes->getIndexValuesActualesProfesor($idActual[0][0], $semestre, $año, $ronda); //carga el index con solo las solicitudes del semestre actual de la ronda actual del profesor actualmente logueado 
         }else if(1==$rolActual[0]||2==$rolActual[0]){ //si el usuario es un admin o asistente de admin 
-                $todo = $this->Solicitudes->getIndexActualesValues($semestre, $año); //carga el index con todas las solicitudes del semestre actual
+                $todo = $this->Solicitudes->getIndexActualesValues($semestre, $año, $ronda); //carga el index con todas las solicitudes del semestre actual de la ronda actual
             }
       
         $this->paginate = [
