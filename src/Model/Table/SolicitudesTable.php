@@ -578,7 +578,8 @@ class SolicitudesTable extends Table
                             from solicitudes s
                             join usuarios u on s.usuarios_id = u.id
                             left outer join aceptados a on s.id = a.id
-                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)';")->fetchAll('assoc');
+                            where s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)'
+                            order by u.nombre_usuario;")->fetchAll('assoc');
         return $index;
     }
 
