@@ -152,6 +152,18 @@ class UsuariosTable extends Table
         } 
         return $existen;
     }
+
+    public function existenCursos($id){
+        $existen = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from grupos where usuarios_id = '$id'"));
+        if($inTable != 0){
+            $existen = true;
+        } 
+        return $existen;
+    }
+
+
     public function esProfesor($usuarioId){
         $prof = false;
         $connect = ConnectionManager::get('default');
