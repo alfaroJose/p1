@@ -58,9 +58,6 @@ class PoseeController extends AppController
             else if($dato == "checkboxElimReq"){
                 $poseeTupla = $this->Posee->get([$rolId, 6]);
             }
-            else if($dato == "checkboxElimSoli"){
-                $poseeTupla = $this->Posee->get([$rolId, 14]);
-            }
             else if($dato == "checkboxConsUsuarios"){
                 $poseeTupla = $this->Posee->get([$rolId, 17]);
             }
