@@ -156,6 +156,10 @@ class SolicitudesTable extends Table
     public function getCurso($idSolicitud){
         $connect = ConnectionManager::get('default');
         $curso = $connect->execute("select cursos.sigla, cursos.nombre, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido)  as profesor from grupos, cursos, usuarios as Profesores, usuarios as Estudiantes, solicitudes  where grupos.cursos_id = cursos.id  and Profesores.id = grupos.usuarios_id and solicitudes.usuarios_id = Estudiantes.id and solicitudes.grupos_id = grupos.id and solicitudes.id = '" .$idSolicitud. "' ")->fetchAll();
+       if($curso == NULL){
+        $curso = $connect->execute("select cursos.sigla, cursos.nombre from grupos, cursos, solicitudes  where grupos.cursos_id = cursos.id  and  grupos.id = solicitudes.grupos_id  and solicitudes.id = $idSolicitud ")->fetchAll();
+           $curso[0][2] = " ";
+       }
         return $curso;
     }
     
@@ -390,7 +394,7 @@ class SolicitudesTable extends Table
         $connect = ConnectionManager::get('default');      
         $result = $connect->execute("select sum(acep.cantidad_horas) 
         from aceptados as acep join solicitudes as sol on acep.id = sol.id
-        where usuarios_id = ".$idEstudiante." and acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente';");
+        where usuarios_id = ".$idEstudiante." and (acep.tipo_horas = 'Estudiante ECCI' or acep.tipo_horas = 'Estudiante Docente');");
         $result = $result->fetchAll(); 
 
         $result2 = $connect->execute("select sol.cantidad_horas_externa
@@ -592,6 +596,19 @@ class SolicitudesTable extends Table
         return $index;
     }
 
+    public function getHistorialExcelCiclo($semestre, $year){
+        $connect = ConnectionManager::get('default');
+        $index = $connect->execute("select distinct c.nombre, c.sigla, g.numero, CONCAT(Profesores.nombre, ' ', Profesores.primer_apellido) as profesor, u.nombre_usuario, CONCAT(Estudiantes.nombre, ' ', Estudiantes.primer_apellido) as estudiante, a.tipo_horas, a.cantidad_horas, s.id as 'identificador'
+            from solicitudes s 
+                 join usuarios as Estudiantes on s.usuarios_id = Estudiantes.id
+                 join usuarios u on s.usuarios_id = u.id
+                 join aceptados a on s.id = a.id
+                 join grupos g on s.grupos_id = g.id
+                 join cursos c on g.cursos_id = c.id
+                 left outer join usuarios as Profesores on g.usuarios_id = Profesores.id
+            where g.semestre = '$semestre' and g.año = '$year' and (s.ronda = 1 or s.ronda = 2 or s.ronda = 3)and (s.estado = 'Aceptada - Profesor' or s.estado = 'Aceptada - Profesor (Inopia)');")->fetchAll('assoc');
+        return $index;
+    }
 
     public function getRequisitosIncumplidos($id)
     {

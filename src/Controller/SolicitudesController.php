@@ -344,6 +344,7 @@ class SolicitudesController extends AppController
         $solicitude = $this->Solicitudes->get($id, [
             'contain' => ['Usuarios', 'Grupos']
         ]);
+      //DEBUG($solicitude);
         $curso = $this->Solicitudes->getCurso($solicitude->id);
         $this->set('solicitude', $solicitude);
         $this->set('curso', $curso);
@@ -677,124 +678,113 @@ class SolicitudesController extends AppController
             $data = $this->request->getData(); //data es un solo vector, hay que recorrerlo con iterador? los campos no están en [0] sino en ['Estado23'] o [TipoHoras23]
             $i = 0;                             //Itera sobre todos los estudiantes
             $end = count($idSolicitud);         //Cantidad de estudiantes
+
+            foreach($data as $g)
+            {         
+                //debug($g);
+                //die();
+                if ($g == ''){
+                    $this->Flash->error(__('Hubo un error: Por favor llene todos los campos'));
+                    //redirige a la misma pantalla
+                    return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]); 
+                }
+            }
            
             while($i < $end){
-                if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
-                    $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
-                }
-                else{
 
-                    $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                          
+                    if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
+                        $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
+                    }
+                    else{
 
-                    
+                        $horas = $data["Horas".$estudiantesIds[$i]]; //Las horas que se quieren asignar                                                                     
                         $valido = false; //Para verificar si lo que se quiere asignar es valido o no
-
                         $error = '';
 
                         $horasA = $this->Solicitudes->getHorasAsistente($estudiantesIds[$i],$grupoId); //Horas que ya tiene
                         $horasE = $this->Solicitudes->getHorasEstudiante($estudiantesIds[$i],$grupoId);
                         $horasTotal = $horasA + $horasE;                       
 
-
                         if($horasTotal < 20){ //Si el total de horas que ya tiene es menor que el limite, se le pueden asignar
-
                             $maxE = 12 - $horasE; //Maximo de horas que se le puede asignar
                             $maxA = 20 - $horasTotal;
-
-                           // $minE = $horasE > 0 ? 1 : 3;//Minimo de horas que se le puede asignar
-                            //$minA = $horasA > 0 ? 1 : 3;
-
                             $min = $horasTotal > 3 ? 1 : 3;
 
                             $contHA = $contadorHoras['horas_asistente'];
                             $contHEE= $contadorHoras['horas_estudiante_ecci'];
                             $contHED= $contadorHoras['horas_estudiante_docente'];
 
-                            if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
-                                if($contHA >= $min ){  //Si hay horas disponibles
-                                    $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
-                                    $min = $min > $contHA ? $contHA : $min;
-                                    if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
-                                }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
-                            }
-                            else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
-                                if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
-                                    if($contHEE >= $min){ // Si hay horas disponibles
-                                        $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
-                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
-                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
-                                        }
-                                        $min = $min > $contHEE ? $contHEE : $min;
-                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
+                            if($data["TipoHora".$estudiantesIds[$i]] == ''){
+                                $this->Flash->error(__('Hubo un error: Por favor llene todos los campos'));
+                                //redirige a la misma pantalla
+                                return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
+                            } else {
+
+                                if($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                                    if($contHA >= $min ){  //Si hay horas disponibles
+                                        $maxA = $maxA > $contHA ? $contHA : $maxA; // Evalua el maximo de horas con el contador
+                                        $min = $min > $contHA ? $contHA : $min;
+                                        if($horas <= $maxA  && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxA."]";}  //Si las horas no superan el limite son validas
+                                    }else{$error = 'no hay horas asistente disponibles o el valor ingresado es menor que '.$min;}
                                 }
-                                else{
-                                    if($contHED >= $min){ // Si hay horas disponibles
-                                        $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
-                                        if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
-                                            $maxE = $maxE > $maxA ? $maxA : $maxE;
-                                        }
-                                        $min = $min > $contHED ? $contHED : $min;
-                                        if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
-                                    }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
+                                else if ($maxE > 0){ // Si se le pueden asignar horas estudiante
+                                    if($data["TipoHora".$estudiantesIds[$i]] == 'Estudiante ECCI'){
+                                        if($contHEE >= $min){ // Si hay horas disponibles
+                                            $maxE = $maxE > $contHEE ? $contHEE : $maxE;// Evalua el maximo de horas por contador
+                                            if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                                $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                            }
+                                            $min = $min > $contHEE ? $contHEE : $min;
+                                            if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.", ".$maxE."]";} //Si las horas no superan el limite son validas
+                                        }else{$error = 'no hay horas estudiante ecci disponibles o el valor ingresado es menor que '.$min;}
+                                    }
+                                    else{
+                                        if($contHED >= $min){ // Si hay horas disponibles
+                                            $maxE = $maxE > $contHED ? $contHED : $maxE;// Evalua el maximo de horas por contador
+                                            if($horasA > 0){ //Si tiene horas asistente vuelve a evaluar el maximo
+                                                $maxE = $maxE > $maxA ? $maxA : $maxE;
+                                            }
+                                            $min = $min > $contHED ? $contHED : $min;
+                                            if($horas <= $maxE && $horas >= $min){$valido = true;}else{$error = "valor debe estar en rango [".$min.",".$maxE."]";} //Si las horas no superan el limite son validas
+                                        }else{$error = 'no hay horas estudiante docente disponibles o el valor ingresado es menor que '.$min;}
+                                    }
                                 }
                             }
                         }
 
                         if(!$valido){ //Si no es valido hubo un error en las Horas asignadas
                             $this->Flash->error(__('Hubo un error: '.$error. '. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
+                            //redirige a la misma pantalla
+                            return $this->redirect(['action' => 'asignarAsistente', $sigla, $numGrupo, $profe, $grupoId]);
                         }
-
-
-                    /*if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente' ){
-                        $maxHA = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
-
-                        if($data["Horas".$estudiantesIds[$i]] > $maxHA) {
-                            $this->Flash->error(__('Supera limite de horas asistente. No se guardaron los cambios. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
-                        }
-                    }
-                    else{
-                        if($data["Horas".$estudiantesIds[$i]] > 12){
-                            $this->Flash->error(__('Horas estudiante no mas de 12. No se guardaron los cambios. Por favor intente de nuevo.'));
-                            return $this->redirect(['action' => 'grupoAsignar']);
-                        }
-                    }*/
-
-
-                    
-
-                   // debug($data); die();
-                    //Agregar al estudiante a la tabla de Aceptados .
+                                      
+                        //Agregar al estudiante a la tabla de Aceptados .
                         $this->Solicitudes->setAceptados($idSolicitud[$i], $data["Horas".$estudiantesIds[$i]], $data["TipoHora".$estudiantesIds[$i]]);  //Se agrega la solicitut del estudiante entre las aceptadas
 
-                    //Verificar si fue dada la asistencia por inopia
-                    if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
-                        //Consulta por inopia en ASISTENTE
-                        $inopia = $this->Solicitudes->InopiaAsistente($idSolicitud[$i]);   
-                    }
-                    else{
-                        //Consulta por inopia en ESTUDIANTE
-                        $inopia = $this->Solicitudes->InopiaEstudiante($idSolicitud[$i]);
-                    }
+                        //Verificar si fue dada la asistencia por inopia
+                        if ($data["TipoHora".$estudiantesIds[$i]] == 'Asistente'){
+                            //Consulta por inopia en ASISTENTE
+                            $inopia = $this->Solicitudes->InopiaAsistente($idSolicitud[$i]);   
+                        }
+                        else{
+                            //Consulta por inopia en ESTUDIANTE
+                            $inopia = $this->Solicitudes->InopiaEstudiante($idSolicitud[$i]);
+                        }
 
-                    if($inopia){
-                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor (Inopia)');
+                        if($inopia){
+                            $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor (Inopia)');
+                        }
+                        else{
+                            $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
+                        }
                     }
-                    else{
-                        $this->Solicitudes->setEstadoSolicitud($idSolicitud[$i],'Aceptada - Profesor');
-                    }
-
+                    $this->sendMail($idSolicitud[$i]);
+                    $i++;
                 }
-                $this->sendMail($idSolicitud[$i]);
-                $i++;
-            }
-            $this->Flash->success(__('Se han guardado los cambios para el grupo'));
-            return $this->redirect(['action' => 'grupoAsignar']);
+                $this->Flash->success(__('Se han guardado los cambios para el grupo'));
+                return $this->redirect(['action' => 'grupoAsignar']);
+            //}           
         }
-
-        
 
         $this->set('idEstudiante',$estudiantesIds);
         $this->set('estudiantes', $estudiantesNombres);
@@ -809,7 +799,6 @@ class SolicitudesController extends AppController
         /***********************************************************************************************************/
         /*Vista previa a generara un reporte en excel del historico de asistencias*/
     public function reporte(){
-
 
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
@@ -831,21 +820,25 @@ class SolicitudesController extends AppController
 
         //Se guardar las siglas y Ids de los estudiantes con solicitudes aceptadas para usarlos en la vista donde se seleecionara algun estudiante
         $carnetId = $this->Solicitudes->getCarnetId();
-        $carnet=array(); //vector para guardad los carnet de estudiantes que han sido asistentes
-        $Ids=array(); //vector para guardad los id de estudiantes que han sido asistentes
+        $carnet=array(0 => ""); //vector para guardad los carnet de estudiantes que han sido asistentes
+        $Ids=array(0 => ""); //vector para guardad los id de estudiantes que han sido asistentes
         foreach ($carnetId as $key => $value) {
           array_push($carnet, $value['nombre_usuario']);
           array_push($Ids, $value['usuarios_id']);
         }
 
         if ($this->request->is('post')) {          
-            $data = $this->request->getData();
-            $id = $data['Carné'];
-            return $this->redirect(['action' => 'genera', $Ids[$id]]);
-
+            $data = $this->request->getData();           
+            $ronda = $data['Ronda'];
+            if ($ronda == 0){
+                $id = $data['Carné'];
+                return $this->redirect(['action' => 'genera', $Ids[$id]]);
+            } else {
+                return $this->redirect(['action' => 'generaRonda', $ronda]);
+            }
         }
 
-        $this->set(compact('carnet', 'solicitude'));
+        $this->set(compact('carnet', 'solicitude', 'ronda'));
     }
 
     /*Creación del excel con el total de solicitudes de un estudiante en especifico*/
@@ -891,8 +884,11 @@ class SolicitudesController extends AppController
             }    
 
             $writer = new Xls($spreadsheet);
-            $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
-
+            if($info != null){
+              $nombreArchivo='Reporte_'.$info[0]['nombre_usuario'].'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
+            }else{
+              $nombreArchivo='ReporteEstudiante.xls';
+            }
             /*Descarga el archivo en la carpeta descargas independientemente de la computadora o usuario*/
             try{
                 $sheet->getDefaultColumnDimension()->setWidth(20);
@@ -976,35 +972,7 @@ class SolicitudesController extends AppController
 
     /***************Fin genera Excel historico y estudiante**************/ 
 
-
-     public function reporteRonda(){
-         /*Inicia seguridad*/
-        $seguridad = $this->loadModel('Seguridad');
-        $carne = $this->request->getSession()->read('id');
-        $rolActual = $seguridad->getRol($carne);
-        if ($carne != ''){
-            $resultado = $seguridad->getPermiso($carne,24);
-            if($resultado != 1){
-                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        else{
-            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        /*Cierra la seguridad*/
-        $solicitude = $this->Solicitudes->newEntity();
-        if ($this->request->is('post')) {          
-            $data = $this->request->getData();
-            $id = $data['Ronda'];
-            return $this->redirect(['action' => 'generaRonda', $id]);
-
-        }
-
-        $this->set(compact('solicitude'));
-        //return $idEstudiante;
-    }
-
-    public function generaRonda($id = null){
+    public function generaRonda($ronda = null){
         
         /*Inicia seguridad*/
         $seguridad = $this->loadModel('Seguridad');
@@ -1024,14 +992,8 @@ class SolicitudesController extends AppController
 
         if ($this->request->is('post')) {
             
-            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());
-           
-            $info = $this->Solicitudes->getHistorialExcelRonda($id);
-          
-            //debug($info);
-            //die();
-            /*Ruta de donde se genera el archivo. La carpeta Excel tiene que existir desde antes*/
-            //$ruta="%USERPROFILE%\Desktop\librotest.xlsx"; 
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());        
+            $info = $this->Solicitudes->getHistorialExcelRonda($ronda);       
 
             //libro de trabajo
             $spreadsheet = new Spreadsheet();
@@ -1069,14 +1031,13 @@ class SolicitudesController extends AppController
             //$writer = new Xlsx($spreadsheet);
             $writer = new Xls($spreadsheet);
 
-
             try{
                 //$writer->save($ruta/*.'librotest.xlsx'*/);
         
                 //Descarga el archivo excel
                 $sheet->getDefaultColumnDimension()->setWidth(20);
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="'. "Reporte de Ronda" .'.xls"'); /*-- $filename is  xsl filename ---*/
+                header('Content-Disposition: attachment;filename="'. "Reporte de Ronda ".$ronda.'.xls"'); /*-- $filename is  xsl filename ---*/
                 header('Cache-Control: max-age=0');
         
                 $writer->save('php://output');
@@ -1088,12 +1049,91 @@ class SolicitudesController extends AppController
             
         }
     
-        $todo = $this->Solicitudes->getHistorialExcelRonda($id);
-        //$this->set('carnet',$carnet);
-        $this->set(compact('todo', 'solicitude'));
+        $todo = $this->Solicitudes->getHistorialExcelRonda($ronda);
+        $this->set(compact('todo', 'solicitude', 'ronda'));
     }
 
-    
+    public function generaCiclo(){
+        
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        $rolActual = $seguridad->getRol($carne);
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,24);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        }
+        /*Cierra la seguridad*/
+        $solicitude = $this->Solicitudes->newEntity();
+
+        if ($this->request->is('post')) {
+            
+            $solicitude = $this->Solicitudes->patchEntity($solicitude, $this->request->getData());       
+            $semestre = $this->get_semester(); //obtiene el semestre actual
+            $año = $this->get_year(); //obtiene el año actual           
+            $info = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año); 
+
+            //libro de trabajo
+            $spreadsheet = new Spreadsheet();
+
+            //acceder al objeto hoja
+            $sheet = $spreadsheet->getActiveSheet();           
+
+            /*Encabezados de las columnas*/
+            $sheet->setCellValue('A1', 'Curso');
+            $sheet->setCellValue('B1', 'Sigla');
+            $sheet->setCellValue('C1', 'Grupo');
+            $sheet->setCellValue('D1', 'Profesor');
+            $sheet->setCellValue('E1', 'Carné');
+            $sheet->setCellValue('F1', 'Nombre');
+            $sheet->setCellValue('G1', 'Tipo Horas');
+            $sheet->setCellValue('H1', 'Cantidad');
+
+            $i = 0;
+            $fila = 2;
+            foreach ($info as $data) {
+                //$sheet->setCellValue('A2', $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(1, $fila, $info[$i]['nombre']);
+                $sheet->setCellValueByColumnAndRow(2, $fila, $info[$i]['sigla']);
+                $sheet->setCellValueByColumnAndRow(3, $fila, $info[$i]['numero']);
+                $sheet->setCellValueByColumnAndRow(4, $fila, $info[$i]['profesor']);
+                $sheet->setCellValueByColumnAndRow(5, $fila, $info[$i]['nombre_usuario']);
+                $sheet->setCellValueByColumnAndRow(6, $fila, $info[$i]['estudiante']);
+                $sheet->setCellValueByColumnAndRow(7, $fila, $info[$i]['tipo_horas']);
+                $sheet->setCellValueByColumnAndRow(8, $fila, $info[$i]['cantidad_horas']);
+
+                $i = $i + 1;
+                $fila = $fila + 1;
+            }          
+
+            $writer = new Xls($spreadsheet);
+            $nombreArchivo='Reporte_'.$semestre.'-'.$año.'.xls'; //Nombre para el documento segun el estudiante con formato tipo: Reporte_carnet.xls 
+
+            try{        
+                //Descarga el archivo excel
+                $sheet->getDefaultColumnDimension()->setWidth(20);
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'. $nombreArchivo); /*-- $filename is  xsl filename ---*/
+                header('Cache-Control: max-age=0');
+        
+                $writer->save('php://output');
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            
+        }
+
+        $semestre = $this->get_semester(); //obtiene el semestre actual
+        $año = $this->get_year(); //obtiene el año actual
+        $todo = $this->Solicitudes->getHistorialExcelCiclo($semestre, $año);
+        $this->set(compact('todo', 'solicitude', 'semestre', 'año'));
+    }
 
     public function reprovedMessage($id)
     {
@@ -1163,7 +1203,7 @@ class SolicitudesController extends AppController
         }
 
         //Despues de poner el pass descomentar esto para empezar a enviar correos
-        /*
+        
         if ($text != null){
             //Se envía el correo.
             try {
@@ -1175,7 +1215,7 @@ class SolicitudesController extends AppController
                 echo 'Exception : ',  $e->getMessage(), "\n";
             }
         }
-        */
+        
     }
 
 }
