@@ -33,10 +33,10 @@
                 <?php
          
                 if (1 ==$this->Seguridad->getPermiso(25)){
-                     echo $this->Html->link(__('<span class="typcn typcn-printer"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                     echo $this->Html->link(__('<span class="typcn typcn-printer" title="Imprimir"></span>'), ['action' => 'imprimir', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                  } 
                 if (1 == $this->Seguridad->getPermiso(13)){
-                    echo $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
+                    echo $this->Html->link(__('<span class="typcn typcn-info-large-outline" title="Consultar"></span>'), ['action' => 'view', $solicitude[6]],['escape'=>false,'style'=>'font-size:22px;']);
                  }                                              
                 ?>
                 </td>

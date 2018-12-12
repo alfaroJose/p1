@@ -25,15 +25,15 @@
                 <td><?= h($usuario->segundo_apellido) ?></td>
                 <td><?= h($usuario->role->tipo) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                    <?= $this->Html->link(__('<span class="typcn typcn-info-large-outline" title="Consultar"></span>'), ['action' => 'view', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ?>
                     <?php $edit = $this->Seguridad->getPermiso(20);
                         if (1 == $edit && (88  !=  $usuario->id  || $this->Seguridad->getId() == 88 )){
-                            echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ;             
+                            echo $this->Html->link(__('<span class="typcn typcn-pen" title="Editar"></span>'), ['action' => 'edit', $usuario->id],['escape'=>false,'style'=>'font-size:22px;']) ;             
                         }
                     ?>
                     <?php $delete = $this->Seguridad->getPermiso(18);
                         if (1 == $delete && 88 != $usuario->id){
-                         echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Se va a eliminar al usuario {0}', $usuario->nombre_usuario),'style'=>'font-size:22px;','escape'=>false]);
+                         echo $this->Form->postLink(__('<span class="typcn typcn-trash" title="Borrar"></span>'), ['action' => 'delete', $usuario->id], ['confirm' => __('Se va a eliminar al usuario {0}', $usuario->nombre_usuario),'style'=>'font-size:22px;','escape'=>false]);
                         }
                     ?>
                 </td>

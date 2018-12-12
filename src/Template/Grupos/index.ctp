@@ -40,9 +40,9 @@
                     echo '<td class="actions">';
 
                     if (1 == $permisoEdit)
-                        echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo['grupo_id'], $grupo['curso_id'], $grupo['profesor_id']],['escape'=>false,'style'=>'font-size:22px;']);              
+                        echo $this->Html->link(__('<span class="typcn typcn-pen" title="Editar"></span>'), ['action' => 'edit', $grupo['grupo_id'], $grupo['curso_id'], $grupo['profesor_id']],['escape'=>false,'style'=>'font-size:22px;']);              
                     if (1 == $permisoDelete){
-                        echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo['grupo_id']], ['confirm' => __('Por favor confirme si desea eliminar el curso {0}, grupo {1}', $grupo['curso_nombre'], $grupo['grupo_numero']),'style'=>'font-size:22px;','escape'=>false]);
+                        echo $this->Form->postLink(__('<span class="typcn typcn-trash" title="Borrar"></span>'), ['action' => 'delete', $grupo['grupo_id']], ['confirm' => __('Por favor confirme si desea eliminar el curso {0}, grupo {1}', $grupo['curso_nombre'], $grupo['grupo_numero']),'style'=>'font-size:22px;','escape'=>false]);
                     }
                    echo '</td>';
                 }

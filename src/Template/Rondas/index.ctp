@@ -15,7 +15,7 @@
                 <?php 
                 $edit = $this->Seguridad->getPermiso(12);
                 if ( 1 == $edit)
-                    echo '<th scope="col" class="actions">Actions</th>';
+                    echo '<th scope="col" class="actions">Acciones</th>';
                 ?>
             </tr>
         </thead>
@@ -28,7 +28,7 @@
                 <?php
                 if ( 1 == $edit){
                     echo '<td class="actions">';
-                    echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $ronda->id],['escape'=>false,'style'=>'font-size:22px;']);
+                    echo $this->Html->link(__('<span class="typcn typcn-pen" title="Editar"></span>'), ['action' => 'edit', $ronda->id],['escape'=>false,'style'=>'font-size:22px;']);
                     echo '</td>';
                 }
                 ?>

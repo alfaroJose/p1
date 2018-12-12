@@ -17,7 +17,7 @@
                     $borrar = $this->Seguridad->getPermiso(6);
                     $add = $this->Seguridad->getPermiso(7);
                     if(1 == $borrar || 1 == $edit)
-                    echo '<th scope="col" class="actions">Actions</th>';
+                    echo '<th scope="col" class="actions">Acciones</th>';
                 ?>
             </tr>
         </thead>
@@ -31,9 +31,9 @@
                  if(1 == $borrar || 1 == $edit){
                    echo '<td class="actions">';
                    if(1 == $edit)
-                    echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $requisito->id],['escape'=>false,'style'=>'font-size:22px;']);
+                    echo $this->Html->link(__('<span class="typcn typcn-pen" title="Editar"></span>'), ['action' => 'edit', $requisito->id],['escape'=>false,'style'=>'font-size:22px;']);
                    if (1 == $borrar) 
-                    echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $requisito->id], ['confirm' => __('Se va a eliminar el siguiente requisito: \n \n{0}', $requisito->nombre),'style'=>'font-size:22px;','escape'=>false]);
+                    echo $this->Form->postLink(__('<span class="typcn typcn-trash" title="Borrar"></span>'), ['action' => 'delete', $requisito->id], ['confirm' => __('Se va a eliminar el siguiente requisito: \n \n{0}', $requisito->nombre),'style'=>'font-size:22px;','escape'=>false]);
                    echo '</td>';
 
                  }
