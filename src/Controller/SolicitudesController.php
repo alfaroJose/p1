@@ -1189,7 +1189,7 @@ class SolicitudesController extends AppController
         $list = $this->reprovedMessage($id);
         $text = 'Estudiante ' . $name . ':';
         $text .= "\n" .'
-        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA.
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA por el profesor.
         
         Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
         }
@@ -1197,7 +1197,22 @@ class SolicitudesController extends AppController
         $list = $this->reprovedMessage($id);
         $text = 'Estudiante ' . $name . ':';
         $text .= "\n" .'
-        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA POR INOPIA.
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ACEPTADA POR INOPIA por el profesor.
+        
+        Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
+        }
+
+        if($state == 'Anulada'){
+        $list = $this->reprovedMessage($id);
+        $text = 'Estudiante ' . $name . ':';
+        $text .= "\n" .'
+        Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue ANULADA debido a que no cumplió el(los) siguiente(s) requisito(s):';
+        $text .= "\n" ;
+        $text .= "\n" ;
+        $text .= '1) No se entregó la solicitud impresa en secretaria durante en el tiempo establecido';
+        $text .= "\n" ;
+        $text .= '2) Tiene el número máximo de horas asignadas permitidas';
+        $text .= '
         
         Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
         }
