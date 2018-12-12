@@ -217,7 +217,7 @@ return [
             'port' => 465,
             'timeout' => 60,
             'username' => 'asistencias.ecci@gmail.com',
-            'password' => '123quesito',
+            'password' => 'ecci-1234',
             'className' => 'Smtp'
         ],
     ],
