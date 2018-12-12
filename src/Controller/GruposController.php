@@ -45,15 +45,12 @@ class GruposController extends AppController
              return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
  
          }
-         /*Cierra la seguridad*/
-
-        $todo= $this->Grupos->getIndexValues();
-        $this->paginate = [
-            'contain' => ['Usuarios']
-        ];
-        $grupos = $this->paginate($this->Grupos);
-
-        $this->set(compact('grupos','todo'));
+        /*Cierra la seguridad*/
+        $SolicitudController = new SolicitudesController;
+        $semester = $SolicitudController->get_semester();
+        $year = $SolicitudController->get_year();
+        $todo= $this->Grupos->getIndexValues($semester,$year);
+        $this->set(compact('todo'));
     }
 
     /**

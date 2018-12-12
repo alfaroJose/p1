@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col"><?= 'Sigla' ?></th>
                 <th scope="col"><?= 'Curso' ?></th>
+                <th scope="col"><?= 'Profesor' ?></th>
                 <th scope="col"><?= 'Grupo' ?></th>
                 <th scope="col"><?= 'Semestre' ?></th>
                 <th scope="col"><?= 'Año' ?></th>
@@ -27,21 +28,21 @@
         </thead>
         <tbody>
             <?php foreach ($todo as $grupo): ?>
-                <?php ?>
             <tr>
-                <td><?= h($grupo->Cursos['sigla']) ?></td>
-                <td><?= h($grupo->Cursos['nombre']) ?></td>
-                <td><?= h($grupo->numero) ?></td>
-                <td><?= h($grupo->semestre) ?></td>
-                <td><?= h($grupo->año) ?></td>
+                <td><?= h($grupo['curso_sigla']) ?></td>
+                <td><?= h($grupo['curso_nombre']) ?></td>
+                <td><?= h($grupo['profesor_nombre']) ?></td>
+                <td><?= h($grupo['grupo_numero']) ?></td>
+                <td><?= h($grupo['grupo_semetre']) ?></td>
+                <td><?= h($grupo['grupo_año']) ?></td>
                 <?php 
                 if (1 == $permisoEdit || 1 == $permisoDelete){
                     echo '<td class="actions">';
 
                     if (1 == $permisoEdit)
-                        echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['escape'=>false,'style'=>'font-size:22px;']);              
+                        echo $this->Html->link(__('<span class="typcn typcn-pen"></span>'), ['action' => 'edit', $grupo['grupo_id'], $grupo['curso_id'], $grupo['profesor_id']],['escape'=>false,'style'=>'font-size:22px;']);              
                     if (1 == $permisoDelete){
-                        echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo->id], ['confirm' => __('Por favor confirme si desea eliminar al grupo {0}', $grupo->numero),'style'=>'font-size:22px;','escape'=>false]);
+                        echo $this->Form->postLink(__('<span class="typcn typcn-trash"></span>'), ['action' => 'delete', $grupo['grupo_id']], ['confirm' => __('Por favor confirme si desea eliminar el curso {0}, grupo {1}', $grupo['curso_nombre'], $grupo['grupo_numero']),'style'=>'font-size:22px;','escape'=>false]);
                     }
                    echo '</td>';
                 }
@@ -59,7 +60,7 @@
         echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso'],['class'=>'btn btn-info float-right']);
 
         if ($todo != null){
-            echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right mr-3']);
+            echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo['grupo_id'], $grupo['curso_id'], $grupo['profesor_id']],['class'=>'btn btn-info float-right mr-3']);
         }  
     }
         ?>

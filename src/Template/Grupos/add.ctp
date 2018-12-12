@@ -9,7 +9,8 @@
     <fieldset>
          <br>
         <legend><?= __('Agregar Grupo') ?></legend>
-        <div style="padding-left: 75px; width: 70%; border-style: solid; border-width: 1px; border-color: black;">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
+        
          <?php
 
             echo $this->Form->control('Sigla', ['label' => 'Sigla De Curso', 'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'], 'options' => $siglaIndex, 'default'=>$defaultSelectCurso]);

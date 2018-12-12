@@ -92,32 +92,14 @@ class GruposTable extends Table
         return $rules;
     }
 
-    /**
-     * Función que devuelve los datos necesarios para listar los grupos asociados a
-     * cada curso existente
-     *
-     * @return un arreglo de arreglos con la información de cada grupo
-     */
-    public function getIndexValues(){
-
-        $index=$this->find()
-        ->select(['Cursos.sigla','Cursos.nombre','Cursos.id','Grupos.numero','Grupos.semestre','Grupos.año','Grupos.id','Usuarios.id'])
-        ->join([
-            'Cursos'=>[
-                     'table'=>'Cursos',
-                     'type'=>'LEFT',
-                     'conditions'=>['Cursos.id=cursos_id']
-            ]
-        ])
-        ->join([
-        'Usuarios'=>[
-                     'table'=>'Usuarios',
-                     'type'=>'LEFT',
-                     'conditions'=>['Usuarios.id=usuarios_id', 'Usuarios.roles_id=3']
-            ]
-        ])
-        ->toList();
-        return $index;
+    public function getIndexValues($semestre, $año){
+        $connect = ConnectionManager::get('default');
+        $sigla = $connect->execute("select c.sigla as curso_sigla, c.nombre as curso_nombre, c.id as curso_id, g.numero as grupo_numero, g.semestre as grupo_semetre, g.año as grupo_año, g.id as grupo_id, p.id as profesor_id, CONCAT(p.nombre, ' ', p.primer_apellido) as profesor_nombre
+        from grupos g
+        join cursos as c on g.cursos_id = c.id
+        left outer join usuarios as p on g.usuarios_id = p.id
+        where g.semestre = '$semestre' and g.año = '$año';")->fetchAll('assoc');
+        return $sigla;
     }
 
     /**
