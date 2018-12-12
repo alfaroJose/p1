@@ -112,16 +112,17 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
 
-            debug($curso);
-            if ($cursoModel->save($curso)) {
+            if($this->Grupos->existeCurso($curso->sigla)){
+                $this->Flash->error(__('El curso ya existe'));
+            }else{
+                if ($cursoModel->save($curso)) {
                 $this->Flash->success(__('El curso ha sido agregado.'));
                 $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
-                if($this->Grupos->save($grupo)){
-                    
-                }
+                $this->Grupos->save($grupo);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
+            }
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
@@ -222,12 +223,21 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
-                return $this->redirect(['action' => 'index']);
+            if($siglaSeleccionada == "0"){
+                $this->Flash->error(__('La sigla debe ser llenada'));
+            } else {
+                $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
+                if($this->Grupos->existeGrupo($grupo->semestre,$grupo->año,$grupo->numero)){
+                    $this->Flash->error(__('Este grupo ya existe.'));
+                } else {
+                    if ($this->Grupos->save($grupo)) {
+                        $this->Flash->success(__('El grupo ha sido agregado.'));
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+                }
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+            
         }
         
         $this->set('siglaIndex', $siglaIndex);
@@ -392,7 +402,7 @@ class GruposController extends AppController
         $canContinue = true;
 
         //Se llena la matriz
-        for ($row = 5; $row <= $highestRow; ++$row) {
+        for ($row = 1; $row <= $highestRow; ++$row) {
             for ($col = 1; $col <= 4; ++$col) {
                 $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
                 $rows[$col -1] = $value;
@@ -423,7 +433,7 @@ class GruposController extends AppController
                 }
 
             }
-            $table[$row -5] = $rows;
+            $table[$row] = $rows;
             unset($rows); //resetea el array rows
         }
 
@@ -447,9 +457,6 @@ class GruposController extends AppController
                 /*Se le agrega el guión a las siglas de los cursos porque el archivo no las incluye*/
                 $name = $tag['1'];
                 $len =  strlen($name);
-                if ($len != 0){     
-                    $tag['1'] = substr($name,0,2).'-'.substr($name,2,$len-2);
-                }
                 //debug($tag['1']);
                 //debug($len);
                 //die();
@@ -475,7 +482,7 @@ class GruposController extends AppController
             //$classesModel->deleteAllClasses();
 
             //Llama al método addFromFile con cada fila
-            for ($row = 0; $row < count($table); ++$row) {
+            for ($row = 1; $row < count($table); ++$row) {
                 $this->addFromFile($table[$row], $profIds[$row]);
             }
 
@@ -495,13 +502,12 @@ class GruposController extends AppController
             $courseTable = $this->loadmodel('Cursos');
             $classTable = $this->loadmodel('Grupos');
             $SolicitudController = new SolicitudesController;
-
-            //Se incluye el guión en la sigla de los cursos
-            $len =  strlen($parameters[1]);
-            $name = substr($parameters[1],0,2).'-'.substr($parameters[1],2,$len-2); //sirve
-            
+      
+            //debug($parameters);
+            //die();          
             //Agrega el curso
-            $courseTable->addCourse($name, $parameters[0]);
+            $courseTable->addCourse($parameters[1], $parameters[0]);
+            $name = $parameters[1];
 
             //Recupera el semestre y año de las funciones ya hechas anteriormente en el controlador de Solicitudes           
             $semester = $SolicitudController->get_semester();
@@ -510,8 +516,14 @@ class GruposController extends AppController
             //die();
             //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
             $idCurso = $this->Grupos->obtenerCursoId($name);
+
+            //Si el número de grupo viene diferente a 01 o 1. Ejemplo: G1
+            $grupo = $parameters[2];
+            $num = (int) filter_var($grupo, FILTER_SANITIZE_NUMBER_INT);
+            //debug($int);
+            //die();
             
-            $classTable->addClass($parameters[2], $semester, $year, $idCurso, $profId);
+            $classTable->addClass($num, $semester, $year, $idCurso, $profId);
             
         }
     }

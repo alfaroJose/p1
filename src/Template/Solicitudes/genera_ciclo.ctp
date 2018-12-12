@@ -15,7 +15,7 @@ tr:nth-child(even) {background-color:  #eaecee };
 
 <div class="reporte index large-9 medium-8 columns content">
 	<?= $this->Form->create($solicitude) ?>
-    <h3><?= __('Reporte Historico') ?></h3>
+    <h3><?= __('Reporte del Ciclo '.$semestre.'-'.$año) ?></h3>
     <table id="reporte-grid" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -46,9 +46,9 @@ tr:nth-child(even) {background-color:  #eaecee };
         </tbody>
     </table>
 </div>
-
+  
     <br>
-     <button type="submit" class="btn btn-info float-right">Descargar</button>
+    <button type="submit" class="btn btn-info float-right">Descargar</button>
     <?= $this->Html->link('Regresar', ['controller'=>'Solicitudes','action'=>'reporte'], ['class'=>'btn btn-info float-right mr-3']) //boton regresar a pantalla reporte?>
     <?= $this->Form->end() ?>
 </div>
