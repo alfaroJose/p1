@@ -68,7 +68,7 @@
             
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right', 'onClick'=>'form.submit();this.disabled=true']) ?>
     <?= $this->Html->link(__('Regresar'),['controller'=>'Main', 'action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
