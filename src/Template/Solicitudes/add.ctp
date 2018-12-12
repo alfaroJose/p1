@@ -65,7 +65,7 @@
     <?php
         if ($anygroupsleft){
     ?>
-            <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right']) ?>
+           <?= $this->Form->button(__('Generar Solicitud'),['class'=>'btn btn-info float-right', 'onClick'=>'form.submit();this.disabled=true']) ?>
     <?php
         }
     ?>

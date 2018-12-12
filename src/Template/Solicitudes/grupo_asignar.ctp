@@ -23,6 +23,9 @@
                 <td><?= h($grupo['sigla']) ?></td>
                 <td><?= h($grupo['nombre']) ?></td>
                 <td><?= h($grupo['grupo']) ?></td>
+                <?php if ($grupo['profesor'] == null){
+                            $grupo['profesor'] = 'Profesor no Asignado';
+                        }?>
                 <td><?= h($grupo['profesor']) ?></td>
                 <td class="actions">
                 <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline"></span>'), ['action' => 'asignarAsistente',$grupo['sigla'],$grupo['grupo'],$grupo['profesor'], $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
