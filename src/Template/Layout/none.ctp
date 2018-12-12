@@ -33,7 +33,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <link rel="stylesheet" href="plugins/font/typicons.min.css"/></head><body><div class="page-header">
     	
     <?= $this->Html->script(['jquery-3.3.1.min', 'bootstrap.min','jquery.dataTables.min', 'fancy.min']) ?>
-
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -48,7 +47,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
       <div class="row">
        
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5">
+        <main role="main">
           <!-- Linea que permite mostrar los msjs generados -->
           <?= $this->Flash->render() ?>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

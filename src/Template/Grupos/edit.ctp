@@ -23,7 +23,7 @@
             echo $this->Form->control('año', ['pattern'=>"[0-9]{4}",'templates'=> ['inputContainer'=>'<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">{{content}}</div><br>'],'label' => ['text' => 'Año'],'type' => 'text' ]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+    <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right', 'onClick'=>'form.submit();this.disabled=true']) ?>
     <?= $this->Html->link(__('Cancelar'),['action'=>'index'],['class'=>'btn btn-info float-right mr-3']) ?>
     <?= $this->Form->end() ?>
 </div>
