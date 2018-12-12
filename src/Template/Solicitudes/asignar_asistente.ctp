@@ -36,17 +36,19 @@
                     foreach ($estudiantes as $nombres): //datos para el index?>
                     <tr>
                         <td><?= h($nombres) ?></td>
-                        <?php 
-                            if($horasE[$i] == []){ //Si es null entonces no tiene horas asignadas
-                                $horasE[$i] = 0; 
-                            }
+                        <?php /*
+                       
+                            if($horasE[0][$i]['horas'] == []){ //Si es null entonces no tiene horas asignadas
+                                $horasE[0][$i]['horas'] = 0; 
+                            }*/
                         ?>
                         <td><?= h($horasE[$i]) ?></td>
-                        <?php 
-                        if($horasA[$i] == []){//Si es null entonces no tiene horas asignadas
-                                $horasA[$i] = 0; 
+                        <?php /*
+                       // debug($horasA); die();
+                        if($horasA[0] == []){//Si es null entonces no tiene horas asignadas
+                                $horasA[0][$i]['horas'] = 0; 
                         }
-                       
+                       */
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
 
@@ -56,11 +58,11 @@
 
                             if ($reqReprobados[$i] == false){ //Los requisitos de categoría Asistente están todos en 'Sí'
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente', "Asistente" => 'Asistente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'requiered'=>true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                <?php 
                             } else {
                                 ?>
-                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
+                                <td> <?= $this->Form->select('TipoHora'.$idEstudiante[$i], ["Estudiante ECCI" => 'Estudiante ECCI', 'Estudiante Docente'=>'Estudiante Docente'], ["id" => "TipoHora".$idEstudiante[$i], "empty" => true, 'disabled' => true, 'requiered'=>true, 'onclick'=> 'revisarTipoHora('.$idEstudiante[$i].')'] ); ?></td>
                                 <?php
                             }
                         ?>                 
@@ -81,7 +83,7 @@
     <br>
    
     </div>
-        <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right']) ?>
+        <?= $this->Form->button(__('Aceptar'),['class'=>'btn btn-info float-right', 'onClick'=>'form.submit();this.disabled=true']) ?>
         <?= $this->Html->link('Cancelar', ['action'=>'grupoAsignar'], ['class'=>'btn btn-info float-right mr-3']) ?>
     <br>
 
@@ -93,9 +95,28 @@
     $(document).ready( function () {
         $('#tabla-estudiantes').DataTable(
           {
-            "bPaginate": false, //hide pagination
+
+          "bPaginate": false, //hide pagination
             "bFilter": false, //hide Search bar
             "bInfo": false, // hide showing entries
+
+            /** Configuración del DataTable para cambiar el idioma, se puede personalizar aun más **/
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ filas por página",
+                "zeroRecords": "Sin resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin datos disponibles",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+            }
+
+            
           }
         );
     } );
@@ -128,10 +149,10 @@
 </script>
 
 
-<?php /*
-echo $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
-echo $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
-echo $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];*/
+<?php 
+ $maxHorasAsistente = $contadorHoras['horas_asistente'] > 20 ? 20 : $contadorHoras['horas_asistente'];
+ $maxHorasEstudianteECCI = $contadorHoras['horas_estudiante_ecci'] > 12 ? 12 : $contadorHoras['horas_estudiante_ecci'];
+ $maxHorasEstudianteDocente = $contadorHoras['horas_estudiante_docente'] > 12 ? 12 : $contadorHoras['horas_estudiante_docente'];
  ?>
 
 

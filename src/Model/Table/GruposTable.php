@@ -181,7 +181,7 @@ class GruposTable extends Table
      */
     public function obtenerCursoId($sigla = null){
         $connect = ConnectionManager::get('default');
-        $sigla = $connect->execute("select distinct c.id from cursos c, grupos g where c.sigla = '".$sigla."'")->fetchAll();
+        $sigla = $connect->execute("select distinct c.id from cursos c where c.sigla = '".$sigla."'")->fetchAll();
         return $sigla[0][0];
     }
 
@@ -269,12 +269,74 @@ class GruposTable extends Table
         //Verifica que no esté en la tabla
         $inTable = count($connect->execute("select * from Grupos where cursos_id = '$id' and numero = '$number' and semestre = '$semester' and año = '$year'"));
         if ($inTable == 0) {
-            $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            if ($profId == ""){ //En caso de que el grupo no tenga profesor asignado
+                $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', NULL)");
+            }else{
+                $connect->execute("call insertar_grupo('$number', '$semester', '$year', '$id', '$profId')");
+            }
             $return = true;
         }else{
-            $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            if ($profId == ""){ //En caso de que el grupo no tenga profesor asignado
+                $connect->execute("update Grupos set usuarios_id = NULL where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }else{
+                $connect->execute("update Grupos set usuarios_id = '$profId' where numero = '$number' and semestre = '$semester' and año = '$year' and cursos_id = '$id'");
+            }
             $return = true;
         }
         return $return;
+    }
+
+
+    /**
+     * Función que revisa si existe un curso en la base de datos
+     *
+     * @param string|null $number Grupo number.
+     * @param string|null $semester Grupo semester.
+     * @param string|null $year Grupo year.
+     * @return true si existe el grupo, false de manera contraria.
+     */
+    public function existeCurso($sigla){
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Cursos where sigla = '$sigla'"));
+        if($inTable != 0){
+            $return = true;
+        } 
+        return $return;
+    }
+
+    /**
+     * Función que revisa si existe un grupo en la base de datos
+     *
+     * @param string|null $number Grupo number.
+     * @param string|null $semester Grupo semester.
+     * @param string|null $year Grupo year.
+     * @return true si existe el grupo, false de manera contraria.
+     */
+    public function existeGrupo($semester, $year, $number){
+        $return = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Grupos where numero = '$number' and semestre = '$semester' and año = '$year'"));
+        if($inTable != 0){
+            $return = true;
+        } 
+        return $return;
+    }
+
+    /**
+     * Función que revisa si existen solicitudes asociadas a un grupo mediante una consulta directa
+     * a la base de datos.
+     *
+     * @param string|null $grupoId Grupo id.
+     * @return true si existe el grupo, false de manera contraria.
+     */
+    public function existenSolicitudes($grupoId){
+        $existen = false;
+        $connect = ConnectionManager::get('default');
+        $inTable = count($connect->execute("select * from Solicitudes where grupos_id = '$grupoId'"));
+        if($inTable != 0){
+            $existen = true;
+        } 
+        return $existen;
     }
 }

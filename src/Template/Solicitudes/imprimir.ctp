@@ -5,35 +5,32 @@
  */
 ?>
 <script type="text/javascript">
-$(document).ready( function () {
-  var sol = <?php echo json_encode($solicitude); ?>;
-  if(sol.horas_asistente_externa === 'Sí'){
-    document.getElementById('checkboxHAExt').setAttribute('checked', 'checked');
-  }
-  if(sol.horas_estudiante_externa === 'Sí'){
-    document.getElementById('checkboxHEExt').setAttribute('checked', 'checked');
-  }
-  if(sol.horas_asistente === 'Sí'){
-    document.getElementById('checkboxHA').setAttribute('checked', 'checked');
-  }
-  if(sol.horas_estudiante === 'Sí'){
-    document.getElementById('checkboxHE').setAttribute('checked', 'checked');
-  }
-    } );
+$(document).ready( function (){
+   var sol = <?php echo json_encode($solicitude); ?>;
+  //document.write(sol.horas_estudiante);
+ // document.write(sol.horas_estudiante);
+ // document.write(sol.horas_asistente);
+   if(sol.horas_estudiante != 'No'){
+     //document.write("Primer if");
+     $('#checkboxHE').prop('checked', true);
+   }
+   if(sol.horas_asistente != 'No'){
+   // document.write('Segundo if');
+   $('#checkboxHA').prop('checked', true);
+   }
+   if(sol.horas_asistente_externa != 'No'){
+    $('#checkboxHAExtern').prop('checked', true);
+   }
+   if(sol.horas_estudiante_externa != 'No'){
+    $('#checkBoxEstudianteExterna').prop('checked', true);
+   }
+}
+ );
   </script>
 <div class="imprimir">
 <head> 
 <style>
-input[type=checkbox] + label {
-    display: inline-block;
-    position: relative;
-    padding: 8px;
-    background-color: #000000;
-    border: 5px solid #FFFFFF;
-    border-radius: 2px;
-    width: 8px;
-    height: 6px;
-}
+
 </style>
 <meta charset="utf-8"/>  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> <link rel="stylesheet" href="base.min.css"/><link rel="stylesheet" href="fancy.min.css"/> <link rel="stylesheet"/> 
 
@@ -105,9 +102,9 @@ input[type=checkbox] + label {
 <td></td>
 <td> Solicita horas : </td>
 <td></td>
-<td> Horas Estudiante <?= $this->Form->checkbox("checkboxHE", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHE"]); ?></td>
+<td> Horas Estudiante <?= $this->Form->checkbox("checkbox", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHE"]); ?></td>
 <td></td>
-<td> Horas Asistente <?= $this->Form->checkbox("checkboxHA", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHA"]); ?></td>
+<td> Horas Asistente <?= $this->Form->checkbox("checkbox", ["disabled" => true, "class" => "checkbox", "id" => "checkboxHA"]); ?></td>
 <tr style="height :10px;">
 <td>Carrera</td>
 </tr>
@@ -128,12 +125,12 @@ input[type=checkbox] + label {
  </li>
  <p style="text-indent: 40px;">                     Tipo </p>
  <p style="text-indent: 40px;">                     Estudiante <?= $this->Form->checkbox("checkboxHEExt", ["disabled" => true, "class" => "checkboxParaHEExt", "id" => "checkboxEstudiante Externa"]);?>  Asistente <?= $this->Form->checkbox("checkboxHAExt", ["disabled" => true, "class" => "checkboxParaHAExternas", "id" => "checkboxHAExtern"]);?></p>
- <p style="text-indent: 40px;"> Cantidad de horas externas  <?= h($solicitude->cantidad_horas_externa) ?> </p>
+ <p style="text-indent: 40px;"> Cantidad de horas externas:  <?= h($solicitude->cantidad_horas_externa) ?> </p>
 </div>    
   <h3><b>Curso solicitado </b> </h3>
   <table border="1">
   <tr> <td>Sigla</td><td>Grupo</td><td>Nombre del curso</td><td>Nombre del docente</td> </tr>
-  <tr> <td><?= h($curso[0][0])?> </td><td><?= h($solicitude->grupo->numero) ?></td><td> <?=h($curso[0][1])?></td> <td><?= h($curso[0][2]) ?></td></tr>
+  <tr> <td><?= h($curso[0][0])?> </td><td><?= h($solicitude->grupo->numero) ?></td><td> <?= h($curso[0][1])?></td> <td><?= h($curso[0][2]) ?></td></tr>
   </table>
   <br>
   <p style="text-indent: 40px;"><b>Firma del estudiante  &nbsp; </b> <u style="width: 90px;">&nbsp; &nbsp;  &nbsp;    &nbsp;    &nbsp; &nbsp;  &nbsp;  &nbsp;   &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  
@@ -215,6 +212,6 @@ input[type=checkbox] + label {
   <p style="text-indent: 40px;">Aceptado <?= $this->Form->checkbox("checkboxAceptado", ["disabled" => true, "class" => "checkboxRechazado", "id" => "checkboxEstudiante Externa"]);?> &nbsp; Rechazado <?= $this->Form->checkbox("checkboxRechazado", ["disabled" => true, "class" => "checkboxrec", "id" => "checkboxHorasRechazadas"]);?>   Horas Asignadas &nbsp;<u>&nbsp; &nbsp; &nbsp; &nbsp; </u> </p>
   <br>
   <p style="text-indent: 40px;"><b>Firma del docente (en ambos casos aceptado o rechazado)  &nbsp; </b> <u style="width: 90px;">&nbsp; &nbsp;  &nbsp;    &nbsp;    &nbsp; &nbsp;  &nbsp;  &nbsp;   &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  
-  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </u></p>
+  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </u></p>
 </body>
  </div>

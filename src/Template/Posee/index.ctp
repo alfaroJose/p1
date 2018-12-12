@@ -16,16 +16,17 @@ body {font-family: Arial;}
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
+    text-align: center;
+    display: inline-block;
 }
 
 /* Style the buttons inside the tab */
 .tab button {
     background-color: inherit;
-    float: left;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    padding: 14px 12.8px;
     transition: 0.3s;
     font-size: 17px;
 }
@@ -43,7 +44,7 @@ body {font-family: Arial;}
 /* Style the tab content */
 .tabcontent {
     display: none;
-    padding: 6px 12px;
+    padding: 6px 10px;
     border: 1px solid #ccc;
     border-top: none;
 }
@@ -112,9 +113,6 @@ body {font-family: Arial;}
                     case 13:
                         $('#checkboxConsSoli').prop("checked", true);
                         break;
-                    case 14:
-                        $('#checkboxElimSoli').prop("checked", true);
-                        break;
                     case 15:
                         $('#checkboxInsSoli').prop("checked", true);
                         break;
@@ -139,6 +137,12 @@ body {font-family: Arial;}
                     case 23:
                         $('#checkboxConsCont').prop("checked", true);
                         break;
+                    case 24:
+                        $('#checkboxIngresoRep').prop("checked", true);
+                        break;
+                    case 25:
+                        $('#checkboxIngresoImp').prop("checked", true);
+                        break;
                 }
             }
     	}
@@ -150,8 +154,7 @@ body {font-family: Arial;}
     	var permAdmin = new Array();
     	var permAsis = new Array();
     	var permProf = new Array();
-    	var permEst = new Array();
-
+    	var permEst = new Array();;
     	for(var i = 0; i < tuplas.length; i++){
     		if(tuplas[i].roles_id == 1){//si es admin
     			permAdmin.push(tuplas[i]);
@@ -225,13 +228,15 @@ body {font-family: Arial;}
 
     <!-- Aqui se crean los botones para los tabs con los distintos modulos y llaman al metodo implementado de JavaScript switchModule -->
     <div class="tab">
-        <button type="button" class="tablinks" onclick="switchModule(event, 'Usuarios')" >Usuarios</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Usuarios')" id="defaultOpen">Usuarios</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Cursos-Grupos')">Cursos-Grupos</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Rondas')">Rondas</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Requisitos')">Requisitos</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Solicitudes')">Solicitudes</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Revisiones')">Revisiones</button>
         <button type="button" class="tablinks" onclick="switchModule(event, 'Contador')">Contador de horas</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Reportes')">Reportes</button>
+        <button type="button" class="tablinks" onclick="switchModule(event, 'Imprimir')">Imprimir solicitudes</button>
     </div>
 
     <!-- Aqui se crea el contenido para cada tab -->
@@ -338,16 +343,10 @@ body {font-family: Arial;}
 
         <?= $this->Form->hidden("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
 
-        <?= $this->Form->hidden("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
-
         <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
 
         <label for="checkboxInsSoli">Insertar</label>
         <?= $this->Form->checkbox("checkboxInsSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxInsSoli"]); ?>
-        <br>
-
-        <label for="checkboxElimSoli">Eliminar</label>
-        <?= $this->Form->checkbox("checkboxElimSoli", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxElimSoli"]); ?>
         <br>
 
         <label for="checkboxConsSoli">Consultar</label>
@@ -379,6 +378,28 @@ body {font-family: Arial;}
         <?= $this->Form->checkbox("checkboxConsCont", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxConsCont"]); ?>
     </div>
 
+    <div id="Reportes" class="tabcontent">
+        <?= $this->Form->hidden("checkboxIngresoRep", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxModCont">Ingresar</label>
+        <?= $this->Form->checkbox("checkboxIngresoRep", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxIngresoRep"]); ?>
+        <br>
+
+    </div>
+
+    <div id="Imprimir" class="tabcontent">
+        <?= $this->Form->hidden("checkboxIngresoImp", ["disabled" => true, "class" => "checkboxParaPerm"]); ?>
+
+        <span onclick="this.parentElement.style.display='none'" class="float-right"><b>X</b></span>
+
+        <label for="checkboxModCont">Ingresar</label>
+        <?= $this->Form->checkbox("checkboxIngresoImp", ["disabled" => true, "class" => "checkboxParaPerm", "id" => "checkboxIngresoImp"]); ?>
+        <br>
+
+    </div>
+
     <br>
 
     <!-- Botones para cancelar los cambios hechos y guardar los cambios -->
@@ -404,5 +425,6 @@ function switchModule(evt, nombreModulo) {
     document.getElementById(nombreModulo).style.display = "block";
     evt.currentTarget.className += " active";
 }
+document.getElementById("defaultOpen").click();
 </script>
 </body>

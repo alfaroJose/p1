@@ -66,7 +66,7 @@ use Cake\Chronos\Date;
             $idActual = $this->Usuario->getUser($username);
  
             if ($idActual[0] != null) { //Cuando el usuario se está registrando no hay opción de editar perfil todavía         
-              echo ( '<a style="margin-right: 26%; color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/edit/'.$idActual[0].'/">Editar perfil </a>'); 
+              echo ( '<a style="margin-right: 26%; color: rgb(255, 255, 255);" href="http://localhost/p1/usuarios/view/'.$idActual[0].'/">Ver perfil </a>'); 
             }
           ?>
 
@@ -101,7 +101,7 @@ use Cake\Chronos\Date;
               <?php $inic = new Date($rondaActual[1])?>
               <?php $fin = new Date($rondaActual[2])?>
               <?php $est = $today->between($inic, $fin) ? 'Habilitada' : 'Deshabilitada'?>
-              <p style = "color:red;"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
+              <p style = "color:red;  font-size:150%"><?="Fecha hoy: " . $today?><br><?="Ronda # " . $rondaActual[0] . ' '. $est?><br><?="Fecha Inicio: " . $rondaActual[1]?><br><?="Fecha Fin: " . $rondaActual[2]?></p>
             </div>
 
              <br>
@@ -111,7 +111,7 @@ use Cake\Chronos\Date;
           if ($permisoContador == 1) {
             echo '<div style = "padding-left: 5px; border-style: solid; border-color: red; border-width: 0.75px">';
             $contadorActual = $this->Contador->getContador();
-            echo '<p style = "color:red">'.$contadorActual[0].'<br>'.$contadorActual[1].'<br>'.$contadorActual[2].'</p>';
+            echo '<p  style = "color:red;  font-size:250%" >'.$contadorActual[0].'<br>'.$contadorActual[1].'<br>'.$contadorActual[2].'</p>';
             echo '</div>';
           }
           ?>
@@ -162,7 +162,13 @@ use Cake\Chronos\Date;
                 echo $this->Html->link('Solicitudes',['controller'=>'Solicitudes','action'=>'index'],['class'=>'nav-link']) ;
                 echo '</li>';
               }
-                
+
+              $permisoReporte = $this->Seguridad->getPermiso(24);
+              if(1 == $permisoReporte){ 
+                echo  '<li class="nav-item">';
+                echo $this->Html->link('Reportes',['controller'=>'Solicitudes','action'=>'reporte'],['class'=>'nav-link']) ;
+                echo '</li>';
+              }           
 
               if ( 1 == $permisoContador){
                 echo  '<li class="nav-item">';

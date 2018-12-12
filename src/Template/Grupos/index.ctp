@@ -56,11 +56,20 @@
     <br>
     <?php
     if (1 == $permisoAdd){
-        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right']);
-        echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right mr-3']);
+        echo $this->Html->link(__('Agregar curso'),['action'=>'addCurso'],['class'=>'btn btn-info float-right']);
+
+        if ($todo != null){
+            echo $this->Html->link('Agregar grupo',['action'=>'add',$grupo->id, $grupo->Cursos['id'], $grupo->Usuarios['id']],['class'=>'btn btn-info float-right mr-3']);
+        }  
     }
         ?>
-         <button id="butExcel" class="btn btn-info float-right mr-3">Cargar Archivo</button>
+   <?php
+   if (1 == $permisoAdd){
+      echo ' <button id="butExcel" class="btn btn-info float-right mr-3">Cargar Archivo</button>';
+    } 
+    ?>
+        
+
 
         <div id="Subir archivo" class="modal">
             <div class="modal-content">
@@ -69,7 +78,7 @@
                 <fieldset>
                 <legend><?= __('Seleccione el archivo') ?></legend>
                 <?php
-                    echo $this->Form->control('file', ['label'=>['text'=>''], 'type' => 'file']);
+                    echo $this->Form->control('file', ['label'=>['text'=>''], 'type' => 'file']); 
                 ?>
             </fieldset>
             <button type="submit" class="btn btn-info float-right">Aceptar</button>

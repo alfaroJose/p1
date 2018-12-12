@@ -43,7 +43,7 @@ tr:nth-child(even) {
 
     </fieldset>
     <br>
-    <button type="submit" class="btn btn-info float-right">Aceptar</button>
+    <button type="submit" class="btn btn-info float-right" onClick='form.submit();this.disabled=true'>Aceptar</button>
     <?= $this->Html->link(
         'Cancelar',
         ['controller'=>'Grupos','action'=>'cancelExcel'],

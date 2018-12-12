@@ -32,27 +32,20 @@ class GruposController extends AppController
      */
     public function index()
     {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 1 and roles_id = ".$rol[0][0].";";
-                        //1 = Consultar Curso-Grupo
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        //Cierra la seguridad
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,1);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+ 
+         }
+         /*Cierra la seguridad*/
 
         $todo= $this->Grupos->getIndexValues();
         $this->paginate = [
@@ -74,27 +67,20 @@ class GruposController extends AppController
      */
     public function addCurso()
     {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 3 and roles_id = ".$rol[0][0].";";
-                        //3 = Agregar Curso-Grupo
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-            }
-        }
-        else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
-        }
-        //Cierra la seguridad
+         /*Inicia seguridad*/
+         $seguridad = $this->loadModel('Seguridad');
+         $carne = $this->request->getSession()->read('id');
+         if ($carne != ''){
+             $resultado = $seguridad->getPermiso($carne,3);
+             if($resultado != 1){
+                 return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+             }
+         }
+         else{
+             return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+ 
+         }
+         /*Cierra la seguridad*/
         $opcionesSemestre=[1,2,3];
         $semestreEncontrado=false;
         $itSemestre=0;
@@ -126,16 +112,17 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
 
-            debug($curso);
-            if ($cursoModel->save($curso)) {
+            if($this->Grupos->existeCurso($curso->sigla)){
+                $this->Flash->error(__('El curso ya existe'));
+            }else{
+                if ($cursoModel->save($curso)) {
                 $this->Flash->success(__('El curso ha sido agregado.'));
                 $grupo->cursos_id = $this->Grupos->obtenerCursoId($curso->sigla);
-                if($this->Grupos->save($grupo)){
-                    
-                }
+                $this->Grupos->save($grupo);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El curso no se ha podido agregar. Por favor intente de nuevo.'));
+            }
         }
         
         $this->set('opcionesSemestre', $opcionesSemestre);
@@ -157,27 +144,21 @@ class GruposController extends AppController
      */
     public function add($id = null, $idCurso = null, $idProfesor = null)
     {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 3 and roles_id = ".$rol[0][0].";";
-                        //3 = Agregar Curso-Grupo
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,3);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
         else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
         }
-        //Cierra la seguridad
+        /*Cierra la seguridad*/
+
         $opcionesSemestre=[1,2,3];
         $semestreEncontrado=false;
         $itSemestre=0;
@@ -242,12 +223,21 @@ class GruposController extends AppController
             $profesorSeleccionado = $this->request->getData('Profesor');
             $grupo->usuarios_id = $profesoresIds[$profesorSeleccionado];
             $siglaSeleccionada = $this->request->getData('Sigla');
-            $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
-            if ($this->Grupos->save($grupo)) {
-                $this->Flash->success(__('El grupo ha sido agregado.'));
-                return $this->redirect(['action' => 'index']);
+            if($siglaSeleccionada == "0"){
+                $this->Flash->error(__('La sigla debe ser llenada'));
+            } else {
+                $grupo->cursos_id = $siglaIds[$siglaSeleccionada];
+                if($this->Grupos->existeGrupo($grupo->semestre,$grupo->año,$grupo->numero)){
+                    $this->Flash->error(__('Este grupo ya existe.'));
+                } else {
+                    if ($this->Grupos->save($grupo)) {
+                        $this->Flash->success(__('El grupo ha sido agregado.'));
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+                }
             }
-            $this->Flash->error(__('El grupo no se ha podido agregar. Por favor intente de nuevo.'));
+            
         }
         
         $this->set('siglaIndex', $siglaIndex);
@@ -270,28 +260,20 @@ class GruposController extends AppController
      */
      public function edit($id = null, $idCurso = null, $idProfesor = null)
      {
-        //Verifica por permisos y login
-        $carne = $this->getRequest()->getSession()->read('id'); 
-        if($carne != null){
-
-           $connect = ConnectionManager::get('default');
-           $consulta = "select roles_id from usuarios where nombre_usuario = '".$carne."';";
-           $rol =  $connect->execute($consulta)->fetchAll(); //Devuelve el rol del usuario en cuestión
-          
-           $consulta = "select pos.estado
-                       from posee as pos join permisos as per on pos.permisos_id =  per.id
-                        where per.id = 4 and roles_id = ".$rol[0][0].";";
-                        //4 = Editar Curso-Grupo
-           $tupla =  $connect->execute($consulta)->fetchAll();      
-
-            if($tupla[0][0] != '1'){//1 = Tiene permisos para consultar usuarios
-               $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+        /*Inicia seguridad*/
+        $seguridad = $this->loadModel('Seguridad');
+        $carne = $this->request->getSession()->read('id');
+        if ($carne != ''){
+            $resultado = $seguridad->getPermiso($carne,4);
+            if($resultado != 1){
+                return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
             }
         }
         else{
-            $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+            return $this->redirect(['controller' => 'Inicio','action' => 'fail']);
+
         }
-        //Cierra la seguridad
+        /*Cierra la seguridad*/
 
         $opcionesSemestre=[1,2,3]; //vector de semestres
         $semestreEncontrado=false; //controla la busqueda
@@ -362,13 +344,16 @@ class GruposController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post']);
-        $grupo = $this->Grupos->get($id);
-        if ($this->Grupos->delete($grupo)) {
-            $this->Flash->success(__('El grupo ha sido eliminado.'));
+        if($this->Grupos->existenSolicitudes($id)){
+            $this->Flash->error(__('No se puede eliminar un grupo con solicitudes asociadas.'));
         } else {
-            $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            $grupo = $this->Grupos->get($id);
+            if ($this->Grupos->delete($grupo)) {
+                $this->Flash->success(__('El grupo ha sido eliminado.'));
+            } else {
+                $this->Flash->error(__('El grupo no se ha podido eliminar. Por favor intente de nuevo.'));
+            }
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
@@ -409,8 +394,15 @@ class GruposController extends AppController
         $rows = [];
 
         $profIds = [];
+
+        //Los profesores que deben ser agregados antes
+        $errorProf = [];
+
+        //Indica si se pueden agregar cursos
+        $canContinue = true;
+
         //Se llena la matriz
-        for ($row = 5; $row <= $highestRow; ++$row) {
+        for ($row = 1; $row <= $highestRow; ++$row) {
             for ($col = 1; $col <= 4; ++$col) {
                 $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
                 $rows[$col -1] = $value;
@@ -427,11 +419,10 @@ class GruposController extends AppController
                         //die();
                         $id = $usuariosTable->getID($prof[count($prof)-1], $prof[0]);
                         
-                        if($id == null){
-                            //Se borra el archivo
-                            $this->deleteFiles();
-                            $this->Flash->error('El profesor '. $value .' no se encuentra en la tabla');
-                            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+                        if($id == null){                            
+                            $canContinue = false;
+                            array_push($errorProf, $value);
+                        
                         }else{
                             array_push($profIds, $id);
                         }
@@ -442,18 +433,30 @@ class GruposController extends AppController
                 }
 
             }
-            $table[$row -5] = $rows;
+            $table[$row] = $rows;
             unset($rows); //resetea el array rows
         }
+
+        //En caso de que un profesor no exista
+        if(!$canContinue){
+            $message = "Los siguientes profesores no están en el sistema : \n";
+
+            for($i = 0; $i < count($errorProf); $i++){
+                $message = $message . $errorProf[$i] . ",\n";
+            }
+
+            //Se borra el archivo
+            $this->deleteFiles();
+            $this->Flash->error($message);
+            return $this->redirect(['controller' => 'Grupos', 'action' => 'index']);
+        }
+
         //Se cambia el nombre de las llaves del array si no es post ya que es para la vista previa
         if(!$this->request->is('post')){
             $table = array_map(function($tag) {
                 /*Se le agrega el guión a las siglas de los cursos porque el archivo no las incluye*/
                 $name = $tag['1'];
                 $len =  strlen($name);
-                if ($len != 0){     
-                    $tag['1'] = substr($name,0,2).'-'.substr($name,2,$len-2);
-                }
                 //debug($tag['1']);
                 //debug($len);
                 //die();
@@ -479,7 +482,7 @@ class GruposController extends AppController
             //$classesModel->deleteAllClasses();
 
             //Llama al método addFromFile con cada fila
-            for ($row = 0; $row < count($table); ++$row) {
+            for ($row = 1; $row < count($table); ++$row) {
                 $this->addFromFile($table[$row], $profIds[$row]);
             }
 
@@ -499,13 +502,12 @@ class GruposController extends AppController
             $courseTable = $this->loadmodel('Cursos');
             $classTable = $this->loadmodel('Grupos');
             $SolicitudController = new SolicitudesController;
-
-            //Se incluye el guión en la sigla de los cursos
-            $len =  strlen($parameters[1]);
-            $name = substr($parameters[1],0,2).'-'.substr($parameters[1],2,$len-2); //sirve
-            
+      
+            //debug($parameters);
+            //die();          
             //Agrega el curso
-            $courseTable->addCourse($name, $parameters[0]);
+            $courseTable->addCourse($parameters[1], $parameters[0]);
+            $name = $parameters[1];
 
             //Recupera el semestre y año de las funciones ya hechas anteriormente en el controlador de Solicitudes           
             $semester = $SolicitudController->get_semester();
@@ -514,10 +516,15 @@ class GruposController extends AppController
             //die();
             //Para agregra el grupo, primero tenemos que encontrar el id según la sigla
             $idCurso = $this->Grupos->obtenerCursoId($name);
-            //debug($idCurso);
-            //die();
-            $classTable->addClass($parameters[2], $semester, $year, $idCurso, $profId);
 
+            //Si el número de grupo viene diferente a 01 o 1. Ejemplo: G1
+            $grupo = $parameters[2];
+            $num = (int) filter_var($grupo, FILTER_SANITIZE_NUMBER_INT);
+            //debug($int);
+            //die();
+            
+            $classTable->addClass($num, $semester, $year, $idCurso, $profId);
+            
         }
     }
 
