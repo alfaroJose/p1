@@ -262,7 +262,7 @@ class SolicitudesTable extends Table
                                     concat(g.cursos_id, g.numero)  NOT IN(
                                                                     select concat(g.cursos_id, g.numero)
                                                                     from grupos g, solicitudes r
-                                                                    where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante')  and
+                                                                    where g.id = r.grupos_id and r.usuarios_id = '$id_estudiante' and r.estado != 'Anulada')  and
                                     g.id NOT IN(
                                                                     select g.id
                                                                     from grupos g join solicitudes r on g.id = r.grupos_id 
