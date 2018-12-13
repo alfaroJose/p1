@@ -347,7 +347,15 @@ class SolicitudesTable extends Table
         $connect = ConnectionManager::get('default');      
         $connect->execute(
             "update Solicitudes
-            set estado = 'Rechazada' 
+            set estado = 'Rechazada - Profesor' 
+            where id = ".$idSolicitud.";");
+    }
+
+    public function setSolicitudAnulada($idSolicitud){
+        $connect = ConnectionManager::get('default');      
+        $connect->execute(
+            "update Solicitudes
+            set estado = 'Anulada' 
             where id = ".$idSolicitud.";");
     }
 

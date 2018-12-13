@@ -52,7 +52,7 @@
                         ?>
                         <td><?= h($horasA[$i]) ?></td>
 
-                        <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada" => 'Aceptada', "Rechazada - Profesor" => 'Rechazada - Profesor' ], ['required'=>true ,"id" => 'Estado'.$idEstudiante[$i], "empty" => true, 'onclick'=> 'revisarEstado('.$idEstudiante[$i].')'] ); ?></td>
+                        <td> <?= $this->Form->select('Estado'.$idEstudiante[$i],["Aceptada" => 'Aceptada', "Rechazada - Profesor" => 'Rechazada', "Anulada" => 'Anulada'], ['required'=>true ,"id" => 'Estado'.$idEstudiante[$i], "empty" => true, 'onclick'=> 'revisarEstado('.$idEstudiante[$i].')'] ); ?></td>
 
                         <?php
 

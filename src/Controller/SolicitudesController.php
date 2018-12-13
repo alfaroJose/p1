@@ -696,6 +696,8 @@ class SolicitudesController extends AppController
 
                     if ($data["Estado".$estudiantesIds[$i]] == 'Rechazada - Profesor'){ //Actualiza el estado de la Solicitud del como Rechazada
                         $this->Solicitudes->setSolicitudRechazada($idSolicitud[$i]);
+                    } else if ($data["Estado".$estudiantesIds[$i]] == 'Anulada') {
+                        $this->Solicitudes->setSolicitudAnulada($idSolicitud[$i]);
                     }
                     else{
 
@@ -1183,7 +1185,7 @@ class SolicitudesController extends AppController
         Por favor no contestar este correo. Cualquier consulta comunicarse con la secretaría de la ECCI al 2511-0000 o asistencias-ecci@gmail.com';
         }
         // Si el estado es 2, se debe enviar mensaje de estudiante rechazado.
-        if($state == 'Rechazada'){
+        if($state == 'Rechazada - Profesor'){
         $text = 'Estudiante ' . $name . ':';
         $text .= "\n" .'
         Por este medio se le comunica que su solicitud de asistencia para el curso ' . $course . ' grupo ' . $group . ' con el profesor(a) ' . $professor . ' fue RECHAZADA por el profesor.

@@ -54,17 +54,21 @@
         <!-- Aqui carga los requisitos para ver si se cumplen o no -->
         <br>
         <h5> Requisitos </h5>
-        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 75px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
+        <div style="padding-top: 15px; padding-bottom: 10px; padding-left: 30px; width: 80%; border-style: solid; border-width: 1px; border-color: black; border-radius: 25px">
         <style> 
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
-            width: 100%;
+            width: 103%;
         }
         td, th {
             text-align: left;
             padding: 8px;
         }
+        label {
+            padding-right:7px;
+        }
+
         </style>
         <table id="requisitos" cellpadding="0" cellspacing="0">
 
@@ -195,7 +199,7 @@
         </table>
         </div>
 
-        <?php if($solicitude['estado'] == 'Aceptada - Profesor' or $solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Rechazada'):?>
+        <?php if($solicitude['estado'] == 'Aceptada - Profesor' or $solicitude['estado'] == 'Aceptada - Profesor (Inopia)' or $solicitude['estado'] == 'Rechazada - Profesor'):?>
             <div onload="blockTodo()">
         <?php else:?>
             <div onload="updateAsistentes()">
