@@ -28,7 +28,15 @@
                         }?>
                 <td><?= h($grupo['profesor']) ?></td>
                 <td class="actions">
-                <?= $this->Html->link(__('<span class="typcn typcn-arrow-right-outline" title="Asignar"></span>'), ['action' => 'asignarAsistente',$grupo['sigla'],$grupo['grupo'],$grupo['profesor'], $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']) ?>
+                
+                <?php
+                    if ($estadoCursos[$grupo['id']] == false) {
+                        echo $this->html->link(__('<span class="typcn typcn-arrow-right-outline" title="Asignar"></span>'), ['action'=>''], ['onClick'=>'showAlert();', 'escape'=>false,'style'=>'font-size:22px;']);    
+                    } else {
+                        echo $this->Html->link(__('<span class="typcn typcn-arrow-right-outline" title="Asignar"></span>'), ['action' => 'asignarAsistente',$grupo['sigla'],$grupo['grupo'],$grupo['profesor'], $grupo['id']],['escape'=>false,'style'=>'font-size:22px;']);
+                    }
+                ?>
+
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -63,4 +71,10 @@
           }
         );
     } );
+</script>
+
+<script>
+function showAlert() {
+    alert('El curso seleccionado aún tiene solicitudes pendientes de revisión, favor revisar los requisitos de todas las solicitudes de este curso antes de asignar un asistente');
+}
 </script>

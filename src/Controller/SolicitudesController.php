@@ -622,10 +622,19 @@ class SolicitudesController extends AppController
         }
         /*Cierra la seguridad*/
 
+        $estadoCursos;
         $semestre = $this->get_semester(); //obtiene el semestre actual
         $año = $this->get_year(); //obtiene el año actual
         $tabla = $this->Solicitudes->getGruposSinAsignar($semestre,$año); //Grupos sin asistente asignado
-        $this->set(compact('tabla'));
+        foreach ($tabla as $cursos):
+            $result = $this->Solicitudes->getCursosListos($cursos['id']);
+            if ($result == false) {
+                $estadoCursos[$cursos['id']] = false;
+            } else {
+                $estadoCursos[$cursos['id']] = true;                
+            }
+        endforeach;
+        $this->set(compact('tabla','estadoCursos'));
     }
 
     //Asignación de un asistente a un grupo

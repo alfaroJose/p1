@@ -351,6 +351,25 @@ class SolicitudesTable extends Table
             where id = ".$idSolicitud.";");
     }
 
+    public function getCursosListos($grupos_id){
+        $connect = ConnectionManager::get('default');      
+        $result = $connect->execute(
+            "select id
+            from solicitudes 
+            where estado = 'Pendiente'
+            or estado = 'Pendiente - Administrador'
+            and grupos_id = ".$grupos_id.";");
+        $cant = count($result);
+
+        if ($cant == 0){
+            $result = true;           
+        }
+        else{
+            $result = false;
+        }
+        return $result; 
+    }
+
     public function setSolicitudAnulada($idSolicitud){
         $connect = ConnectionManager::get('default');      
         $connect->execute(

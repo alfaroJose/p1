@@ -68,7 +68,6 @@
         label {
             padding-right:7px;
         }
-
         </style>
         <table id="requisitos" cellpadding="0" cellspacing="0">
 
